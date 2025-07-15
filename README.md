@@ -1,52 +1,59 @@
-# Astro Starter Kit: Basics
+# 🌌 Nous Technologies — Modern Web & AI Solutions
 
-```sh
-pnpm create astro@latest -- --template basics
-```
+![Nous Logo](./public/1.png)
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+**Nous Technologies** es una empresa enfocada en transformar ideas en soluciones digitales inteligentes. Combinamos la **automatización con IA**, la **consultoría de software** y el **desarrollo web profesional** para llevar tus proyectos al siguiente nivel.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+---
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+## 🚀 ¿Qué es este proyecto?
 
-## 🚀 Project Structure
+Este repositorio contiene el código fuente del sitio web oficial de **Nous Technologies**, construido con:
 
-Inside of your Astro project, you'll see the following folders and files:
+- ⚡️ [Astro](https://astro.build) — rendimiento superior y enfoque en contenido.
+- ⚛️ [React](https://react.dev) — componentes interactivos y escalables.
+- 🎨 [Tailwind CSS](https://tailwindcss.com) — diseño moderno, ágil y totalmente personalizado.
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+---
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## ✨ Características principales
 
-## 🧞 Commands
+- Diseño elegante y moderno.
+- 100% responsive y optimizado para SEO.
+- Desarrollado con un stack veloz y escalable.
+- Enfoque claro en automatización, IA y consultoría.
+- Preparado para integraciones futuras como blog, CRM, etc.
 
-All commands are run from the root of the project, from a terminal:
+---
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+## 📁 Estructura del proyecto
 
-## 👀 Want to learn more?
+src/
+│
+├── components/ # Componentes React reutilizables
+├── layouts/ # Layouts base de la web
+├── pages/ # Rutas del sitio (inicio, servicios, contacto)
+├── styles/ # Archivos de estilo globales
+└── assets/ # Imágenes, íconos y recursos estáticos
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+---
+
+## 📦 Instalación y uso
+## 🤝 How to Contribute
+
+¡Nos encanta colaborar con mentes creativas y desarrolladores apasionados!
+
+Si quieres contribuir a este proyecto, sigue estos pasos:
+
+1. **Forkea** el repositorio
+2. Crea una nueva rama con tu feature o fix:
+   ```bash
+   git checkout -b feature/nombre-de-tu-feature
+3. Haz tus cambios y haz commit:
+   ```bash
+   git commit -m "Agrega una nueva feature"
+4. Sube tus cambios a tu fork:
+   ```bash
+   git push origin feature/nombre-de-tu-feature
+5. Abre un Pull Request en este repositorio.
+---
