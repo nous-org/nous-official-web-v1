@@ -26,15 +26,26 @@ Este repositorio contiene el código fuente del sitio web oficial de **Nous Tech
 
 ---
 
-## 📁 Estructura del proyecto
+## 📁 Project Structure
 
+The project follows a modular architecture for better maintainability and scalability:
+
+```
 src/
-│
-├── components/ # Componentes React reutilizables
-├── layouts/ # Layouts base de la web
-├── pages/ # Rutas del sitio (inicio, servicios, contacto)
-├── styles/ # Archivos de estilo globales
-└── assets/ # Imágenes, íconos y recursos estáticos
+├── components/     # Reusable Astro and React components
+├── layouts/        # Base layouts and templates
+├── pages/          # Route components and page structures
+├── styles/         # Global styles and theme configurations
+└── assets/         # Static assets (images, icons, etc.)
+```
+
+Each directory serves a specific purpose:
+
+- `components/`: Houses all reusable UI components, built with Astro and React for optimal performance
+- `layouts/`: Contains base templates that define the overall structure of different page types
+- `pages/`: Manages routing and page-specific components using Astro's file-based routing
+- `styles/`: Global styling configurations, including Tailwind CSS customizations
+- `assets/`: Centralized location for all static resources used throughout the application
 
 ---
 
