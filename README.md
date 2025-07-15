@@ -2,27 +2,27 @@
 
 ![Nous Logo](./public/1.png)
 
-**Nous Technologies** es una empresa enfocada en transformar ideas en soluciones digitales inteligentes. Combinamos la **automatización con IA**, la **consultoría de software** y el **desarrollo web profesional** para llevar tus proyectos al siguiente nivel.
+**Nous Technologies** specializes in transforming innovative ideas into intelligent digital solutions. We combine **AI-powered automation**, **software consulting**, and **professional web development** to elevate your projects to the next level.
 
 ---
 
-## 🚀 ¿Qué es este proyecto?
+## 🚀 About
 
-Este repositorio contiene el código fuente del sitio web oficial de **Nous Technologies**, construido con:
+This repository contains the source code for the official **Nous Technologies** website, built with cutting-edge technologies:
 
-- ⚡️ [Astro](https://astro.build) — rendimiento superior y enfoque en contenido.
-- ⚛️ [React](https://react.dev) — componentes interactivos y escalables.
-- 🎨 [Tailwind CSS](https://tailwindcss.com) — diseño moderno, ágil y totalmente personalizado.
+- ⚡️ [Astro](https://astro.build) — Superior performance and content-focused architecture
+- ⚛️ [React](https://react.dev) — Scalable and interactive components
+- 🎨 [Tailwind CSS](https://tailwindcss.com) — Modern, agile, and fully customizable design system
 
 ---
 
-## ✨ Características principales
+## ✨ Key Features
 
-- Diseño elegante y moderno.
-- 100% responsive y optimizado para SEO.
-- Desarrollado con un stack veloz y escalable.
-- Enfoque claro en automatización, IA y consultoría.
-- Preparado para integraciones futuras como blog, CRM, etc.
+- Modern and elegant design implementation
+- Fully responsive and SEO-optimized architecture
+- Built with a high-performance, scalable technology stack
+- Focused on automation, AI integration, and consulting services
+- Future-ready for integrations (blog, CRM, etc.)
 
 ---
 
@@ -49,22 +49,41 @@ Each directory serves a specific purpose:
 
 ---
 
-## 📦 Instalación y uso
-## 🤝 How to Contribute
+## 📦 Installation
 
-¡Nos encanta colaborar con mentes creativas y desarrolladores apasionados!
+1. Clone the repository
+```bash
+git clone https://github.com/nous-cr/nous-official-web-v1.git
+```
 
-Si quieres contribuir a este proyecto, sigue estos pasos:
+2. Install dependencies
+```bash
+pnpm install
+```
 
-1. **Forkea** el repositorio
-2. Crea una nueva rama con tu feature o fix:
+3. Start the development server
+```bash
+pnpm run dev
+```
+
+## 🤝 Contributing
+
+We welcome contributions from creative minds and passionate developers!
+
+To contribute to this project:
+
+1. Fork the repository
+2. Create a new feature branch:
    ```bash
-   git checkout -b feature/nombre-de-tu-feature
-3. Haz tus cambios y haz commit:
+   git checkout -b feature/your-feature-name
+   ```
+3. Commit your changes:
    ```bash
-   git commit -m "Agrega una nueva feature"
-4. Sube tus cambios a tu fork:
+   git commit -m "Add new feature"
+   ```
+4. Push to your fork:
    ```bash
-   git push origin feature/nombre-de-tu-feature
-5. Abre un Pull Request en este repositorio.
+   git push origin feature/your-feature-name
+   ```
+5. Open a Pull Request in this repository
 ---
