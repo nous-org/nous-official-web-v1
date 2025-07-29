@@ -1,0 +1,27 @@
+---
+import HeroCta from '@/components/ui/HeroCta.astro';
+
+---
+
+<HeroCta 
+    butons={[{
+        text: 'Contact',
+        variant: 'secondaryTurquoise',
+        href: '/contact',
+        target: '_self',
+        ariaLabel: 'Button'
+    }, {
+        text: 'Request a demo',
+        variant: 'secondary',
+        href: '/contact',
+        target: '_self',
+        ariaLabel: 'Button'
+    }]}
+    titleClassName='md:text-5xl text-2xl font-archivo-black mb-32 text-white text-center'
+    subtitle='Your brand, your identity, and your processes, all running automatically'
+    subtitleClassName='md:text-lg text-sm mb-32 text-white text-center'
+>
+    <span slot="title">
+        Intelligent <span class="bg-gradient-to-r from-primary-purple via-primary-turquoise to-primary-turquoise bg-clip-text text-transparent">automation with AI</span>, web development, and tailored products for your business
+    </span>
+</HeroCta>

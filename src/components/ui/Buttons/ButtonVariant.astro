@@ -1,0 +1,54 @@
+---
+interface Props {
+    href?: string;
+    text?: string;
+    variant?: 'primary' | 'secondary' | 'primaryPurple' | 'secondaryTurquoise';
+    className?: string;
+    icon?: boolean;
+    width?:string;
+    target?: '_blank' | '_self' | '_parent' | '_top';
+    ariaLabel?: string;
+}
+
+const { 
+  target = '_self',
+  width = '',
+  href,
+  text,
+  variant = 'primary',
+  className= '',
+  icon = false, 
+  ariaLabel = 'Button'
+} = Astro.props;
+
+
+const baseStyles = `px-5 py-1 font-medium rounded-full transition-colors group flex justify-center items-center gap-2 w-auto md:w-${width}`;
+const variants = {
+  primary: "bg-primary-purple text-primary-purple hover:bg-primary-purple/90",
+  secondary: " text-primary-blue hover:bg-primary-turquoise/80 bg-primary-turquoise",
+  primaryPurple: "bg-transparent border-2 border-primary-purple text-primary-purple hover:bg-primary-purple/40",
+  secondaryTurquoise: "border-2 border-primary-turquoise text-primary-turquoise hover:bg-primary-turquoise/30",
+ 
+};
+---
+<a 
+  href={href}
+  target={target}
+  class:list={[
+    baseStyles,
+    variants[variant],
+    className
+  ]}
+
+>
+  {text}
+  {
+  icon && 
+  <span 
+  class="group-hover:translate-x-1 transition-transform duration-300">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+    </svg>
+  </span>
+  }
+</a> 

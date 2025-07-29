@@ -1,0 +1,80 @@
+---
+export interface NavLink {
+    href: string;
+    label: string;
+    className?: string;
+    target?: '_blank' | '_self' | '_parent' | '_top';
+    ariaLabel?: string;
+}
+
+interface Props {
+    links?: NavLink[];
+    variant?: 'horizontal' | 'vertical';
+    spacing?: 'sm' | 'md' | 'lg';
+    className?: string;
+}
+
+// Default navigation links
+const defaultLinks: NavLink[] = [
+    { 
+        href: '#about', 
+        label: 'About',
+        ariaLabel: 'Learn more about Nous Technologies'
+    },
+    { 
+        href: '#products', 
+        label: 'Products',
+        ariaLabel: 'Explore our AI products'
+    },
+    { 
+        href: '#services', 
+        label: 'Services',
+        ariaLabel: 'Discover our automation services'
+    },
+    { 
+        href: '#pricing', 
+        label: 'Pricing',
+        ariaLabel: 'View pricing plans'
+    },
+    { 
+        href: '#contact', 
+        label: 'Contact',
+        ariaLabel: 'Get in touch with us'
+    }
+];
+
+// Default styling classes
+const defaultLinkClass = 'text-white hover:text-[#A894FF] transition-colors duration-300 font-medium text-lg cursor-pointer';
+
+const {
+    links = defaultLinks,
+    variant = 'horizontal',
+    spacing = 'md',
+    className = ''
+} = Astro.props;
+
+// Dynamic classes based on props
+const containerClasses = [
+    'flex border-2 border-[#A894FF]/50 shadow-[0_0_10px_0_rgba(0,0,0,0.1)] shadow-[#A894FF]/20 rounded-full px-8 py-4 bg-[#060114]',
+    variant === 'horizontal' ? 'flex-row' : 'flex-col',
+    spacing === 'sm' ? 'gap-6' : spacing === 'md' ? 'gap-8' : 'gap-12',
+    className
+].filter(Boolean).join(' ');
+---
+
+<nav role="navigation" aria-label="Main navigation">
+    <ul class={containerClasses}>
+        {links.map((link) => (
+            <li>
+                <a 
+                    href={link.href}
+                    class={link.className || defaultLinkClass}
+                    target={link.target || '_self'}
+                    aria-label={link.ariaLabel || link.label}
+                >
+                    {link.label}
+                </a>
+            </li>
+        ))}
+    </ul>
+</nav>

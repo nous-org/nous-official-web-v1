@@ -1,6 +1,7 @@
 ---
-import Header from '@/components/Header.astro';
-import Footer from '@/components/Footer.astro';
+import Header from '@/components/ui-main-components/Header.astro';
+import Footer from '@/components/ui-main-components/Footer.astro';
+import AnimatedLights from '@/components/react/AnimatedLights';
 ---
 <!doctype html>
 <html lang="en">
@@ -12,9 +13,12 @@ import Footer from '@/components/Footer.astro';
 		<meta name="generator" content={Astro.generator} />
 		<title>Nous Technologies: AI & Automation</title>
 	</head>
-	<body>
+	<body class="bg-[#060114]">
+		<div class="z-0">
+			<AnimatedLights client:only="react"/>
+		</div>
 		<Header />
-		<main>
+		<main class=" max-w-12xl mx-auto px-4 container">
 			<slot />
 		</main>
 		<Footer />
@@ -22,12 +26,31 @@ import Footer from '@/components/Footer.astro';
 </html>
 
 <style>
+	@font-face {
+		font-family: 'TikTokSans';
+		src: url('/fonts/TikTokSans.woff2') format('woff2');
+		font-weight: normal;
+		font-style: normal;
+		font-display: swap;
+	}
+	@font-face{
+		font-family: 'ArchivoBlack-Regular';
+		src: url('/fonts/ArchivoBlack-Regular.woff2') format('woff2');
+		font-weight: normal;
+		font-style: normal;
+		font-display: swap;
+		}
 
 	html,
 	body {
 		margin: 0;
 		width: 100%;
 		height: 100%;
+		font-family: 'TikTokSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif, 'ArchivoBlack-Regular';
+	}
+
+	* {
+		font-family: 'TikTokSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif, 'ArchivoBlack-Regular';
 	}
 </style>
 
