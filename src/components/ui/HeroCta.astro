@@ -1,0 +1,69 @@
+---
+import ButtonVariant from '@/components/ui/Buttons/ButtonVariant.astro';
+import NousLogo from '@/assets/NousLogo.png';
+interface Button {
+    text?: string;
+    variant?: 'primary' | 'secondary' | 'primaryPurple' | 'secondaryTurquoise';
+    href?: string;
+    target?: '_blank' | '_self' | '_parent' | '_top';
+    ariaLabel?: string;
+}
+
+interface Props {
+    butons?: Button[];
+    img?: string ;
+    title?: string;
+    subtitle?: string;
+    titleClassName?: string;
+    subtitleClassName?: string;
+    imgClassName?: string;
+}
+
+const {
+    butons = [{
+        text: 'Contact',
+        variant: 'secondary',
+        href: '/contact',
+        target: '_self',
+        ariaLabel: 'Button'
+    }, {
+        text: 'Request a demo',
+        variant: 'primary',
+        href: '/contact',
+        target: '_self',
+        ariaLabel: 'Button'
+    }],
+    img = NousLogo,
+    title = '',
+    subtitle = '',
+    titleClassName = '',
+    subtitleClassName = '',
+    imgClassName = ''
+} = Astro.props;
+---
+
+<section class="hero-cta pt-42 z-[100]" >
+    
+        <div class="">
+            <div class="flex flex-col items-center">
+                <img src={typeof img === 'string' ? img : NousLogo.src} alt="Nous Logo" class="w-auto h-24 md:h-52 mb-24" />
+                <h2 class={titleClassName || 'text-4xl font-bold font-archivo-black mb-24'}>
+                    <slot name="title">{title}</slot>
+                </h2>
+                <p class={subtitleClassName || 'text-lg mb-6'}>{subtitle}</p>
+                <div class="flex gap-4">
+                    {butons.map((button) => (
+                        <ButtonVariant
+                            text={button.text}
+                            variant={button.variant}
+                            href={button.href}
+                            target={button.target}
+                            ariaLabel={button.ariaLabel}
+                        />
+                    ))}
+                </div>
+            </div>
+           
+        </div>
+   
+</section>

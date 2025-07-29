@@ -1,0 +1,121 @@
+<svg 
+    id="nous-logo" 
+    width="40" 
+    height="40" 
+    viewBox="0 0 123 123" 
+    fill="white" 
+    xmlns="http://www.w3.org/2000/svg"
+    class="cursor-pointer"
+>
+    <path d="M61.5 0C95.4655 0 123 27.5345 123 61.5C123 95.4655 95.4655 123 61.5 123C27.5345 123 0 95.4655 0 61.5C0 27.5345 27.5345 0 61.5 0ZM61.3682 10.7988C33.2939 10.7989 10.5352 33.5576 10.5352 61.6318C10.5352 89.706 33.294 112.465 61.3682 112.465C89.4424 112.465 112.201 89.706 112.201 61.6318C112.201 33.5576 89.4424 10.7988 61.3682 10.7988Z" fill="white"/>
+    <circle 
+        id="nous-circle" 
+        cx="61.4995" 
+        cy="61.4986" 
+        r="7.50639" 
+        fill="#fff"
+    />
+</svg>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(): void {
+    const logo: HTMLElement | null = document.getElementById('nous-logo');
+    const circle: HTMLElement | null = document.getElementById('nous-circle');
+    
+    if (!logo || !circle) return;
+    
+    const originalCx: number = 61.4995;
+    const originalCy: number = 61.4986;
+    const maxMovement: number = 15;
+    
+    let isMouseActive: boolean = true;
+    
+    function handleMouseMove(e: MouseEvent): void {
+        if (!isMouseActive || !logo || !circle) return;
+        
+        const rect: DOMRect = logo.getBoundingClientRect();
+        const logoX: number = rect.left + rect.width / 2;
+        const logoY: number = rect.top + rect.height / 2;
+        
+        // Posición del mouse relativa al centro del logo
+        const deltaX: number = e.clientX - logoX;
+        const deltaY: number = e.clientY - logoY;
+        
+        // Calcular distancia máxima (diagonal del viewport)
+        const maxDistance: number = Math.sqrt(
+            window.innerWidth * window.innerWidth + 
+            window.innerHeight * window.innerHeight
+        );
+        
+        // Distancia actual
+        const currentDistance: number = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        
+        // Factor de intensidad: más cerca = más movimiento
+        const intensity: number = Math.max(0.1, 1 - (currentDistance / maxDistance));
+        
+        // Normalizar dirección
+        const directionX: number = currentDistance > 0 ? deltaX / currentDistance : 0;
+        const directionY: number = currentDistance > 0 ? deltaY / currentDistance : 0;
+        
+        // Calcular offset final
+        const offsetX: number = directionX * maxMovement * intensity;
+        const offsetY: number = directionY * maxMovement * intensity;
+        
+        // Aplicar movimiento sin transición CSS
+        circle.setAttribute('cx', (originalCx + offsetX).toString());
+        circle.setAttribute('cy', (originalCy + offsetY).toString());
+    }
+    
+    function returnToCenter(): void {
+        if (!circle) return;
+        
+        isMouseActive = false;
+        
+        // Usar requestAnimationFrame para animación suave de retorno
+        const cxAttr: string | null = circle.getAttribute('cx');
+        const cyAttr: string | null = circle.getAttribute('cy');
+        
+        const startCx: number = cxAttr ? parseFloat(cxAttr) : originalCx;
+        const startCy: number = cyAttr ? parseFloat(cyAttr) : originalCy;
+        const startTime: number = performance.now();
+        const duration: number = 300; // 300ms para volver al centro
+        
+        function animate(currentTime: number): void {
+            if (!circle) return;
+            
+            const elapsed: number = currentTime - startTime;
+            const progress: number = Math.min(elapsed / duration, 1);
+            
+            // Easing out cubic
+            const easeOut: number = 1 - Math.pow(1 - progress, 3);
+            
+            const currentCx: number = startCx + (originalCx - startCx) * easeOut;
+            const currentCy: number = startCy + (originalCy - startCy) * easeOut;
+            
+            circle.setAttribute('cx', currentCx.toString());
+            circle.setAttribute('cy', currentCy.toString());
+            
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                isMouseActive = true;
+            }
+        }
+        
+        requestAnimationFrame(animate);
+    }
+    
+    // Eventos
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseleave', returnToCenter);
+    
+    // También volver al centro si el mouse no se mueve por un tiempo
+    let inactivityTimer: number | undefined;
+    document.addEventListener('mousemove', function(): void {
+        if (inactivityTimer) {
+            clearTimeout(inactivityTimer);
+        }
+        inactivityTimer = window.setTimeout(returnToCenter, 2000); // 2 segundos de inactividad
+    });
+});
+</script>

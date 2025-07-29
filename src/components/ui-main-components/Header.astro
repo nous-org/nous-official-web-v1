@@ -1,0 +1,73 @@
+---
+import NousLogo from '@/components/icons/NousLogo.astro';
+import NavLinks from '@/components/ui/NavegationLinks.astro';
+import HeaderButton from '@/components/ui/Buttons/HeaderButton.astro';
+import type { NavLink } from '@/components/ui/NavegationLinks.astro';
+
+// Custom navigation links for header (optional - can use defaults)
+const headerNavLinks: NavLink[] = [
+    { 
+        href: '#about', 
+        label: 'About',
+        ariaLabel: 'Learn more about Nous Technologies'
+    },
+    { 
+        href: '#products', 
+        label: 'Products',
+        ariaLabel: 'Explore our AI products'
+    },
+    { 
+        href: '#services', 
+        label: 'Services',
+        ariaLabel: 'Discover our automation services'
+    },
+    { 
+        href: '#pricing', 
+        label: 'Pricing',
+        ariaLabel: 'View pricing plans'
+    },
+    { 
+        href: '#contact', 
+        label: 'Contact',
+        ariaLabel: 'Get in touch with us'
+    }
+];
+---
+
+<header 
+    class="header flex items-center justify-between py-2 shadow-[0_0_10px_0_rgba(0,0,0,0.1)] shadow-indigo-500/20 px-6 mx-4 lg:px-6 z-50 fixed w-auto h-[80px] top-8 left-0 right-0 backdrop-blur-lg rounded-full bg-[#060114]/20 "
+    role="banner"
+>
+    <!-- Logo Section -->
+    <div class="flex-shrink-0">
+        <NousLogo />
+    </div>
+    
+    <!-- Navigation Section - Positioned absolutely in center -->
+    <div class="hidden md:flex absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <NavLinks 
+            links={headerNavLinks}
+            variant="horizontal"
+            spacing="sm"
+            className="items-center"
+        />
+    </div>
+    
+    <!-- CTA Button Section -->
+    <div class="flex-shrink-0">
+        <HeaderButton />
+    </div>
+    
+    <!-- Mobile Menu Button (placeholder for future mobile nav) -->
+    <div class="md:hidden flex-shrink-0 items-center">
+        <button 
+            class="text-white hover:text-gray-300 transition-colors duration-300"
+            aria-label="Open mobile menu"
+            type="button"
+        >
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+    </div>
+</header>
