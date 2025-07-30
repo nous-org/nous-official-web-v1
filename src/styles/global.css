@@ -12,7 +12,7 @@
 }
 
 @theme inline {
-    --animate-aurora: aurora 60s linear infinite;
+    --animate-aurora: aurora 80s linear infinite;
     @keyframes aurora {
       from {
         background-position:

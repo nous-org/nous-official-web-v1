@@ -1,93 +1,149 @@
 ---
 import type { ServiceCard } from '@/types/serviceCards';
 import ButtonVariant from '@/components/ui/Buttons/ButtonVariant.astro';
-import Frame from '@/components/icons/Frame.svg';
-interface Props {
+import ItServiceLogo from '@/components/icons/ITLogo.svg';
+import WebDevelopmentLogo from '@/components/icons/WebDevelopmentLogo.svg';
+import AILogo from '@/components/icons/AILogo.svg';
+
+export interface Props {
     serviceCards?: ServiceCard[];
+    sectionTitle?: string;
+    sectionId?: string;
 }
 
-const { serviceCards = [{
-    title: 'IT Consulting',
-    description: "We offer IT consulting services focused on identifying opportunities for technological improvement, optimizing infrastructure, and aligning digital solutions with your business's strategic objectives.",
-    img: Frame.src,
-    buttons: [{
-        text: 'Schedule',
-        variant: 'secondaryTurquoise',
-        href: '#',
-        target: '_self',
-        ariaLabel: 'Button'
-    }, {
-        text: 'Contact',
-        variant: 'secondary',
-        href: '#',
-        target: '_self',
-        ariaLabel: 'Button'
-    }]
-},
-{
-    title: 'IT Consulting',
-    description: "We offer IT consulting services focused on identifying opportunities for technological improvement, optimizing infrastructure, and aligning digital solutions with your business's strategic objectives.",
-    img: Frame.src,
-    buttons: [{
-        text: 'Schedule',
-        variant: 'secondaryTurquoise',
-        href: '#',
-        target: '_self',
-        ariaLabel: 'Button'
-    }, {
-        text: 'Contact',
-        variant: 'secondary',
-        href: '#',
-        target: '_self',
-        ariaLabel: 'Button'
-    }]
-},
-{
-    title: 'IT Consulting',
-    description: "We offer IT consulting services focused on identifying opportunities for technological improvement, optimizing infrastructure, and aligning digital solutions with your business's strategic objectives.",
-    img: Frame.src,
-    buttons: [{
-        text: 'Schedule',
-        variant: 'secondaryTurquoise',
-        href: '#',
-        target: '_self',
-        ariaLabel: 'Button'
-    }, {
-        text: 'Contact',
-        variant: 'secondary',
-        href: '#',
-        target: '_self',
-        ariaLabel: 'Button'
-    }]
-},
-] } = Astro.props;
+const DEFAULT_SERVICES: ServiceCard[] = [
+    {
+        title: 'IT Consulting',
+        description: "We offer IT consulting services focused on identifying opportunities for technological improvement, optimizing infrastructure, and aligning digital solutions with your business's strategic objectives.",
+        img: ItServiceLogo.src,
+        buttons: [
+            {
+                text: 'Schedule',
+                variant: 'secondaryTurquoise',
+                href: '/contact?service=it-consulting',
+                target: '_self',
+                ariaLabel: 'Schedule IT consulting consultation'
+            },
+            {
+                text: 'Learn More',
+                variant: 'secondary',
+                href: '/services/it-consulting',
+                target: '_self',
+                ariaLabel: 'Learn more about IT consulting services'
+            }
+        ]
+    },
+    {
+        title: 'Modern Web Development',
+        description: "Combining best practices in responsive design, optimized speed, and cutting-edge technologies like React, Astro, and Tailwind CSS. We create personalized, scalable, and user-centric digital experiences.",
+        img: WebDevelopmentLogo.src,
+        buttons: [
+            {
+                text: 'Schedule',
+                variant: 'secondaryTurquoise',
+                href: '/contact?service=web-development',
+                target: '_self',
+                ariaLabel: 'Schedule web development consultation'
+            },
+            {
+                text: 'View Portfolio',
+                variant: 'secondary',
+                href: '/portfolio',
+                target: '_self',
+                ariaLabel: 'View our web development portfolio'
+            }
+        ]
+    },
+    {
+        title: 'AI-Powered Automation',
+        description: "We boost operational efficiency through advanced automation powered by artificial intelligence. We design and implement solutions that optimize workflows, integrate chatbots, analyze data in real time, and reduce repetitive tasks.",
+        img: AILogo.src,
+        buttons: [
+            {
+                text: 'Schedule',
+                variant: 'secondaryTurquoise',
+                href: '/contact?service=ai-automation',
+                target: '_self',
+                ariaLabel: 'Schedule AI automation consultation'
+            },
+            {
+                text: 'Contat',
+                variant: 'secondary',
+                href: '/services/ai-automation',
+                target: '_self',
+                ariaLabel: 'Explore AI automation solutions'
+            }
+        ]
+    }
+];
+
+const { 
+    serviceCards = DEFAULT_SERVICES,
+    sectionTitle = "Our Services",
+    sectionId = "services"
+} = Astro.props;
+
 ---
 
-<section class="flex gap-4 mb-32">
-    {serviceCards.map((serviceCard) => (
-        <div class="flex flex-col w-1/3 gap-4 border border-primary-turquoise rounded-xl px-8 py-6 text-white ">
-            <div class="flex items-center gap-4">
-                <div class="w-14 h-14 rounded-full flex overflow-hidden items-center justify-center shadow-[inset_0px_0px_10px_0_rgba(0,0,0,0.1)] shadow-primary-turquoise">
-                    <img src={serviceCard.img} alt={serviceCard.title} />
-                </div>
-                <h2 class="text-xl font-semibold">{serviceCard.title}</h2>
-            </div>
-            <p class="text-lg">{serviceCard.description}</p>
-            <div>
-                <div class="flex justify-between">
-                {serviceCard.buttons.map((button) => (
-                    
-
-                    <ButtonVariant
-                        text={button.text}
-                        variant={button.variant}
-                        href={button.href}
-                        target={button.target}
-                        ariaLabel={button.ariaLabel}
+<section 
+    id={sectionId}
+    class="mb-32"
+    aria-labelledby={`${sectionId}-heading`}
+>
+    <!-- Screen reader only heading for better accessibility -->
+    <h2 id={`${sectionId}-heading`} class="sr-only">
+        {sectionTitle}
+    </h2>
+    
+    <div class="services-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-4">
+        {serviceCards.map((serviceCard, index) => (
+            <article 
+                class="service-card flex flex-col gap-4 border border-primary-turquoise rounded-xl px-8 py-6 text-white transition-all duration-300 hover:shadow-lg hover:shadow-primary-turquoise/20 focus-within:ring-2 focus-within:ring-primary-turquoise focus-within:ring-offset-2 focus-within:ring-offset-gray-900"
+                aria-labelledby={`service-${index}-title`}
+            >
+                <header class="flex items-center gap-4">
+                    <div 
+                        class="service-icon w-10 h-10 p-2 rounded-full flex overflow-hidden items-center justify-center shadow-[inset_0px_0px_10px_0_rgba(0,0,0,0.1)] shadow-primary-turquoise bg-gradient-to-br from-primary-turquoise/10 to-primary-turquoise/5"
+                        role="img"
+                        aria-label={`${serviceCard.title} service icon`}
+                    >
+                        <img 
+                            src={serviceCard.img} 
+                            alt="" 
+                            class="w-8 h-8 object-contain"
+                            loading="lazy"
+                            decoding="async"
                         />
-                    ))}
                     </div>
-            </div>
-        </div>
-    ))}
+                    <h3 
+                        id={`service-${index}-title`}
+                        class="service-title text-xl font-semibold leading-tight"
+                    >
+                        {serviceCard.title}
+                    </h3>
+                </header>
+                
+                <div class="service-content flex-1">
+                    <p class="service-description text-lg leading-relaxed text-gray-200">
+                        {serviceCard.description}
+                    </p>
+                </div>
+                
+                {/* <footer class="service-actions mt-auto pt-2">
+                    <div class="flex flex-col sm:flex-row gap-3 sm:justify-between">
+                        {serviceCard.buttons.map((button) => (
+                            <ButtonVariant
+                                text={button.text}
+                                variant={button.variant}
+                                href={button.href}
+                                target={button.target}
+                                ariaLabel={button.ariaLabel}
+                                className="flex-1 sm:flex-none"
+                            />
+                        ))}
+                    </div>
+                </footer> */}
+            </article>
+        ))}
+    </div>
 </section>
