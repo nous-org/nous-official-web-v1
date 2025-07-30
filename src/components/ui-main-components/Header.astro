@@ -4,47 +4,25 @@ import NavLinks from '@/components/ui/NavegationLinks.astro';
 import HeaderButton from '@/components/ui/Buttons/HeaderButton.astro';
 import type { NavLink } from '@/components/ui/NavegationLinks.astro';
 
-// Custom navigation links for header (optional - can use defaults)
 const headerNavLinks: NavLink[] = [
-    { 
-        href: '#about', 
-        label: 'About',
-        ariaLabel: 'Learn more about Nous Technologies'
-    },
-    { 
-        href: '#products', 
-        label: 'Products',
-        ariaLabel: 'Explore our AI products'
-    },
-    { 
-        href: '#services', 
-        label: 'Services',
-        ariaLabel: 'Discover our automation services'
-    },
-    { 
-        href: '#pricing', 
-        label: 'Pricing',
-        ariaLabel: 'View pricing plans'
-    },
-    { 
-        href: '#contact', 
-        label: 'Contact',
-        ariaLabel: 'Get in touch with us'
-    }
+    { href: '#about', label: 'About', ariaLabel: 'Learn more about Nous Technologies' },
+    { href: '#products', label: 'Products', ariaLabel: 'Explore our AI products' },
+    { href: '#services', label: 'Services', ariaLabel: 'Discover our automation services' },
+    { href: '#pricing', label: 'Pricing', ariaLabel: 'View pricing plans' },
+    { href: '#contact', label: 'Contact', ariaLabel: 'Get in touch with us' }
 ];
 ---
 
 <header 
-    class="header flex items-center justify-between py-2 shadow-[0_0_10px_0_rgba(0,0,0,0.1)] shadow-indigo-500/20 px-6 mx-4 lg:px-6 z-50 fixed w-auto h-[80px] top-8 left-0 right-0 backdrop-blur-lg rounded-full bg-[#060114]/20 "
+    id="main-header"
+    class="fixed top-8 left-4 right-4 z-50 flex h-20 items-center justify-between rounded-full bg-[#060114]/20 px-6 py-2 backdrop-blur-lg shadow-[0_0_10px_0_rgba(0,0,0,0.1)] shadow-indigo-500/20 transition-all duration-300 ease-out lg:px-6"
     role="banner"
 >
-    <!-- Logo Section -->
     <div class="flex-shrink-0">
         <NousLogo />
     </div>
     
-    <!-- Navigation Section - Positioned absolutely in center -->
-    <div class="hidden md:flex absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+    <div class="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 transform md:flex">
         <NavLinks 
             links={headerNavLinks}
             variant="horizontal"
@@ -53,21 +31,136 @@ const headerNavLinks: NavLink[] = [
         />
     </div>
     
-    <!-- CTA Button Section -->
-    <div class="flex-shrink-0">
+    <div class="flex flex-shrink-0 items-center">
         <HeaderButton />
-    </div>
-    
-    <!-- Mobile Menu Button (placeholder for future mobile nav) -->
-    <div class="md:hidden flex-shrink-0 items-center">
+        
         <button 
-            class="text-white hover:text-gray-300 transition-colors duration-300"
+            id="mobile-menu-btn"
+            class="ml-2 p-2 text-white transition-colors duration-300 hover:text-gray-300 md:hidden"
             aria-label="Open mobile menu"
-            type="button"
+            aria-expanded="false"
         >
-            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
         </button>
     </div>
 </header>
+
+<div 
+    id="mobile-menu-overlay"
+    class="fixed inset-0 z-[39] bg-black/50 opacity-0 backdrop-blur-sm transition-opacity duration-300 pointer-events-none md:hidden"
+    aria-hidden="true"
+></div>
+
+<nav 
+    id="mobile-menu" 
+    class="fixed bottom-0 left-0 right-0 z-40 h-[50dvh] w-full translate-y-full rounded-t-3xl border-t border-[#A894FF]/80 bg-[#060114]/90 pb-[env(safe-area-inset-bottom,1rem)] backdrop-blur-lg shadow-lg transition-transform duration-300 md:hidden"
+    aria-label="Mobile navigation"
+>
+    <div class="relative h-full w-full px-6 pt-8">
+        <div class="absolute top-3 left-1/2 h-1 w-12 -translate-x-1/2 rounded-full bg-white/20"></div>
+
+        <ul class="mt-6 flex flex-col items-center gap-6">
+            {headerNavLinks.map((link) => (
+                <li>
+                    <a 
+                        href={link.href} 
+                        class="rounded-lg px-4 py-2 text-lg font-medium text-white transition-all duration-300 hover:bg-white/10 hover:text-[#A894FF]"
+                        aria-label={link.ariaLabel || link.label}
+                    >
+                        {link.label}
+                    </a>
+                </li>
+            ))}
+            <li class="mt-4">
+                <HeaderButton />
+            </li>
+        </ul>
+
+        <button 
+            id="close-menu-btn"
+            class="absolute top-4 right-4 p-2 text-white transition-colors duration-300 hover:text-[#A894FF]"
+            aria-label="Close menu"
+        >
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+    </div>
+</nav>
+
+<script>
+
+(() => {
+    let isMenuOpen = false;
+    
+    
+    const elements = {
+        header: document.getElementById('main-header'),
+        mobileMenu: document.getElementById('mobile-menu'),
+        mobileMenuBtn: document.getElementById('mobile-menu-btn'),
+        closeMenuBtn: document.getElementById('close-menu-btn'),
+        overlay: document.getElementById('mobile-menu-overlay')
+    } as const;
+
+
+    
+
+    // Toggle mobile menu functionality  
+    const toggleMenu = (show: boolean) => {
+        if (!elements.mobileMenu || !elements.overlay) return;
+
+        isMenuOpen = show;
+        
+        elements.mobileMenu.classList.toggle('translate-y-full', !show);
+        elements.overlay.classList.toggle('opacity-0', !show);
+        elements.overlay.classList.toggle('pointer-events-none', !show);
+        elements.mobileMenuBtn?.setAttribute('aria-expanded', show.toString());
+        document.body.classList.toggle('overflow-hidden', show);
+        
+        // Focus management
+        if (show) {
+            setTimeout(() => elements.closeMenuBtn?.focus(), 300);
+        } else {
+            elements.mobileMenuBtn?.focus();
+        }
+    };
+
+    
+    document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        
+        if (target.closest('#mobile-menu-btn')) {
+            e.preventDefault();
+            toggleMenu(true);
+        } else if (target.closest('#close-menu-btn') || target.closest('#mobile-menu-overlay')) {
+            e.preventDefault();
+            toggleMenu(false);
+        } else if (target.closest('#mobile-menu a')) {
+            toggleMenu(false);
+        }
+    });
+
+   
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isMenuOpen) {
+            toggleMenu(false);
+        }
+    });
+
+
+    let resizeTimeout: number;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = window.setTimeout(() => {
+            if (window.innerWidth >= 768 && isMenuOpen) {
+                toggleMenu(false);
+            }
+          
+        }, 100);
+    });
+
+
+})();
+</script>

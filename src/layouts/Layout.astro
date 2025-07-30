@@ -1,7 +1,7 @@
 ---
 import Header from '@/components/ui-main-components/Header.astro';
 import Footer from '@/components/ui-main-components/Footer.astro';
-import AnimatedLights from '@/components/react/AnimatedLights';
+import { AuroraBackground } from '@/components/react/AuroraBackground';
 ---
 <!doctype html>
 <html lang="en">
@@ -14,14 +14,15 @@ import AnimatedLights from '@/components/react/AnimatedLights';
 		<title>Nous Technologies: AI & Automation</title>
 	</head>
 	<body class="bg-[#060114]">
-		<div class="z-0">
-			<AnimatedLights client:only="react"/>
-		</div>
-		<Header />
-		<main class=" max-w-12xl mx-auto px-4 container">
-			<slot />
-		</main>
-		<Footer />
+
+		<AuroraBackground>
+			<Header />
+			<main class=" max-w-12xl mx-auto px-4 container z-10">
+				<slot />
+			</main>
+			<Footer />
+		</AuroraBackground>
+		
 	</body>
 </html>
 
