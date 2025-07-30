@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import React, { type ReactNode } from "react";
 
 interface AuroraBackgroundProps extends React.HTMLProps<HTMLDivElement> {
-  children: ReactNode;
+  children?: ReactNode;
   showRadialGradient?: boolean;
 }
 
@@ -14,14 +14,13 @@ export const AuroraBackground = ({
   ...props
 }: AuroraBackgroundProps) => {
   return (
-    <main>
-      <div
-        className={cn(
-          "transition-bg relative flex h-[100vh] flex-col items-center justify-center bg-transparent text-slate-950",
-          className,
-        )}
-        {...props}
-      >
+    <div
+      className={cn(
+        "absolute inset-0 pointer-events-none bg-transparent overflow-hidden",
+        className,
+      )}
+      {...props}
+    >
         <div
           className="absolute inset-0 overflow-hidden"
           style={
@@ -54,8 +53,7 @@ export const AuroraBackground = ({
             )}
           ></div>
         </div>
-        {children}
       </div>
-    </main>
+    
   );
 };

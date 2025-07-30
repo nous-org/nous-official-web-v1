@@ -1,7 +1,7 @@
 ---
 import Header from '@/components/ui-main-components/Header.astro';
 import Footer from '@/components/ui-main-components/Footer.astro';
-import { AuroraBackground } from '@/components/react/AuroraBackground';
+import {AuroraBackground} from '@/components/react/AuroraBackground.tsx';
 ---
 <!doctype html>
 <html lang="en">
@@ -13,15 +13,13 @@ import { AuroraBackground } from '@/components/react/AuroraBackground';
 		<meta name="generator" content={Astro.generator} />
 		<title>Nous Technologies: AI & Automation</title>
 	</head>
-	<body class="bg-[#060114]">
-
-		<AuroraBackground>
-			<Header />
-			<main class=" max-w-12xl mx-auto px-4 container z-10">
-				<slot />
-			</main>
-			<Footer />
-		</AuroraBackground>
+	<body class="bg-[#060114] relative">
+		<AuroraBackground />
+		<Header />
+		<main>
+			<slot />
+		</main>
+		<Footer />
 		
 	</body>
 </html>
