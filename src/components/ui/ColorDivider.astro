@@ -1,0 +1,18 @@
+
+---
+const { colorDivider = 'primary-turquoise' } = Astro.props;
+---
+
+<div class="w-full h-[1px] my-4 relative overflow-hidden">
+    {colorDivider === 'primary-purple' ? (
+        <>
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-primary-purple/50 to-transparent" />
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-primary-purple to-transparent blur-sm" />
+        </>
+    ) : (
+        <>
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-primary-turquoise/50 to-transparent" />
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-primary-turquoise to-transparent blur-sm" />
+        </>
+    )}
+</div>

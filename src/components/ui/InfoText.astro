@@ -1,0 +1,17 @@
+---
+import  { DEFAULT_INFO_TEXT, type InfoText } from '@/types/InfoText';
+import ColorDivider from './ColorDivider.astro';
+
+const { infoText = DEFAULT_INFO_TEXT, colorDivider = 'primary-turquoise' } = Astro.props;
+ 
+---
+
+<section>
+    {infoText.map((item: InfoText) => (
+        <div >  
+            <h2 class="text-xl mb-4">{item.title}</h2>
+            <p class="text-regular font-normal text-neutral-400 max-w-lg">{item.description}</p>
+            <ColorDivider colorDivider={colorDivider}/>
+        </div>
+    ))}
+</section>

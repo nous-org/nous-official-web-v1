@@ -19,6 +19,7 @@ const DEFAULT_SERVICES: ServiceCard[] = [
         buttons: [
             {
                 text: 'Schedule',
+                icon: true,
                 variant: 'secondaryTurquoise',
                 href: '/contact?service=it-consulting',
                 target: '_self',
@@ -26,6 +27,7 @@ const DEFAULT_SERVICES: ServiceCard[] = [
             },
             {
                 text: 'Learn More',
+                icon: false,
                 variant: 'secondary',
                 href: '/services/it-consulting',
                 target: '_self',
@@ -40,6 +42,7 @@ const DEFAULT_SERVICES: ServiceCard[] = [
         buttons: [
             {
                 text: 'Schedule',
+                icon: true,
                 variant: 'secondaryTurquoise',
                 href: '/contact?service=web-development',
                 target: '_self',
@@ -47,6 +50,7 @@ const DEFAULT_SERVICES: ServiceCard[] = [
             },
             {
                 text: 'View Portfolio',
+                icon: false,
                 variant: 'secondary',
                 href: '/portfolio',
                 target: '_self',
@@ -62,6 +66,7 @@ const DEFAULT_SERVICES: ServiceCard[] = [
             {
                 text: 'Schedule',
                 variant: 'secondaryTurquoise',
+                icon: true,
                 href: '/contact?service=ai-automation',
                 target: '_self',
                 ariaLabel: 'Schedule AI automation consultation'
@@ -69,6 +74,7 @@ const DEFAULT_SERVICES: ServiceCard[] = [
             {
                 text: 'Contat',
                 variant: 'secondary',
+                icon: false,
                 href: '/services/ai-automation',
                 target: '_self',
                 ariaLabel: 'Explore AI automation solutions'
@@ -87,7 +93,7 @@ const {
 
 <section 
     id={sectionId}
-    class="mb-32"
+    class="mb-28"
     aria-labelledby={`${sectionId}-heading`}
 >
     <!-- Screen reader only heading for better accessibility -->
@@ -98,7 +104,7 @@ const {
     <div class="services-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-4">
         {serviceCards.map((serviceCard, index) => (
             <article 
-                class="service-card flex flex-col gap-4 border border-primary-turquoise rounded-xl px-8 py-6 text-white transition-all duration-300 hover:shadow-lg hover:shadow-primary-turquoise/20 focus-within:ring-2 focus-within:ring-primary-turquoise focus-within:ring-offset-2 focus-within:ring-offset-gray-900"
+                class="service-card flex flex-col gap-4 border border-primary-turquoise rounded-xl px-8 py-6 text-white transition-all duration-300 hover:shadow-lg hover:shadow-primary-turquoise/20 bg-primary-black "
                 aria-labelledby={`service-${index}-title`}
             >
                 <header class="flex items-center gap-4">
@@ -129,20 +135,21 @@ const {
                     </p>
                 </div>
                 
-                {/* <footer class="service-actions mt-auto pt-2">
+                 {/* <footer class="service-actions mt-auto pt-2 opacity-0 -translate-y-10 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
                     <div class="flex flex-col sm:flex-row gap-3 sm:justify-between">
                         {serviceCard.buttons.map((button) => (
                             <ButtonVariant
                                 text={button.text}
                                 variant={button.variant}
                                 href={button.href}
+                                icon={button.icon}
                                 target={button.target}
                                 ariaLabel={button.ariaLabel}
                                 className="flex-1 sm:flex-none"
                             />
                         ))}
                     </div>
-                </footer> */}
+                </footer>  */}
             </article>
         ))}
     </div>
