@@ -1,26 +1,26 @@
 import { Timeline } from "@/components/react/TimeLine";
-import {Bento} from '@/components/react/timeLine/Bento'
-import {MethodOfWork} from '@/components/react/timeLine/MethodOfWork'
-import {TimeLineCta} from '@/components/react/timeLine/TimeLineCta'
+import { Bento } from '@/components/react/timeLine/Bento'
+import { MethodOfWork } from '@/components/react/timeLine/MethodOfWork'
+import { TimeLineCta } from '@/components/react/timeLine/TimeLineCta'
 
 export function TimeLineNous() {
   const data = [
     {
       title: "Boost your business ",
       content: (
-       <Bento/>
+        <Bento />
       ),
     },
     {
       title: "How do we work?",
       content: (
-       <MethodOfWork/>
+        <MethodOfWork />
       ),
     },
     {
       title: "Ready to the next level?",
       content: (
-        <TimeLineCta/>
+        <TimeLineCta />
       ),
     },
   ];

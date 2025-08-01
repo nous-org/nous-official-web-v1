@@ -1,0 +1,44 @@
+---
+import InstagramIcon from '@/components/icons/SocialLinks/InstagramIcon.svg';
+import LinkedInIcon from '@/components/icons/SocialLinks/LinkedInIcon.svg';
+import XIcon from '@/components/icons/SocialLinks/XIcon.svg';
+import WhatsappIcon from '@/components/icons/SocialLinks/WhatsappIcon.svg';
+interface SocialLink {
+    icon: string;
+    url: string;
+}
+
+interface Props {
+    links?: SocialLink[];
+}
+
+const DEFAULT_LINKS: SocialLink[] = [
+    {
+        icon: XIcon.src,
+        url: 'https://twitter.com/nous_technologies'
+    },
+    {
+        icon: LinkedInIcon.src,
+        url: 'https://www.linkedin.com/company/nous-technologies/'
+    },
+    {
+        icon: InstagramIcon.src,
+        url: 'https://www.instagram.com/nous_technologies/'
+    },
+    {
+        icon: WhatsappIcon.src,
+        url: 'https://wa.me/5213316666666'
+    }
+];
+
+const { links = DEFAULT_LINKS } = Astro.props;
+
+---
+
+<div class="flex gap-6">
+    {links.map((link) => (
+        <a href={link.url} target="_blank" rel="noopener noreferrer" class="flex w-12 h-12 items-center border justify-center rounded-full hover:bg-primary-turquoise/20 hover:text-primary-blue hover:border-primary-purple  transition-colors duration-300">
+            <img src={link.icon } alt={link.url} />
+        </a>
+    ))}
+</div>

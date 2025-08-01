@@ -132,7 +132,7 @@ export const MethodOfWork = ({
         </div>
 
         {/* Web Development Card */}
-        <div className="bg-primary-blue rounded-xl relative overflow-hidden
+        <div className="bg-primary-blue rounded-xl relative overflow-hidden group
                       p-4 min-h-[140px]
                       sm:col-span-2 sm:p-4 sm:min-h-[160px] md:p-4 md:min-h-[180px]
                       lg:col-span-5 lg:row-span-1 lg:p-4 lg:min-h-auto
