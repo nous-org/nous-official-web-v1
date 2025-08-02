@@ -13,5 +13,6 @@ export interface ServiceCard {
     title: string;
     description: string;
     img: string;
+    bgImage: string;
     buttons: Button[];
 }

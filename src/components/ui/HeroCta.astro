@@ -46,8 +46,8 @@ const {
     
         <div class="">
             <div class="flex flex-col items-center">
-                <img src={typeof img === 'string' ? img : NousLogo.src} alt="Nous Logo" class="w-auto h-24 md:h-52 mb-24" />
-                <h2 class={titleClassName || 'text-4xl font-bold font-archivo-black mb-24'}>
+                <img src={typeof img === 'string' ? img : NousLogo.src} alt="Nous Logo" class="w-auto h-24 md:h-52  md:mb-12 sm:mb-12 mb-8 xl:mb-24" />
+                <h2 class={titleClassName || 'text-4xl font-bold font-archivo-black md:mb-24 mb-6'}>
                     <slot name="title">{title}</slot>
                 </h2>
                 <p class={subtitleClassName || 'text-lg mb-6'}>{subtitle}</p>

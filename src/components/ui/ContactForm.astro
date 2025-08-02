@@ -12,8 +12,10 @@ const chips = [
 <div class="w-auto">
     <GradientTittle title="Let’s build your next big idea Contact us today!"/>
     <form class="flex flex-col gap-4">
-        <!-- components/ui/SelectableChips.astro -->
-<div class="flex flex-wrap gap-4">
+        <!-- Chips interaction -->
+<div class="flex flex-col gap-4">
+  <label for="interests" class="block text-lg font-medium text-gray-400">I'm interested in:</label>
+   <div class="flex flex-wrap gap-2">
     {chips.map((chip) => (
       <div>
         <input 
@@ -34,6 +36,7 @@ const chips = [
         </label>
       </div>
     ))}
+   </div>
   </div>
         <Inputs type="text" placeholder="Name"/>
         <Inputs type="email" placeholder="Email"/>
