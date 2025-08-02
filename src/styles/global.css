@@ -6,7 +6,34 @@
     --color-primary-purple: #8458FF;
     --color-primary-turquoise: #1AD6B3;
     --color-primary-blue: #060114;
-   
+    --color-primary-black: #04000F;
     --font-archivo-black: 'ArchivoBlack-Regular', sans-serif;
     --font-tiktok-sans: 'TikTokSans-Regular', sans-serif;
 }
+
+@theme inline {
+    --animate-aurora: aurora 80s linear infinite;
+    @keyframes aurora {
+      from {
+        background-position:
+          50% 50%,
+          50% 50%;
+      }
+      to {
+        background-position:
+          350% 50%,
+          350% 50%;
+      }
+    }
+  }
+
+  .no-visible-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .no-visible-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  

@@ -1,0 +1,148 @@
+---
+import type { ServiceCard } from '@/types/serviceCards';
+import ItServiceLogo from '@/components/icons/ITLogo.svg';
+import WebDevelopmentLogo from '@/components/icons/WebDevelopmentLogo.svg';
+import AILogo from '@/components/icons/AILogo.svg';
+import ItServiceImage from '@/assets/serviceCards/ITConsulting.png';
+import WebDevelopmentImage from '@/assets/serviceCards/WebDevelopment.png';
+import AIAutomationImage from '@/assets/serviceCards/IaAtutomation.png';
+
+export interface Props {
+    serviceCards?: ServiceCard[];
+    sectionTitle?: string;
+    sectionId?: string;
+}
+
+const DEFAULT_SERVICES: ServiceCard[] = [
+    {
+        title: 'IT Consulting',
+        description: "We offer IT consulting services focused on identifying opportunities for technological improvement, optimizing infrastructure, and aligning digital solutions with your business's strategic objectives.",
+        img: ItServiceLogo.src,
+        bgImage: ItServiceImage.src,
+        buttons: [
+            {
+                text: 'Schedule',
+                icon: true,
+                variant: 'secondaryTurquoise',
+                href: '/contact?service=it-consulting',
+                target: '_self',
+                ariaLabel: 'Schedule IT consulting consultation'
+            },
+            {
+                text: 'Learn More',
+                icon: false,
+                variant: 'secondary',
+                href: '/services/it-consulting',
+                target: '_self',
+                ariaLabel: 'Learn more about IT consulting services'
+            }
+        ]
+    },
+    {
+        title: 'Modern Web Development',
+        description: "Combining best practices in responsive design, optimized speed, and cutting-edge technologies like React, Astro, and Tailwind CSS. We create personalized, scalable, and user-centric digital experiences.",
+        img: WebDevelopmentLogo.src,
+        bgImage: WebDevelopmentImage.src,
+        buttons: [
+            {
+                text: 'Schedule',
+                icon: true,
+                variant: 'secondaryTurquoise',
+                href: '/contact?service=web-development',
+                target: '_self',
+                ariaLabel: 'Schedule web development consultation'
+            },
+            {
+                text: 'View Portfolio',
+                icon: false,
+                variant: 'secondary',
+                href: '/portfolio',
+                target: '_self',
+                ariaLabel: 'View our web development portfolio'
+            }
+        ]
+    },
+    {
+        title: 'AI-Powered Automation',
+        description: "We boost operational efficiency through advanced automation powered by artificial intelligence. We design and implement solutions that optimize workflows, integrate chatbots, analyze data in real time, and reduce repetitive tasks.",
+        img: AILogo.src,
+        bgImage: AIAutomationImage.src,
+        buttons: [
+            {
+                text: 'Schedule',
+                variant: 'secondaryTurquoise',
+                icon: true,
+                href: '/contact?service=ai-automation',
+                target: '_self',
+                ariaLabel: 'Schedule AI automation consultation'
+            },
+            {
+                text: 'Contat',
+                variant: 'secondary',
+                icon: false,
+                href: '/services/ai-automation',
+                target: '_self',
+                ariaLabel: 'Explore AI automation solutions'
+            }
+        ]
+    }
+];
+
+const { 
+    serviceCards = DEFAULT_SERVICES,
+    sectionTitle = "Our Services",
+    sectionId = "services"
+} = Astro.props;
+
+---
+
+<section 
+    id={sectionId}
+    class="mb-28"
+    aria-labelledby={`${sectionId}-heading`}
+>
+    
+    <!-- Screen reader only heading for better accessibility -->
+    <h2 id={`${sectionId}-heading`} class="sr-only">
+        {sectionTitle}
+    </h2>
+    
+    <div class="services-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-4">
+        {serviceCards.map((serviceCard, index) => (
+            <article 
+                class="service-card relative flex flex-col gap-4 rounded-xl text-white transition-all duration-300 overflow-hidden group min-h-[320px] border border-neutral-700 hover:border-primary-turquoise "
+                aria-labelledby={`service-${index}-title`}
+            >
+                <img src={serviceCard.bgImage} alt="" class=" z-0  saturate-150 group-hover:scale-[1.05] transition-all duration-500 rounded-t-xl" />
+                <header class="flex items-center gap-4 z-10 px-4  ">
+                    <div 
+                        class="service-icon w-10 h-10 p-2 rounded-full flex overflow-hidden items-center justify-center shadow-[inset_0px_0px_10px_0_rgba(0,0,0,0.1)] shadow-primary-turquoise bg-gradient-to-br from-primary-turquoise/10 to-primary-turquoise/5 "
+                        role="img"
+                        aria-label={`${serviceCard.title} service icon`}
+                    >
+                        <img 
+                            src={serviceCard.img} 
+                            alt="" 
+                            class="w-8 h-8 object-contain"
+                            loading="lazy"
+                            decoding="async"
+                        />
+                    </div>
+                    <h3 
+                        id={`service-${index}-title`}
+                        class="service-title text-2xl font-semibold leading-tight"
+                    >
+                        {serviceCard.title}
+                    </h3>
+                </header>
+
+                <div class="service-content flex-1 z-10 px-4 py-4">
+                    <p class="service-description text-lg leading-relaxed text-gray-200">
+                        {serviceCard.description}
+                    </p>
+                </div>
+                
+            </article>
+        ))}
+    </div>
+</section>

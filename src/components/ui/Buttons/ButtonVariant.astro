@@ -1,54 +1,67 @@
 ---
+import ScheduleIcon from "@/components/icons/ScheduleIcon.astro"
+import ArrowIcon from "@/components/icons/arrowIcon.astro"
+
 interface Props {
-    href?: string;
-    text?: string;
-    variant?: 'primary' | 'secondary' | 'primaryPurple' | 'secondaryTurquoise';
-    className?: string;
-    icon?: boolean;
-    width?:string;
-    target?: '_blank' | '_self' | '_parent' | '_top';
-    ariaLabel?: string;
+  href?: string;
+  text?: string;
+  variant?: "primary" | "secondary" | "primaryPurple" | "secondaryTurquoise";
+  className?: string;
+  scheduleIcon?: boolean;
+  arrowIcon?: boolean;
+  strokeColor?: string;
+  width?: string;
+  target?: "_blank" | "_self" | "_parent" | "_top";
+  ariaLabel?: string;
+  rounded?: string;
+  justify?: string;
 }
 
-const { 
-  target = '_self',
-  width = '',
+const {
+  target = "_self",
+  width = "auto",
   href,
   text,
-  variant = 'primary',
-  className= '',
-  icon = false, 
-  ariaLabel = 'Button'
+  variant = "primary",
+  className = "",
+  scheduleIcon = false,
+  arrowIcon = false,
+  strokeColor = "#8458FF",
+  ariaLabel = "Button",
+  rounded = "full",
+  justify = "center",
 } = Astro.props;
 
+const baseStyles = `px-5 py-1 font-medium rounded-${rounded} transition-colors group flex justify-${justify} items-center gap-2 w-auto md:w-${width} cursor-pointer`;
 
-const baseStyles = `px-5 py-1 font-medium rounded-full transition-colors group flex justify-center items-center gap-2 w-auto md:w-${width}`;
 const variants = {
-  primary: "bg-primary-purple text-primary-purple hover:bg-primary-purple/90",
-  secondary: " text-primary-blue hover:bg-primary-turquoise/80 bg-primary-turquoise",
-  primaryPurple: "bg-transparent border-2 border-primary-purple text-primary-purple hover:bg-primary-purple/40",
-  secondaryTurquoise: "border-2 border-primary-turquoise text-primary-turquoise hover:bg-primary-turquoise/30",
- 
+  primary: "bg-primary-purple text-primary-blue hover:bg-primary-purple/90",
+  secondary:
+    " text-primary-blue hover:bg-primary-turquoise/80 bg-primary-turquoise",
+  primaryPurple:
+    "bg-transparent border-2 border-primary-purple text-primary-purple hover:bg-primary-purple/40",
+  secondaryTurquoise:
+    "border-2 border-primary-turquoise text-primary-turquoise hover:bg-primary-turquoise/30",
 };
 ---
-<a 
-  href={href}
-  target={target}
-  class:list={[
-    baseStyles,
-    variants[variant],
-    className
-  ]}
 
+
+<a
+  href={href}
+  aria-label={ariaLabel}
+  target={target}
+  class:list={[baseStyles, variants[variant], className]}
 >
   {text}
   {
-  icon && 
-  <span 
-  class="group-hover:translate-x-1 transition-transform duration-300">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-    </svg>
-  </span>
+    scheduleIcon && (
+      <ScheduleIcon strokeColor={strokeColor}/>
+    )
   }
-</a> 
+  {
+    arrowIcon && (
+      <ArrowIcon strokeColor={strokeColor}/>
+    )
+  }
+</a>
+

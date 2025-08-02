@@ -1,10 +1,80 @@
 ---
+import { CardDemo } from "@/components/react/InfoCard.tsx";
+import InfoText from "@/components/ui/InfoText.astro";
+//import ButtonVariant from "@/components/ui/Buttons/ButtonVariant.astro";
+import { DEFAULT_INFO_TEXT_2 } from "@/types/InfoText";
 ---
 
-<section class="featured-services">
+<section class="max-w-7xl mx-auto px-4 container z-10 pt-32 pb-52">
+    <article class="grid md:grid-cols-2 grid-cols-1 gap-4 md:gap-4">
+        <div class="flex flex-col md:mx-0">
+            <CardDemo client:load />
+            <!-- <div class="flex gap-4 mt-6 justify-between md:justify-start">
+                <ButtonVariant
+                text="See our products"
+                icon={false}
+                strokeColor="#1AD6B3"
+                variant="secondary"
+                href="/contact?service=web-development"
+                target="_self"
+                ariaLabel="Schedule web development consultation"
+                />
+                <ButtonVariant
+                text="Contact us"
+                icon={false}
+                strokeColor="#1AD6B3"
+                variant="secondaryTurquoise"
+                href="/contact?service=web-development"
+                target="_self"
+                ariaLabel="Schedule web development consultation"
+                />
+            </div> -->
+        </div>
 
+        <div class="mt-16 sm:mt-0 md:mt-0">
+            <InfoText />
+        </div>
+    </article>
+
+    <article class="flex flex-col md:grid md:grid-cols-2 gap-4 md:gap-8 mt-40">
+        <div class="order-2 md:order-1 mt-16 md:mt-0">
+            <InfoText
+                infoText={DEFAULT_INFO_TEXT_2}
+                colorDivider="primary-purple"
+            />
+        </div>
+
+        <div
+            class="flex flex-col md:mx-0 order-1 md:order-2 lg:justify-self-end"
+        >
+            <CardDemo
+                client:load
+                iconSet="secondary"
+                borderColor="border-primary-purple"
+                title="Modern web development"
+                description="The most powerful tools for optimized and modern custom development to bring your ideas to the real world."
+            />
+            <!-- <div class="flex justify-between md:justify-end gap-4 mt-6">
+                <ButtonVariant
+                text="Portfolio"
+                icon={false}
+                strokeColor="#1AD6B3"
+                variant="primaryPurple"
+                href="/contact?service=web-development"
+                target="_self"
+                ariaLabel="Schedule web development consultation"
+                />
+                <ButtonVariant
+                text="See our products"
+                icon={false}
+                strokeColor="#1AD6B3"
+                variant="primary"
+                href="/contact?service=web-development"
+                target="_self"
+                ariaLabel="Schedule web development consultation"
+                />
+                
+            </div> -->
+        </div>
+    </article>
 </section>
-
-<style>
-
-</style>

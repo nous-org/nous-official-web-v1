@@ -1,0 +1,165 @@
+---
+import ColorDivider from "@/components/ui/ColorDivider.astro"
+import footerLogo from "@/assets/footerLogo.png"
+import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
+
+---
+
+<footer class="relative bg-gradient-to-t from-primary-black to-primary-blue">
+    
+    <ColorDivider colorDivider="primary-turquoise"/>   
+
+    <div class="mt-10 container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Main Footer Content -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-10">
+            
+            <!-- Company Section -->
+            <section class="col-span-1 sm:col-span-2 lg:col-span-1 space-y-4">
+                <header>
+                    <img src={footerLogo.src} alt="Nous Technologies Logo" class="w-auto h-8 mb-4" />
+                </header>
+                <p class="text-neutral-300 text-sm leading-relaxed">Your vision, our technology, let's make it real.</p>
+                <div class="space-y-3">
+                    <ButtonVariant 
+                        text="Try a demo" 
+                        variant="secondary" 
+                        href="#" 
+                        rounded="md" 
+                        arrowIcon={true} 
+                        strokeColor="#060114" 
+                        justify="between"
+                        className="w-full sm:w-auto"
+                    />
+                    <ButtonVariant 
+                        text="Schedule a meeting" 
+                        variant="primary" 
+                        href="#" 
+                        rounded="md" 
+                        scheduleIcon={true} 
+                        strokeColor="#060114" 
+                        justify="between"
+                        className="w-full sm:w-auto"
+                    />
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section class="col-span-1 space-y-4">
+                <header>
+                    <h3 class="text-xl sm:text-2xl font-medium text-primary-turquoise mb-3">Contact</h3>
+                </header>
+                <address class="not-italic">
+                    <ul class="space-y-2 text-neutral-300">
+                        <li>
+                            <a href="mailto:contacto@nous.cr" class="hover:text-primary-turquoise transition-colors duration-200">
+                                contacto@nous.cr
+                            </a>
+                        </li>
+                        <li>
+                            <a href="mailto:soporte@nous.cr" class="hover:text-primary-turquoise transition-colors duration-200">
+                                soporte@nous.cr
+                            </a>
+                        </li>
+                        <li>
+                            <a href="mailto:ventas@nous.cr" class="hover:text-primary-turquoise transition-colors duration-200">
+                                ventas@nous.cr
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="mt-4">
+                        <a href="tel:+50661865634" class="text-primary-turquoise hover:text-primary-purple transition-colors duration-200 font-medium">
+                            (+506) 6186 5634
+                        </a>
+                    </div>
+                </address>
+            </section>
+
+            <!-- Newsletter Section -->
+            <section class="col-span-1 space-y-4">
+                <header>
+                    <h3 class="text-xl sm:text-2xl font-medium text-primary-turquoise mb-3">Newsletter</h3>
+                </header>
+                <div class="space-y-3">
+                    <ButtonVariant 
+                        text="Subscribe" 
+                        variant="secondary" 
+                        href="#" 
+                        rounded="md" 
+                        arrowIcon={true} 
+                        strokeColor="#060114" 
+                        justify="between"
+                        className="w-full sm:w-auto"
+                    />
+                    <p class="text-neutral-400 text-xs leading-relaxed">
+                        We are always working to improve our services, subscribe to our newsletter to stay updated.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+            <section class="col-span-1 space-y-4">
+                <header>
+                    <h3 class="text-xl sm:text-2xl font-medium text-primary-turquoise mb-3">Products</h3>
+                </header>
+                <nav>
+                    <ul class="space-y-2 text-neutral-300">
+                        <li>
+                            <a href="#" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">
+                                WhatsApp AI Chatbot
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">
+                                Web Development
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">
+                                Workflow Automation
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </section>
+
+            <!-- Company Navigation Section -->
+            <section class="col-span-1 space-y-4">
+                <header>
+                    <h3 class="text-xl sm:text-2xl font-medium text-primary-turquoise mb-3">Company</h3>
+                </header>
+                <nav>
+                    <ul class="space-y-2 text-neutral-300">
+                        <li><a href="/" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Home</a></li>
+                        <li><a href="/services" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Services</a></li>
+                        <li><a href="/portfolio" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Portfolio</a></li>
+                        <li><a href="/blog" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Blog</a></li>
+                        <li><a href="/contact" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Contact</a></li>
+                        <li><a href="/products" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Products</a></li>
+                        <li><a href="/pricing" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Pricing</a></li>
+                        <li><a href="/about" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">About</a></li>
+                    </ul>
+                </nav>
+            </section>
+        </div>
+        
+        <!-- Footer Bottom -->
+        <div class="border-t border-neutral-800 mt-12 pt-8">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-8">
+                <p class="text-neutral-400 font-light text-sm">
+                    Nous  2025. All rights reserved.
+                </p>
+                <nav class="flex flex-col sm:flex-row gap-2 sm:gap-6">
+                    <a href="/privacy" class="text-neutral-400 hover:text-primary-turquoise transition-colors duration-200 text-sm">
+                        Privacy Policy
+                    </a>
+                    <a href="/terms" class="text-neutral-400 hover:text-primary-turquoise transition-colors duration-200 text-sm">
+                        Terms and Conditions
+                    </a>
+                    <a href="/cookies" class="text-neutral-400 hover:text-primary-turquoise transition-colors duration-200 text-sm">
+                        Cookie Policy
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</footer>
