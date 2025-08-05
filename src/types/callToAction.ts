@@ -33,7 +33,7 @@ export const defaultSections: CTASection[] = [
         subtitle: "",
         description: "Optimize processes, and achieve your goals with high-impact technology.",
         style: {
-            background: "bg-primary-turquoise/5 border border-primary-turquoise",
+            background: "bg-gradient-to-br from-primary-turquoise/40 to-primary-black/40 border border-primary-turquoise",
             textColor: "text-white",
             shadowColor: "primary-turquoise",
             titleColor: "text-primary-turquoise",
@@ -58,11 +58,11 @@ export const defaultSections: CTASection[] = [
         ]
     },
     {
-        title: "Boost your businesss",
+        title: "Boost your busines",
         subtitle: "",
         description: "Customized digital solutions in web development, artificial intelligence automation, and technology consulting.",
         style: {
-            background: "bg-primary-purple/5 border border-primary-purple",
+            background: "bg-gradient-to-bl from-primary-purple/40 to-primary-black/40 border border-primary-purple",
             textColor: "text-white",
             shadowColor: "primary-purple",
             titleColor: "text-primary-purple",

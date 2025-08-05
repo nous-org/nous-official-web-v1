@@ -1,0 +1,23 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import ContentPagesHero from '@/components/ui/ContentPagesHero.astro';
+import AboutBento from '@/components/ui/AboutBento.astro';
+import FoundersSection from '@/components/ui/FoundersSection.astro';
+import ContactCta from '@/components/ui/ContactCta.astro';
+import MainCta from '@/components/ui/MainCta.astro';
+---
+
+<Layout 
+    title="About Us - Nous Technologies"
+    backgroundType="primary"
+    useContainer={true}
+    showAurora={false}
+>
+    
+    <ContentPagesHero />
+    <AboutBento />
+    <FoundersSection />
+    <MainCta />
+
+    <ContactCta />
+</Layout>

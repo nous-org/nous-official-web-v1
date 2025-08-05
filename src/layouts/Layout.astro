@@ -1,7 +1,41 @@
 ---
 import Header from '@/components/ui-main-components/Header.astro';
 import Footer from '@/components/ui-main-components/Footer.astro';
-import {AuroraBackground} from '@/components/react/AuroraBackground.tsx';
+import { AuroraBackground } from '@/components/react/AuroraBackground.tsx';
+import { ClientRouter } from 'astro:transitions';
+
+interface Props {
+	title?: string;
+	showAurora?: boolean;
+	useContainer?: boolean;
+	backgroundType?: 'aurora' | 'primary' | 'custom';
+	customBgClass?: string;
+}
+
+const { 
+	title = 'Nous Technologies: AI & Automation',
+	showAurora = true,
+	useContainer = false,
+	backgroundType = 'aurora',
+	customBgClass = ''
+} = Astro.props;
+
+// Determine background class based on type
+const getBgClass = () => {
+	switch (backgroundType) {
+		case 'primary':
+			return 'bg-primary-blue';
+		case 'custom':
+			return customBgClass;
+		case 'aurora':
+		default:
+			return 'bg-[#060114]';
+	}
+};
+
+const mainClasses = useContainer 
+	? 'max-w-7xl container mx-auto px-4' 
+	: '';
 ---
 <!doctype html>
 <html lang="en">
@@ -9,14 +43,14 @@ import {AuroraBackground} from '@/components/react/AuroraBackground.tsx';
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		
 		<meta name="generator" content={Astro.generator} />
-		<title>Nous Technologies: AI & Automation</title>
+		<ClientRouter transition:animate="fade"/>
+		<title>{title}</title>
 	</head>
-	<body class="bg-[#060114] relative">
-		<AuroraBackground />
+	<body class={`${getBgClass()} relative`}>
+		{showAurora && <AuroraBackground />}
 		<Header />
-		<main>
+		<main class={mainClasses}>
 			<slot />
 		</main>
 		<Footer />

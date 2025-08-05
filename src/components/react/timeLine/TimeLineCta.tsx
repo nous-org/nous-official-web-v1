@@ -14,7 +14,7 @@ export const TimeLineCta = () => {
                 <p className="text-neutral-700 dark:text-neutral-300 text-md md:text-lg lg:text-xl text-center py-8">From smart automation to custom web development, we build solutions that help you work faster and smarter.</p>
                 <footer className='flex gap-4'>
                     <ButtonVariant
-                        text="Product demos"
+                        text="Products"
                         icon={false}
                         strokeColor="#1AD6B3"
                         variant="secondary"
@@ -23,9 +23,8 @@ export const TimeLineCta = () => {
                         ariaLabel="See our products"
                     />
                     <ButtonVariant
-                        text="Schedule a consultation"
+                        text="Schedule"
                         icon={true}
-
                         variant="primaryPurple"
                         href="/contact?service=web-development"
                         target="_self"

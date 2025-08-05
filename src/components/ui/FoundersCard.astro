@@ -1,0 +1,106 @@
+---
+import { DEFAULT_FOUNDERS } from '@/types/founderCards';
+import { ShootingStars } from '../react/ShootingStars';
+import { StarsBackground } from '../react/StarBackground';
+
+interface Props {
+    founders?: typeof DEFAULT_FOUNDERS;
+    className?: string;
+}
+
+const { founders = DEFAULT_FOUNDERS, className = "" } = Astro.props;
+---
+
+<!-- Founders Grid Container -->
+<div class={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-20 sm:mt-32 lg:mt-40 ${className}`}>
+    {founders.length > 0 ? (
+        founders.map((founder) => (
+            <!-- Individual Founder Card -->
+            <article 
+                class="relative flex flex-col gap-4 bg-gradient-to-br border border-primary-turquoise from-primary-blue/60 to-primary-turquoise/20 md:hover:to-primary-turquoise/40 rounded-xl p-4 hover:border-primary-turquoise/60 transition-colors duration-300"
+                aria-labelledby={`founder-${founder.name.replace(/\s+/g, '-').toLowerCase()}`}
+            >
+                <!-- Founder Header with Image and Basic Info -->
+                <header class="flex flex-col gap-4">
+                    <!-- Profile Image -->
+                    <div class="flex justify-center lg:justify-start">
+                        <img 
+                            src={founder.image} 
+                            alt={`${founder.name}, ${founder.position} at Nous Technologies`}
+                            class="w-28 h-28 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full object-cover border-2 border-primary-turquoise lg:absolute lg:-top-16 xl:-top-18 lg:right-4 xl:right-5 z-10"
+                            loading="lazy"
+                        />
+                    </div>
+                    
+                    <!-- Name and Position -->
+                    <div class="text-center sm:text-left">
+                        <h3 
+                            id={`founder-${founder.name.replace(/\s+/g, '-').toLowerCase()}`}
+                            class="text-lg sm:text-xl md:text-2xl text-white leading-tight"
+                        >
+                            {founder.name}
+                        </h3>
+                        <p class="text-sm sm:text-base md:text-lg font-medium text-primary-turquoise mt-1">
+                            {founder.position}
+                        </p>
+                    </div>
+                </header>
+
+                <!-- Founder Description -->
+                <div class="flex-1">
+                    <p class="text-sm sm:text-base md:text-lg text-neutral-300 leading-relaxed text-pretty">
+                        {founder.description}
+                    </p>
+                </div>
+
+                <!-- Social Media Links -->
+                <nav aria-label={`${founder.name} social media links`}>
+                    <div class="flex gap-3 sm:gap-4 justify-center sm:justify-start z-10">
+                        {founder.socialLinks.map((link) => (
+                            <a 
+                                href={link.url || '#'} 
+                                target={link.url ? '_blank' : undefined}
+                                rel={link.url ? 'noopener noreferrer' : undefined}
+                                class="text-neutral-400 hover:text-primary-turquoise transition-all duration-300 p-1 rounded-md hover:bg-primary-turquoise/40 hover:scale-[1.1] "
+                                aria-label={`Visit ${founder.name} on ${link.name}`}
+                                aria-disabled={!link.url ? 'true' : undefined}
+                                tabindex={!link.url ? '-1' : undefined}
+                            >
+                                <img 
+                                    src={link.icon} 
+                                    alt={`${link.name} icon`}
+                                    class="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6"
+                                    loading="lazy"
+                                />
+                            </a>
+                        ))}
+                    </div>
+                </nav>
+                <div class="pointer-events-none ">
+                    <div class="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center_10%,black_20%,transparent_95%)] opacity-60"> 
+
+                    <ShootingStars 
+                        client:visible
+                        minDelay={1800}
+                        maxDelay={2000}
+                        minSpeed={6}
+                        maxSpeed={10}
+                        starColor="#1AD6B3"
+                        starHeight={2}
+                        starWidth={20}
+                        />
+                    <StarsBackground client:visible />
+                        </div>
+                </div>
+            </article>
+        ))
+    ) : (
+        <!-- Empty State -->
+        <div class="col-span-full text-center py-12">
+            <p class="text-neutral-400 text-lg">
+                No founders information available.
+            </p>
+        </div>
+    )}
+</div>
+

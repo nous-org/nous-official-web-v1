@@ -1,0 +1,48 @@
+---
+import NousLogo from '@/components/icons/AnimatedLogo.astro';
+
+interface Props {
+    title?: string;
+    description?: string;
+    className?: string;
+}
+
+const { 
+    title = "Want to discover how we can transform your business with AI, automation, and custom web development?",
+    description = "With a personalized consultation, we'll show you real opportunities for optimization and growth—no obligation, just feasible solutions aligned with your goals",
+    className = ""
+} = Astro.props;
+---
+
+<!-- Main Call-to-Action Section -->
+<section 
+    class={`mt-32 sm:mt-48 md:mt-64 lg:mt-72 mb-16 sm:mb-20 md:mb-24 px-4 sm:px-6 lg:px-8 ${className}`}
+    aria-labelledby="main-cta-heading"
+    role="region"
+>
+    <div class="max-w-7xl mx-auto text-center space-y-6 sm:space-y-8 md:space-y-12">
+        <!-- Logo Container -->
+        <header class="flex justify-center items-center">
+            <div class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28">
+                <NousLogo 
+                    className="drop-shadow-lg hover:drop-shadow-xl transition-all duration-300"
+                    ariaLabel="Nous Technologies logo - Leading AI and automation solutions"
+                />
+            </div>
+        </header>
+        
+        <!-- Main CTA Content -->
+        <div class="space-y-4 sm:space-y-6">
+            <h2 
+                id="main-cta-heading"
+                class="text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-4xl font-archivo-black text-white leading-tight sm:leading-tight md:leading-tight tracking-tight"
+            >
+                {title}
+            </h2>
+            
+            <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-neutral-300 leading-relaxed sm:leading-relaxed md:leading-loose text-pretty max-w-3xl mx-auto">
+                {description}
+            </p>
+        </div>
+    </div>
+</section>
