@@ -88,8 +88,13 @@ const { founders = DEFAULT_FOUNDERS, className = "" } = Astro.props;
                         starColor="#1AD6B3"
                         starHeight={2}
                         starWidth={20}
+                        trailColor="#8458FF"
                         />
-                    <StarsBackground client:visible />
+                    <StarsBackground client:visible 
+                    starDensity={0.00040}
+                    twinkleProbability={0.9}
+                    maxTwinkleSpeed={2}
+                    />
                         </div>
                 </div>
             </article>

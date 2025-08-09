@@ -1,0 +1,60 @@
+---
+import type { Button } from '@/types/callToAction';
+import Layout from '@/layouts/Layout.astro';
+import ContentPagesHero from '@/components/ui/ContentPagesHero.astro';
+import { ServicesMarquee } from '@/components/react/ServicesMarquee';
+import OurServices from '@/components/ui/OurServices.astro';
+import ContactCta from '@/components/ui/ContactCta.astro';
+import Contact from '@/components/ui-main-components/Contact.astro';
+import ServicesCards from '@/components/ui/ServicesCards.astro';
+interface Hero {
+    title: string;
+    subtitle: string;
+    buttons: Button[];
+}
+const HERO: Hero = {
+    title: "What Nous does?",
+    subtitle: "We are your intelligent automation, custom web development, and AI consulting team that grows with you.",
+    buttons:[
+        {
+            text: "Contact",
+            variant: "secondaryTurquoise",
+            href: "/contact",
+            scheduleIcon: false,
+            strokeColor: "#1AD6B3",    
+            arrowIcon: true,
+            target: "_self",
+            ariaLabel: "Contact"
+        },
+        {
+            text: "Schedule",
+            variant: "secondary",
+            href: "/contact",
+            scheduleIcon: true,
+            strokeColor: "#060114",
+            arrowIcon: false,
+            target: "_self",
+            ariaLabel: "Request a demo"
+        }
+    ]
+}
+const {title, subtitle, buttons} = HERO;
+---
+<Layout title="Products - Nous Technologies" backgroundType="primary" useContainer={true} showAurora={false} paddingType="zero">
+   <div class="px-4">
+    <ContentPagesHero 
+    title={title}
+    subtitle={subtitle}
+    buttons={buttons}
+    />
+   <OurServices/>
+   <ServicesCards/>
+   <ContactCta/>
+   </div>
+   <div class="px-0  md:px-4">
+    <ServicesMarquee client:idle/>
+    </div>
+   
+    <Contact/>
+
+</Layout>

@@ -9,7 +9,9 @@ interface Props {
 	showAurora?: boolean;
 	useContainer?: boolean;
 	backgroundType?: 'aurora' | 'primary' | 'custom';
-	customBgClass?: string;
+	customBgClass?: string
+	overflowType?: 'hidden' | 'visible';
+	paddingType?: 'normal' | 'zero';
 }
 
 const { 
@@ -17,10 +19,12 @@ const {
 	showAurora = true,
 	useContainer = false,
 	backgroundType = 'aurora',
-	customBgClass = ''
+	customBgClass = '',
+	overflowType = 'visible',
+	paddingType = 'normal'
 } = Astro.props;
 
-// Determine background class based on type
+
 const getBgClass = () => {
 	switch (backgroundType) {
 		case 'primary':
@@ -33,8 +37,28 @@ const getBgClass = () => {
 	}
 };
 
+const getPaddingClass = () => {
+	switch (paddingType) {
+		case 'normal':
+			return 'px-4';
+		case 'zero':
+			return 'px-0';
+		default:
+			return 'px-4';
+	}
+};
+
+
+const getOverflowClass = () => {
+	switch (overflowType) {
+		case 'hidden':
+			return 'overflow-x-hidden';
+		default:
+			return 'overflow-visible';
+	}
+};
 const mainClasses = useContainer 
-	? 'max-w-7xl container mx-auto px-4' 
+	? 'max-w-7xl container mx-auto' 
 	: '';
 ---
 <!doctype html>
@@ -47,10 +71,10 @@ const mainClasses = useContainer
 		<ClientRouter transition:animate="fade"/>
 		<title>{title}</title>
 	</head>
-	<body class={`${getBgClass()} relative`}>
+	<body class={`${getBgClass()} relative ${getOverflowClass()} `}>
 		{showAurora && <AuroraBackground />}
 		<Header />
-		<main class={mainClasses}>
+		<main class={`${getPaddingClass()} ${mainClasses}`}>
 			<slot />
 		</main>
 		<Footer />

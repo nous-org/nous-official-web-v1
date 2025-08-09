@@ -14,9 +14,13 @@ interface Props {
     buttons?: Button[];
 }
 
-const { colorDivider = "primary-purple", title = "About", subtitle = "We are your intelligent automation, custom web development, and AI consulting team that grows with you.", buttons = [
+const { colorDivider = "primary-purple", title = "About", subtitle = "We are your intelligent automation, custom web development, and AI consulting team that grows with you.", 
+buttons = [
     {
         text: "Services",
+        scheduleIcon: false,
+        arrowIcon: false,
+        strokeColor: "",
         variant: "secondary",
         href: "#",
         target: "_self",
@@ -24,6 +28,9 @@ const { colorDivider = "primary-purple", title = "About", subtitle = "We are you
     },
     {
         text: "Contact",
+        scheduleIcon: false,
+        arrowIcon: false,
+        strokeColor: "",
         variant: "secondaryTurquoise",
         href: "#",
         target: "_self",
@@ -85,10 +92,14 @@ const { colorDivider = "primary-purple", title = "About", subtitle = "We are you
         <nav aria-label="Primary actions" class="py-8 flex gap-4 px-8">
             {buttons.map((button) => (
                 <ButtonVariant
+                   
+                    scheduleIcon={button.scheduleIcon}
+                    arrowIcon={button.arrowIcon}
                     text={button.text}
                     variant={button.variant}
                     href={button.href}
                     target={button.target}
+                    strokeColor={button.strokeColor}
                     ariaLabel={button.ariaLabel}
                     
                 />

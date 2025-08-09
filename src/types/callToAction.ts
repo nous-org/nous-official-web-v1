@@ -2,7 +2,10 @@ export interface Button {
     text: string;
     variant: 'primary' | 'secondary' | 'primaryPurple' | 'secondaryTurquoise';
     href: string;
-    icon: boolean;
+    icon?: boolean;
+    scheduleIcon: boolean;
+    strokeColor?: string;
+    arrowIcon: boolean;
     target: '_blank' | '_self' | '_parent' | '_top';
     ariaLabel: string;
 }
@@ -43,6 +46,9 @@ export const defaultSections: CTASection[] = [
                 text: "Explore our plans",
                 href: "/Pricing",
                 icon: false,
+                scheduleIcon: false,
+                strokeColor: "",
+                arrowIcon: false,
                 variant: "secondary",
                 target: "_self",
                 ariaLabel: "Explore our plans"
@@ -51,6 +57,9 @@ export const defaultSections: CTASection[] = [
                 text: "See our products",
                 href: "/Services",
                 icon: false,
+                scheduleIcon: false,
+                strokeColor: "",
+                arrowIcon: false,
                 variant: "secondaryTurquoise",
                 target: "_self",
                 ariaLabel: "See our products"
@@ -73,14 +82,20 @@ export const defaultSections: CTASection[] = [
                 href: "/Contact",
                 variant: "primary",
                 icon: false,
+                scheduleIcon: false,
+                strokeColor: "",
+                arrowIcon: false,
                 target: "_self",
                 ariaLabel: "Contact us"
             },
             {
                 text: "Schedule a meeting",
-                href: "https://calendly.com/stellarteamcr",
+                href: "#",
                 variant: "primaryPurple",
                 icon: true,
+                scheduleIcon: true,
+                strokeColor: "",
+                arrowIcon: false,
                 target: "_blank",
                 ariaLabel: "Schedule a meeting"
             }

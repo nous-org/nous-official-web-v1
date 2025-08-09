@@ -1,2 +1,69 @@
 ---
+import Layout from "@/layouts/Layout.astro";
+import ContentPagesHero from "@/components/ui/ContentPagesHero.astro";
+import type { Button } from "@/types/callToAction";
+import CarouselContainer from "@/components/ui/CarouselContainer.astro";
+import { StickyServices } from "@/components/react/StickyServices";
+import ContactCta from "@/components/ui/ContactCta.astro";
+import { RippleCta } from "@/components/react/RippleCta";
+import SubscribeToNewsletter from "@/components/ui/SubscribeToNewsLetter.astro";
+import Contact from "@/components/ui-main-components/Contact.astro";
+
+interface Hero {
+    title: string;
+    subtitle: string;
+    buttons: Button[];
+}
+const HERO: Hero = {
+    title: "Products",
+    subtitle:
+        "AI automation, custom web development, and technology consulting to boost your digital products",
+    buttons: [
+        {
+            text: "Contact",
+            variant: "secondaryTurquoise",
+            href: "/contact",
+            scheduleIcon: false,
+            strokeColor: "#1AD6B3",
+            arrowIcon: true,
+            target: "_self",
+            ariaLabel: "Contact",
+        },
+        {
+            text: "Schedule",
+            variant: "secondary",
+            href: "/contact",
+            scheduleIcon: true,
+            strokeColor: "#060114",
+            arrowIcon: false,
+            target: "_self",
+            ariaLabel: "Request a demo",
+        },
+    ],
+};
+const { title, subtitle, buttons } = HERO;
 ---
+
+<Layout
+    title="Products - Nous Technologies"
+    backgroundType="primary"
+    useContainer={true}
+    showAurora={false}
+    paddingType="zero"
+>
+    <div class="px-4">
+        <ContentPagesHero title={title} subtitle={subtitle} buttons={buttons} />
+    </div>
+    <CarouselContainer />
+    <div class="mt-32 mb-32">
+        <StickyServices client:load />
+    </div>
+
+    <RippleCta />
+    <!-- <Bento/> -->
+    <div class="px-4">
+        <ContactCta />
+    </div>
+    <SubscribeToNewsletter />
+    <Contact />
+</Layout>
