@@ -1,7 +1,7 @@
-import bgBento from "@/assets/bg-bento.png"
-import whatsApp from "@/assets/whats.png"
-import webDev from "@/assets/WebDev.png"
-import BgBentoCard from "@/assets/bg.png"
+import bgBento from "@/assets/bg-bento.webp"
+import whatsApp from "@/assets/whats.webp"
+import webDev from "@/assets/WebDev.webp"
+import BgBentoCard from "@/assets/bg.webp"
 
 export const Bento = () => {
   return (

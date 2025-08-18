@@ -2,7 +2,6 @@ export interface Button {
     text: string;
     variant: 'primary' | 'secondary' | 'primaryPurple' | 'secondaryTurquoise';
     href: string;
-    icon?: boolean;
     scheduleIcon: boolean;
     strokeColor?: string;
     arrowIcon: boolean;
@@ -44,8 +43,7 @@ export const defaultSections: CTASection[] = [
         buttons: [
             {
                 text: "Explore our plans",
-                href: "/Pricing",
-                icon: false,
+                href: "/pricing",
                 scheduleIcon: false,
                 strokeColor: "",
                 arrowIcon: false,
@@ -55,8 +53,7 @@ export const defaultSections: CTASection[] = [
             },
             {
                 text: "See our products",
-                href: "/Services",
-                icon: false,
+                href: "/products",
                 scheduleIcon: false,
                 strokeColor: "",
                 arrowIcon: false,
@@ -79,9 +76,8 @@ export const defaultSections: CTASection[] = [
         buttons: [
             {
                 text: "Contact us",
-                href: "/Contact",
+                href: "/contact",
                 variant: "primary",
-                icon: false,
                 scheduleIcon: false,
                 strokeColor: "",
                 arrowIcon: false,
@@ -89,15 +85,14 @@ export const defaultSections: CTASection[] = [
                 ariaLabel: "Contact us"
             },
             {
-                text: "Schedule a meeting",
-                href: "#",
+                text: "Services",
+                href: "/services",
                 variant: "primaryPurple",
-                icon: true,
-                scheduleIcon: true,
+                scheduleIcon: false,
+                arrowIcon: true,
                 strokeColor: "",
-                arrowIcon: false,
-                target: "_blank",
-                ariaLabel: "Schedule a meeting"
+                target: "_self",
+                ariaLabel: "See our services"
             }
         ]
     }

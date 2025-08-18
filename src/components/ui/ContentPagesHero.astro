@@ -10,16 +10,17 @@ import { StarsBackground } from "../react/StarBackground";
 interface Props {
     colorDivider?: "primary-purple" | "primary-turquoise";
     title?: string;
+    text?: string;
     subtitle?: string;
     buttons?: Button[];
 }
 
-const { colorDivider = "primary-purple", title = "About", subtitle = "We are your intelligent automation, custom web development, and AI consulting team that grows with you.", 
+const { colorDivider = "primary-purple", title = "About", text = "", subtitle = "We are your intelligent automation, custom web development, and AI consulting team that grows with you.", 
 buttons = [
     {
         text: "Services",
         scheduleIcon: false,
-        arrowIcon: false,
+        arrowIcon:  true,
         strokeColor: "",
         variant: "secondary",
         href: "#",
@@ -29,7 +30,7 @@ buttons = [
     {
         text: "Contact",
         scheduleIcon: false,
-        arrowIcon: false,
+        arrowIcon:false,
         strokeColor: "",
         variant: "secondaryTurquoise",
         href: "#",
@@ -84,6 +85,10 @@ buttons = [
 
             <p class="mt-4 text-lg sm:text-2xl font-archivo-black px-8">
                 {subtitle}
+            </p>
+
+            <p class="mt-4 text-lg sm:text-xl text-neutral-400 px-8">
+                {text}
             </p>
         </header>
 

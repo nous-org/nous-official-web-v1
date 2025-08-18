@@ -36,17 +36,17 @@ export const Carousel = memo(({ slides, initialSlide = 1, swipeThreshold = 50 }:
   // Datos de ejemplo
   const sampleSlides: SlideData[] = slides?.length ? slides : [
     {
-      title: "Explorar la Naturaleza",
+      title: "Demo",
       button: "Descubrir más",
       src: ''
     },
     {
-      title: "Aventuras Urbanas", 
+      title: "Demo", 
       button: "Ver experiencias",
       src: ''
     },
     {
-      title: "Momentos Únicos",
+      title: "Portfolio",
       button: "Crear recuerdos", 
       src: ''
     }
@@ -91,7 +91,6 @@ export const Carousel = memo(({ slides, initialSlide = 1, swipeThreshold = 50 }:
           />
         </div>
         
-        {/* Indicadores móviles */}
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 sm:hidden">
           <div className="flex space-x-2">
             {sampleSlides.map((_, index) => (

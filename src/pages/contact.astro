@@ -1,0 +1,48 @@
+---
+import SectionContact from "@/components/ui-main-components/Contact.astro"
+import Layout from "@/layouts/Layout.astro"
+import type { Button } from "@/types/callToAction";
+import ContentPagesHero from "@/components/ui/ContentPagesHero.astro";
+
+interface Hero {
+    title: string;
+    subtitle: string;
+    text: string;
+    buttons: Button[];
+}
+const HERO: Hero = {
+    title: "Any question about?",
+    subtitle:
+        "Let's talk about your next big project",
+    text: "We're here to listen, advise, and create tailored solutions with AI, web development, and intelligent software. Contact us and let's take the first step together!",
+    buttons: [
+        {
+            text: "Home",
+            variant: "secondary",
+            href: "/",
+            scheduleIcon: false,
+            strokeColor: "#060114",
+            arrowIcon: true,
+            target: "_self",
+            ariaLabel: "Home",
+        },
+        {
+            text: "Services",
+            variant: "secondaryTurquoise",
+            href: "/services",
+            scheduleIcon: false,
+            strokeColor: "#060114",
+            arrowIcon: false,
+            target: "_self",
+            ariaLabel: "Services",
+        },
+    ],
+};
+const { title, subtitle, text, buttons } = HERO;
+---
+
+
+<Layout title="Nous Technologies: AI & Automation" backgroundType="primary" showAurora={false} useContainer={true}>
+    <ContentPagesHero title={title} subtitle={subtitle} text={text} buttons={buttons} />
+    <SectionContact />
+</Layout>

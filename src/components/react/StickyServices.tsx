@@ -1,11 +1,11 @@
 "use client";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { StickyScroll } from "@/components/react/StickyScroll";
 import AiAutomation from "@/assets/products/AiAuto.webp";
 import SeamlessIntegration from "@/assets/products/SystemIntegration.webp";
 import FutureReadyScalability from "@/assets/products/futureReady.webp";
 import CustomDevelopmentPartnership from "@/assets/products/CustomDev.webp";
-import { ButtonVariant } from "@/components/react/Buttons/ButtonVariant";
+
 
 export function StickyServices() {
     const videoRef = useRef<HTMLVideoElement>(null);

@@ -2,6 +2,10 @@ export interface SlideData {
     title: string;
     button: string;
     src: string;
+    href?: string;
+    target?: '_blank' | '_self' | '_parent' | '_top';
+    ariaLabel?: string;
+  
   }
   
 export interface SlideProps {

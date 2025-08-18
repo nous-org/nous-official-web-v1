@@ -68,9 +68,9 @@ export const Slide = memo(({ slide, index, current, handleSlideClick }: SlidePro
               <ButtonVariant
                 variant="primary"
                 text={button}
-                href="/contact"
-                target="_blank"
-                ariaLabel="Button to request a demo"
+                href={slide.href}
+                target={slide.target}
+                ariaLabel="Button to request a demo or contact"
               />
             </div>
           </article>

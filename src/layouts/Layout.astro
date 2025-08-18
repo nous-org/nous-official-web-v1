@@ -4,6 +4,7 @@ import Footer from '@/components/ui-main-components/Footer.astro';
 import { AuroraBackground } from '@/components/react/AuroraBackground.tsx';
 import { ClientRouter } from 'astro:transitions';
 
+
 interface Props {
 	title?: string;
 	showAurora?: boolean;
@@ -73,6 +74,7 @@ const mainClasses = useContainer
 	</head>
 	<body class={`${getBgClass()} relative ${getOverflowClass()} `}>
 		{showAurora && <AuroraBackground />}
+	
 		<Header />
 		<main class={`${getPaddingClass()} ${mainClasses}`}>
 			<slot />

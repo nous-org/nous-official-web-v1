@@ -12,16 +12,17 @@ export function RippleCta() {
       Quick, no-obligation consultation. See how AI and automation can save time and improve efficiency.
       </p>
       <div className="flex flex-col sm:flex-row justify-center mt-4 sm:mt-6 gap-3 sm:gap-4 w-full sm:w-auto">
+      
       <ButtonVariant
       variant="primary"
-      text="Demos"
+      text="Contact"
       href="/contact"
       target="_blank"
       />
       <ButtonVariant
-      variant="primary"
-      text="Portfolio"
-      href="/about"
+      variant="primaryPurple"
+      text="Pricing"
+      href="/pricing"
       target="_blank"
       />
       </div>

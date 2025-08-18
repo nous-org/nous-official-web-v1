@@ -21,22 +21,22 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
                 <p class="text-neutral-300 text-sm leading-relaxed">Your vision, our technology, let's make it real.</p>
                 <div class="space-y-3">
                     <ButtonVariant 
-                        text="Try a demo" 
+                        text="Talk to us" 
                         variant="secondary" 
-                        href="#" 
+                        href="/contact" 
                         rounded="md" 
-                        arrowIcon={true} 
+                        scheduleIcon={true} 
                         strokeColor="#060114" 
                         justify="between"
                         className="w-full sm:w-auto"
                     />
                     <ButtonVariant 
-                        text="Schedule a meeting" 
-                        variant="primary" 
-                        href="#" 
+                        text="Explore our plans" 
+                        variant="secondaryTurquoise" 
+                        href="/pricing" 
                         rounded="md" 
-                        scheduleIcon={true} 
-                        strokeColor="#060114" 
+                        arrowIcon={true} 
+                        strokeColor="#1AD6B3" 
                         justify="between"
                         className="w-full sm:w-auto"
                     />
@@ -83,7 +83,7 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
                     <ButtonVariant 
                         text="Subscribe" 
                         variant="secondary" 
-                        href="#" 
+                        href="/pricing#newsletter"
                         rounded="md" 
                         arrowIcon={true} 
                         strokeColor="#060114" 
@@ -104,17 +104,17 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
                 <nav>
                     <ul class="space-y-2 text-neutral-300">
                         <li>
-                            <a href="#" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">
+                            <a href="/pricing" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">
                                 WhatsApp AI Chatbot
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">
+                            <a href="/pricing" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">
                                 Web Development
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">
+                            <a href="/pricing" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">
                                 Workflow Automation
                             </a>
                         </li>
@@ -155,11 +155,10 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
                     <a href="/terms" class="text-neutral-400 hover:text-primary-turquoise transition-colors duration-200 text-sm">
                         Terms and Conditions
                     </a>
-                    <a href="/cookies" class="text-neutral-400 hover:text-primary-turquoise transition-colors duration-200 text-sm">
-                        Cookie Policy
-                    </a>
+                    
                 </nav>
             </div>
         </div>
     </div>
 </footer>
+

@@ -1,9 +1,9 @@
 import InstagramIcon from '@/components/icons/SocialLinks/InstagramIcon.svg';
 import LinkedInIcon from '@/components/icons/SocialLinks/LinkedInIcon.svg';
 import XIcon from '@/components/icons/SocialLinks/XIcon.svg';
-import FounderRoberto from '@/assets/founders/FounderRoberto.png';
-import FounderAlessandro from '@/assets/founders/FounderAlessandro.png';
-import FounderAndrey from '@/assets/founders/FounderAndrey.jpg';
+import FounderRoberto from '@/assets/founders/FounderRoberto.webp';
+import FounderAlessandro from '@/assets/founders/FounderAlessandro.webp';
+import FounderAndrey from '@/assets/founders/FounderAndrey.webp';
 export interface FounderCard {
     name: string;
     position: string;

@@ -1,6 +1,6 @@
 import { NousAnimatedLogo } from "@/components/react/Icons/NousAnimatedLogo";
 import { ButtonVariant } from "@/components/react/Buttons/ButtonVariant";
-import ctaBg from '@/assets/ctaBg.png'
+import ctaBg from '@/assets/ctaBg.webp'
 
 
 export const TimeLineCta = () => {
@@ -17,16 +17,16 @@ export const TimeLineCta = () => {
                         text="Products"
                         icon={false}
                         strokeColor="#1AD6B3"
-                        variant="secondary"
+                        variant="primary"
                         href="/products"
                         target="_self"
                         ariaLabel="See our products"
                     />
                     <ButtonVariant
-                        text="Schedule"
+                        text="Contact"
                         icon={true}
                         variant="primaryPurple"
-                        href="/contact?service=web-development"
+                        href="/contact"
                         target="_self"
                         ariaLabel="Schedule web development consultation"
                     />

@@ -1,28 +1,40 @@
 ---
 import { Carousel } from '@/components/react/Carousel';
-import chatBotFlows from '@/assets/chatBotFlows.png'
-import webDevelopment from '@/assets/webDevelopment.png'
-import aiAutomation from '@/assets/aiAutomatization.png'
+import chatBotFlows from '@/assets/chatBotFlows.webp'
+import webDevelopment from '@/assets/webDevelopment.webp'
+import aiAutomation from '@/assets/aiAutomatization.webp'
 interface Slide {
     title: string;
     button: string;
     src: string;
+    href?: string;
+    target?: '_blank' | '_self' | '_parent' | '_top';
+    ariaLabel?: string;
 }
 const slides: Slide[] = [
     {
         title: "Chatbot flows",
         button: "Demo",
+        href: '/contact',
+        target: '_self',
+        ariaLabel: 'Button to request ademo or contact',
         src:  chatBotFlows.src      
     },
     {
         title: "AI Automation",
-        button: "Demo",
-        src: aiAutomation.src
+        button: "Talk to us",
+        src: aiAutomation.src,
+        href: '/contact',
+        target: '_self',
+        ariaLabel: 'Button to request ademo or contact',
     },
     {
         title: "Custom Web Development",
         button: "Portfolio",
-        src: webDevelopment.src
+        src: webDevelopment.src,
+        href: '/portfolio',
+        target: '_self',
+        ariaLabel: 'Button to view our web development portfolio',
     },
     
 ]
