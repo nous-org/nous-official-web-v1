@@ -2,6 +2,8 @@
 import GradientTittle from '@/components/ui/Tittles/GradientTittle.astro'
 import Inputs from '@/components/ui/Inputs.astro'
 import SubmitButton from '@/components/ui/Buttons/SubmitButton.astro'
+import { actions } from 'astro:actions'
+
 const chips = [
     { id: 'software-consulting', label: 'Software Consulting', value: 'software-consulting' },
     { id: 'web-development', label: 'Web Development', value: 'web-development' },
@@ -10,9 +12,9 @@ const chips = [
 ---
 
 <div class="w-auto">
-    <GradientTittle title="Let’s build your next big idea Contact us today!"/>
-    <form class="flex flex-col gap-4">
-        <!-- Chips interaction -->
+    <GradientTittle title="Let's build your next big idea Contact us today!"/>
+    <form class="flex flex-col gap-4" method="POST" action={actions.sendContactForm}>
+        
 <div class="flex flex-col gap-4">
   <label for="interests" class="block text-lg font-medium text-gray-400">I'm interested in:</label>
    <div class="flex flex-wrap gap-2">
@@ -38,13 +40,12 @@ const chips = [
     ))}
    </div>
   </div>
-        <Inputs type="text" placeholder="Name"/>
-        <Inputs type="email" placeholder="Email"/>
-        <Inputs type="text" placeholder="Subject"/>
-        <Inputs type="textarea" placeholder="Message"/>
-        <div class="flex justify-between mt-2">
-            <SubmitButton text="Contact with us" icon={true} variant="secondary"/>
-            <SubmitButton text="Schedule with us" icon={false} variant="secondaryTurquoise"/>
+        <Inputs type="text" placeholder="Name" name="name"/>
+        <Inputs type="email" placeholder="Email" name="email"/>
+        <Inputs type="text" placeholder="Subject" name="subject"/>
+        <Inputs type="textarea" placeholder="Message" name="message"/>
+        <div class="flex justify-center mt-2">
+            <SubmitButton type="submit" text="Send" icon={true} variant="secondary"/>
         </div>
     </form>
 </div>

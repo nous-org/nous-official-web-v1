@@ -2,7 +2,9 @@ export interface Button {
     text: string;
     variant: 'primary' | 'secondary' | 'primaryPurple' | 'secondaryTurquoise';
     href: string;
-    icon: boolean;
+    scheduleIcon: boolean;
+    strokeColor?: string;
+    arrowIcon: boolean;
     target: '_blank' | '_self' | '_parent' | '_top';
     ariaLabel: string;
 }
@@ -33,7 +35,7 @@ export const defaultSections: CTASection[] = [
         subtitle: "",
         description: "Optimize processes, and achieve your goals with high-impact technology.",
         style: {
-            background: "bg-primary-turquoise/5 border border-primary-turquoise",
+            background: "bg-gradient-to-br from-primary-turquoise/40 to-primary-black/40 border border-primary-turquoise",
             textColor: "text-white",
             shadowColor: "primary-turquoise",
             titleColor: "text-primary-turquoise",
@@ -41,16 +43,20 @@ export const defaultSections: CTASection[] = [
         buttons: [
             {
                 text: "Explore our plans",
-                href: "/Pricing",
-                icon: false,
+                href: "/pricing",
+                scheduleIcon: false,
+                strokeColor: "",
+                arrowIcon: false,
                 variant: "secondary",
                 target: "_self",
                 ariaLabel: "Explore our plans"
             },
             {
                 text: "See our products",
-                href: "/Services",
-                icon: false,
+                href: "/products",
+                scheduleIcon: false,
+                strokeColor: "",
+                arrowIcon: false,
                 variant: "secondaryTurquoise",
                 target: "_self",
                 ariaLabel: "See our products"
@@ -58,11 +64,11 @@ export const defaultSections: CTASection[] = [
         ]
     },
     {
-        title: "Boost your businesss",
+        title: "Boost your busines",
         subtitle: "",
         description: "Customized digital solutions in web development, artificial intelligence automation, and technology consulting.",
         style: {
-            background: "bg-primary-purple/5 border border-primary-purple",
+            background: "bg-gradient-to-bl from-primary-purple/40 to-primary-black/40 border border-primary-purple",
             textColor: "text-white",
             shadowColor: "primary-purple",
             titleColor: "text-primary-purple",
@@ -70,19 +76,23 @@ export const defaultSections: CTASection[] = [
         buttons: [
             {
                 text: "Contact us",
-                href: "/Contact",
+                href: "/contact",
                 variant: "primary",
-                icon: false,
+                scheduleIcon: false,
+                strokeColor: "",
+                arrowIcon: false,
                 target: "_self",
                 ariaLabel: "Contact us"
             },
             {
-                text: "Schedule a meeting",
-                href: "https://calendly.com/stellarteamcr",
+                text: "Services",
+                href: "/services",
                 variant: "primaryPurple",
-                icon: true,
-                target: "_blank",
-                ariaLabel: "Schedule a meeting"
+                scheduleIcon: false,
+                arrowIcon: true,
+                strokeColor: "",
+                target: "_self",
+                ariaLabel: "See our services"
             }
         ]
     }

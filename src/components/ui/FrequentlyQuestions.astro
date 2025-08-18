@@ -1,0 +1,300 @@
+---
+import ButtonVariant from "./Buttons/ButtonVariant.astro";
+
+interface FAQItem {
+    question: string;
+    answer: string;
+}
+
+interface FAQCategory {
+    title: string;
+    description: string;
+    questions: FAQItem[];
+}
+
+const FAQ_CATEGORIES: FAQCategory[] = [
+    {
+        title: "Services & Solutions",
+        description: "Learn about our AI automation, web development, and consulting services",
+        questions: [
+            {
+                question: "What types of AI automation services do you offer?",
+                answer: "We provide comprehensive AI automation solutions including AI chatbot integration, email automation, lead generation systems, content creation tools, analytics dashboards, and 24/7 support. Our solutions are designed to boost your business efficiency and streamline operations."
+            },
+            {
+                question: "What makes your web development services different?",
+                answer: "Our custom web development focuses on modern frameworks like Astro, React, and cutting-edge technologies. We deliver responsive designs, SEO optimization, performance optimization, content management systems, and ongoing maintenance. Every project is tailored to your unique business needs."
+            },
+            {
+                question: "What does technology consulting include?",
+                answer: "Our technology consulting covers strategic technology planning, infrastructure assessment, digital transformation guidance, team training, architecture review, and scalability planning. We help businesses make informed technology decisions that drive growth."
+            },
+            {
+                question: "Do you work with companies of all sizes?",
+                answer: "Yes! We collaborate with companies of all sizes, from startups to large industries throughout Latin America. Our solutions are scalable and can be adapted to meet the specific needs and budget of any organization."
+            }
+        ]
+    },
+    {
+        title: "Pricing & Process",
+        description: "Understand our pricing structure and project workflow",
+        questions: [
+            {
+                question: "How do you determine project pricing?",
+                answer: "Our pricing starts from $199 for AI automation, $299 for web development, and $399 for consulting. Final costs depend on project scope, complexity, timeline, and specific requirements. We provide detailed estimates after understanding your needs."
+            },
+            {
+                question: "What is your typical project timeline?",
+                answer: "Project timelines vary based on complexity. AI automation projects typically take 2-4 weeks, web development projects 4-8 weeks, and consulting engagements 2-12 weeks. We provide realistic timelines during our initial consultation."
+            },
+            {
+                question: "What is your project workflow?",
+                answer: "We follow a pragmatic and collaborative approach: First, we listen to your specific needs. Then, we design a clear and viable solution. Next, we deliver professional implementation. Finally, we provide ongoing support to ensure real results."
+            },
+            {
+                question: "Do you offer payment plans or financing?",
+                answer: "Yes, we offer flexible payment options including milestone-based payments, monthly payment plans for larger projects, and custom financing arrangements. We work with you to find a payment structure that fits your budget."
+            }
+        ]
+    },
+    {
+        title: "Technical & Support",
+        description: "Technical details and ongoing support information",
+        questions: [
+            {
+                question: "What technologies do you use?",
+                answer: "We use cutting-edge technologies including Astro for superior performance, React for scalable components, TypeScript for type safety, Tailwind CSS for modern design, and various AI/ML frameworks. We always choose the best technology stack for each project."
+            },
+            {
+                question: "Do you provide ongoing support and maintenance?",
+                answer: "Absolutely! All our services include ongoing support. We offer 24/7 support for AI automation, ongoing maintenance for web development projects, and continuous consulting relationships. Our goal is to ensure long-term success."
+            },
+            {
+                question: "Can you integrate with existing systems?",
+                answer: "Yes, we specialize in seamless integrations. Whether it's connecting AI tools to your current CRM, integrating new web solutions with existing databases, or modernizing legacy systems, we ensure smooth transitions without disrupting your operations."
+            },
+            {
+                question: "Do you provide training for our team?",
+                answer: "Yes, team training is included in our consulting services and can be added to other projects. We provide comprehensive training on new systems, best practices, and ongoing education to ensure your team can effectively use and maintain the solutions we implement."
+            }
+        ]
+    },
+    {
+        title: "Getting Started",
+        description: "How to begin your project with Nous Technologies",
+        questions: [
+            {
+                question: "How do I get started with Nous Technologies?",
+                answer: "Simply contact us through our website or schedule a consultation. We'll discuss your needs, provide a detailed proposal, and outline the next steps. Our initial consultation is always free and focused on understanding your goals."
+            },
+            {
+                question: "What information do you need to provide a quote?",
+                answer: "We need to understand your business goals, current challenges, technical requirements, timeline expectations, and budget range. The more details you provide about your project, the more accurate our proposal will be."
+            },
+            {
+                question: "Do you offer free consultations?",
+                answer: "Yes! We offer free initial consultations to understand your needs and determine how we can best help your business. This includes a preliminary assessment and strategic recommendations at no cost."
+            },
+            {
+                question: "What regions do you serve?",
+                answer: "We primarily serve Latin America but work with clients globally. Our team is experienced in working remotely and can adapt to different time zones and cultural contexts to ensure effective collaboration."
+            }
+        ]
+    }
+];
+---
+
+<section class="py-16 sm:py-20 md:py-24 lg:py-32" aria-labelledby="faq-heading">
+    <!-- Section Header -->
+    <div class="">
+        <header class="text-center mb-12 sm:mb-16 lg:mb-20">
+            <h2 id="faq-heading" class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
+                Frequently Asked Questions
+            </h2>
+            <p class="text-base sm:text-lg lg:text-xl text-neutral-400 max-w-3xl mx-auto leading-relaxed">
+                Find answers to common questions about our AI automation, web development, and consulting services.
+            </p>
+        </header>
+
+        <!-- FAQ Categories -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12">
+            {FAQ_CATEGORIES.map((category, categoryIndex) => (
+                <article class="space-y-6 sm:space-y-8">
+                    <!-- Category Header -->
+                    <header class="border-b border-neutral-800 pb-4 sm:pb-6">
+                        <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2 sm:mb-3">
+                            {category.title}
+                        </h3>
+                        <p class="text-sm sm:text-base text-neutral-400 leading-relaxed">
+                            {category.description}
+                        </p>
+                    </header>
+
+                    <!-- Questions List -->
+                    <div class="space-y-4 sm:space-y-6" role="list">
+                        {category.questions.map((faq, questionIndex) => (
+                            <details 
+                                class="group bg-neutral-900/50 border border-neutral-800 rounded-md sm:rounded-xl overflow-hidden transition-all duration-300 hover:border-primary-turquoise/30 hover:shadow-lg hover:shadow-primary-turquoise/5" 
+                                role="listitem"
+                            >
+                                <summary class="flex items-center justify-between p-4 sm:p-6 cursor-pointer focus:outline-none ">
+                                    <h4 class="text-base sm:text-lg font-semibold text-white pr-4 leading-relaxed group-hover:text-primary-turquoise transition-colors duration-200">
+                                        {faq.question}
+                                    </h4>
+                                    <!-- Expand/Collapse Icon -->
+                                    <div class="flex-shrink-0 ml-4">
+                                        <svg 
+                                            class="w-5 h-5 sm:w-6 sm:h-6 text-neutral-400 transition-all duration-300 group-hover:text-primary-turquoise group-open:rotate-45 group-open:text-primary-turquoise" 
+                                            fill="none" 
+                                            stroke="currentColor" 
+                                            viewBox="0 0 24 24"
+                                            aria-hidden="true"
+                                        >
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                        </svg>
+                                    </div>
+                                </summary>
+                                
+                                <!-- Answer Content -->
+                                <div class="px-4 sm:px-6 pb-4 sm:pb-6 pt-0">
+                                    <div class="border-t border-neutral-800 pt-4 sm:pt-6">
+                                        <p class="text-sm sm:text-base text-neutral-300 leading-relaxed">
+                                            {faq.answer}
+                                        </p>
+                                    </div>
+                                </div>
+                            </details>
+                        ))}
+                    </div>
+                </article>
+            ))}
+        </div>
+
+        <!-- Contact CTA -->
+        <footer class="text-center mt-16 sm:mt-20 lg:mt-24">
+            <div class="bg-gradient-to-br from-primary-black/50 to-primary-turquoise/10 border border-primary-turquoise/30 rounded-lg sm:rounded-xl p-6 sm:p-8 lg:p-10">
+                <h3 class="text-3xl sm:text-4xl lg:text-4xl font-bold text-white mb-3 sm:mb-4">
+                    Still have questions?
+                </h3>
+                <p class="text-sm sm:text-base lg:text-lg text-neutral-400 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
+                    Our team is here to help. Get in touch for a free consultation and let's discuss how we can transform your business with intelligent solutions.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
+                <ButtonVariant
+                 text="Contact us" 
+                 variant="secondary" 
+                 href="/contact" 
+                 scheduleIcon={false} 
+                 strokeColor="#060114" 
+                 arrowIcon={true} 
+                 target="_self" 
+                 ariaLabel="Contact us" />   
+               
+            </div>
+        </footer>
+    </div>
+</section>
+
+<style>
+    /* Enhanced accordion animations */
+    details[open] summary ~ * {
+        animation: slideDown 0.3s ease-out;
+    }
+    
+    details summary {
+        list-style: none;
+    }
+    
+    details summary::-webkit-details-marker {
+        display: none;
+    }
+    
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Smooth hover transitions for better UX */
+    details:hover {
+        transform: translateY(-2px);
+    }
+    
+    /* Focus styles for accessibility */
+    details summary:focus-visible {
+        outline: 2px solid #1AD6B3;
+        outline-offset: 2px;
+    }
+</style>
+
+<script>
+    // Enhanced FAQ interactions with smooth animations and accessibility
+    document.addEventListener('DOMContentLoaded', () => {
+        const details = document.querySelectorAll('details');
+        
+        details.forEach((detail) => {
+            const summary = detail.querySelector('summary');
+            
+            if (summary) {
+                // Enhanced keyboard navigation
+                summary.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        detail.open = !detail.open;
+                        
+                        // Smooth scroll to opened question for better UX
+                        if (detail.open) {
+                            setTimeout(() => {
+                                detail.scrollIntoView({ 
+                                    behavior: 'smooth', 
+                                    block: 'nearest' 
+                                });
+                            }, 100);
+                        }
+                    }
+                });
+                
+                // Close other details when opening one (accordion behavior)
+                summary.addEventListener('click', (e) => {
+                    const isCurrentlyOpen = detail.open;
+                    
+                    if (!isCurrentlyOpen) {
+                        // Optional: Close other open details in the same category
+                        const parentArticle = detail.closest('article');
+                        if (parentArticle) {
+                            const siblingDetails = parentArticle.querySelectorAll('details[open]');
+                            siblingDetails.forEach((sibling) => {
+                                if (sibling !== detail) {
+                                    (sibling as HTMLDetailsElement).open = false;
+                                }
+                            });
+                        }
+                        
+                        // Smooth scroll to opened question
+                        setTimeout(() => {
+                            detail.scrollIntoView({ 
+                                behavior: 'smooth', 
+                                block: 'nearest' 
+                            });
+                        }, 100);
+                    }
+                });
+            }
+        });
+        
+        // Analytics tracking for FAQ interactions (optional)
+        details.forEach((detail, index) => {
+            detail.addEventListener('toggle', () => {
+                if (detail.open) {
+                    // Track FAQ open events
+                    console.log(`FAQ opened: ${detail.querySelector('h4')?.textContent}`);
+                }
+            });
+        });
+    });
+</script>

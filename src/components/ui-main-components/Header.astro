@@ -5,11 +5,11 @@ import HeaderButton from '@/components/ui/Buttons/HeaderButton.astro';
 import type { NavLink } from '@/components/ui/NavegationLinks.astro';
 
 const headerNavLinks: NavLink[] = [
-    { href: '#about', label: 'About', ariaLabel: 'Learn more about Nous Technologies' },
-    { href: '#products', label: 'Products', ariaLabel: 'Explore our AI products' },
-    { href: '#services', label: 'Services', ariaLabel: 'Discover our automation services' },
-    { href: '#pricing', label: 'Pricing', ariaLabel: 'View pricing plans' },
-    { href: '#contact', label: 'Contact', ariaLabel: 'Get in touch with us' }
+    { href: '/about', label: 'About', ariaLabel: 'Learn more about Nous Technologies' },
+    { href: '/products', label: 'Products', ariaLabel: 'Explore our AI products' },
+    { href: '/services', label: 'Services', ariaLabel: 'Discover our automation services' },
+    { href: '/pricing', label: 'Pricing', ariaLabel: 'View pricing plans' },
+    { href: '/contact', label: 'Contact', ariaLabel: 'Get in touch with us' }
 ];
 ---
 
@@ -18,8 +18,8 @@ const headerNavLinks: NavLink[] = [
     class="fixed top-8 left-4 right-4 z-50 flex h-20 items-center justify-between rounded-full bg-[#060114]/20 px-6 py-2 backdrop-blur-lg shadow-[0_0_10px_0_rgba(0,0,0,0.1)] shadow-indigo-500/20 transition-all duration-300 ease-out lg:px-6"
     role="banner"
 >
-    <div class="flex-shrink-0">
-        <NousLogo />
+    <div class="flex-shrink-0" aria-label="Nous Technologies Logo" transition:persist="true">
+        <a href="/" aria-label="Nous Technologies Logo"><NousLogo /></a>
     </div>
     
     <div class="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 transform md:flex">

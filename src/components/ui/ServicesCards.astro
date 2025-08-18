@@ -1,148 +1,62 @@
 ---
-import type { ServiceCard } from '@/types/serviceCards';
-import ItServiceLogo from '@/components/icons/ITLogo.svg';
-import WebDevelopmentLogo from '@/components/icons/WebDevelopmentLogo.svg';
-import AILogo from '@/components/icons/AILogo.svg';
-import ItServiceImage from '@/assets/serviceCards/ITConsulting.png';
-import WebDevelopmentImage from '@/assets/serviceCards/WebDevelopment.png';
-import AIAutomationImage from '@/assets/serviceCards/IaAtutomation.png';
-
-export interface Props {
-    serviceCards?: ServiceCard[];
-    sectionTitle?: string;
-    sectionId?: string;
-}
-
-const DEFAULT_SERVICES: ServiceCard[] = [
-    {
-        title: 'IT Consulting',
-        description: "We offer IT consulting services focused on identifying opportunities for technological improvement, optimizing infrastructure, and aligning digital solutions with your business's strategic objectives.",
-        img: ItServiceLogo.src,
-        bgImage: ItServiceImage.src,
-        buttons: [
-            {
-                text: 'Schedule',
-                icon: true,
-                variant: 'secondaryTurquoise',
-                href: '/contact?service=it-consulting',
-                target: '_self',
-                ariaLabel: 'Schedule IT consulting consultation'
-            },
-            {
-                text: 'Learn More',
-                icon: false,
-                variant: 'secondary',
-                href: '/services/it-consulting',
-                target: '_self',
-                ariaLabel: 'Learn more about IT consulting services'
-            }
-        ]
-    },
-    {
-        title: 'Modern Web Development',
-        description: "Combining best practices in responsive design, optimized speed, and cutting-edge technologies like React, Astro, and Tailwind CSS. We create personalized, scalable, and user-centric digital experiences.",
-        img: WebDevelopmentLogo.src,
-        bgImage: WebDevelopmentImage.src,
-        buttons: [
-            {
-                text: 'Schedule',
-                icon: true,
-                variant: 'secondaryTurquoise',
-                href: '/contact?service=web-development',
-                target: '_self',
-                ariaLabel: 'Schedule web development consultation'
-            },
-            {
-                text: 'View Portfolio',
-                icon: false,
-                variant: 'secondary',
-                href: '/portfolio',
-                target: '_self',
-                ariaLabel: 'View our web development portfolio'
-            }
-        ]
-    },
-    {
-        title: 'AI-Powered Automation',
-        description: "We boost operational efficiency through advanced automation powered by artificial intelligence. We design and implement solutions that optimize workflows, integrate chatbots, analyze data in real time, and reduce repetitive tasks.",
-        img: AILogo.src,
-        bgImage: AIAutomationImage.src,
-        buttons: [
-            {
-                text: 'Schedule',
-                variant: 'secondaryTurquoise',
-                icon: true,
-                href: '/contact?service=ai-automation',
-                target: '_self',
-                ariaLabel: 'Schedule AI automation consultation'
-            },
-            {
-                text: 'Contat',
-                variant: 'secondary',
-                icon: false,
-                href: '/services/ai-automation',
-                target: '_self',
-                ariaLabel: 'Explore AI automation solutions'
-            }
-        ]
-    }
-];
-
-const { 
-    serviceCards = DEFAULT_SERVICES,
-    sectionTitle = "Our Services",
-    sectionId = "services"
-} = Astro.props;
-
+import PlusIcon from '@/components/icons/PlusIcon.astro';
 ---
 
-<section 
-    id={sectionId}
-    class="mb-28"
-    aria-labelledby={`${sectionId}-heading`}
->
-    
-    <!-- Screen reader only heading for better accessibility -->
-    <h2 id={`${sectionId}-heading`} class="sr-only">
-        {sectionTitle}
-    </h2>
-    
-    <div class="services-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-4">
-        {serviceCards.map((serviceCard, index) => (
-            <article 
-                class="service-card relative flex flex-col gap-4 border border-neutral-700 hover:border-primary-turquoise rounded-xl px-8 py-6 text-white transition-all duration-300 overflow-hidden hover:shadow-lg hover:shadow-primary-turquoise/20 bg-primary-black group min-h-[320px]"
-                aria-labelledby={`service-${index}-title`}
-            >
-                <img src={serviceCard.bgImage} alt="" class="absolute top-0 left-0 w-full h-full object-cover z-0 opacity-30 blur-[2px] saturate-150 group-hover:scale-[1.05] transition-all duration-500" />
-                <header class="flex items-center gap-4 z-10 translate-y-30 transition-all duration-500 group-hover:translate-y-0">
-                    <div 
-                        class="service-icon w-10 h-10 p-2 rounded-full flex overflow-hidden items-center justify-center shadow-[inset_0px_0px_10px_0_rgba(0,0,0,0.1)] shadow-primary-turquoise bg-gradient-to-br from-primary-turquoise/10 to-primary-turquoise/5 "
-                        role="img"
-                        aria-label={`${serviceCard.title} service icon`}
-                    >
-                        <img 
-                            src={serviceCard.img} 
-                            alt="" 
-                            class="w-8 h-8 object-contain"
-                            loading="lazy"
-                            decoding="async"
-                        />
-                    </div>
-                    <h3 
-                        id={`service-${index}-title`}
-                        class="service-title text-2xl font-semibold leading-tight"
-                    >
-                        {serviceCard.title}
-                    </h3>
-                </header>
+<div class="mt-10 mb-64">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-7xl mx-auto">
+        
+        <!-- IT Consulting Service -->
+        <article class="group flex flex-col border border-primary-turquoise/30  p-4 transition-all duration-300 bg-gradient-to-br from-primary-black to-primary-turquoise/10  rounded-xl">
+            <header class="text-center mb-4 sm:mb-6">
+                <h3 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary-turquoise transition-colors duration-300">
+                    IT Consulting
+                </h3>
+            </header>
+            
+            <div class="flex-1 space-y-4 sm:space-y-6">
+                <p class="text-sm sm:text-base lg:text-lg text-neutral-400 text-pretty leading-relaxed group-hover:text-neutral-300 transition-colors duration-300">
+                    We offer IT consulting services focused on identifying opportunities for technological improvement, optimizing infrastructure, and aligning digital solutions with your business's strategic objectives.
+                </p>
+                <p class="text-sm sm:text-base lg:text-lg text-neutral-400 text-pretty leading-relaxed group-hover:text-neutral-300 transition-colors duration-300">
+                    Strategic diagnosis, roadmap definition, and creation of models that drive data-driven decisions and efficiencies.
+                </p>
+            </div>
+        </article>
 
-                <div class="service-content flex-1 z-10 opacity-0 group-hover:opacity-100 transition-all duration-600">
-                    <p class="service-description text-lg leading-relaxed text-gray-200">
-                        {serviceCard.description}
-                    </p>
-                </div>
-                
-            </article>
-        ))}
+        <!-- Modern Web Development Service -->
+        <article class="group flex flex-col border border-primary-turquoise/30 p-4 transition-all duration-300 bg-gradient-to-br from-primary-black to-primary-turquoise/10  rounded-xl">
+            <header class="text-center mb-4 sm:mb-6">
+                <h3 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary-turquoise transition-colors duration-300">
+                    Modern Web Development
+                </h3>
+            </header>
+            
+            <div class="flex-1 space-y-4 sm:space-y-6">
+                <p class="text-sm sm:text-base lg:text-lg text-neutral-400 text-pretty leading-relaxed group-hover:text-neutral-300 transition-colors duration-300">
+                    Combining best practices in responsive design, optimized speed, and cutting-edge technologies like React, Astro, and Tailwind CSS. We create personalized, scalable, and user-centric digital experiences.
+                </p>
+                <p class="text-sm sm:text-base lg:text-lg text-neutral-400 text-pretty leading-relaxed group-hover:text-neutral-300 transition-colors duration-300">
+                    Robust digital interfaces tailored to your business model, optimized to scale and connect with your users more effectively.
+                </p>
+            </div>
+        </article>
+
+        <!-- AI-Powered Automation Service -->
+        <article class="group flex flex-col border border-primary-turquoise/30 p-4 transition-all duration-300 bg-gradient-to-br from-primary-black to-primary-turquoise/10 md:col-span-2 xl:col-span-1 rounded-xl">
+            <header class="text-center mb-4 sm:mb-6"> 
+                <h3 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary-turquoise transition-colors duration-300">
+                    AI-Powered Automation
+                </h3>
+            </header>
+            
+            <div class="flex-1 space-y-4 sm:space-y-6">
+                <p class="text-sm sm:text-base lg:text-lg text-neutral-400 text-pretty leading-relaxed group-hover:text-neutral-300 transition-colors duration-300">
+                    We boost operational efficiency through advanced automation powered by artificial intelligence. We design and implement solutions that optimize workflows, integrate chatbots, analyze data in real time, and reduce repetitive tasks.
+                </p>
+                <p class="text-sm sm:text-base lg:text-lg text-neutral-400 text-pretty leading-relaxed group-hover:text-neutral-300 transition-colors duration-300">
+                    We design intelligent flows, chatbots and systems that automate repetitive tasks, improve customer response and reduce operating costs.
+                </p>
+            </div>
+        </article>
     </div>
-</section>
+</div>

@@ -1,7 +1,7 @@
 "use client";
-import ItServiceImage from '@/assets/serviceCards/ITConsulting.png';
-import WebDevelopmentImage from '@/assets/serviceCards/WebDevelopment.png';
-import AIAutomationImage from '@/assets/serviceCards/IaAtutomation.png';
+import ItServiceImage from '@/assets/serviceCards/ITConsulting.webp';
+import WebDevelopmentImage from '@/assets/serviceCards/WebDevelopment.webp';
+import AIAutomationImage from '@/assets/serviceCards/IaAtutomation.webp';
 import { Tabs } from "@/components/react/Tabs";
 
 export function ServiceTabs() {

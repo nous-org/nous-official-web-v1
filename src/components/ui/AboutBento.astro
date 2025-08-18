@@ -1,0 +1,78 @@
+---
+import NousLogo from "@/assets/NousLogo.png";
+
+---
+<!-- About Us Bento Grid Section -->
+<section 
+    class="mt-40 sm:mt-48 lg:mt-64 xl:mt-80 "
+    aria-labelledby="about-section-heading"
+>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 sm:gap-6">
+        
+        
+        <article class="md:col-span-2 lg:col-span-6 bg-gradient-to-br border border-primary-turquoise from-primary-blue/20 to-primary-turquoise/20 rounded-xl p-6 sm:p-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-center">
+                
+                <div class="flex justify-center lg:justify-start items-center order-1 lg:order-1">
+                    <img 
+                        src={NousLogo.src} 
+                        alt="Nous Technologies Logo" 
+                        class="w-auto h-16 sm:h-20 lg:h-24" 
+                        loading="lazy"
+                    />   
+                </div>
+                
+                
+                <div class="lg:col-span-2 order-2 lg:order-2">
+                    <h2 
+                        id="about-section-heading"
+                        class="font-archivo-black text-2xl sm:text-3xl lg:text-4xl xl:text-5xl mb-4 sm:mb-6 text-primary-turquoise leading-tight"
+                    >
+                        Our company was founded with a clear vision:
+                    </h2>
+                    <p class="text-base sm:text-lg lg:text-xl text-pretty text-neutral-300 leading-relaxed">
+                        Democratize technology consulting in Latin America. From day one, we set out to bring AI automation, web development, and comprehensive solutions to companies of all sizes: from startups and SMEs to large industries.
+                    </p>
+                </div>
+            </div>
+        </article>
+
+        
+        <article class="md:col-span-1 lg:col-span-2 bg-gradient-to-br border border-primary-turquoise from-primary-blue/20 to-primary-turquoise/20 rounded-xl p-4 sm:p-6">
+            <header class="mb-4 sm:mb-6">
+                <h3 class="font-archivo-black text-xl sm:text-2xl lg:text-3xl xl:text-4xl text-primary-turquoise">
+                    Purpose
+                </h3>
+            </header>
+            <p class="text-sm sm:text-base lg:text-lg text-pretty text-neutral-300 leading-relaxed">
+                We solve real business challenges with intelligent technology, driving efficiency, growth, and competitiveness. Backed by proven success stories, we aim to expand across the region and become a trusted leader in digital transformation through AI and optimization.
+            </p>
+        </article>
+
+        
+        <article class="md:col-span-1 lg:col-span-2 bg-gradient-to-br border border-primary-turquoise from-primary-blue/20 to-primary-turquoise/20 rounded-xl p-4 sm:p-6">
+            <header class="mb-4 sm:mb-6">
+                <h3 class="font-archivo-black text-xl sm:text-2xl lg:text-3xl xl:text-4xl text-primary-turquoise">
+                    Vision
+                </h3>
+            </header>
+            <p class="text-sm sm:text-base lg:text-lg text-pretty text-neutral-300 leading-relaxed">
+                We aim to become the regional benchmark for digital innovation by 2030, delivering AI-driven automation and web development solutions across Latin America. Our goal is to make technology consulting accessible to businesses of all sizes, helping them transform their operations with efficiency, agility, and a clear vision for sustainable growth.
+            </p>
+        </article>
+
+        
+        <article class="md:col-span-2 lg:col-span-2 bg-gradient-to-br border border-primary-turquoise from-primary-blue/20 to-primary-turquoise/20 rounded-xl p-4 sm:p-6">
+            <header class="mb-4 sm:mb-6">
+                <h3 class="font-archivo-black text-xl sm:text-2xl lg:text-3xl xl:text-4xl text-primary-turquoise">
+                    Mission
+                </h3>
+            </header>
+            <p class="text-sm sm:text-base lg:text-lg text-pretty text-neutral-300 leading-relaxed">
+                Our mission is to empower Latin American businesses — from startups to large industries — through tailored web development, AI consulting, and smart automation. Founded in 2025, we focus on solving real business problems with accessible, results-driven technology that helps clients save time, scale efficiently, and boost competitiveness.
+            </p>
+        </article>
+        
+    </div>
+</section>

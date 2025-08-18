@@ -1,0 +1,90 @@
+---
+import SubmitButton from "./Buttons/SubmitButton.astro";
+import { actions } from "astro:actions";
+
+const result = Astro.getActionResult(actions.addSubscription);
+---
+
+<section id="newsletter" class="relative isolate bg-primary-blue py-16 sm:py-24 lg:py-32 lg:mb-64" aria-labelledby="newsletter-heading">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12 sm:gap-y-16 lg:max-w-none lg:grid-cols-2">
+        <header class="max-w-xl lg:max-w-lg">
+          <h2 id="newsletter-heading" class="text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-5xl">Subscribe to our newsletter</h2>
+          <p class="mt-4 text-base text-gray-300 sm:text-lg lg:text-xl">Stay updated with our latest insights on software development and Artificial Intelligence. Get curated content delivered to your inbox.</p>
+          
+          <form method="POST" action={actions.addSubscription} class="mt-6" aria-labelledby="newsletter-heading">
+            <div class="flex max-w-md gap-x-4">
+              <div class="min-w-0 flex-auto">
+                <label for="email-address" class="sr-only">Email address</label>
+                <input 
+                  id="email-address" 
+                  type="email" 
+                  name="email" 
+                  required 
+                  placeholder="Enter your email" 
+                  autocomplete="email"
+                  aria-describedby={result?.error ? "email-error" : undefined}
+                  aria-invalid={result?.error ? "true" : "false"}
+                  class="w-full rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6 transition-colors duration-200" 
+                />
+              </div>
+              <SubmitButton
+                variant="primaryPurple"
+                text="Subscribe"
+                type="submit"
+              />
+            </div>
+            
+            
+            {result?.error && (
+              <div id="email-error" role="alert" class="mt-3 text-sm text-red-400" aria-live="polite">
+                <svg class="inline w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+                </svg>
+                {"Please check your email address and try again."}
+              </div>
+            )}
+            
+            {result?.data && (
+              <div role="alert" class="mt-3 text-sm text-green-400" aria-live="polite">
+                <svg class="inline w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.236 4.53L8.53 10.53a.75.75 0 00-1.06 1.061l2.03 2.03a.75.75 0 001.137-.089l3.857-5.401z" clip-rule="evenodd" />
+                </svg>
+                {result.data.message || "Thank you for subscribing! You'll receive our latest updates."}
+              </div>
+            )}
+          </form>
+        </header>
+        <dl class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-10 lg:pt-2">
+          <div class="flex flex-col items-start">
+            <div class="rounded-md bg-white/5 p-2 ring-1 ring-white/10 transition-colors duration-200 hover:bg-white/10">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 text-white">
+                <path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <dt class="mt-4 text-base font-semibold text-white sm:text-lg">Weekly articles</dt>
+            <dd class="mt-2 text-sm text-gray-400 sm:text-base/7">Every week we publish a short, well-curated article related to software development and Artificial Intelligence.</dd>
+          </div>
+          <div class="flex flex-col items-start">
+            <div class="rounded-md bg-white/5 p-2 ring-1 ring-white/10 transition-colors duration-200 hover:bg-white/10">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 text-white">
+                <path d="M10.05 4.575a1.575 1.575 0 1 0-3.15 0v3m3.15-3v-1.5a1.575 1.575 0 0 1 3.15 0v1.5m-3.15 0 .075 5.925m3.075.75V4.575m0 0a1.575 1.575 0 0 1 3.15 0V15M6.9 7.575a1.575 1.575 0 1 0-3.15 0v8.175a6.75 6.75 0 0 0 6.75 6.75h2.018a5.25 5.25 0 0 0 3.712-1.538l1.732-1.732a5.25 5.25 0 0 0 1.538-3.712l.003-2.024a.668.668 0 0 1 .198-.471 1.575 1.575 0 1 0-2.228-2.228 3.818 3.818 0 0 0-1.12 2.687M6.9 7.575V12m6.27 4.318A4.49 4.49 0 0 1 16.35 15m.002 0h-.002" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <dt class="mt-4 text-base font-semibold text-white sm:text-lg">No spam</dt>
+            <dd class="mt-2 text-sm text-gray-400 sm:text-base/7">We are committed to not spamming you with annoying emails.</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+    
+    
+    <div aria-hidden="true" class="absolute inset-0 -z-10 pointer-events-none">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 blur-3xl xl:-top-6">
+        <div 
+          style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)" 
+          class="aspect-[1155/678] w-[90vw] max-w-[1155px] min-w-[320px] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:w-[80vw] md:w-[70vw] lg:w-[60vw] xl:w-[1155px]"
+        ></div>
+      </div>
+    </div>
+  </div>

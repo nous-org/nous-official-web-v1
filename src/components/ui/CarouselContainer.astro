@@ -1,0 +1,49 @@
+---
+import { Carousel } from '@/components/react/Carousel';
+import chatBotFlows from '@/assets/chatBotFlows.webp'
+import webDevelopment from '@/assets/webDevelopment.webp'
+import aiAutomation from '@/assets/aiAutomatization.webp'
+interface Slide {
+    title: string;
+    button: string;
+    src: string;
+    href?: string;
+    target?: '_blank' | '_self' | '_parent' | '_top';
+    ariaLabel?: string;
+}
+const slides: Slide[] = [
+    {
+        title: "Chatbot flows",
+        button: "Demo",
+        href: '/contact',
+        target: '_self',
+        ariaLabel: 'Button to request ademo or contact',
+        src:  chatBotFlows.src      
+    },
+    {
+        title: "AI Automation",
+        button: "Talk to us",
+        src: aiAutomation.src,
+        href: '/contact',
+        target: '_self',
+        ariaLabel: 'Button to request ademo or contact',
+    },
+    {
+        title: "Custom Web Development",
+        button: "Portfolio",
+        src: webDevelopment.src,
+        href: '/portfolio',
+        target: '_self',
+        ariaLabel: 'Button to view our web development portfolio',
+    },
+    
+]
+---
+<div class="overflow-hidden md:h-[78vh] mt-52 relative"
+    >
+    <div class="absolute inset-0 top-5 bg-gradient-to-b from-primary-blue via-primary-purple to-primary-black [mask-image:radial-gradient(ellipse_at_center_40%,black_10%,transparent_60%)] opacity-100 z-0"/>
+    <Carousel 
+    slides={slides} 
+    client:load 
+    />
+</div>

@@ -1,0 +1,57 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import ContentPagesHero from "@/components/ui/ContentPagesHero.astro";
+import PricingCards from "@/components/ui/PricingCards.astro";
+import type { Button } from "@/types/callToAction";
+import ContactCta from "@/components/ui/ContactCta.astro";
+import SubscribeToNewsletter from "@/components/ui/SubscribeToNewsLetter.astro";
+import Contact from "@/components/ui-main-components/Contact.astro";
+import FrequentlyQuestions from "@/components/ui/FrequentlyQuestions.astro";
+
+interface Hero {
+    title: string;
+    subtitle: string;
+    buttons: Button[];
+}
+const HERO: Hero = {
+    title: "So what does it cost?",
+    subtitle:
+        "Smart AI automation tools, consulting, and web development tailored to your needs.",
+    buttons: [
+        {
+            text: "Contact",
+            variant: "secondary",
+            href: "/contact",
+            scheduleIcon: false,
+            strokeColor: "#060114",
+            arrowIcon: true,
+            target: "_self",
+            ariaLabel: "Contact",
+        },
+        {
+            text: "Schedule",
+            variant: "secondaryTurquoise",
+            href: "/contact",
+            scheduleIcon: true,
+            strokeColor: "#1AD6B3",
+            arrowIcon: false,
+            target: "_self",
+            ariaLabel: "Request a demo",
+        },
+    ],
+};
+const { title, subtitle, buttons } = HERO;
+---
+
+<Layout title="Pricing - Nous Technologies" backgroundType="primary" useContainer={true} showAurora={false} paddingType="normal">
+    
+    <ContentPagesHero title={title} subtitle={subtitle} buttons={buttons} />
+
+    <PricingCards />
+
+    <FrequentlyQuestions />
+
+    <SubscribeToNewsletter />
+
+    <Contact />
+</Layout>

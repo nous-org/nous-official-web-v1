@@ -1,0 +1,113 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { ButtonVariant } from '@/components/react/Buttons/ButtonVariant';
+---
+
+<Layout title="Portfolio - Nous Technologies" backgroundType="primary" useContainer={true} showAurora={false} paddingType="normal">
+    <main class="min-h-screen flex items-center justify-center px-4 pt-44 mb-44">
+        <div class="max-w-4xl mx-auto text-center">
+        
+            
+
+            <!-- Main Heading -->
+            <header class="mb-8">
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-archivo-black mb-6">
+                    <span class="bg-gradient-to-r from-primary-turquoise to-primary-purple bg-clip-text text-transparent">
+                        Portfolio
+                    </span>
+                    <span class="text-white block mt-2">
+                        Coming Soon
+                    </span>
+                </h1>
+                
+                <p class="text-lg sm:text-xl lg:text-2xl text-neutral-300 leading-relaxed max-w-3xl mx-auto">
+                    We're curating our best work to showcase innovative AI solutions, custom web applications, 
+                    and automation projects that have transformed businesses.
+                </p>
+            </header>
+
+            <!-- Project Categories Preview -->
+            <section class="mb-12">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                    <article class="p-6 rounded-xl border border-neutral-700 bg-gradient-to-br from-primary-black/50 to-primary-purple/5">
+                        <div class="w-8 h-8 text-primary-purple mb-4">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-white mb-2">AI Chatbots</h3>
+                        <p class="text-sm text-neutral-400">Intelligent conversational interfaces that enhance customer experience</p>
+                    </article>
+
+                    <article class="p-6 rounded-xl border border-neutral-700 bg-gradient-to-br from-primary-black/50 to-primary-turquoise/5">
+                        <div class="w-8 h-8 text-primary-turquoise mb-4">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Web Applications</h3>
+                        <p class="text-sm text-neutral-400">Modern, responsive web solutions built with cutting-edge technologies</p>
+                    </article>
+
+                    <article class="p-6 rounded-xl border border-neutral-700 bg-gradient-to-br from-primary-black/50 to-primary-purple/5">
+                        <div class="w-8 h-8 text-primary-purple mb-4">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Automation Systems</h3>
+                        <p class="text-sm text-neutral-400">Workflow automation solutions that streamline business processes</p>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Stats Preview -->
+            <section class="mb-12 mt-20">
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-12 max-w-3xl mx-auto">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-primary-turquoise mb-2">15+</div>
+                        <div class="text-sm text-neutral-400">Projects Completed</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-primary-purple mb-2">8+</div>
+                        <div class="text-sm text-neutral-400">Happy Clients</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-primary-turquoise mb-2">3</div>
+                        <div class="text-sm text-neutral-400">Countries Served</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-primary-purple mb-2">100%</div>
+                        <div class="text-sm text-neutral-400">Success Rate</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Call to Action -->
+            <footer class="space-y-6">
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <ButtonVariant
+                        text="View Our Work"
+                        variant="primaryPurple"
+                        href="/products"
+                        target="_self"
+                        ariaLabel="View our current products and demos"
+                        client:load
+                    />
+                    <ButtonVariant
+                        text="Start Your Project"
+                        variant="secondaryTurquoise"
+                        href="/contact"
+                        target="_self"
+                        ariaLabel="Contact us to start your project"
+                        client:load
+                    />
+                </div>
+                
+                <p class="text-sm text-neutral-500">
+                    Ready to see our work in action? Check out our current products or start your own project.
+                </p>
+            </footer>
+        </div>
+    </main>
+</Layout>

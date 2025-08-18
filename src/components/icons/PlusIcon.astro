@@ -1,0 +1,19 @@
+---
+interface Props {
+    width?: string | number;
+    height?: string | number;
+    className?: string;
+    strokeColor?: string;
+    ariaLabel?: string;
+}
+
+const { 
+    width = "40", 
+    height = "40", 
+    strokeColor = "#ffffff",
+    className = "",
+    ariaLabel = "Nous Technologies animated logo"
+} = Astro.props;
+
+---
+<svg width={width} height={height} viewBox="0 0 24 24" class={className} aria-label={ariaLabel}> <path fill={strokeColor} d="M11 13H6q-.425 0-.712-.288T5 12t.288-.712T6 11h5V6q0-.425.288-.712T12 5t.713.288T13 6v5h5q.425 0 .713.288T19 12t-.288.713T18 13h-5v5q0 .425-.288.713T12 19t-.712-.288T11 18z"/></svg>

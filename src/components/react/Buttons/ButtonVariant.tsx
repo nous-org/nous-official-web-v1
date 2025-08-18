@@ -10,9 +10,11 @@ interface ButtonVariantProps {
     width?: string;
     target?: '_blank' | '_self' | '_parent' | '_top';
     ariaLabel?: string;
+    isActionButton?: boolean;
 }
 
 export const ButtonVariant: React.FC<ButtonVariantProps> = ({
+  
   target = '_self',
   width = '',
   href = '#',
@@ -21,7 +23,8 @@ export const ButtonVariant: React.FC<ButtonVariantProps> = ({
   className = '',
   icon = false,
   strokeColor = '#8458FF',
-  ariaLabel = 'Button'
+  ariaLabel = 'Button',
+
 }) => {
   const baseStyles = `px-5 py-1 font-medium rounded-full transition-colors group flex justify-center items-center gap-2 w-auto ${width ? `md:w-${width}` : ''}`;
   

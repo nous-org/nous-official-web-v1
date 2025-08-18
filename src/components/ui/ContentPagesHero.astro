@@ -1,0 +1,129 @@
+---
+import ColorDivider from "@/components/ui/ColorDivider.astro";
+import NousLogo from "@/assets/NousLogo.png";
+import ButtonVariant from "@/components/ui/Buttons/ButtonVariant.astro";
+import VerticalColorDivider from "@/components/ui/VerticalColorDivider.astro";
+import type {Button} from "@/types/callToAction";
+import { ShootingStars } from "../react/ShootingStars";
+import { StarsBackground } from "../react/StarBackground";
+
+interface Props {
+    colorDivider?: "primary-purple" | "primary-turquoise";
+    title?: string;
+    text?: string;
+    subtitle?: string;
+    buttons?: Button[];
+}
+
+const { colorDivider = "primary-purple", title = "About", text = "", subtitle = "We are your intelligent automation, custom web development, and AI consulting team that grows with you.", 
+buttons = [
+    {
+        text: "Services",
+        scheduleIcon: false,
+        arrowIcon:  true,
+        strokeColor: "",
+        variant: "secondary",
+        href: "#",
+        target: "_self",
+        ariaLabel: "Services"
+    },
+    {
+        text: "Contact",
+        scheduleIcon: false,
+        arrowIcon:false,
+        strokeColor: "",
+        variant: "secondaryTurquoise",
+        href: "#",
+        target: "_self",
+        ariaLabel: "Contact"
+    }
+] } = Astro.props as Props;
+---
+
+<section
+    id="about"
+    aria-labelledby="about-heading"
+    class="container max-w-3xl pt-44 relative"
+>
+    <article class="relative flex flex-col overflow-hidden">
+        <div
+            role="presentation"
+            aria-hidden="true"
+            class="pointer-events-none absolute left-0 top-0 z-10 h-full w-[2px]"
+        >
+            <VerticalColorDivider colorDivider={colorDivider} />
+        </div>
+
+        <div
+            role="presentation"
+            aria-hidden="true"
+            class="pointer-events-none absolute right-0 top-0 z-10 h-full w-[2px]"
+        >
+            <VerticalColorDivider colorDivider={colorDivider} />
+        </div>
+
+        <figure class="mr-20 mb-8 px-8">
+            <img
+                src={NousLogo.src}
+                width={NousLogo.width}
+                height={NousLogo.height}
+                alt="Nous, advanced automation & AI consultancy logo"
+                class="h-auto w-full min-w-[70%]"
+                transition:name="hero-image"
+            />
+        </figure>
+
+        <ColorDivider colorDivider={colorDivider} />
+
+        <header class="z-0 py-8">
+            <h2
+                id="about-heading"
+                class="font-archivo-black text-4xl sm:text-6xl md:text-7xl font-bold px-8"
+            >
+                {title}
+            </h2>
+
+            <p class="mt-4 text-lg sm:text-2xl font-archivo-black px-8">
+                {subtitle}
+            </p>
+
+            <p class="mt-4 text-lg sm:text-xl text-neutral-400 px-8">
+                {text}
+            </p>
+        </header>
+
+        <ColorDivider colorDivider={colorDivider} />
+
+        <nav aria-label="Primary actions" class="py-8 flex gap-4 px-8">
+            {buttons.map((button) => (
+                <ButtonVariant
+                   
+                    scheduleIcon={button.scheduleIcon}
+                    arrowIcon={button.arrowIcon}
+                    text={button.text}
+                    variant={button.variant}
+                    href={button.href}
+                    target={button.target}
+                    strokeColor={button.strokeColor}
+                    ariaLabel={button.ariaLabel}
+                    
+                />
+            ))}
+        </nav>
+    </article>
+    
+</section>
+<!-- Background Effects with Proper Masking -->
+<div class="absolute inset-0 pointer-events-none overflow-hidden z-[-1]">
+    <div class="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center_10%,black_20%,transparent_70%)] opacity-60">
+        <ShootingStars client:load 
+        minDelay={1000}
+        maxDelay={1500}
+        starColor="#1AD6B3"
+        starHeight={2}
+        starWidth={20}
+       />
+        <StarsBackground client:load />
+    </div>
+</div>
+

@@ -11,7 +11,7 @@ const {
 
 <section class={className} aria-labelledby="cta-heading">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full relative">
-
+        
         {sections?.map((section, index) => (
             <article class={`flex flex-col gap-4 ${section.style.background} ${section.style.textColor} p-4 md:p-6 rounded-xl relative overflow-hidden shadow-[0_0_100px_0_rgba(0,0,0,0.5)] shadow-white/14`}>
                 <div class="space-y-2">
@@ -24,13 +24,13 @@ const {
                         </h3>
                     )}
                 </div>
-                <p class="text-lg md:text-xl">{section.description}</p>
+                <p class="text-lg md:text-xl text-neutral-400">{section.description}</p>
                 <footer class="flex flex-col sm:flex-col lg:flex-row gap-4 mt-2">
                     {section.buttons.map(button => (
                         <ButtonVariant
                             text={button.text}
                             variant={button.variant}
-                            scheduleIcon={button.icon}
+                            arrowIcon={button.arrowIcon}
                             href={button.href}
                             target={button.target}
                             ariaLabel={button.ariaLabel}

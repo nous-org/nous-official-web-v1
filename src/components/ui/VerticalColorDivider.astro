@@ -1,0 +1,20 @@
+---
+interface Props {
+  colorDivider?: 'primary-purple' | 'primary-turquoise';
+}
+
+const { colorDivider = 'primary-purple' } = Astro.props as Props;
+---
+
+
+      {colorDivider === 'primary-purple' ? (
+        <>
+          <div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary-purple to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary-purple to-transparent blur-sm"></div>
+        </>
+      ) : (
+        <>
+          <div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary-turquoise/50 to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary-turquoise to-transparent blur-sm"></div>
+        </>
+      )}
