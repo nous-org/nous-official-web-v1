@@ -4,13 +4,13 @@ import ContentPagesHero from "@/components/ui/ContentPagesHero.astro";
 import type { Button } from "@/types/callToAction";
 import CarouselContainer from "@/components/ui/CarouselContainer.astro";
 import { StickyServices } from "@/components/react/StickyServices";
-import ContactCta from "@/components/ui/ContactCta.astro";
 import { RippleCta } from "@/components/react/RippleCta";
 import SubscribeToNewsletter from "@/components/ui/SubscribeToNewsLetter.astro";
 import Contact from "@/components/ui-main-components/Contact.astro";
 import BreadcrumbSchema from "@/components/seo/BreadCrumbs.astro";
 import ServiceSchema from "@/components/seo/ServicesSchema.astro";
 
+export const prerender = false;
 interface Hero {
     title: string;
     subtitle: string;

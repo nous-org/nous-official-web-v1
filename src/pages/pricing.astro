@@ -3,13 +3,13 @@ import Layout from "@/layouts/Layout.astro";
 import ContentPagesHero from "@/components/ui/ContentPagesHero.astro";
 import PricingCards from "@/components/ui/PricingCards.astro";
 import type { Button } from "@/types/callToAction";
-import ContactCta from "@/components/ui/ContactCta.astro";
 import SubscribeToNewsletter from "@/components/ui/SubscribeToNewsLetter.astro";
 import Contact from "@/components/ui-main-components/Contact.astro";
 import FrequentlyQuestions from "@/components/ui/FrequentlyQuestions.astro";
 import BreadcrumbSchema from "@/components/seo/BreadCrumbs.astro";
 import ServiceSchema from "@/components/seo/ServicesSchema.astro";
 
+export const prerender = false;
 interface Hero {
     title: string;
     subtitle: string;
