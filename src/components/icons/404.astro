@@ -1,0 +1,79 @@
+---
+interface Props {
+  width?: string | number;
+  height?: string | number;
+  className?: string;
+  animationDuration?: string; // CSS time, e.g. '4s'
+  ariaLabel?: string;
+}
+
+const {
+  width = 846,
+  height = 492,
+  className = '',
+  animationDuration = '4s',
+  ariaLabel = '404 - Page Not Found'
+} = Astro.props;
+
+// Unique gradient id to avoid collisions when used multiple times
+const gradientId = `nf-logo-gradient-${Math.random().toString(36).slice(2)}`;
+---
+
+<svg width={width} height={height} viewBox="0 0 846 492" fill="none" class={`notfound-animated-logo ${className}`} role="img" aria-label={ariaLabel}>
+  <!-- Outer rings (apply animated gradient fill like AnimatedLogo) -->
+  <path d="M422.927 118.484C494.878 118.484 553.205 176.812 553.205 248.763C553.205 320.713 494.878 379.041 422.927 379.041C350.976 379.041 292.649 320.713 292.649 248.763C292.649 176.812 350.976 118.484 422.927 118.484ZM422.648 141.359C363.177 141.36 314.966 189.571 314.966 249.042C314.966 308.513 363.177 356.723 422.648 356.724C482.119 356.724 530.33 308.513 530.33 249.042C530.33 189.571 482.119 141.359 422.648 141.359Z" fill={`url(#${gradientId})`} />
+
+  <!-- Center eye/dot: animate blink/pulse -->
+  <circle class="nf-eye" cx="422.927" cy="248.764" r="15.9011" fill={`url(#${gradientId})`} style={`animation-duration: ${animationDuration}`} />
+
+  <!-- Left 4 -->
+  <path d="M138.997 378V283.951L139.752 272.619V138.533L47.2136 260.533H154.861L170.724 258.644H234.557V300.947H10.1981V245.802L111.046 111.715H188.099V378H138.997Z" fill={`url(#${gradientId})`} />
+
+  <!-- Right 4 -->
+  <path d="M741.869 378.051V284.001L742.624 272.67V138.583L650.085 260.583H757.732L773.596 258.695H837.429V300.998H613.07V245.853L713.918 111.766H790.971V378.051H741.869Z" fill={`url(#${gradientId})`} />
+
+  <!-- Gradient definition -->
+  <defs>
+    <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="492" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1AD6B3" />
+      <stop offset="1" stop-color="#8458FF" />
+    </linearGradient>
+  </defs>
+</svg>
+
+<style>
+  .notfound-animated-logo {
+    width: 100%;
+    height: auto;
+    max-width: 846px; /* responsive cap */
+    transition: transform 0.3s ease;
+  }
+
+
+  /* Blink/pulse similar to AnimatedLogo, respects reduced motion */
+  .nf-eye {
+    animation: nfBlink 4s infinite ease-in-out;
+    transform-origin: 422.927px 248.764px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nf-eye { animation: none; }
+  }
+  @keyframes nfBlink {
+    0%, 88%, 100% {
+      transform: scaleY(1) scale(1);
+      opacity: 1;
+    }
+    92% {
+      transform: scaleY(0.1) scale(0.95);
+      opacity: 0.5;
+    }
+  }
+
+  /* Smaller screens */
+  @media (max-width: 640px) {
+    .notfound-animated-logo { max-width: 320px; }
+  }
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .notfound-animated-logo { max-width: 560px; }
+  }
+</style>

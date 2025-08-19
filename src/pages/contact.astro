@@ -1,6 +1,6 @@
 ---
-import SectionContact from "@/components/ui-main-components/Contact.astro"
-import Layout from "@/layouts/Layout.astro"
+import SectionContact from "@/components/ui-main-components/Contact.astro";
+import Layout from "@/layouts/Layout.astro";
 import type { Button } from "@/types/callToAction";
 import ContentPagesHero from "@/components/ui/ContentPagesHero.astro";
 
@@ -10,10 +10,32 @@ interface Hero {
     text: string;
     buttons: Button[];
 }
+
+const breadcrumbs = [
+    { name: "Home", url: "/" },
+    { name: "Contact", url: "/contact" },
+];
+
+// Schema para información de contacto
+const contactSchema = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    mainEntity: {
+        "@type": "Organization",
+        name: "Nous Technologies",
+        contactPoint: {
+            "@type": "ContactPoint",
+            telephone: "+506-6186-5634",
+            contactType: "customer service",
+            email: "contacto@nous.cr",
+            availableLanguage: ["English", "Spanish"],
+        },
+    },
+};
+
 const HERO: Hero = {
     title: "Any question about?",
-    subtitle:
-        "Let's talk about your next big project",
+    subtitle: "Let's talk about your next big project",
     text: "We're here to listen, advise, and create tailored solutions with AI, web development, and intelligent software. Contact us and let's take the first step together!",
     buttons: [
         {
@@ -41,8 +63,28 @@ const HERO: Hero = {
 const { title, subtitle, text, buttons } = HERO;
 ---
 
-
-<Layout title="Nous Technologies: AI & Automation" backgroundType="primary" showAurora={false} useContainer={true}>
-    <ContentPagesHero title={title} subtitle={subtitle} text={text} buttons={buttons} />
+<Layout
+    title="Nous Technologies: AI & Automation"
+    backgroundType="primary"
+    showAurora={false}
+    useContainer={true}
+    canonical="/contact"
+    ogImage="/images/og-default.jpg"
+    tags={[
+        "contact",
+        "consultation",
+        "quote",
+        "AI consulting",
+        "web development",
+    ]}
+    customSchema={contactSchema}
+    includeOrganizationSchema={false}
+>
+    <ContentPagesHero
+        title={title}
+        subtitle={subtitle}
+        text={text}
+        buttons={buttons}
+    />
     <SectionContact />
 </Layout>

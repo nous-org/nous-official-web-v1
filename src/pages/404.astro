@@ -1,0 +1,45 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import NotFoundIcon from "@/components/icons/404.astro";
+import ButtonVariant from "@/components/ui/Buttons/ButtonVariant.astro";
+---
+
+<Layout
+    title="404 - Page Not Found"
+    backgroundType="primary"
+    showAurora={true}
+    useContainer={true}
+    paddingType="normal"
+>
+    <section
+        class="flex flex-col items-center justify-center min-h-screen space-y-4"
+    >
+        <NotFoundIcon />
+        <p class="text-4xl font-bold text-white mb-4">Ooops! Page Not Found</p>
+        <p class="text-neutral-400 text-lg mb-8">
+            It seems you are lost, don't worry we are here to help you
+        </p>
+        <div class="flex gap-4">
+            <ButtonVariant
+                text="Home"
+                variant="secondary"
+                href="/"
+                scheduleIcon={false}
+                strokeColor="#060114"
+                arrowIcon={true}
+                target="_self"
+                ariaLabel="Home"
+            />
+            <ButtonVariant
+                text="Contact us"
+                variant="secondaryTurquoise"
+                href="/contact"
+                scheduleIcon={false}
+                strokeColor="#1AD6B3"
+                arrowIcon={true}
+                target="_self"
+                ariaLabel="Contact us"
+            />
+        </div>
+    </section>
+</Layout>

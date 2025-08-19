@@ -1,0 +1,144 @@
+---
+import ContentPagesHero from '@/components/ui/ContentPagesHero.astro';
+import Layout from '@/layouts/Layout.astro';
+import type { Button } from "@/types/callToAction";
+import { getCollection } from 'astro:content';
+
+// Cargar toda la colección y seleccionar por slug (o caer al primero si cambia el nombre)
+const entries = await getCollection('termsandconditions');
+const termsEntry = entries.find((e: any) => e.slug === 'termsandconditions') ?? entries[0];
+
+if (!termsEntry) {
+  throw new Error('No entries found in termsandconditions collection');
+}
+
+const { Content } = await termsEntry.render();
+const { data } = termsEntry;
+interface Hero {
+    title: string;
+    subtitle: string;
+    text: string;
+    buttons: Button[];
+}
+const HERO: Hero = {
+    title: data.title,
+    subtitle: data.description,
+    text: "",
+    buttons: [
+        {
+            text: "Home",
+            variant: "secondary",
+            href: "/",
+            scheduleIcon: false,
+            strokeColor: "#060114",
+            arrowIcon: true,
+            target: "_self",
+            ariaLabel: "Home",
+        },
+        {
+            text: "Services",
+            variant: "secondaryTurquoise",
+            href: "/services",
+            scheduleIcon: false,
+            strokeColor: "#060114",
+            arrowIcon: false,
+            target: "_self",
+            ariaLabel: "Services",
+        },
+    ],
+};
+const { title, subtitle, text, buttons } = HERO;
+---
+<Layout title={data.title} backgroundType="primary" showAurora={false} useContainer={true}>
+    <ContentPagesHero title={title} subtitle={subtitle} text={text} buttons={buttons} />
+  <!-- Metadata del documento -->
+  <div class="mb-8 p-4 rounded-lg border-l-4 border-primary-turquoise mt-64">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-primary-turquoise">
+      <div>
+        <strong>Effective Date:</strong> {data.effectiveDate}
+      </div>
+      <div>
+        <strong>Last Updated:</strong> {data.lastUpdated}
+      </div>
+      <div>
+        <strong>Language:</strong> {data.language}
+      </div>
+      <div>
+        <strong>Company:</strong> {data.company.name}
+      </div>
+    </div>
+  </div>
+
+  <!-- Título accesible -->
+  <h1 class="sr-only">{data.title}</h1>
+  
+  <article class="legal-prose prose prose-gray prose-xl max-w-none
+    prose-headings:text-gray-900 prose-headings:font-semibold
+    prose-a:text-primary-turquoise hover:prose-a:text-primary-turquoise/80
+    prose-a:no-underline prose-a:hover:underline
+    prose-hr:border-gray-200 prose-hr:my-12">
+    <Content />
+  </article>
+
+  <!-- Información de contacto desde el frontmatter -->
+  <div class="mt-12 rounded-lg">
+    <h3 class="text-lg font-semibold text-neutral-200 mb-4">Contact Information</h3>
+    <div class="space-y-2 text-neutral-400">
+      <p><strong>Company:</strong> {data.company.name}</p>
+      <p><strong>Address:</strong> {data.company.address}</p>
+      <p><strong>Email:</strong> <a href={`mailto:${data.company.email}`} class="text-primary-turquoise hover:underline">{data.company.email}</a></p>
+      <p><strong>Phone:</strong> <a href={`tel:${data.company.phone}`} class="text-primary-turquoise hover:underline">{data.company.phone}</a></p>
+    </div>
+  </div>
+
+  <div class="mt-16 text-center mb-24">
+    <button 
+      onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+      class="inline-flex items-center px-6 py-3 bg-primary-turquoise text-primary-blue font-medium rounded-lg
+        hover:bg-primary-turquoise/90 transition-colors duration-200 focus:outline-none 
+        focus:ring-2 focus:ring-primary-turquoise/50 focus:ring-offset-2"
+      aria-label="Back to top"
+    >
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+      </svg>
+      Back to Top
+    </button>
+  </div>
+</Layout>
+
+<style is:inline>
+  /* Minimal, page-scoped refinements. Tailwind Typography handles most styles. */
+  article.legal-prose h2 {
+    margin-top: 2.5rem;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.25); /* slate-400/25 */
+  }
+
+  article.legal-prose h3 {
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  article.legal-prose p, article.legal-prose li {
+    margin-bottom: 1rem;
+    color: rgba(211, 211, 211, 0.774);
+  }
+
+  article.legal-prose hr {
+    border: none;
+    height: 1px;
+
+    background: linear-gradient(90deg, rgba(26,214,179,0.2), rgba(132,88,255,0.2));
+    margin: 2rem 0;
+  }
+
+  /* Keep scope tight to avoid leaking styles */
+  @media (max-width: 768px) {
+    article.legal-prose h2 { margin-top: 2rem; }
+    article.legal-prose h3 { margin-top: 1.5rem; }
+  }
+</style>
