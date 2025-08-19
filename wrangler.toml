@@ -7,10 +7,4 @@ compatibility_flags = [ "nodejs_compat" ]
   command = "pnpm build"
   publish = "dist/client"
 
-[env]
-name = "nous-official-web-production"
-route = "nous.cr/*"
 
-[env.preview]
-name = "nous-official-web-preview"
-route = "preview.nous.cr/*"
