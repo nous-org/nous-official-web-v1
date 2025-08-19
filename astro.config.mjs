@@ -2,25 +2,16 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
-import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   site: 'https://nous.cr',
-  output: 'server',
-  adapter: cloudflare({
-    platformProxy: {
-      enabled: true,
-    },
-  }),
+  output: 'static',
   vite: {
     plugins: [tailwindcss()],
     resolve: {
       alias: {
         '@': '/src'
       }
-    },
-    ssr: {
-      noExternal: ['@astrojs/cloudflare/runtime']
     }
   },
   integrations: [
@@ -31,13 +22,13 @@ export default defineConfig({
       lastmod: new Date(),
       entryLimit: 10000,
       customPages: [
-        new URL('https://nous.cr').href,
-        new URL('https://nous.cr/about').href,
-        new URL('https://nous.cr/services').href,
-        new URL('https://nous.cr/products').href,
-        new URL('https://nous.cr/pricing').href,
-        new URL('https://nous.cr/blog').href,
-        new URL('https://nous.cr/contact').href,
+        'https://nous.cr',
+        'https://nous.cr/about',
+        'https://nous.cr/services',
+        'https://nous.cr/products',
+        'https://nous.cr/pricing',
+        'https://nous.cr/blog',
+        'https://nous.cr/contact',
       ]
     })
   ],
