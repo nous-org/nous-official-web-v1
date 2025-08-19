@@ -4,6 +4,8 @@ import Inputs from '@/components/ui/Inputs.astro'
 import SubmitButton from '@/components/ui/Buttons/SubmitButton.astro'
 import { actions } from 'astro:actions'
 
+export const prerender = false;
+
 const chips = [
     { id: 'software-consulting', label: 'Software Consulting', value: 'software-consulting' },
     { id: 'web-development', label: 'Web Development', value: 'web-development' },
