@@ -1,16 +1,31 @@
 ---
-
-import Layout from '@/layouts/Layout.astro';
-import Hero from '@/components/ui-main-components/Hero.astro';
-import FeaturedServices from '@/components/ui-main-components/FeaturedServices.astro';
-import FeaturedProducts from '@/components/ui-main-components/FeaturedProducts.astro';
-import PricingInformation from '@/components/ui-main-components/PricingInformation.astro';
-import Contact from '@/components/ui-main-components/Contact.astro';
-import NousOffer from '@/components/ui-main-components/NousOffer.astro';
-
+import Layout from "@/layouts/Layout.astro";
+import Hero from "@/components/ui-main-components/Hero.astro";
+import FeaturedServices from "@/components/ui-main-components/FeaturedServices.astro";
+import FeaturedProducts from "@/components/ui-main-components/FeaturedProducts.astro";
+import PricingInformation from "@/components/ui-main-components/PricingInformation.astro";
+import Contact from "@/components/ui-main-components/Contact.astro";
+import NousOffer from "@/components/ui-main-components/NousOffer.astro";
 ---
 
-<Layout title="Nous Technologies: AI & Automation" backgroundType="aurora" showAurora={true} useContainer={false} paddingType="zero">
+<Layout
+	title="Nous Technologies: AI & Automation"
+	backgroundType="aurora"
+	showAurora={true}
+	useContainer={false}
+	paddingType="zero"
+	canonical="/"
+	ogImage="/images/og-homepage.jpg"
+	ogImageAlt="Nous Technologies - AI and Web Development Services"
+	tags={[
+		"AI consulting",
+		"web development",
+		"business automation",
+		"Latin America",
+		"digital transformation",
+	]}
+	includeOrganizationSchema={true}
+>
 	<Hero />
 	<NousOffer />
 	<FeaturedServices />

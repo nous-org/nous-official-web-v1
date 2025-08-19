@@ -3,119 +3,178 @@ import Header from '@/components/ui-main-components/Header.astro';
 import Footer from '@/components/ui-main-components/Footer.astro';
 import { AuroraBackground } from '@/components/react/AuroraBackground.tsx';
 import { ClientRouter } from 'astro:transitions';
-
+import SEOBase from '@/components/seo/SEO.astro';
+import OrganizationSchema from '@/components/seo/OrganizationSchema.astro';
 
 interface Props {
-	title?: string;
-	showAurora?: boolean;
-	useContainer?: boolean;
-	backgroundType?: 'aurora' | 'primary' | 'custom';
-	customBgClass?: string
-	overflowType?: 'hidden' | 'visible';
-	paddingType?: 'normal' | 'zero';
+  title?: string;
+  showAurora?: boolean;
+  useContainer?: boolean;
+  backgroundType?: 'aurora' | 'primary' | 'custom';
+  customBgClass?: string;
+  overflowType?: 'hidden' | 'visible';
+  paddingType?: 'normal' | 'zero';
+  
+  // SEO Props (expandidos)
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+  type?: 'website' | 'article' | 'product' | 'profile';
+  publishedTime?: string;
+  modifiedTime?: string;
+  author?: string;
+  tags?: string[];
+  noindex?: boolean;
+  nofollow?: boolean;
+  
+  // Schema Props
+  customSchema?: any;
+  includeOrganizationSchema?: boolean;
 }
 
 const { 
-	title = 'Nous Technologies: AI & Automation',
-	showAurora = true,
-	useContainer = false,
-	backgroundType = 'aurora',
-	customBgClass = '',
-	overflowType = 'visible',
-	paddingType = 'normal'
+  title = 'Nous Technologies: AI & Automation',
+  showAurora = true,
+  useContainer = false,
+  backgroundType = 'aurora',
+  customBgClass = '',
+  overflowType = 'visible',
+  paddingType = 'normal',
+  
+  // SEO
+  description = 'Leading AI consulting and web development company in Latin America. We democratize technology through innovative solutions, automation, and digital transformation.',
+  canonical = Astro.url?.href,
+  ogImage = '/images/og-default.jpg',
+  ogImageAlt = 'Nous Technologies: AI & Automation',
+  type = 'website',
+  publishedTime,
+  modifiedTime,
+  author = 'Nous Technologies',
+  tags = [],
+  noindex = false,
+  nofollow = false,
+  
+  // Schema
+  customSchema,
+  includeOrganizationSchema = true,
 } = Astro.props;
 
-
 const getBgClass = () => {
-	switch (backgroundType) {
-		case 'primary':
-			return 'bg-primary-blue';
-		case 'custom':
-			return customBgClass;
-		case 'aurora':
-		default:
-			return 'bg-[#060114]';
-	}
+  switch (backgroundType) {
+    case 'primary':
+      return 'bg-primary-blue';
+    case 'custom':
+      return customBgClass;
+    case 'aurora':
+    default:
+      return 'bg-[#060114]';
+  }
 };
 
 const getPaddingClass = () => {
-	switch (paddingType) {
-		case 'normal':
-			return 'px-4';
-		case 'zero':
-			return 'px-0';
-		default:
-			return 'px-4';
-	}
+  switch (paddingType) {
+    case 'normal':
+      return 'px-4';
+    case 'zero':
+      return 'px-0';
+    default:
+      return 'px-4';
+  }
 };
-
 
 const getOverflowClass = () => {
-	switch (overflowType) {
-		case 'hidden':
-			return 'overflow-x-hidden';
-		default:
-			return 'overflow-visible';
-	}
+  switch (overflowType) {
+    case 'hidden':
+      return 'overflow-x-hidden';
+    default:
+      return 'overflow-visible';
+  }
 };
+
 const mainClasses = useContainer 
-	? 'max-w-7xl container mx-auto' 
-	: '';
+  ? 'max-w-7xl container mx-auto' 
+  : '';
 ---
+
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<ClientRouter transition:animate="fade"/>
-		<title>{title}</title>
-	</head>
-	<body class={`${getBgClass()} relative ${getOverflowClass()} `}>
-		{showAurora && <AuroraBackground />}
-	
-		<Header />
-		<main class={`${getPaddingClass()} ${mainClasses}`}>
-			<slot />
-		</main>
-		<Footer />
-		
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- SEO Component -->
+    <SEOBase
+      title={title}
+      description={description}
+      canonical={canonical}
+      image={ogImage}
+      imageAlt={ogImageAlt}
+      type={type}
+      publishedTime={publishedTime}
+      modifiedTime={modifiedTime}
+      author={author}
+      tags={tags}
+      schema={customSchema}
+      noindex={noindex}
+      nofollow={nofollow}
+    />
+    
+    <!-- Organization Schema (solo en páginas principales) -->
+    {includeOrganizationSchema && <OrganizationSchema />}
+    
+    <!-- Performance: Preload critical fonts -->
+    <link rel="preload" href="/fonts/TikTokSans.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/ArchivoBlack-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    
+    <!-- Astro Transitions -->
+    <ClientRouter transition:animate="fade"/>
+  </head>
+
+  <body class={`${getBgClass()} relative ${getOverflowClass()}`}>
+    {showAurora && <AuroraBackground client:load/>}
+  
+    <Header />
+    <main class={`${getPaddingClass()} ${mainClasses}`}>
+      <slot />
+    </main>
+    <Footer />
+  </body>
 </html>
 
 <style>
-	@font-face {
-		font-family: 'TikTokSans';
-		src: url('/fonts/TikTokSans.woff2') format('woff2');
-		font-weight: normal;
-		font-style: normal;
-		font-display: swap;
-	}
-	@font-face{
-		font-family: 'ArchivoBlack-Regular';
-		src: url('/fonts/ArchivoBlack-Regular.woff2') format('woff2');
-		font-weight: normal;
-		font-style: normal;
-		font-display: swap;
-		}
+  @font-face {
+    font-family: 'TikTokSans';
+    src: url('/fonts/TikTokSans.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+  
+  @font-face{
+    font-family: 'ArchivoBlack-Regular';
+    src: url('/fonts/ArchivoBlack-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
 
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-		font-family: 'TikTokSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif, 'ArchivoBlack-Regular';
-		color-scheme: dark;
-	}
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'TikTokSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif, 'ArchivoBlack-Regular';
+    color-scheme: dark;
+  }
 
-	* {
-		font-family: 'TikTokSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif, 'ArchivoBlack-Regular';
-		
-	}
-	
+  * {
+    font-family: 'TikTokSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif, 'ArchivoBlack-Regular';
+  }
 </style>
 
 <script>
-	import '../styles/global.css'
+  import '../styles/global.css'
 </script>

@@ -1,0 +1,131 @@
+---
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Nous Technologies",
+  "alternateName": "Nous Tech",
+  "url": "https://nous.cr",
+  "logo": "https://nous.cr/images/logo.png",
+  "description": "Leading AI consulting and web development company in Latin America, specializing in business automation and digital transformation.",
+  "foundingDate": "2025",
+  "founders": [
+    {
+      "@type": "Person",
+      "name": "Roberto Pereira Ugalde",
+      "url": "https://linkedin.com/in/roberto-pereira-ugalde",
+      "role": "CEO/COO/CMO"
+    },
+    {
+      "@type": "Person",
+      "name": "Diego Alessandro Díaz González",
+      "url": "https://x.com/ddiaz_ale",
+      "role": "CTO/CIO"
+    },
+    {
+      "@type": "Person",
+      "name": "Andrey Martinez Zambrana",
+      "url": "https://www.linkedin.com/in/andrey-mart%C3%ADnez/",
+      "role": "CSO/CTIO"
+    }
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "San José",
+    "addressRegion": "San José",
+    "postalCode": "10101",
+    "addressCountry": "CR"
+  },
+  "contactPoint": [
+    {
+      "@type": "ContactPoint",
+      "telephone": "+506-6186-5634",
+      "contactType": "customer service",
+      "email": "contacto@nous.cr",
+      "availableLanguage": ["English", "Spanish"]
+    },
+    {
+      "@type": "ContactPoint",
+      "telephone": "+506-6186-5634",
+      "contactType": "technical support",
+      "email": "contacto@nous.cr",
+      "availableLanguage": ["English", "Spanish"]
+    }
+  ],
+  "sameAs": [
+    "https://github.com/nous-org/",
+    "https://www.facebook.com/nous506",
+    "https://x.com/nous506",
+    "https://www.instagram.com/nous506",
+    "https://www.linkedin.com/company/nous506"
+  ],
+  "serviceArea": {
+    "@type": "Place",
+    "name": "Latin America"
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Nous Technologies Services",
+    "itemListElement": [
+      {
+        "@type": "OfferCatalog",
+        "name": "AI Consulting",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "AI Strategy Consulting",
+              "description": "Strategic AI implementation consulting for businesses"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Machine Learning Development",
+              "description": "Custom ML model development and deployment"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "OfferCatalog",
+        "name": "Web Development",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Custom Web Applications",
+              "description": "Bespoke web application development for businesses, using modern frameworks like Astro, React, and cutting-edge technologies."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "E-commerce Solutions",
+              "description": "Complete e-commerce platform development for businesses, using modern frameworks like Astro, React, and cutting-edge technologies."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "award": [
+    "Best AI Consulting Firm Costa Rica 2024",
+    "Top Web Development Agency Latin America 2024"
+  ],
+  "knowsAbout": [
+    "Artificial Intelligence",
+    "Machine Learning",
+    "Web Development",
+    "Business Automation",
+    "Digital Transformation",
+    "Cloud Computing",
+    "Data Analytics"
+  ]
+};
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />

@@ -1,0 +1,46 @@
+---
+export interface Props {
+  serviceName: string;
+  description: string;
+  price?: string;
+  currency?: string;
+  category: string;
+  provider?: string;
+}
+
+const {
+  serviceName,
+  description,
+  price,
+  currency = 'USD',
+  category,
+  provider = 'Nous Technologies'
+} = Astro.props;
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": serviceName,
+  "description": description,
+  "provider": {
+    "@type": "Organization",
+    "name": provider,
+    "url": "https://nous.cr"
+  },
+  "serviceType": category,
+  "areaServed": {
+    "@type": "Place",
+    "name": "Latin America"
+  },
+  ...(price && {
+    "offers": {
+      "@type": "Offer",
+      "price": price,
+      "priceCurrency": currency,
+      "availability": "https://schema.org/InStock"
+    }
+  })
+};
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />

@@ -1,75 +1,153 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import { ButtonVariant } from "@/components/react/Buttons/ButtonVariant";
+import BreadcrumbSchema from "@/components/seo/BreadCrumbs.astro";
 
+const breadcrumbs = [
+    { name: "Home", url: "/" },
+    { name: "Blog", url: "/blog" },
+];
 ---
-<Layout title="Blog - Nous Technologies" backgroundType="primary" useContainer={true} showAurora={false} paddingType="normal">
-    
-    <main class="min-h-screen flex items-center justify-center px-4 pt-44 mb-44">
-        <div class="max-w-4xl mx-auto text-center">
-            
 
+<Layout
+    title="Blog - Nous Technologies"
+    backgroundType="primary"
+    useContainer={true}
+    showAurora={false}
+    paddingType="normal"
+    canonical="/blog"
+    ogImage="/images/og-blog.jpg"
+    tags={[
+        "AI blog",
+        "technology articles",
+        "web development tutorials",
+        "business automation",
+        "tech insights",
+    ]}
+    includeOrganizationSchema={false}
+>
+    <BreadcrumbSchema items={breadcrumbs} />
+
+    <main
+        class="min-h-screen flex items-center justify-center px-4 pt-44 mb-44"
+    >
+        <div class="max-w-4xl mx-auto text-center">
             <!-- Main Heading -->
             <header class="mb-8">
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-archivo-black mb-6">
-                    <span class="bg-gradient-to-r from-primary-turquoise to-primary-purple bg-clip-text text-transparent">
+                <h1
+                    class="text-4xl sm:text-5xl lg:text-6xl font-archivo-black mb-6"
+                >
+                    <span
+                        class="bg-gradient-to-r from-primary-turquoise to-primary-purple bg-clip-text text-transparent"
+                    >
                         Blog
                     </span>
-                    <span class="text-white block mt-2">
-                        Coming Soon
-                    </span>
+                    <span class="text-white block mt-2"> Coming Soon </span>
                 </h1>
-                
-                <p class="text-lg sm:text-xl lg:text-2xl text-neutral-300 leading-relaxed max-w-3xl mx-auto">
-                    We're crafting insightful articles about AI automation, web development, and technology trends. 
-                    Stay tuned for expert insights and practical guides.
+
+                <p
+                    class="text-lg sm:text-xl lg:text-2xl text-neutral-300 leading-relaxed max-w-3xl mx-auto"
+                >
+                    We're crafting insightful articles about AI automation, web
+                    development, and technology trends. Stay tuned for expert
+                    insights and practical guides.
                 </p>
             </header>
 
             <!-- Features Preview -->
             <section class="mb-12">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-                    <article class="p-6 rounded-xl border border-neutral-700 bg-gradient-to-br from-primary-black/50 to-primary-turquoise/5">
+                <div
+                    class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
+                >
+                    <article
+                        class="p-6 rounded-xl border border-neutral-700 bg-gradient-to-br from-primary-black/50 to-primary-turquoise/5"
+                    >
                         <div class="w-8 h-8 text-primary-turquoise mb-4">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            <svg
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                                ></path>
                             </svg>
                         </div>
-                        <h3 class="text-lg font-semibold text-white mb-2">AI Insights</h3>
-                        <p class="text-sm text-neutral-400">Latest trends and practical applications of artificial intelligence in business</p>
+                        <h3 class="text-lg font-semibold text-white mb-2">
+                            AI Insights
+                        </h3>
+                        <p class="text-sm text-neutral-400">
+                            Latest trends and practical applications of
+                            artificial intelligence in business
+                        </p>
                     </article>
 
-                    <article class="p-6 rounded-xl border border-neutral-700 bg-gradient-to-br from-primary-black/50 to-primary-purple/5">
+                    <article
+                        class="p-6 rounded-xl border border-neutral-700 bg-gradient-to-br from-primary-black/50 to-primary-purple/5"
+                    >
                         <div class="w-8 h-8 text-primary-purple mb-4">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                            <svg
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                                ></path>
                             </svg>
                         </div>
-                        <h3 class="text-lg font-semibold text-white mb-2">Dev Tutorials</h3>
-                        <p class="text-sm text-neutral-400">Step-by-step guides for modern web development and automation tools</p>
+                        <h3 class="text-lg font-semibold text-white mb-2">
+                            Dev Tutorials
+                        </h3>
+                        <p class="text-sm text-neutral-400">
+                            Step-by-step guides for modern web development and
+                            automation tools
+                        </p>
                     </article>
 
-                    <article class="p-6 rounded-xl border border-neutral-700 bg-gradient-to-br from-primary-black/50 to-primary-turquoise/5">
+                    <article
+                        class="p-6 rounded-xl border border-neutral-700 bg-gradient-to-br from-primary-black/50 to-primary-turquoise/5"
+                    >
                         <div class="w-8 h-8 text-primary-turquoise mb-4">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            <svg
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                             </svg>
                         </div>
-                        <h3 class="text-lg font-semibold text-white mb-2">Case Studies</h3>
-                        <p class="text-sm text-neutral-400">Real-world success stories and implementation strategies</p>
+                        <h3 class="text-lg font-semibold text-white mb-2">
+                            Case Studies
+                        </h3>
+                        <p class="text-sm text-neutral-400">
+                            Real-world success stories and implementation
+                            strategies
+                        </p>
                     </article>
                 </div>
             </section>
 
             <!-- Call to Action -->
             <footer class="space-y-6">
-                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <div
+                    class="flex flex-col sm:flex-row gap-4 justify-center items-center"
+                >
                     <ButtonVariant
                         text="Subscribe to our newsletter"
                         variant="primary"
                         ariaLabel="Subscribe to newsletter for blog updates"
                         href="/pricing#newsletter"
-                        
                     />
                     <ButtonVariant
                         text="Contact Us"
@@ -77,15 +155,14 @@ import { ButtonVariant } from "@/components/react/Buttons/ButtonVariant";
                         href="/contact"
                         target="_self"
                         ariaLabel="Contact us for more information"
-                        
                     />
                 </div>
-                
+
                 <p class="text-sm text-neutral-500">
-                    Want to be the first to know? Subscribe to our newsletter for updates.
+                    Want to be the first to know? Subscribe to our newsletter
+                    for updates.
                 </p>
             </footer>
         </div>
     </main>
 </Layout>
-

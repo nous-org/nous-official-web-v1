@@ -1,5 +1,6 @@
 ---
 import ButtonVariant from "./Buttons/ButtonVariant.astro";
+import FAQSchema from "@/components/seo/FaqSchema.astro";
 
 interface FAQItem {
     question: string;
@@ -102,10 +103,16 @@ const FAQ_CATEGORIES: FAQCategory[] = [
         ]
     }
 ];
+
+
+const allFAQs: FAQItem[] = FAQ_CATEGORIES.flatMap(category => category.questions);
 ---
 
+
+<FAQSchema faqs={allFAQs} />
+
 <section class="py-16 sm:py-20 md:py-24 lg:py-32" aria-labelledby="faq-heading">
-    <!-- Section Header -->
+    
     <div class="">
         <header class="text-center mb-12 sm:mb-16 lg:mb-20">
             <h2 id="faq-heading" class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
@@ -116,11 +123,11 @@ const FAQ_CATEGORIES: FAQCategory[] = [
             </p>
         </header>
 
-        <!-- FAQ Categories -->
+        
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12">
             {FAQ_CATEGORIES.map((category, categoryIndex) => (
                 <article class="space-y-6 sm:space-y-8">
-                    <!-- Category Header -->
+                    
                     <header class="border-b border-neutral-800 pb-4 sm:pb-6">
                         <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2 sm:mb-3">
                             {category.title}
@@ -130,7 +137,7 @@ const FAQ_CATEGORIES: FAQCategory[] = [
                         </p>
                     </header>
 
-                    <!-- Questions List -->
+                    
                     <div class="space-y-4 sm:space-y-6" role="list">
                         {category.questions.map((faq, questionIndex) => (
                             <details 
@@ -141,7 +148,7 @@ const FAQ_CATEGORIES: FAQCategory[] = [
                                     <h4 class="text-base sm:text-lg font-semibold text-white pr-4 leading-relaxed group-hover:text-primary-turquoise transition-colors duration-200">
                                         {faq.question}
                                     </h4>
-                                    <!-- Expand/Collapse Icon -->
+                                    
                                     <div class="flex-shrink-0 ml-4">
                                         <svg 
                                             class="w-5 h-5 sm:w-6 sm:h-6 text-neutral-400 transition-all duration-300 group-hover:text-primary-turquoise group-open:rotate-45 group-open:text-primary-turquoise" 
@@ -155,7 +162,7 @@ const FAQ_CATEGORIES: FAQCategory[] = [
                                     </div>
                                 </summary>
                                 
-                                <!-- Answer Content -->
+                                
                                 <div class="px-4 sm:px-6 pb-4 sm:pb-6 pt-0">
                                     <div class="border-t border-neutral-800 pt-4 sm:pt-6">
                                         <p class="text-sm sm:text-base text-neutral-300 leading-relaxed">
@@ -170,7 +177,7 @@ const FAQ_CATEGORIES: FAQCategory[] = [
             ))}
         </div>
 
-        <!-- Contact CTA -->
+        
         <footer class="text-center mt-16 sm:mt-20 lg:mt-24">
             <div class="bg-gradient-to-br from-primary-black/50 to-primary-turquoise/10 border border-primary-turquoise/30 rounded-lg sm:rounded-xl p-6 sm:p-8 lg:p-10">
                 <h3 class="text-3xl sm:text-4xl lg:text-4xl font-bold text-white mb-3 sm:mb-4">
@@ -196,7 +203,7 @@ const FAQ_CATEGORIES: FAQCategory[] = [
 </section>
 
 <style>
-    /* Enhanced accordion animations */
+    
     details[open] summary ~ * {
         animation: slideDown 0.3s ease-out;
     }
@@ -220,12 +227,11 @@ const FAQ_CATEGORIES: FAQCategory[] = [
         }
     }
     
-    /* Smooth hover transitions for better UX */
+    
     details:hover {
         transform: translateY(-2px);
     }
     
-    /* Focus styles for accessibility */
     details summary:focus-visible {
         outline: 2px solid #1AD6B3;
         outline-offset: 2px;
@@ -233,7 +239,7 @@ const FAQ_CATEGORIES: FAQCategory[] = [
 </style>
 
 <script>
-    // Enhanced FAQ interactions with smooth animations and accessibility
+    
     document.addEventListener('DOMContentLoaded', () => {
         const details = document.querySelectorAll('details');
         
@@ -241,13 +247,13 @@ const FAQ_CATEGORIES: FAQCategory[] = [
             const summary = detail.querySelector('summary');
             
             if (summary) {
-                // Enhanced keyboard navigation
+                
                 summary.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
                         detail.open = !detail.open;
                         
-                        // Smooth scroll to opened question for better UX
+                        
                         if (detail.open) {
                             setTimeout(() => {
                                 detail.scrollIntoView({ 
@@ -259,12 +265,12 @@ const FAQ_CATEGORIES: FAQCategory[] = [
                     }
                 });
                 
-                // Close other details when opening one (accordion behavior)
+                
                 summary.addEventListener('click', (e) => {
                     const isCurrentlyOpen = detail.open;
                     
                     if (!isCurrentlyOpen) {
-                        // Optional: Close other open details in the same category
+                        
                         const parentArticle = detail.closest('article');
                         if (parentArticle) {
                             const siblingDetails = parentArticle.querySelectorAll('details[open]');
@@ -275,7 +281,7 @@ const FAQ_CATEGORIES: FAQCategory[] = [
                             });
                         }
                         
-                        // Smooth scroll to opened question
+                        
                         setTimeout(() => {
                             detail.scrollIntoView({ 
                                 behavior: 'smooth', 
@@ -287,14 +293,5 @@ const FAQ_CATEGORIES: FAQCategory[] = [
             }
         });
         
-        // Analytics tracking for FAQ interactions (optional)
-        details.forEach((detail, index) => {
-            detail.addEventListener('toggle', () => {
-                if (detail.open) {
-                    // Track FAQ open events
-                    console.log(`FAQ opened: ${detail.querySelector('h4')?.textContent}`);
-                }
-            });
-        });
     });
 </script>
