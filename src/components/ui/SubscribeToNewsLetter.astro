@@ -1,7 +1,7 @@
 ---
 import SubmitButton from "./Buttons/SubmitButton.astro";
 import { actions } from "astro:actions";
-
+export const prerender = false;
 const result = Astro.getActionResult(actions.addSubscription);
 ---
 
