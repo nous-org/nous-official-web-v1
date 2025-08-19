@@ -5,7 +5,7 @@ import { AuroraBackground } from '@/components/react/AuroraBackground.tsx';
 import { ClientRouter } from 'astro:transitions';
 import SEOBase from '@/components/seo/SEO.astro';
 import OrganizationSchema from '@/components/seo/OrganizationSchema.astro';
-
+import '@/styles/global.css'
 interface Props {
   title?: string;
   showAurora?: boolean;
@@ -175,6 +175,3 @@ const mainClasses = useContainer
   }
 </style>
 
-<script>
-  import '@/styles/global.css'
-</script>
