@@ -7,17 +7,23 @@ compatibility_flags = [ "nodejs_compat" ]
   command = "pnpm build"
   publish = "dist/client"
 
-# KV Namespace for sessions
+# KV Namespace for sessions (you need to create this in Cloudflare Dashboard first)
 [[kv_namespaces]]
 binding = "SESSION"
-id = "SESSION"
-preview_id = "SESSION"
+id = "YOUR_KV_NAMESPACE_ID"  # Replace with your actual KV namespace ID
+preview_id = "YOUR_PREVIEW_KV_NAMESPACE_ID"  # Replace with your preview KV namespace ID
 
-# Add environment specific configurations if needed
+# Required for Cloudflare Pages with SSR
+[site]
+bucket = "dist/client"
+
+# Environment configurations
 [env.production]
 name = "nous-official-web-production"
 route = "nous.cr/*"
+workers_dev = false
 
 [env.preview]
 name = "nous-official-web-preview"
 route = "preview.nous.cr/*"
+workers_dev = true

@@ -4,19 +4,30 @@ import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import cloudflare from '@astrojs/cloudflare';
 
+// https://astro.build/config
 export default defineConfig({
   site: 'https://nous.cr',
-  output: 'hybrid',
+  output: 'server',
   adapter: cloudflare({
     mode: 'directory',
+    runtime: {
+      mode: 'local',
+      bindings: {
+        SESSION: 'SESSION',
+      },
+    },
   }),
   vite: {
     plugins: [tailwindcss()],
     resolve: {
       alias: {
-        '@': '/src'
-      }
-    }
+        '@': '/src',
+      },
+    },
+    ssr: {
+      // Ensure these dependencies are bundled
+      noExternal: ['@astrojs/cloudflare/runtime'],
+    },
   },
   integrations: [
     react(),
@@ -33,8 +44,7 @@ export default defineConfig({
         'https://nous.cr/pricing',
         'https://nous.cr/blog',
         'https://nous.cr/contact',
-      ]
-    })
+      ],
+    }),
   ],
- 
 });
