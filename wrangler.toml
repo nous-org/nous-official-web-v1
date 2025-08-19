@@ -2,11 +2,11 @@ name = "nous-official-web"
 main = "dist/server/entry.mjs"
 compatibility_date = "2023-10-01"
 compatibility_flags = [ "nodejs_compat" ]
+pages_build_output_dir = "dist/client"
 
 [build]
   command = "pnpm build"
   publish = "dist/client"
-  pages_build_output_dir = "dist/server"
 
 # Required for Cloudflare Pages with SSR
 [site]
