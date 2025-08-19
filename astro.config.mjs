@@ -14,6 +14,7 @@ export default defineConfig({
     plugins: [tailwindcss()],
     resolve: {
       alias: {
+        "react-dom/server": "react-dom/server.edge",
         '@': '/src',
       },
     },
@@ -38,3 +39,4 @@ export default defineConfig({
     }),
   ],
 });
+
