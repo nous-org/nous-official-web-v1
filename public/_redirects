@@ -1,5 +1,5 @@
 # Handle client-side routing
-/*  /index.html  200
+/*  /index.astro  200
 
 # Custom error page for 404s
-/* /404.html 404
+/* /404.astro 404
