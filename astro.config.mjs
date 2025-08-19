@@ -6,6 +6,7 @@ import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   site: 'https://nous.cr',
+  output: 'server',
   adapter: cloudflare({
     mode: 'directory',
   }),
