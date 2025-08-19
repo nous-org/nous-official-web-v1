@@ -5,6 +5,8 @@ import type { Button } from "@/types/callToAction";
 import ContentPagesHero from "@/components/ui/ContentPagesHero.astro";
 import BreadcrumbSchema from "@/components/seo/BreadCrumbs.astro";
 
+export const prerender = false;
+
 interface Hero {
     title: string;
     subtitle: string;
