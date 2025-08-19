@@ -6,6 +6,9 @@ import react from '@astrojs/react';
 export default defineConfig({
   site: 'https://nous.cr',
   output: 'static',
+  adapter: cloudflare({
+    mode: 'directory', 
+  }),
   vite: {
     plugins: [tailwindcss()],
     resolve: {
