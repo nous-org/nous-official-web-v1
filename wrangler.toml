@@ -7,13 +7,7 @@ compatibility_flags = [ "nodejs_compat" ]
   command = "pnpm build"
   publish = "dist/client"
 
-[build.upload]
-  format = "service-worker"
-
-[site]
-bucket = "dist/client"
-
-[env.production]
+[env]
 name = "nous-official-web-production"
 route = "nous.cr/*"
 
