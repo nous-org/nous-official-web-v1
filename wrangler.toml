@@ -1,24 +1,10 @@
-name = "nous-official-web"
-main = "dist/server/entry.mjs"
+# wrangler.toml ― PAGES
+name = "nous-official-web"          # opcional en Pages
 compatibility_date = "2023-10-01"
-compatibility_flags = [ "nodejs_compat" ]
-pages_build_output_dir = "dist/client"
+compatibility_flags = ["nodejs_compat"]
+
+# carpeta que produce Astro (debe contener _worker.js y assets)
+pages_build_output_dir = "./dist"
 
 [build]
-  command = "pnpm build"
-  publish = "dist/client"
-
-# Required for Cloudflare Pages with SSR
-[site]
-bucket = "dist/client"
-
-# Environment configurations
-[env.production]
-name = "nous-official-web-production"
-route = "nous.cr/*"
-workers_dev = false
-
-[env.preview]
-name = "nous-official-web-preview"
-route = "preview.nous.cr/*"
-workers_dev = true
+command = "pnpm build"
