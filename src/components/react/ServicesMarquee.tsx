@@ -11,18 +11,18 @@ import ourSolutions from '@/assets/marquee/oursolutions.webp'
 import innovation from '@/assets/marquee/innovation.webp'
 import powerfulTool from '@/assets/marquee/powerfultool.webp'
 import standOut from '@/assets/marquee/standOut.webp'
-import AiConsulting from '@/assets/marquee/AIConsulting.webp'
+import AIConsulting from '@/assets/marquee/AIConsulting.webp'
 export function ServicesMarquee() {
   const images = [
    
     chatBot.src,
     smartProcess.src,
     standOut.src,
-    AiConsulting.src,
+    AIConsulting.src,
     webDev.src,
     futureReady.src,
     modernWebDev.src,
-    AiConsulting.src,
+    AIConsulting.src,
     ourSolutions.src,
     innovation.src,
     powerfulTool.src,
@@ -42,12 +42,12 @@ export function ServicesMarquee() {
     aiAuto.src,
     webDev.src,
     futureReady.src,
-    AiConsulting.src,
+    AIConsulting.src,
     ourSolutions.src,
     innovation.src,
     powerfulTool.src,
     futureReady.src,
-    AiConsulting.src,
+    AIConsulting.src,
     ourSolutions.src,
     innovation.src,
     powerfulTool.src,
