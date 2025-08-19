@@ -6,6 +6,7 @@ compatibility_flags = [ "nodejs_compat" ]
 [build]
   command = "pnpm build"
   publish = "dist/client"
+  pages_build_output_dir = "dist/server"
 
 # Required for Cloudflare Pages with SSR
 [site]
