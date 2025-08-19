@@ -5,6 +5,3 @@ compatibility_flags = ["nodejs_compat"]
 
 # carpeta que produce Astro (debe contener _worker.js y assets)
 pages_build_output_dir = "./dist"
-
-[build]
-command = "pnpm build"
