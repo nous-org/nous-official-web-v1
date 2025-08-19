@@ -4,7 +4,7 @@ import { StickyScroll } from "@/components/react/StickyScroll";
 import AiAutomation from "@/assets/products/AiAuto.webp";
 import SeamlessIntegration from "@/assets/products/SystemIntegration.webp";
 import FutureReadyScalability from "@/assets/products/futureReady.webp";
-import CustomDevelopmentPartnership from "@/assets/products/CustomDev.webp";
+import CustomDevelopmentPartnership from "@/assets/products/customDev.webp";
 
 
 export function StickyServices() {
