@@ -6,10 +6,9 @@ import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   site: 'https://nous.cr',
-  output: 'server',
   adapter: cloudflare({
     mode: 'directory',
-    // ¡Elimina toda la configuración de runtime!
+  
   }),
   vite: {
     plugins: [tailwindcss()],
@@ -18,7 +17,7 @@ export default defineConfig({
         '@': '/src',
       },
     },
-    // ¡Elimina ssr.noExternal!
+   
   },
   integrations: [
     react(),

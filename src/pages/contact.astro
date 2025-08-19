@@ -3,7 +3,8 @@ import SectionContact from "@/components/ui-main-components/Contact.astro";
 import Layout from "@/layouts/Layout.astro";
 import type { Button } from "@/types/callToAction";
 import ContentPagesHero from "@/components/ui/ContentPagesHero.astro";
-
+import BreadcrumbSchema from "@/components/seo/BreadCrumbs.astro";
+export const prerender = false;
 interface Hero {
     title: string;
     subtitle: string;
@@ -80,6 +81,7 @@ const { title, subtitle, text, buttons } = HERO;
     customSchema={contactSchema}
     includeOrganizationSchema={false}
 >
+    <BreadcrumbSchema items={breadcrumbs} />
     <ContentPagesHero
         title={title}
         subtitle={subtitle}

@@ -10,6 +10,9 @@ import WorkProcess from "@/components/ui/WorkProcess.astro";
 import ServiceSchema from "@/components/seo/ServicesSchema.astro";
 import BreadcrumbSchema from "@/components/seo/BreadCrumbs.astro";
 import FrequentlyQuestions from "@/components/ui/FrequentlyQuestions.astro";
+
+export const prerrender = false;
+
 interface Hero {
     title: string;
     subtitle: string;
