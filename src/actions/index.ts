@@ -4,7 +4,6 @@ import { Resend } from 'resend';
 import { addSubscription } from '@/actions/addSubscription';
 
 
-const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
 export const server = {
   addSubscription,
@@ -20,6 +19,8 @@ export const server = {
     }),
     handler: async (input) => {
       try {
+        const resend = new Resend(import.meta.env.RESEND_API_KEY);
+
         const { name, email, subject, message, interests } = input;
         
         
