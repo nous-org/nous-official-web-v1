@@ -93,101 +93,83 @@ import SubmitButton from "./Buttons/SubmitButton.astro";
     </div>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const form = document.getElementById('newsletter-form') as HTMLFormElement;
-      const emailInput = document.getElementById('email-address') as HTMLInputElement;
-      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
-      
-      const errorDiv = document.getElementById('email-error') as HTMLDivElement;
-      const successDiv = document.getElementById('success-message') as HTMLDivElement;
-      const loadingDiv = document.getElementById('loading-message') as HTMLDivElement;
-      const errorMessage = document.getElementById('error-message') as HTMLSpanElement;
-      const successText = document.getElementById('success-text') as HTMLSpanElement;
-    
-      if (!form || !emailInput || !submitBtn || !errorDiv || !successDiv || !loadingDiv) {
-        console.error('Newsletter form: Required elements not found');
-        return;
+  <script is:inline lang="ts">
+   // src/scripts/newsletter.ts
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('newsletter-form') ;
+  if (!form) return;
+
+  const emailInput   = document.getElementById('email-address') ;
+  const submitButton = form.querySelector('button[type="submit"]') ;
+
+  const errorBox   = document.getElementById('email-error');
+  const successBox = document.getElementById('success-message');
+  const loadingBox = document.getElementById('loading-message');
+
+  const errorText   = document.getElementById('error-message');
+  const successText = document.getElementById('success-text');
+
+  let busy = false;
+
+  function hideAll() {
+    errorBox?.classList.add('hidden');
+    successBox?.classList.add('hidden');
+    loadingBox?.classList.add('hidden');
+  }
+
+  function showError(msg) {
+    hideAll();
+    if (errorText) errorText.textContent = msg;
+    errorBox?.classList.remove('hidden');
+  }
+
+  function showSuccess(msg) {
+    hideAll();
+    if (successText) successText.textContent = msg;
+    successBox?.classList.remove('hidden');
+    form.reset();
+  }
+
+  function showLoading() {
+    hideAll();
+    loadingBox?.classList.remove('hidden');
+  }
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    if (busy) return;
+    busy = true;
+
+    const email = emailInput.value.trim();
+    if (!email || !email.includes('@')) {
+      showError('Please enter a valid email address');
+      busy = false;
+      return;
+    }
+
+    showLoading();
+    submitButton.disabled = true;
+
+    const body = new URLSearchParams({ email });
+
+    try {
+      const res     = await fetch('/api/subscribe', { method: 'POST', body });
+      const payload = await res.json();
+
+      if (res.ok && payload.success) {
+        showSuccess(payload.message || 'Subscribed!');
+      } else {
+        showError(payload.message || 'Subscription failed, try again.');
       }
-    
-      function hideAllMessages() {
-        errorDiv.classList.add('hidden');
-        successDiv.classList.add('hidden');
-        loadingDiv.classList.add('hidden');
-      }
-    
-      function showError(message: string) {
-        hideAllMessages();
-        errorMessage.textContent = message;
-        errorDiv.classList.remove('hidden');
-        emailInput.setAttribute('aria-invalid', 'true');
-        emailInput.setAttribute('aria-describedby', 'email-error');
-      }
-    
-      function showSuccess(message: string) {
-        hideAllMessages();
-        successText.textContent = message;
-        successDiv.classList.remove('hidden');
-        emailInput.setAttribute('aria-invalid', 'false');
-        emailInput.removeAttribute('aria-describedby');
-        form.reset();
-      }
-    
-      function showLoading() {
-        hideAllMessages();
-        loadingDiv.classList.remove('hidden');
-      }
-    
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const formData = new FormData(form);
-        const email = formData.get('email') as string;
-    
-        if (!email || !email.includes('@')) {
-          showError('Please enter a valid email address');
-          return;
-        }
-    
-        try {
-          showLoading();
-          if (submitBtn) submitBtn.disabled = true;
-    
-          // Fix: Usar URLSearchParams en lugar de FormData
-          const params = new URLSearchParams();
-          params.append('email', email);
-    
-          const response = await fetch('/api/subscribe', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: params,
-          });
-    
-          const result = await response.json();
-    
-          if (result.success) {
-            showSuccess(result.message);
-          } else {
-            showError(result.message || 'An error occurred. Please try again.');
-          }
-    
-        } catch (error) {
-          console.error('Subscription error:', error);
-          showError('Network error. Please check your connection and try again.');
-        } finally {
-          if (submitBtn) submitBtn.disabled = false;
-        }
-      });
-    
-      emailInput.addEventListener('input', () => {
-        if (!errorDiv.classList.contains('hidden')) {
-          hideAllMessages();
-          emailInput.setAttribute('aria-invalid', 'false');
-          emailInput.removeAttribute('aria-describedby');
-        }
-      });
-    });
+    } catch (err) {
+      showError('Network error, try again.');
+    } finally {
+      submitButton.disabled = false;
+      busy = false;
+    }
+  });
+});
     </script>
 </section>
