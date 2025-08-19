@@ -3,7 +3,7 @@ import ContentPagesHero from '@/components/ui/ContentPagesHero.astro';
 import Layout from '@/layouts/Layout.astro';
 import type { Button } from "@/types/callToAction";
 import { getCollection } from 'astro:content';
-
+export const prerender = true;
 // Cargar toda la colección y seleccionar por slug (o caer al primero si cambia el nombre)
 const entries = await getCollection('termsandconditions');
 const termsEntry = entries.find((e: any) => e.slug === 'termsandconditions') ?? entries[0];

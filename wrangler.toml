@@ -7,4 +7,17 @@ compatibility_flags = [ "nodejs_compat" ]
   command = "pnpm build"
   publish = "dist/client"
 
+# KV Namespace for sessions
+[[kv_namespaces]]
+binding = "SESSION"
+id = "SESSION"
+preview_id = "SESSION"
 
+# Add environment specific configurations if needed
+[env.production]
+name = "nous-official-web-production"
+route = "nous.cr/*"
+
+[env.preview]
+name = "nous-official-web-preview"
+route = "preview.nous.cr/*"
