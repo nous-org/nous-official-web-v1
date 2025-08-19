@@ -46,9 +46,4 @@ export default defineConfig({
     inlineStylesheets: 'auto',
     assets: '_astro',
   },
-
-  server: {
-    host: true,
-    port: 3000,
-  },
 });
