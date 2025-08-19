@@ -11,7 +11,7 @@ import ourSolutions from '@/assets/marquee/oursolutions.webp'
 import innovation from '@/assets/marquee/innovation.webp'
 import powerfulTool from '@/assets/marquee/powerfultool.webp'
 import standOut from '@/assets/marquee/standOut.webp'
-import AiConsulting from '@/assets/marquee/AiConsulting.webp'
+import AiConsulting from '@/assets/marquee/AIConsulting.webp'
 export function ServicesMarquee() {
   const images = [
    
