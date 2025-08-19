@@ -1,0 +1,22 @@
+name = "nous-official-web"
+main = "dist/server/entry.mjs"
+compatibility_date = "2023-10-01"
+compatibility_flags = [ "nodejs_compat" ]
+
+[build]
+  command = "pnpm build"
+  publish = "dist/client"
+
+[build.upload]
+  format = "service-worker"
+
+[site]
+bucket = "dist/client"
+
+[env.production]
+name = "nous-official-web-production"
+route = "nous.cr/*"
+
+[env.preview]
+name = "nous-official-web-preview"
+route = "preview.nous.cr/*"
