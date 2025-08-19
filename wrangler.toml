@@ -1,18 +1,23 @@
 name = "nous-official-web"
-
-compatibility_date = "2025-06-01"
-
-[env.production]
-  [env.production.vars]
-  MJ_API_KEY = "806a9bd92448e8b69e26e72c8e088127"
-  MJ_SECRET_KEY = "070fec5872b66fed24f379257546d49c"
-  
-[site]
-bucket = "./dist"
+main = "dist/server/entry.mjs"
+compatibility_date = "2023-10-01"
+compatibility_flags = [ "nodejs_compat" ]
 
 [build]
-command = "npm run build"
+  command = "pnpm build"
+  publish = "dist/client"
 
-[pages]
-pages_build_output_dir = "dist" 
+# Required for Cloudflare Pages with SSR
+[site]
+bucket = "dist/client"
+
+# Environment configurations
+[env.production]
+name = "nous-official-web-production"
+route = "nous.cr/*"
+workers_dev = false
+
+[env.preview]
+name = "nous-official-web-preview"
+route = "preview.nous.cr/*"
 workers_dev = true
