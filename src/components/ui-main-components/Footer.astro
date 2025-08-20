@@ -51,17 +51,29 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
                 <address class="not-italic">
                     <ul class="space-y-2 text-neutral-300">
                         <li>
-                            <a href="mailto:contacto@nous.cr" class="hover:text-primary-turquoise transition-colors duration-200">
+                            <a 
+                              href="#" 
+                              class="hover:text-primary-turquoise transition-colors duration-200 email-link" 
+                              data-email="contacto@nous.cr"
+                            >
                                 contacto@nous.cr
                             </a>
                         </li>
                         <li>
-                            <a href="mailto:soporte@nous.cr" class="hover:text-primary-turquoise transition-colors duration-200">
+                            <a 
+                              href="#" 
+                              class="hover:text-primary-turquoise transition-colors duration-200 email-link" 
+                              data-email="soporte@nous.cr"
+                            >
                                 soporte@nous.cr
                             </a>
                         </li>
                         <li>
-                            <a href="mailto:ventas@nous.cr" class="hover:text-primary-turquoise transition-colors duration-200">
+                            <a 
+                              href="#" 
+                              class="hover:text-primary-turquoise transition-colors duration-200 email-link" 
+                              data-email="ventas@nous.cr"
+                            >
                                 ventas@nous.cr
                             </a>
                         </li>
@@ -162,3 +174,32 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
     </div>
 </footer>
 
+<script is:inline>
+    // Script para manejar los emails correctamente
+    function initializeEmails() {
+        const emailLinks = document.querySelectorAll('.email-link');
+        
+        emailLinks.forEach(link => {
+            const email = link.getAttribute('data-email');
+            if (email) {
+                // Configurar el href correcto
+                link.href = `mailto:${email}`;
+                
+                // Asegurar que el texto se muestre correctamente
+                if (link.textContent !== email) {
+                    link.textContent = email;
+                }
+            }
+        });
+    }
+    
+    // Ejecutar cuando el DOM esté listo
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeEmails);
+    } else {
+        initializeEmails();
+    }
+    
+    // Ejecutar en cada cambio de página
+    document.addEventListener('astro:page-load', initializeEmails);
+    </script>
