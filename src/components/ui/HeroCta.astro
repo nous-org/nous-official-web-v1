@@ -59,10 +59,14 @@ const imgSrc = typeof img === 'string' ? img : img.src;
     class={`relative z-10 pt-40 mb-72 px-4 sm:px-6 lg:px-8 ${className}`}
     aria-labelledby="hero-cta-heading"
     role="banner"
+    data-aos="fade-up"
+    data-aos-duration="700"
+    data-aos-delay="100"
+    data-aos-once="true"
 >
     <div class="max-w-5xl mx-auto">
         <div class="flex flex-col items-center text-center space-y-6 sm:space-y-8 md:space-y-12">
-            <!-- Hero Logo/Image -->
+          
             <figure class="flex-shrink-0">
                 <img 
                     src={imgSrc}
@@ -74,9 +78,7 @@ const imgSrc = typeof img === 'string' ? img : img.src;
                 />
             </figure>
             
-            <!-- Hero Content -->
             <div class="space-y-4">
-                <!-- Main Heading -->
                 <HeadingTag 
                     id="hero-cta-heading"
                     class={titleClassName || 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold font-archivo-black text-white leading-tight tracking-tight'}
@@ -84,7 +86,6 @@ const imgSrc = typeof img === 'string' ? img : img.src;
                     <slot name="title">{title}</slot>
                 </HeadingTag>
                 
-                <!-- Subtitle -->
                 {subtitle && (
                     <p class={subtitleClassName || 'text-base sm:text-lg md:text-xl lg:text-2xl text-neutral-400 leading-relaxed max-w-2xl mx-auto'}>
                         {subtitle}
@@ -92,7 +93,6 @@ const imgSrc = typeof img === 'string' ? img : img.src;
                 )}
             </div>
             
-            <!-- Action Buttons -->
             {buttons.length > 0 && (
                 <nav aria-label="Hero call-to-action buttons">
                     <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
