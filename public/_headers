@@ -1,13 +1,35 @@
-# Security Headers
+# Security Headers optimizados para SEO
 /*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   X-XSS-Protection: 1; mode=block
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https: blob:; font-src 'self' data: https:; connect-src 'self' https:; media-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self'; manifest-src 'self';
+  # CSP más permisivo para bots de Google y herramientas SEO
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https: *.google.com *.googletagmanager.com *.gstatic.com; style-src 'self' 'unsafe-inline' https: *.googleapis.com; img-src 'self' data: https: blob: *.google.com *.googleusercontent.com; font-src 'self' data: https: *.gstatic.com *.googleapis.com; connect-src 'self' https: *.google-analytics.com *.googletagmanager.com *.google.com; media-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self' *.google.com; manifest-src 'self'; worker-src 'self' blob:;
 
-# Favicon specific headers
+# Archivos específicos para verificación de Google
+/google*.html
+  Cache-Control: public, max-age=3600
+  Content-Type: text/html; charset=utf-8
+  # Sin restricciones adicionales para verificación
+
+/googletagmanager.js
+  Cache-Control: public, max-age=86400
+  Access-Control-Allow-Origin: *
+
+# Sitemap y robots.txt - CRÍTICOS para SEO
+/robots.txt
+  Cache-Control: public, max-age=86400
+  Content-Type: text/plain; charset=utf-8
+  # Permitir acceso completo para bots
+
+/sitemap*.xml
+  Cache-Control: public, max-age=86400
+  Content-Type: application/xml; charset=utf-8
+  Access-Control-Allow-Origin: *
+
+# Favicon headers optimizados
 /favicon.ico
   Content-Type: image/x-icon
   Cache-Control: public, max-age=31536000, immutable
@@ -39,30 +61,29 @@
   Cache-Control: public, max-age=604800
   Access-Control-Allow-Origin: *
 
-# Browser config for Windows
+# Browser config
 /browserconfig.xml
   Content-Type: application/xml
   Cache-Control: public, max-age=604800
   Access-Control-Allow-Origin: *
 
-# Cache static assets for 1 year
+# Assets estáticos
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
 
-# Cache other assets for 1 week
 /images/*
   Cache-Control: public, max-age=604800
 
 /fonts/*
   Cache-Control: public, max-age=604800
 
-# Don't cache HTML but allow favicon to be cached
+# HTML pages - Permitir indexación
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
+  # Sin X-Robots-Tag restrictivo para permitir indexación
 
-# Root level files (robots.txt, sitemap.xml, etc.)
-/robots.txt
-  Cache-Control: public, max-age=86400
-
-/sitemap*.xml
-  Cache-Control: public, max-age=86400
+# JSON-LD y datos estructurados
+/*.json
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=3600
+  Access-Control-Allow-Origin: *
