@@ -6,19 +6,17 @@ import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   site: 'https://nous.cr',
-  output: 'static',
+  output: 'server',
   adapter: cloudflare({
     mode: 'directory',
   }),
   vite: {
     plugins: [tailwindcss()],
     resolve: {
-      alias: {
-        "react-dom/server": "react-dom/server.edge",
-        '@': '/src',
-      },
-    },
-   
+      alias: import.meta.env.PROD ? {
+        "react-dom/server": "react-dom/server.edge"
+      } : undefined
+    }
   },
   integrations: [
     react(),
