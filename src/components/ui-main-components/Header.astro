@@ -91,76 +91,109 @@ const headerNavLinks: NavLink[] = [
 </nav>
 
 <script>
-
-(() => {
-    let isMenuOpen = false;
     
-    
-    const elements = {
-        header: document.getElementById('main-header'),
-        mobileMenu: document.getElementById('mobile-menu'),
-        mobileMenuBtn: document.getElementById('mobile-menu-btn'),
-        closeMenuBtn: document.getElementById('close-menu-btn'),
-        overlay: document.getElementById('mobile-menu-overlay')
-    } as const;
-
-
-    
-
-    // Toggle mobile menu functionality  
-    const toggleMenu = (show: boolean) => {
-        if (!elements.mobileMenu || !elements.overlay) return;
-
-        isMenuOpen = show;
+    function initializeMobileMenu() {
+        let isMenuOpen = false;
         
-        elements.mobileMenu.classList.toggle('translate-y-full', !show);
-        elements.overlay.classList.toggle('opacity-0', !show);
-        elements.overlay.classList.toggle('pointer-events-none', !show);
-        elements.mobileMenuBtn?.setAttribute('aria-expanded', show.toString());
-        document.body.classList.toggle('overflow-hidden', show);
-        
-        // Focus management
-        if (show) {
-            setTimeout(() => elements.closeMenuBtn?.focus(), 300);
-        } else {
-            elements.mobileMenuBtn?.focus();
-        }
-    };
-
+        const elements = {
+            header: document.getElementById('main-header'),
+            mobileMenu: document.getElementById('mobile-menu'),
+            mobileMenuBtn: document.getElementById('mobile-menu-btn'),
+            closeMenuBtn: document.getElementById('close-menu-btn'),
+            overlay: document.getElementById('mobile-menu-overlay')
+        } as const;
     
-    document.addEventListener('click', (e) => {
-        const target = e.target as HTMLElement;
         
-        if (target.closest('#mobile-menu-btn')) {
-            e.preventDefault();
-            toggleMenu(true);
-        } else if (target.closest('#close-menu-btn') || target.closest('#mobile-menu-overlay')) {
-            e.preventDefault();
-            toggleMenu(false);
-        } else if (target.closest('#mobile-menu a')) {
-            toggleMenu(false);
+        if (!elements.mobileMenu || !elements.mobileMenuBtn) {
+            console.warn('Mobile menu elements not found');
+            return;
         }
-    });
-
-   
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && isMenuOpen) {
-            toggleMenu(false);
-        }
-    });
-
-
-    let resizeTimeout: number;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = window.setTimeout(() => {
-            if (window.innerWidth >= 768 && isMenuOpen) {
+    
+        const toggleMenu = (show: boolean) => {
+            if (!elements.mobileMenu || !elements.overlay) return;
+    
+            isMenuOpen = show;
+            
+            elements.mobileMenu.classList.toggle('translate-y-full', !show);
+            elements.overlay?.classList.toggle('opacity-0', !show);
+            elements.overlay?.classList.toggle('pointer-events-none', !show);
+            elements.mobileMenuBtn?.setAttribute('aria-expanded', show.toString());
+            document.body.classList.toggle('overflow-hidden', show);
+            
+            // Focus management
+            if (show) {
+                setTimeout(() => elements.closeMenuBtn?.focus(), 300);
+            } else {
+                elements.mobileMenuBtn?.focus();
+            }
+        };
+    
+        const handleClick = (e: Event) => {
+            const target = e.target as HTMLElement;
+            
+            if (target.closest('#mobile-menu-btn')) {
+                e.preventDefault();
+                toggleMenu(true);
+            } else if (target.closest('#close-menu-btn') || target.closest('#mobile-menu-overlay')) {
+                e.preventDefault();
+                toggleMenu(false);
+            } else if (target.closest('#mobile-menu a')) {
                 toggleMenu(false);
             }
-          
-        }, 100);
+        };
+    
+        const handleKeydown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && isMenuOpen) {
+                toggleMenu(false);
+            }
+        };
+    
+        let resizeTimeout: number;
+        const handleResize = () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = window.setTimeout(() => {
+                if (window.innerWidth >= 768 && isMenuOpen) {
+                    toggleMenu(false);
+                }
+            }, 100);
+        };
+    
+        document.removeEventListener('click', handleClick);
+        document.removeEventListener('keydown', handleKeydown);
+        window.removeEventListener('resize', handleResize);
+    
+        document.addEventListener('click', handleClick);
+        document.addEventListener('keydown', handleKeydown);
+        window.addEventListener('resize', handleResize);
+    
+        return () => {
+            document.removeEventListener('click', handleClick);
+            document.removeEventListener('keydown', handleKeydown);
+            window.removeEventListener('resize', handleResize);
+            
+            if (isMenuOpen) {
+                toggleMenu(false);
+            }
+        };
+    }
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeMobileMenu);
+    } else {
+        initializeMobileMenu();
+    }
+    
+    document.addEventListener('astro:page-load', initializeMobileMenu);
+    
+    let cleanup: (() => void) | undefined;
+    document.addEventListener('astro:before-preparation', () => {
+        if (cleanup) {
+            cleanup();
+            cleanup = undefined;
+        }
     });
-
-
-})();
-</script>
+    
+    document.addEventListener('astro:page-load', () => {
+        cleanup = initializeMobileMenu();
+    });
+    </script>
