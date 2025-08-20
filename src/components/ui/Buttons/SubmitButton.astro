@@ -1,4 +1,5 @@
 ---
+// src/components/ui/Buttons/SubmitButton.astro
 interface Props {
   id?: string;
   text?: string;
@@ -23,32 +24,37 @@ const {
 const baseStyles = `px-5 py-1 font-medium rounded-full transition-colors group flex justify-center items-center gap-2 w-auto md:w-${width} cursor-pointer`;
 const variants = {
   primary: "bg-primary-purple text-primary-blue hover:bg-primary-purple/90",
-  secondary:
-    " text-primary-blue hover:bg-primary-turquoise/80 bg-primary-turquoise",
-  primaryPurple:
-    "bg-transparent border-2 border-primary-purple text-primary-purple hover:bg-primary-purple/40",
-  secondaryTurquoise:
-    "border-2 border-primary-turquoise text-primary-turquoise hover:bg-primary-turquoise/30",
+  secondary: " text-primary-blue hover:bg-primary-turquoise/80 bg-primary-turquoise",
+  primaryPurple: "bg-transparent border-2 border-primary-purple text-primary-purple hover:bg-primary-purple/40",
+  secondaryTurquoise: "border-2 border-primary-turquoise text-primary-turquoise hover:bg-primary-turquoise/30",
 };
 ---
 
-<button 
+<button
   type={type}
   disabled={disabled}
   class:list={[baseStyles, variants[variant], className]}
+  aria-busy={disabled ? "true" : "false"} 
 >
-  {text}
-  {icon && <span class="group-hover:translate-x-0.5 transition-transform duration-300">
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g clip-path="url(#clip0_2150_1477)">
-    <path d="M13.7811 0.0859375C13.953 0.210938 14.0233 0.377604 13.9921 0.585938L11.9921 12.5859C11.966 12.737 11.8827 12.8542 11.7421 12.9375C11.6692 12.9792 11.5884 13 11.4999 13C11.4426 13 11.3801 12.987 11.3124 12.9609L7.77333 11.5156L5.8827 13.8203C5.78895 13.9401 5.66135 14 5.49989 14C5.43218 14 5.37489 13.9896 5.32802 13.9688C5.22906 13.9323 5.14963 13.8711 5.08974 13.7852C5.02984 13.6992 4.99989 13.6042 4.99989 13.5V10.7734L11.7499 2.5L3.39833 9.72656L0.312391 8.46094C0.119683 8.38802 0.0155165 8.24479 -0.000108507 8.03125C-0.0105252 7.82292 0.0728082 7.66927 0.249891 7.57031L13.2499 0.0703125C13.328 0.0234375 13.4113 0 13.4999 0C13.6041 0 13.6978 0.0286458 13.7811 0.0859375Z" fill="#04000F"/>
-    </g>
-    <defs>
-    <clipPath id="clip0_2150_1477">
-    <rect width="14" height="14" fill="white"/>
-    </clipPath>
-    </defs>
-    </svg>
+  {/* Normal label visible by default; hidden when is-loading is set */}
+  <span data-label class="group-[.is-loading]:hidden">{text}</span>
 
-    </span>}
+  {/* Loading label hidden by default; visible when is-loading is set */}
+  <span data-loading class="hidden group-[.is-loading]:inline">Sending…</span>
+
+  {icon && (
+    <span class="group-hover:translate-x-0.5 transition-transform duration-300">
+      <!-- SVG icon preserved -->
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <g clip-path="url(#clip0_2150_1477)">
+          <path d="M13.7811 0.0859375C13.953 0.210938 14.0233 0.377604 13.9921 0.585938L11.9921 12.5859C11.966 12.737 11.8827 12.8542 11.7421 12.9375C11.6692 12.9792 11.5884 13 11.4999 13C11.4426 13 11.3801 12.987 11.3124 12.9609L7.77333 11.5156L5.8827 13.8203C5.78895 13.9401 5.66135 14 5.49989 14C5.43218 14 5.37489 13.9896 5.32802 13.9688C5.22906 13.9323 5.14963 13.8711 5.08974 13.7852C5.02984 13.6992 4.99989 13.6042 4.99989 13.5V10.7734L11.7499 2.5L3.39833 9.72656L0.312391 8.46094C0.119683 8.38802 0.0155165 8.24479 -0.000108507 8.03125C-0.0105252 7.82292 0.0728082 7.66927 0.249891 7.57031L13.2499 0.0703125C13.328 0.0234375 13.4113 0 13.4999 0C13.6041 0 13.6978 0.0286458 13.7811 0.0859375Z" fill="#04000F"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_2150_1477">
+            <rect width="14" height="14" fill="white"/>
+          </clipPath>
+        </defs>
+      </svg>
+    </span>
+  )}
 </button>

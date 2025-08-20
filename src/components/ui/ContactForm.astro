@@ -90,8 +90,8 @@ const chips = [
 </div>
 
 <script is:inline lang="ts">
-  // src/scripts/contact.ts
-  document.addEventListener("DOMContentLoaded", () => {
+  
+  document.addEventListener("astro:page-load", () => {
     const form = document.getElementById("contact-form");
     if (!form) return;
 
@@ -116,9 +116,10 @@ const chips = [
       errBox?.classList.remove("hidden");
     }
     function setBtnLoading(v) {
-      if (!submitBtn) return;
-      submitBtn.disabled = v;
-      submitBtn.textContent = v ? "Sending…" : "Send";
+      if (!(submitBtn instanceof HTMLButtonElement)) return;
+      submitBtn.classList.toggle("is-loading", v);  
+      submitBtn.disabled = v;                       
+      submitBtn.setAttribute("aria-busy", v ? "true" : "false");
     }
 
     form.addEventListener("submit", (e) => {

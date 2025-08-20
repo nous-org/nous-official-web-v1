@@ -95,7 +95,7 @@ export const prerender = false;
 
   <script is:inline lang="ts">
    // src/scripts/newsletter.ts
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('astro:page-load', () => {
   const form = document.getElementById('newsletter-form') ;
   if (!form) return;
 
