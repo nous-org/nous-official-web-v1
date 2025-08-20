@@ -35,7 +35,8 @@ export function CardDemo({
   const selectedIcons = icons || (iconSet === 'secondary' ? SECONDARY_ICONS : DEFAULT_ICONS);
   
   return (
-    <Card borderColor={borderColor} accentColor={accentColor}>
+    
+    <Card borderColor={borderColor} accentColor={accentColor} >
       <CardSkeletonContainer accentColor={accentColor}>
         <Skeleton accentColor={accentColor} icons={selectedIcons} />
       </CardSkeletonContainer>
