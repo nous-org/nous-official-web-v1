@@ -5,20 +5,20 @@ import InfoText from "@/components/ui/InfoText.astro";
 import { DEFAULT_INFO_TEXT_2 } from "@/types/InfoText";
 ---
 
-<section class="max-w-7xl mx-auto px-4 container z-10 pt-64 pb-52" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100" data-aos-once="true">
+<section class="max-w-7xl mx-auto px-4 container z-10 pt-64 pb-52">
     <article class="grid md:grid-cols-2 grid-cols-1 gap-4 md:gap-4">
-        <div class="flex flex-col md:mx-0" data-aos="fade-right" data-aos-duration="1000" data-aos-delay="1000" data-aos-once="true">
+        <div class="flex flex-col md:mx-0">
             <CardDemo client:load />
             
         </div>
 
-        <div class="mt-16 sm:mt-0 md:mt-0" data-aos="fade-up" data-aos-duration="500" data-aos-delay="1000" data-aos-once="true">
+        <div class="mt-16 sm:mt-0 md:mt-0">
             <InfoText />
         </div>
     </article>
 
     <article class="flex flex-col md:grid md:grid-cols-2 gap-4 md:gap-8 mt-40">
-        <div class="order-2 md:order-1 mt-16 md:mt-0" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100" data-aos-once="true">
+        <div class="order-2 md:order-1 mt-16 md:mt-0" >
             <InfoText
                 infoText={DEFAULT_INFO_TEXT_2}
                 colorDivider="primary-purple"
@@ -27,7 +27,6 @@ import { DEFAULT_INFO_TEXT_2 } from "@/types/InfoText";
 
         <div
             class="flex flex-col md:mx-0 order-1 md:order-2 lg:justify-self-end"
-            data-aos="fade-up" data-aos-duration="1000" data-aos-delay="1000" data-aos-once="true"
         >
             <CardDemo
                 client:load
