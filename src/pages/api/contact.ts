@@ -1,6 +1,3 @@
-// src/pages/api/contact.ts
-export const prerender = false;
-
 import type { APIRoute } from 'astro';
 import { z } from 'astro:schema';
 import { Resend } from 'resend';

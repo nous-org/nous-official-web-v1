@@ -1,6 +1,3 @@
-// src/pages/api/subscribe.ts
-export const prerender = false;
-
 import type { APIRoute } from 'astro';
 import { z } from 'astro:schema';
 import { createClient } from '@libsql/client';
