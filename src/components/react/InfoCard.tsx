@@ -1,9 +1,14 @@
+
 "use client";
-import { motion, useAnimate } from "motion/react";
-import React, { useEffect, useState } from "react";
+
+import React, { useEffect, useMemo } from "react";
+import { motion } from "motion/react";
+import { useAnimate } from "motion/react";
+import { stagger } from "motion";
 import { cn } from "@/lib/utils";
 import { GoCopilot } from "react-icons/go";
 
+/* ---------- tipos -------------------------------------------------- */
 interface IconConfig {
   component: React.ComponentType<{ className?: string }>;
   className?: string;
@@ -16,193 +21,211 @@ interface CardDemoProps {
   title?: string;
   description?: string;
   icons?: IconConfig[];
-  iconSet?: 'default' | 'secondary' | 'custom';
+  iconSet?: "default" | "secondary";
 }
 
-export function CardDemo({ 
-  borderColor = "border-primary-turquoise", 
+
+function useReducedMotion(): boolean {
+  const [prefers, setPrefers] = React.useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setPrefers(mq.matches);
+    const handler = () => setPrefers(mq.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  return prefers;
+}
+
+
+export function CardDemo({
+  borderColor = "border-primary-turquoise",
   accentColor = "primary-turquoise",
   title = "The most powerfull tool",
-  description = "Let AI take care of repetitive or routine processes, we adapt any process flow to be faster and improve your productivity",
+  description = `Let AI take care of repetitive processes, 
+                 we adapt any flow to improve your productivity`,
   icons,
-  iconSet = 'default'
+  iconSet = "default"
 }: CardDemoProps) {
-  const selectedIcons = icons || (iconSet === 'secondary' ? SECONDARY_ICONS : DEFAULT_ICONS);
-  
+
+  const selectedIcons = useMemo<IconConfig[]>(
+    () =>
+      icons ||
+      (iconSet === "secondary" ? SECONDARY_ICONS : DEFAULT_ICONS),
+    [icons, iconSet]
+  );
+
   return (
-    <Card borderColor={borderColor} accentColor={accentColor} >
+    <Card borderColor={borderColor}>
       <CardSkeletonContainer accentColor={accentColor}>
-        <Skeleton accentColor={accentColor} icons={selectedIcons} />
+        <Skeleton icons={selectedIcons} accentColor={accentColor} />
       </CardSkeletonContainer>
       <CardTitle>{title}</CardTitle>
-      <CardDescription>
-        {description}
-      </CardDescription>
+      <CardDescription>{description}</CardDescription>
     </Card>
   );
 }
 
-const Skeleton = ({ accentColor = "primary-turquoise", icons }: { accentColor?: string; icons: IconConfig[] }) => {
-  const [scope, animate] = useAnimate();
-  const [mounted, setMounted] = useState(false);
 
+const SCALE = [1, 1, 1];
+const Y = [0, -8, 0];
+const MOTION_OPTS = { duration: 1, repeat: Infinity, repeatDelay: 4 } as const;
+
+const Skeleton = React.memo(function Skeleton({
+  accentColor,
+  icons
+}: {
+  accentColor: string;
+  icons: IconConfig[];
+}) {
+  const [scope, animate] = useAnimate<HTMLDivElement>();
+  const reducedMotion = useReducedMotion();
+
+  /* Una sola llamada a animate + stagger + cleanup */
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    if (!scope.current || reducedMotion) return;
 
-  useEffect(() => {
-    if (!mounted) return;
+    const controls = animate(
+      ".circle", // todos los elementos con la clase circle
+      { scale: SCALE, y: Y },
+      { ...MOTION_OPTS, delay: stagger(0.8) }
+    );
 
-    const scale = [1, 1.1, 1];
-    const transform = ["translateY(0px)", "translateY(-4px)", "translateY(0px)"];
-    
-    const runAnimation = async () => {
-      await animate([
-        [".circle-1", { scale, transform }, { duration: 0.8 }],
-        [".circle-2", { scale, transform }, { duration: 0.8 }],
-        [".circle-3", { scale, transform }, { duration: 0.8 }],
-        [".circle-4", { scale, transform }, { duration: 0.8 }],
-        [".circle-5", { scale, transform }, { duration: 0.8 }],
-      ], {
-        repeat: Infinity,
-        repeatDelay: 1,
-      });
-    };
-
-    runAnimation();
-  }, [mounted, animate]);
+    return controls.cancel; // <- cleanup
+  }, [animate, reducedMotion]);
 
   return (
-    <div ref={scope} className="p-8 overflow-hidden h-full relative flex items-center justify-center">
-      <div className="flex flex-row shrink-0 justify-center items-center gap-2">
-        {icons.map((iconConfig, index) => {
-          const IconComponent = iconConfig.component;
+    <div
+      ref={scope}
+      className="relative flex h-full items-center justify-center overflow-hidden p-8"
+    >
+      <div className="flex shrink-0 flex-row items-center justify-center gap-2">
+        {icons.map((cfg, idx) => {
+          const Icon = cfg.component;
           return (
-            <Container 
-              key={index}
-              className={`${iconConfig.containerClassName} circle-${index + 1}`} 
+            <Circle
+              key={idx}
               accentColor={accentColor}
-              suppressHydrationWarning
+              className={cn(cfg.containerClassName, "circle")}
             >
-              <IconComponent className={iconConfig.className} />
-            </Container>
+              <Icon className={cfg.className} />
+            </Circle>
           );
         })}
       </div>
     </div>
   );
-};
+});
 
-export const Card = ({
-  className,
+/* ---------- subcomponentes puros (sin estado) ---------------------- */
+function Card({
   children,
-  borderColor = "border-primary-turquoise",
-  accentColor = "primary-turquoise",
+  className,
+  borderColor
 }: {
-  className?: string;
   children: React.ReactNode;
-  borderColor?: string;
-  accentColor?: string;
-}) => {
+  className?: string;
+  borderColor: string;
+}) {
   return (
     <div
       className={cn(
-        `w-auto max-w-full md:max-w-[30rem] p-6 rounded-xl border ${borderColor} bg-primary-black group max-h-[35rem]`,
+        `group w-auto max-w-full rounded-xl border bg-primary-black 
+         p-6 md:max-w-[30rem] max-h-[35rem]`,
+        borderColor,
         className
       )}
     >
       {children}
     </div>
   );
-};
+}
 
-export const CardTitle = ({
+function CardTitle({
   children,
-  className,
+  className
 }: {
   children: React.ReactNode;
   className?: string;
-}) => {
+}) {
   return (
-    <h3
-      className={cn(
-        "text-2xl font-bold text-white py-2",
-        className
-      )}
-    >
+    <h3 className={cn("py-2 text-2xl font-bold text-white", className)}>
       {children}
     </h3>
   );
-};
+}
 
-export const CardDescription = ({
+function CardDescription({
   children,
-  className,
+  className
 }: {
   children: React.ReactNode;
   className?: string;
-}) => {
+}) {
   return (
     <p
       className={cn(
-        "text-regular font-normal text-neutral-400 max-w-lg",
+        "text-regular max-w-lg font-normal text-neutral-400",
         className
       )}
     >
       {children}
     </p>
   );
-};
+}
 
-export const CardSkeletonContainer = ({
-  className,
+function CardSkeletonContainer({
   children,
+  className,
   showGradient = true,
-  accentColor = "primary-turquoise",
+  accentColor
 }: {
-  className?: string;
   children: React.ReactNode;
+  className?: string;
   showGradient?: boolean;
-  accentColor?: string;
-}) => {
+  accentColor: string;
+}) {
   return (
     <div
       className={cn(
-        "h-[15rem] md:h-[20rem] rounded-xl z-40",
+        "z-40 h-[15rem] rounded-xl md:h-[20rem]",
         className,
         showGradient &&
-          `bg-primary-purple/10 [mask-image:radial-gradient(50%_50%_at_50%_50%,#1AD6B3_20%,transparent_100%)]`
+          "bg-primary-purple/10 [mask-image:radial-gradient(50%_50%_at_50%_50%,#1AD6B3_20%,transparent_100%)]"
       )}
+      style={{ "--accent": `var(--${accentColor})` } as React.CSSProperties}
     >
       {children}
     </div>
   );
-};
+}
 
-const Container = ({
-  className,
+const Circle = React.memo(function Circle({
   children,
-  accentColor = "primary-turquoise",
-  suppressHydrationWarning = false,
+  className,
+  accentColor
 }: {
-  className?: string;
   children: React.ReactNode;
-  accentColor?: string;
-  suppressHydrationWarning?: boolean;
-}) => {
+  className?: string;
+  accentColor: string;
+}) {
+  /* tailwind no resuelve clases dinámicas -> usamos inline style */
   return (
     <motion.div
       className={cn(
-        `h-16 w-16 rounded-full flex items-center justify-center bg-${accentColor}/40 shadow-primary-blue shadow-[inset_0px_0px_30px_0_rgba(0,0,0,0.1)]`,
+        "flex h-16 w-16 items-center justify-center rounded-full shadow-[inset_0px_0px_30px_0_rgba(0,0,0,0.1)]",
         className
       )}
-      initial={{ scale: 1, y: 0 }}
-      suppressHydrationWarning={suppressHydrationWarning}
+      style={{ backgroundColor: `var(--${accentColor})40` }}
+      initial={false} // evita animación inicial innecesaria
     >
       {children}
     </motion.div>
   );
-};
+});
+
 
 export const ClaudeLogo = ({ className }: { className?: string }) => {
   return (
