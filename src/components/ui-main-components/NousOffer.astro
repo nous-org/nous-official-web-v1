@@ -5,12 +5,12 @@ import {ServiceTabs} from '@/components/react/ServiceTabs';
 import ServiceCardsPurpose from '@/components/ui/ServiceCardsPurpose.astro';
 ---
 
-<section class="max-w-7xl mt-32 mx-auto px-4 container z-10">
-    <h1 class="text-4xl font-bold md:mb-12 mb-8 text-white" data-aos="fade-up">What Nous can offer to your business?</h1>
-    <div data-aos="fade-up">
+<section class="max-w-7xl mt-32 mx-auto px-4 container z-10 appear-subtle">
+    <h1 class="text-4xl font-bold md:mb-12 mb-8 text-white">What Nous can offer to your business?</h1>
+    <div >
          <ServiceTabs client:only="react"/>
     </div>
-    <div data-aos="fade-up">
+    <div>
         <ContactCta />
     </div>
 </section>

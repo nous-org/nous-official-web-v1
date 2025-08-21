@@ -7,7 +7,9 @@ import { DEFAULT_INFO_TEXT_2 } from "@/types/InfoText";
 
 <section class="max-w-7xl mx-auto px-4 container z-10 pt-64 pb-52">
     <article class="grid md:grid-cols-2 grid-cols-1 gap-4 md:gap-4">
-        <div class="flex flex-col md:mx-0">
+        <div class="flex flex-col md:mx-0 appear-left"
+        
+        >
             <CardDemo client:load />
             
         </div>
@@ -26,8 +28,8 @@ import { DEFAULT_INFO_TEXT_2 } from "@/types/InfoText";
         </div>
 
         <div
-            class="flex flex-col md:mx-0 order-1 md:order-2 lg:justify-self-end"
-        >
+            class="flex flex-col md:mx-0 order-1 md:order-2 lg:justify-self-end appear"
+            >
             <CardDemo
                 client:load
                 iconSet="secondary"

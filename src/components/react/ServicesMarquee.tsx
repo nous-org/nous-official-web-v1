@@ -54,7 +54,7 @@ export function ServicesMarquee() {
     
   ];
   return (
-    <div className="mx-auto my-10 max-w-7xl rounded-md mt-64 mb-64">
+    <div className="mx-auto my-10 max-w-7xl rounded-md mt-64 mb-64 appear-subtle">
       <ThreeDMarquee images={images} />
     </div>
   );

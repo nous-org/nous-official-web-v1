@@ -87,7 +87,7 @@ export function StickyServices() {
         },
        ];
   return (
-    <div className="w-full pt-5 md:pt-44">
+    <div className="w-full pt-5 md:pt-44 appear-left">
       <StickyScroll content={content} />
     </div>
   );

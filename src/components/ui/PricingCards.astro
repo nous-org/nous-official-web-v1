@@ -1,6 +1,4 @@
 ---
-import PlusIcon from '@/components/icons/PlusIcon.astro';
-
 interface PricingCard {
     title: string;
     description: string;
@@ -59,10 +57,10 @@ const PRICING_CARDS: PricingCard[] = [
 
 <section class="py-16 sm:py-20 md:py-24 lg:py-32" aria-labelledby="pricing-heading">
 
-    <h2 id="pricing-heading" class="mt-32 mb-4 md:text-4xl text-2xl font-bold text-white text-center">We adapt to the needs of all types of companies to provide high-quality solutions.</h2>
-    <p class="text-neutral-400 text-center text-lg leading-relaxed max-w-3xl mx-auto mb-20">Quick, no-obligation consultation. See how AI and automation can save time and improve efficiency.</p>
+    <h2 id="pricing-heading" class="mt-32 mb-4 md:text-4xl text-2xl font-bold text-white text-center appear-subtle">We adapt to the needs of all types of companies to provide high-quality solutions.</h2>
+    <p class="text-neutral-400 text-center text-lg leading-relaxed max-w-3xl mx-auto mb-20 appear-subtle">Quick, no-obligation consultation. See how AI and automation can save time and improve efficiency.</p>
     <div class="px-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 max-w-7xl mx-auto appear-left">
             {PRICING_CARDS.map((card, index) => (
                 <article
                     class={`group relative flex flex-col border mb-8 p-6 transition-all duration-300 bg-gradient-to-br from-primary-black to-primary-turquoise/10 rounded-xl ${

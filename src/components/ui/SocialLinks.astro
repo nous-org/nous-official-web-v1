@@ -42,7 +42,7 @@ const { links = DEFAULT_LINKS } = Astro.props;
 
 <div class="flex gap-6">
     {links.map((link) => (
-        <a href={link.url} target="_blank" rel="noopener noreferrer" class="flex w-12 h-12 items-center border justify-center rounded-full hover:bg-primary-turquoise/20 hover:text-primary-blue hover:border-primary-purple  transition-colors duration-300">
+        <a href={link.url} target="_blank" rel="noopener noreferrer" class="flex w-12 h-12 items-center border justify-center rounded-full hover:bg-primary-turquoise/20 hover:text-primary-blue hover:border-primary-purple  transition-all duration-300 hover:scale-[1.1] hover:animate-jiggle delay-[100ms]">
             <img src={link.icon } alt={link.url} />
         </a>
     ))}

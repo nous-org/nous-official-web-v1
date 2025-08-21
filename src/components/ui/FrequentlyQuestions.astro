@@ -114,7 +114,7 @@ const allFAQs: FAQItem[] = FAQ_CATEGORIES.flatMap(category => category.questions
 <section class="py-16 sm:py-20 md:py-24 lg:py-32" aria-labelledby="faq-heading">
     
     <div class="">
-        <header class="text-center mb-12 sm:mb-16 lg:mb-20">
+        <header class="text-center mb-12 sm:mb-16 lg:mb-20 appear-subtle">
             <h2 id="faq-heading" class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
                 Frequently Asked Questions
             </h2>
@@ -125,23 +125,23 @@ const allFAQs: FAQItem[] = FAQ_CATEGORIES.flatMap(category => category.questions
 
         
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12">
-            {FAQ_CATEGORIES.map((category, categoryIndex) => (
+            {FAQ_CATEGORIES.map((category) => (
                 <article class="space-y-6 sm:space-y-8">
                     
                     <header class="border-b border-neutral-800 pb-4 sm:pb-6">
-                        <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2 sm:mb-3">
+                        <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold  text-white mb-2 sm:mb-3 appear-left">
                             {category.title}
                         </h3>
-                        <p class="text-sm sm:text-base text-neutral-400 leading-relaxed">
+                        <p class="text-sm sm:text-base text-neutral-400 leading-relaxed appear-left">
                             {category.description}
                         </p>
                     </header>
 
                     
                     <div class="space-y-4 sm:space-y-6" role="list">
-                        {category.questions.map((faq, questionIndex) => (
+                        {category.questions.map((faq) => (
                             <details 
-                                class="group bg-neutral-900/50 border border-neutral-800 rounded-md sm:rounded-xl overflow-hidden transition-all duration-300 hover:border-primary-turquoise/30 hover:shadow-lg hover:shadow-primary-turquoise/5" 
+                                class="group bg-neutral-900/50 border border-neutral-800 rounded-md sm:rounded-xl overflow-hidden transition-all duration-300 hover:border-primary-turquoise/30 hover:shadow-lg hover:shadow-primary-turquoise/5 appear-subtle" 
                                 role="listitem"
                             >
                                 <summary class="flex items-center justify-between p-4 sm:p-6 cursor-pointer focus:outline-none ">
@@ -178,7 +178,7 @@ const allFAQs: FAQItem[] = FAQ_CATEGORIES.flatMap(category => category.questions
         </div>
 
         
-        <footer class="text-center mt-16 sm:mt-20 lg:mt-24">
+        <footer class="text-center mt-16 sm:mt-20 lg:mt-24 appear-subtle">
             <div class="bg-gradient-to-br from-primary-black/50 to-primary-turquoise/10 border border-primary-turquoise/30 rounded-lg sm:rounded-xl p-6 sm:p-8 lg:p-10">
                 <h3 class="text-3xl sm:text-4xl lg:text-4xl font-bold text-white mb-3 sm:mb-4">
                     Still have questions?

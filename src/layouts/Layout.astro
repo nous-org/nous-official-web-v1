@@ -6,6 +6,7 @@ import { ClientRouter } from 'astro:transitions';
 import SEOBase from '@/components/seo/SEO.astro';
 import OrganizationSchema from '@/components/seo/OrganizationSchema.astro';
 import '@/styles/global.css'
+import 'aos/dist/aos.css';
 interface Props {
   title?: string;
   showAurora?: boolean;
@@ -147,6 +148,10 @@ const mainClasses = useContainer
       <slot />
     </main>
     <Footer />
+    <script> 
+      import AOS from "aos"; 
+      AOS.init();
+    </script> 
   </body>
 </html>
 
