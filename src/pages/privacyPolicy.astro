@@ -87,7 +87,7 @@ const { title, subtitle, text, buttons } = HERO;
     <div class="space-y-2 text-neutral-400">
       <p><strong>Company:</strong> {data.company.name}</p>
       <p><strong>Address:</strong> {data.company.address}</p>
-      <p><strong>Email:</strong> <a href={`mailto:${data.company.email}`} class="text-primary-turquoise hover:underline">{data.company.email}</a></p>
+      <p><strong>Email:</strong> <a href="#" class="text-primary-turquoise email-link hover:underline" data-email={data.company.email}>{data.company.email}</a></p>
       <p><strong>Phone:</strong> <a href={`tel:${data.company.phone}`} class="text-primary-turquoise hover:underline">{data.company.phone}</a></p>
     </div>
   </div>
@@ -143,3 +143,34 @@ const { title, subtitle, text, buttons } = HERO;
     article.legal-prose h3 { margin-top: 1.5rem; }
   }
 </style>
+
+
+<script is:inline>
+  // Script para manejar los emails correctamente
+  function initializeEmails() {
+      const emailLinks = document.querySelectorAll('.email-link');
+      
+      emailLinks.forEach(link => {
+          const email = link.getAttribute('data-email');
+          if (email) {
+              // Configurar el href correcto
+              link.href = `mailto:${email}`;
+              
+              // Asegurar que el texto se muestre correctamente
+              if (link.textContent !== email) {
+                  link.textContent = email;
+              }
+          }
+      });
+  }
+  
+  // Ejecutar cuando el DOM esté listo
+  if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeEmails);
+  } else {
+      initializeEmails();
+  }
+  
+  // Ejecutar en cada cambio de página
+  document.addEventListener('astro:page-load', initializeEmails);
+  </script>
