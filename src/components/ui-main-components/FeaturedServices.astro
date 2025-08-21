@@ -10,7 +10,7 @@ import { DEFAULT_INFO_TEXT_2 } from "@/types/InfoText";
         <div class="flex flex-col md:mx-0 appear-left"
         
         >
-            <CardDemo client:load />
+            <CardDemo client:only="react" />
             
         </div>
 
@@ -31,7 +31,7 @@ import { DEFAULT_INFO_TEXT_2 } from "@/types/InfoText";
             class="flex flex-col md:mx-0 order-1 md:order-2 lg:justify-self-end appear"
             >
             <CardDemo
-                client:load
+                client:only="react"
                 iconSet="secondary"
                 borderColor="border-primary-purple"
                 title="Modern web development"
