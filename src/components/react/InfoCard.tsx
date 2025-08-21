@@ -290,9 +290,9 @@ export const GeminiLogo = ({ className }: { className?: string }) => {
           gradientUnits="userSpaceOnUse"
           gradientTransform="matrix(16.1326 5.4553 -43.70045 129.2322 1.588 6.503)"
         >
-          <stop offset=".067" stop-color="#9168C0" />
-          <stop offset=".343" stop-color="#5684D1" />
-          <stop offset=".672" stop-color="#1BA1E3" />
+          <stop offset=".067" stopColor="#9168C0" />
+          <stop offset=".343" stopColor="#5684D1" />
+          <stop offset=".672" stopColor="#1BA1E3" />
         </radialGradient>
       </defs>
     </svg>
@@ -318,10 +318,10 @@ export const MetaIconOutline = ({ className }: { className?: string }) => {
           gradientTransform="matrix(1, 0, 0, -1, 0, 192)"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stop-color="#0064e1" />
-          <stop offset="0.4" stop-color="#0064e1" />
-          <stop offset="0.83" stop-color="#0073ee" />
-          <stop offset="1" stop-color="#0082fb" />
+          <stop offset="0" stopColor="#0064e1" />
+          <stop offset="0.4" stopColor="#0064e1" />
+          <stop offset="0.83" stopColor="#0073ee" />
+          <stop offset="1" stopColor="#0082fb" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-2"
@@ -332,8 +332,8 @@ export const MetaIconOutline = ({ className }: { className?: string }) => {
           gradientTransform="matrix(1, 0, 0, -1, 0, 192)"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stop-color="#0082fb" />
-          <stop offset="1" stop-color="#0064e0" />
+          <stop offset="0" stopColor="#0082fb" />
+          <stop offset="1" stopColor="#0064e0" />
         </linearGradient>
       </defs>
       <path
@@ -356,7 +356,7 @@ export const AstroLogo = ({ className }: { className?: string }) => {
 
     return (
       <svg width="75" height="75" viewBox="0 0 75 75" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-          <g clip-path="url(#clip0_2068_1015)">
+          <g clipPath="url(#clip0_2068_1015)">
           <path d="M26.5196 62.859C22.846 59.5447 21.7743 52.5878 23.3044 47.5452C25.9558 50.7232 29.6325 51.733 33.4393 52.2998C39.3151 53.1764 45.0857 52.848 50.5434 50.1997C51.1691 49.8962 51.7452 49.4904 52.4266 49.0846C52.9408 50.5497 53.074 52.0272 52.8943 53.5357C52.4607 57.2061 50.6084 60.0403 47.6659 62.1899C46.4888 63.0479 45.2436 63.8161 44.0264 64.6276C40.2939 67.118 39.2842 70.0389 40.6873 74.2886L40.8236 74.747C39.0378 73.9803 37.5206 72.6993 36.4655 71.0672C35.3663 69.3983 34.7805 67.4437 34.7805 65.4454C34.7681 64.4542 34.7681 63.4568 34.6318 62.478C34.3035 60.0961 33.1698 59.0305 31.0356 58.9686C28.8457 58.9066 27.1112 60.2416 26.6528 62.3448C26.6156 62.509 26.566 62.6669 26.5134 62.8559L26.5196 62.859ZM8.05566 49.0908C8.05566 49.0908 18.0914 44.2123 28.1581 44.2123L35.75 20.7801C36.0349 19.6465 36.865 18.8783 37.8005 18.8783C38.7359 18.8783 39.566 19.6465 39.851 20.7801L47.4397 44.2123C59.3649 44.2123 67.5453 49.0908 67.5453 49.0908L50.4628 2.66005C49.9735 1.29098 49.1464 0.408203 48.0314 0.408203H27.5696C26.4545 0.408203 25.6647 1.29098 25.1412 2.66005L8.05566 49.0908Z" fill="#FFF"/>
           </g>
           <defs>

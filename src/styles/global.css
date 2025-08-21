@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-
+@plugin "@midudev/tailwind-animations";
 
 @theme{
     --color-primary-purple: #8458FF;
@@ -67,4 +67,93 @@
   .no-visible-scrollbar::-webkit-scrollbar {
     display: none;
   }
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.92) translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
   
+  .appear {
+    view-timeline-name: --appear;
+    view-timeline-axis: block;
+    
+    animation-timeline: --appear;
+    animation-name: fadeInScale;
+    
+    /* Ejecutar solo una vez */
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+    
+    /* Rango de activación más sutil */
+    animation-range: entry 0% cover 30%;
+    
+    /* Curva de animación moderna */
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    
+    /* Duración implícita con el timeline */
+    animation-duration: 1ms; /* Necesario para que funcione con animation-timeline */
+    will-change: transform, opacity;
+  }
+  
+  /* Opcional: Variante con menor movimiento para elementos más serios */
+  .appear-subtle {
+    view-timeline-name: --appear-subtle;
+    view-timeline-axis: block;
+    
+    animation-timeline: --appear-subtle;
+    animation-name: fadeInScaleSubtle;
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+    animation-range: entry 10% cover 40%;
+    animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .appear-left {
+    view-timeline-name: --appear-left;
+    view-timeline-axis: block;
+    
+    animation-timeline: --appear-left;
+    animation-name: fadeInScaleLeft;
+    
+    /* Ejecutar solo una vez */
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+    
+    /* Rango de activación más sutil */
+    animation-range: entry 0% cover 30%;
+    
+    /* Curva de animación moderna */
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    
+    /* Duración implícita con el timeline */
+    animation-duration: 1ms; /* Necesario para que funcione con animation-timeline */
+    will-change: transform, opacity;
+  }
+  @keyframes fadeInScaleSubtle {
+    from {
+      opacity: 0;
+      transform: scale(0.98) translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  @keyframes fadeInScaleLeft {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateX(-200px);
+      filter: blur(5px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateX(0);
+      filter: blur(0);
+    }
+  }

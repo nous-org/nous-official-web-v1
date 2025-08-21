@@ -49,7 +49,7 @@ buttons = [
         <div
             role="presentation"
             aria-hidden="true"
-            class="pointer-events-none absolute left-0 top-0 z-10 h-full w-[2px]"
+            class="pointer-events-none absolute left-0 top-0 z-10 h-full w-[2px] animate-blurred-fade-in"
         >
             <VerticalColorDivider colorDivider={colorDivider} />
         </div>
@@ -57,7 +57,7 @@ buttons = [
         <div
             role="presentation"
             aria-hidden="true"
-            class="pointer-events-none absolute right-0 top-0 z-10 h-full w-[2px]"
+            class="pointer-events-none absolute right-0 top-0 z-10 h-full w-[2px] animate-blurred-fade-in"
         >
             <VerticalColorDivider colorDivider={colorDivider} />
         </div>
@@ -75,7 +75,7 @@ buttons = [
 
         <ColorDivider colorDivider={colorDivider} />
 
-        <header class="z-0 py-8">
+        <header class="z-0 py-8 animate-blurred-fade-in">
             <h2
                 id="about-heading"
                 class="font-archivo-black text-4xl sm:text-6xl md:text-7xl font-bold px-8"
@@ -83,18 +83,18 @@ buttons = [
                 {title}
             </h2>
 
-            <p class="mt-4 text-lg sm:text-2xl font-archivo-black px-8">
+            <p class="mt-4 text-lg sm:text-2xl font-archivo-black px-8 animate-blurred-fade-in">
                 {subtitle}
             </p>
 
-            <p class="mt-4 text-lg sm:text-xl text-neutral-400 px-8">
+            <p class="mt-4 text-lg sm:text-xl text-neutral-400 px-8 animate-blurred-fade-in">
                 {text}
             </p>
         </header>
 
         <ColorDivider colorDivider={colorDivider} />
 
-        <nav aria-label="Primary actions" class="py-8 flex gap-4 px-8">
+        <nav aria-label="Primary actions" class="py-8 flex gap-4 px-8 animate-blurred-fade-in">
             {buttons.map((button) => (
                 <ButtonVariant
                    

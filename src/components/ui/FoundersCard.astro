@@ -12,12 +12,12 @@ const { founders = DEFAULT_FOUNDERS, className = "" } = Astro.props;
 ---
 
 <!-- Founders Grid Container -->
-<div class={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-20 sm:mt-32 lg:mt-40 ${className}`}>
+<div class={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-20 sm:mt-32 lg:mt-40 ${className} appear-left`}>
     {founders.length > 0 ? (
         founders.map((founder) => (
             <!-- Individual Founder Card -->
             <article 
-                class="relative flex flex-col gap-4 bg-gradient-to-br border border-primary-turquoise from-primary-blue/60 to-primary-turquoise/20 md:hover:to-primary-turquoise/40 rounded-xl p-4 hover:border-primary-turquoise/60 transition-colors duration-300"
+                class="relative flex flex-col gap-4 bg-gradient-to-br border border-primary-turquoise from-primary-blue/60 to-primary-turquoise/20 md:hover:to-primary-turquoise/30 rounded-xl p-4 hover:border-primary-turquoise/60 transition-colors duration-300"
                 aria-labelledby={`founder-${founder.name.replace(/\s+/g, '-').toLowerCase()}`}
             >
                 <!-- Founder Header with Image and Basic Info -->
@@ -61,7 +61,8 @@ const { founders = DEFAULT_FOUNDERS, className = "" } = Astro.props;
                                 href={link.url || '#'} 
                                 target={link.url ? '_blank' : undefined}
                                 rel={link.url ? 'noopener noreferrer' : undefined}
-                                class="text-neutral-400 hover:text-primary-turquoise transition-all duration-300 p-1 rounded-md hover:bg-primary-turquoise/40 hover:scale-[1.1] "
+                                class="text-neutral-400 hover:text-primary-turquoise transition-all duration-300 p-1 rounded-md hover:bg-primary-turquoise/40 hover:scale-[1.1]
+                                hover:animate-pop"
                                 aria-label={`Visit ${founder.name} on ${link.name}`}
                                 aria-disabled={!link.url ? 'true' : undefined}
                                 tabindex={!link.url ? '-1' : undefined}
