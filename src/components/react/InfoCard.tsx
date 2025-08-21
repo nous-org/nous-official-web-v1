@@ -8,7 +8,6 @@ import { stagger } from "motion";
 import { cn } from "@/lib/utils";
 import { GoCopilot } from "react-icons/go";
 
-/* ---------- tipos -------------------------------------------------- */
 interface IconConfig {
   component: React.ComponentType<{ className?: string }>;
   className?: string;
@@ -83,17 +82,17 @@ const Skeleton = React.memo(function Skeleton({
   const [scope, animate] = useAnimate<HTMLDivElement>();
   const reducedMotion = useReducedMotion();
 
-  /* Una sola llamada a animate + stagger + cleanup */
+
   useEffect(() => {
     if (!scope.current || reducedMotion) return;
 
     const controls = animate(
-      ".circle", // todos los elementos con la clase circle
+      ".circle", 
       { scale: SCALE, y: Y },
       { ...MOTION_OPTS, delay: stagger(0.8) }
     );
 
-    return controls.cancel; // <- cleanup
+    return controls.cancel; 
   }, [animate, reducedMotion]);
 
   return (
@@ -119,7 +118,7 @@ const Skeleton = React.memo(function Skeleton({
   );
 });
 
-/* ---------- subcomponentes puros (sin estado) ---------------------- */
+
 function Card({
   children,
   className,
@@ -211,7 +210,7 @@ const Circle = React.memo(function Circle({
   className?: string;
   accentColor: string;
 }) {
-  /* tailwind no resuelve clases dinámicas -> usamos inline style */
+ 
   return (
     <motion.div
       className={cn(
@@ -219,7 +218,7 @@ const Circle = React.memo(function Circle({
         className
       )}
       style={{ backgroundColor: `var(--${accentColor})40` }}
-      initial={false} // evita animación inicial innecesaria
+      initial={false} 
     >
       {children}
     </motion.div>
