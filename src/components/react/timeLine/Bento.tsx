@@ -23,7 +23,7 @@ export const Bento = () => {
                       sm:col-span-2 sm:p-4 sm:min-h-[180px] md:p-6 md:min-h-[220px]
                       lg:col-span-3 lg:row-span-1 lg:p-4 lg:min-h-auto
                       xl:p-6 border border-primary-purple">
-          <img src={bgBento.src} alt="bento background" className="absolute inset-0 w-full h-full object-cover opacity-40 z-10" />
+          
           <div className=" bg-primary-black/60 absolute inset-0 w-full h-full z-20  " />
           <div className="relative z-20 h-full
                         flex flex-col
@@ -55,7 +55,7 @@ export const Bento = () => {
                       sm:p-4 sm:min-h-[160px] md:p-6 md:min-h-[180px]
                       lg:col-span-2 sm:col-span-2 md:col-span-2 lg:row-span-1 lg:p-6 lg:min-h-auto
                       xl:p-8 border border-primary-purple overflow-hidden">
-          <img src={BgBentoCard.src} alt="bento background" className="absolute opacity-40 inset-0 w-full h-full scale-200 object-cover z-0" />
+          
           <div className=" bg-primary-black/60 absolute inset-0 w-full h-full z-20 " />
           <div className="flex-1 lg:col-span-2 z-20 relative">
             <h3 className="font-semibold mb-2 lg:mb-3
@@ -81,7 +81,6 @@ export const Bento = () => {
                       lg:col-span-5 lg:row-span-1 lg:p-6 lg:min-h-auto
                       xl:p-8 border border-primary-purple">
           <div className=" bg-primary-black/60 absolute inset-0 w-full h-full z-20 " />
-          <img src={bgBento.src} alt="bento background" className="absolute inset-0 w-full h-full object-cover z-10 opacity-40 " />
           <div className="flex-1 lg:col-span-2 z-20 relative">
             <h3 className="font-bold mb-2 lg:mb-3
                        text-lg
