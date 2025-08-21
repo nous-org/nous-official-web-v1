@@ -16,7 +16,7 @@ const { type, placeholder, className = defaultClassName, textareaClassName = def
 ---
 
 {type === 'textarea' ? (
-    <textarea placeholder={placeholder} class={textareaClassName} name={name} required></textarea>
+    <textarea placeholder={placeholder} class={textareaClassName} name={name} required autocomplete="off"></textarea>
 ) : (
-    <input type={type} placeholder={placeholder} class={className} name={name} required />
+    <input type={type} placeholder={placeholder} class={className} name={name} required autocomplete="off" />
 )}

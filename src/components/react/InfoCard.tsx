@@ -1,10 +1,8 @@
 "use client";
-import { animate, motion } from "motion/react";
+import { motion, useAnimate } from "motion/react";
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { GoCopilot } from "react-icons/go";
-
-
 
 interface IconConfig {
   component: React.ComponentType<{ className?: string }>;
@@ -21,8 +19,6 @@ interface CardDemoProps {
   iconSet?: 'default' | 'secondary' | 'custom';
 }
 
-// Default icons will be defined after the icon components
-
 export function CardDemo({ 
   borderColor = "border-primary-turquoise", 
   accentColor = "primary-turquoise",
@@ -31,11 +27,9 @@ export function CardDemo({
   icons,
   iconSet = 'default'
 }: CardDemoProps) {
-  // Automatically select icon set based on iconSet prop
   const selectedIcons = icons || (iconSet === 'secondary' ? SECONDARY_ICONS : DEFAULT_ICONS);
   
   return (
-    
     <Card borderColor={borderColor} accentColor={accentColor} >
       <CardSkeletonContainer accentColor={accentColor}>
         <Skeleton accentColor={accentColor} icons={selectedIcons} />
@@ -49,60 +43,37 @@ export function CardDemo({
 }
 
 const Skeleton = ({ accentColor = "primary-turquoise", icons }: { accentColor?: string; icons: IconConfig[] }) => {
-  const scale = [1, 1.1, 1];
-  const transform = ["translateY(0px)", "translateY(-4px)", "translateY(0px)"];
-  const sequence = [
-    [
-      ".circle-1",
-      {
-        scale,
-        transform,
-      },
-      { duration: 0.8 },
-    ],
-    [
-      ".circle-2",
-      {
-        scale,
-        transform,
-      },
-      { duration: 0.8 },
-    ],
-    [
-      ".circle-3",
-      {
-        scale,
-        transform,
-      },
-      { duration: 0.8 },
-    ],
-    [
-      ".circle-4",
-      {
-        scale,
-        transform,
-      },
-      { duration: 0.8 },
-    ],
-    [
-      ".circle-5",
-      {
-        scale,
-        transform,
-      },
-      { duration: 0.8 },
-    ],
-  ];
+  const [scope, animate] = useAnimate();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    animate(sequence, {
-      // @ts-ignore
-      repeat: Infinity,
-      repeatDelay: 1,
-    });
+    setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+
+    const scale = [1, 1.1, 1];
+    const transform = ["translateY(0px)", "translateY(-4px)", "translateY(0px)"];
+    
+    const runAnimation = async () => {
+      await animate([
+        [".circle-1", { scale, transform }, { duration: 0.8 }],
+        [".circle-2", { scale, transform }, { duration: 0.8 }],
+        [".circle-3", { scale, transform }, { duration: 0.8 }],
+        [".circle-4", { scale, transform }, { duration: 0.8 }],
+        [".circle-5", { scale, transform }, { duration: 0.8 }],
+      ], {
+        repeat: Infinity,
+        repeatDelay: 1,
+      });
+    };
+
+    runAnimation();
+  }, [mounted, animate]);
+
   return (
-    <div className="p-8 overflow-hidden h-full relative flex items-center justify-center">
+    <div ref={scope} className="p-8 overflow-hidden h-full relative flex items-center justify-center">
       <div className="flex flex-row shrink-0 justify-center items-center gap-2">
         {icons.map((iconConfig, index) => {
           const IconComponent = iconConfig.component;
@@ -111,18 +82,16 @@ const Skeleton = ({ accentColor = "primary-turquoise", icons }: { accentColor?: 
               key={index}
               className={`${iconConfig.containerClassName} circle-${index + 1}`} 
               accentColor={accentColor}
+              suppressHydrationWarning
             >
               <IconComponent className={iconConfig.className} />
             </Container>
           );
         })}
       </div>
-
-      
     </div>
   );
 };
-
 
 export const Card = ({
   className,
@@ -214,20 +183,24 @@ const Container = ({
   className,
   children,
   accentColor = "primary-turquoise",
+  suppressHydrationWarning = false,
 }: {
   className?: string;
   children: React.ReactNode;
   accentColor?: string;
+  suppressHydrationWarning?: boolean;
 }) => {
   return (
-    <div
+    <motion.div
       className={cn(
         `h-16 w-16 rounded-full flex items-center justify-center bg-${accentColor}/40 shadow-primary-blue shadow-[inset_0px_0px_30px_0_rgba(0,0,0,0.1)]`,
         className
       )}
+      initial={{ scale: 1, y: 0 }}
+      suppressHydrationWarning={suppressHydrationWarning}
     >
       {children}
-    </div>
+    </motion.div>
   );
 };
 
