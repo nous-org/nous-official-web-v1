@@ -1,78 +1,89 @@
-function renderBody(status: string, content: any) {
-    const html = `
-    <script>
-      const receiveMessage = (message) => {
-        window.opener.postMessage(
-          'authorization:github:${status}:${JSON.stringify(content)}',
-          message.origin
-        );
-        window.removeEventListener("message", receiveMessage, false);
-      }
-      window.addEventListener("message", receiveMessage, false);
-      window.opener.postMessage("authorizing:github", "*");
-    </script>
-    `;
-    const blob = new Blob([html]);
-    return blob;
+import type { APIRoute } from 'astro';
+
+export const prerender = false; // ← debe ejecutarse solo en runtime
+
+/**
+ * Devuelve la página HTML que Decap CMS espera para completar el login.
+ */
+function renderBody(
+  status: 'success' | 'error',
+  content: unknown
+): string {
+  // Evita que "</script>" rompa la página
+  const safe = JSON.stringify(content).replace(/</g, '\\u003c');
+
+  return /* html */ `
+    <!doctype html>
+    <html>
+      <head><meta charset="utf-8" /></head>
+      <body>
+        <script>
+          (function () {
+            function receiveMessage(e) {
+              window.opener.postMessage(
+                'authorization:github:${status}:${safe}',
+                e.origin
+              );
+              window.removeEventListener('message', receiveMessage, false);
+              window.close();
+            }
+            window.addEventListener('message', receiveMessage, false);
+            window.opener.postMessage('authorizing:github', '*');
+          })();
+        </script>
+      </body>
+    </html>`;
 }
 
-export async function onRequest(context: any) {
-    const {
-        request, // same as existing Worker API
-        env, // same as existing Worker API
-        params, // if filename includes [id] or [[path]]
-        waitUntil, // same as ctx.waitUntil in existing Worker API
-        next, // used for middleware or to fetch assets
-        data, // arbitrary space for passing data between middlewares
-    } = context;
+export const GET: APIRoute = async ({ url, locals }) => {
+  const env = locals.runtime?.env;
+  const clientId = env?.GITHUB_CLIENT_ID;
+  const clientSecret = env?.GITHUB_CLIENT_SECRET;
 
-    const client_id = env.GITHUB_CLIENT_ID;
-    const client_secret = env.GITHUB_CLIENT_SECRET;
+  if (!clientId || !clientSecret) {
+    return new Response(
+      renderBody('error', { message: 'Missing GitHub credentials' }),
+      { status: 500, headers: { 'content-type': 'text/html;charset=utf-8' } }
+    );
+  }
 
-    try {
-        const url = new URL(request.url);
-        const code = url.searchParams.get('code');
-        const response = await fetch(
-            'https://github.com/login/oauth/access_token',
-            {
-                method: 'POST',
-                headers: {
-                    'content-type': 'application/json',
-                    'user-agent': 'cloudflare-functions-github-oauth-login-demo',
-                    'accept': 'application/json',
-                },
-                body: JSON.stringify({ client_id, client_secret, code }),
-            },
-        );
-        const result: any = await response.json();
-        if (result.error) {
-            return new Response(renderBody('error', result), {
-                headers: {
-                    'content-type': 'text/html;charset=UTF-8',
-                },
-                status: 401 
-            });
-        }
-        const token = result.access_token;
-        const provider = 'github';
-        const responseBody = renderBody('success', {
-            token,
-            provider,
-        });
-        return new Response(responseBody, { 
-            headers: {
-                'content-type': 'text/html;charset=UTF-8',
-            },
-            status: 200 
-        });
+  const code = url.searchParams.get('code');
+  if (!code) {
+    return new Response(
+      renderBody('error', { message: 'Missing OAuth “code”' }),
+      { status: 400, headers: { 'content-type': 'text/html;charset=utf-8' } }
+    );
+  }
 
-    } catch (error) {
-        console.error(error as Error);
-        return new Response((error as Error).message, {
-            headers: {
-                'content-type': 'text/html;charset=UTF-8',
-            },
-            status: 500,
-        });
+  const ghRes = await fetch('https://github.com/login/oauth/access_token', {
+    method: 'POST',
+    headers: {
+      accept: 'application/json',
+      'content-type': 'application/json',
+      'user-agent': 'nous-cms-oauth'
+    },
+    body: JSON.stringify({
+      client_id: clientId,
+      client_secret: clientSecret,
+      code
+    })
+  });
+
+  const ghJson: any = await ghRes.json();
+
+  if (!ghRes.ok || ghJson.error) {
+    return new Response(renderBody('error', ghJson), {
+      status: 401,
+      headers: { 'content-type': 'text/html;charset=utf-8' }
+    });
+  }
+
+  const token = ghJson.access_token;
+  return new Response(
+    renderBody('success', { token, provider: 'github' }),
+    {
+      status: 200,
+      headers: { 'content-type': 'text/html;charset=utf-8' }
     }
-}
+  );
+};

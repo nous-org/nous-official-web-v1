@@ -1,31 +1,24 @@
-export async function onRequest(context: any) {
-    const {
-        request, // same as existing Worker API
-        env, // same as existing Worker API
-        params, // if filename includes [id] or [[path]]
-        waitUntil, // same as ctx.waitUntil in existing Worker API
-        next, // used for middleware or to fetch assets
-        data, // arbitrary space for passing data between middlewares
-    } = context;
+import type { APIRoute } from 'astro';
 
-    const client_id = env.GITHUB_CLIENT_ID;
+export const prerender = false; // ← ¡importante! esto es server-only
 
-    try {
-        const url = new URL(request.url);
-        const redirectUrl = new URL('https://github.com/login/oauth/authorize');
-        redirectUrl.searchParams.set('client_id', client_id);
-        redirectUrl.searchParams.set('redirect_uri', url.origin + '/api/callback');
-        redirectUrl.searchParams.set('scope', 'repo user');
-        redirectUrl.searchParams.set(
-            'state',
-            crypto.getRandomValues(new Uint8Array(12)).join(''),
-        );
-        return Response.redirect(redirectUrl.href, 301);
+export const GET: APIRoute = async ({ url, locals, redirect }) => {
+  // 1. Variables de entorno inyectadas por el adapter-cloudflare
+  const clientId = locals.runtime?.env?.GITHUB_CLIENT_ID;
+  if (!clientId) {
+    return new Response('GITHUB_CLIENT_ID missing', { status: 500 });
+  }
 
-    } catch (error) {
-        console.error(error as Error);
-        return new Response((error as Error).message, {
-            status: 500,
-        });
-    }
-}
+  // 2. Construimos la URL de autorización de GitHub
+  const githubAuth = new URL('https://github.com/login/oauth/authorize');
+  githubAuth.searchParams.set('client_id', clientId);
+  githubAuth.searchParams.set(
+    'redirect_uri',
+    `${url.origin}/api/oauth/callback`
+  );
+  githubAuth.searchParams.set('scope', 'repo user');
+  githubAuth.searchParams.set('state', crypto.randomUUID());
+
+  // 3. Redirigimos (302 por defecto)
+  return redirect(githubAuth.toString());
+};
