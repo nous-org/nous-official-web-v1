@@ -18,6 +18,7 @@ const posts = await getCollection(
     tags={['AI blog', 'technology articles', 'web development tutorials', 'business automation', 'tech insights']}
     includeOrganizationSchema={false}
 >
+<section class="container max-w-7xl mx-auto px-4 py-40">
 <ul>
   {posts.map((post) => (
     <li>
@@ -26,4 +27,5 @@ const posts = await getCollection(
     </li>
   ))}
 </ul>
+</section>
 </Layout>
