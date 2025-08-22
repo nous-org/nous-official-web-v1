@@ -13,17 +13,25 @@ function renderBody(status: 'success' | 'error', content: unknown): string {
   const safe = JSON.stringify(content).replace(/</g, '\\u003c');
   // HTML mínimo que notifica a Decap en el opener
   return `<!doctype html>
-<html><body><script>
-  (function() {
-    var data = ${safe};
-    if (window.opener) {
-      window.opener.postMessage(data, window.location.origin);
-      window.close();
-    } else {
-      document.body.innerText = 'Close this window';
-    }
-  })();
-</script></body></html>`;
+    <html>
+      <head><meta charset="utf-8" /></head>
+      <body>
+        <script>
+          (function () {
+            const payload = 'authorization:github:${status}:${safe}';
+            // Entrega el resultado a la ventana que abrió el popup
+            window.opener?.postMessage(payload, '*');
+
+            // Lleva al usuario a /admin/ (si ya estaba allí solo recarga)
+            window.opener?.location.replace('/admin/');
+
+            // Pequeño delay para evitar que algunos navegadores
+            // bloqueen window.close() inmediatamente
+            setTimeout(() => window.close(), 50);
+          })();
+        </script>
+      </body>
+    </html>`;
 }
 
 export const GET: APIRoute = async ({ url, locals, request }) => {
