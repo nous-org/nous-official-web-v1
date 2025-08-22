@@ -1,7 +1,7 @@
 ---
 // src/pages/blog/[slug].astro
 import { getCollection, getEntry } from 'astro:content';
-
+import Layout from '@/layouts/Layout.astro';
 /**
  * 1. Genera todas las rutas /blog/slug/ en el build.
  */
@@ -24,8 +24,54 @@ if (!post) {
 
 const { Content } = await post.render();
 ---
-<article>
-  <h1>{post.data.title}</h1>
-  <p><em>{post.data.date.toLocaleDateString()}</em></p>
-  <Content />
-</article>
+<Layout
+    title="Blog - Nous Technologies"
+    backgroundType="primary"
+    useContainer={true}
+    showAurora={false}
+    paddingType="normal"
+    canonical="/blog"
+    ogImage="/images/og-blog.jpg"
+    tags={['AI blog', 'technology articles', 'web development tutorials', 'business automation', 'tech insights']}
+    includeOrganizationSchema={false}
+>
+<section class="container max-w-4xl mx-auto px-4 py-24 sm:py-28 lg:py-32">
+  <nav class="mb-6 sm:mb-8">
+    <a href="/blog" class="inline-flex items-center gap-2 text-sm font-medium text-primary-turquoise hover:text-primary-turquoise/90 focus-visible:ring-2 focus-visible:ring-primary-turquoise rounded">
+      ← Back to blog
+    </a>
+  </nav>
+
+  <article class="rounded-xl border border-primary-purple/20 bg-primary-black/30 backdrop-blur-sm p-6 sm:p-8 lg:p-10">
+    <header class="mb-6 sm:mb-8">
+      <time class="block text-sm text-primary-purple/70" datetime={post.data.date.toISOString()}>
+        {post.data.date.toLocaleDateString()}
+      </time>
+      <h1 class="mt-2 text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-primary-turquoise">
+        {post.data.title}
+      </h1>
+      {post.data.tags && post.data.tags.length > 0 && (
+        <ul aria-label="Tags" class="mt-4 flex flex-wrap gap-2">
+          {post.data.tags.slice(0, 6).map((tag) => (
+            <li>
+              <span class="inline-flex items-center rounded-full border border-primary-purple/30 bg-primary-blue/40 px-2.5 py-1 text-xs font-medium text-primary-turquoise">
+                #{tag}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </header>
+
+    <div class="text-base sm:text-lg leading-relaxed text-neutral-300 space-y-6" >
+      <Content />
+    </div>
+
+    <footer class="mt-10 pt-6 border-t border-primary-purple/20">
+      <a href="/blog" class="inline-flex items-center gap-2 text-sm font-medium text-primary-turquoise hover:text-primary-turquoise/90 focus-visible:ring-2 focus-visible:ring-primary-turquoise rounded">
+        ← All articles
+      </a>
+    </footer>
+  </article>
+</section>
+</Layout>

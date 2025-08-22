@@ -3,7 +3,7 @@ title: "ChatGPT 5 ya está aquí: conoce sus mejoras, usos en educación, negoci
   y programación, y lo que traerá el futuro de la IA."
 date: 2025-08-22T11:58:00.000-06:00
 draft: false
-description: esto es un test
+description: No te quedes atrás con las ultimas actualizaciones de OpenAI
 ---
 ## ChatGPT 5: la nueva evolución de la inteligencia artificial conversacional
 
