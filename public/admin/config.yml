@@ -3,7 +3,7 @@ backend:
   repo: nous-org/nous-official-web-v1
   branch: main
   base_url: https://nous.cr          # dominio de tu sitio
-  auth_endpoint: /api/oauth/authorize
+  auth_endpoint: /api/auth
 
 collections:
   - name: "blog"
