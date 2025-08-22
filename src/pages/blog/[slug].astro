@@ -1,0 +1,31 @@
+---
+// src/pages/blog/[slug].astro
+import { getCollection, getEntry } from 'astro:content';
+
+/**
+ * 1. Genera todas las rutas /blog/slug/ en el build.
+ */
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+}
+
+/**
+ * 2. Para cada ruta obtenemos la entrada concreta.
+ */
+const { slug } = Astro.params;
+const post = await getEntry('blog', slug);
+
+if (!post) {
+  throw new Error(`Entrada no encontrada: ${slug}`);
+}
+
+const { Content } = await post.render();
+---
+<article>
+  <h1>{post.data.title}</h1>
+  <p><em>{post.data.date.toLocaleDateString()}</em></p>
+  <Content />
+</article>

@@ -1,0 +1,29 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+
+const posts = await getCollection(
+  'blog',
+  ({ data }) => !data.draft            
+);
+---
+<Layout
+    title="Blog - Nous Technologies"
+    backgroundType="primary"
+    useContainer={true}
+    showAurora={false}
+    paddingType="normal"
+    canonical="/blog"
+    ogImage="/images/og-blog.jpg"
+    tags={['AI blog', 'technology articles', 'web development tutorials', 'business automation', 'tech insights']}
+    includeOrganizationSchema={false}
+>
+<ul>
+  {posts.map((post) => (
+    <li>
+      <a href={`/blog/${post.slug}/`}>{post.data.title}</a>
+      <small> {post.data.date.toLocaleDateString()} </small>
+    </li>
+  ))}
+</ul>
+</Layout>

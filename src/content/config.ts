@@ -34,7 +34,17 @@ const privacypolicy = defineCollection({
   }),
 });
 
+const blog = defineCollection({
+  schema: z.object({
+    title: z.string(),
+    date: z.date(),
+    draft: z.boolean().default(false),
+    description: z.string().optional(),
+    tags: z.array(z.string()).optional()
+  })
+});
 export const collections = {
   termsandconditions,
   privacypolicy,
+  blog,
 };

@@ -5,6 +5,8 @@ export interface Env {
   RESEND_API_KEY:      string;
   TURSO_DATABASE_URL:  string;
   TURSO_AUTH_TOKEN:    string;
+  GITHUB_CLIENT_ID:    string;
+  GITHUB_CLIENT_SECRET: string;
   SESSION:             KVNamespace;   // si tienes el KV
 }
 
