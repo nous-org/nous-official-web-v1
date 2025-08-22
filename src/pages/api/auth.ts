@@ -12,10 +12,12 @@ export const GET: APIRoute = async ({ url, locals, redirect }) => {
   // 2. Construimos la URL de autorización de GitHub
   const githubAuth = new URL('https://github.com/login/oauth/authorize');
   githubAuth.searchParams.set('client_id', clientId);
-  githubAuth.searchParams.set(
-    'redirect_uri',
-    'https://nous.cr/admin'
-  );
+  
+  // Permite configurar explícitamente el dominio/base para redirect_uri desde el entorno (p. ej. https://nous.cr o https://auth.nous.cr)
+  // Si no está definido, usa el origin actual (útil en dev/preview)
+  const baseUrl = (locals.runtime?.env?.OAUTH_BASE_URL as string | undefined) ?? url.origin;
+  githubAuth.searchParams.set('redirect_uri', `${baseUrl}/api/callback`);
+  
   githubAuth.searchParams.set('scope', 'repo user');
   githubAuth.searchParams.set('state', crypto.randomUUID());
 

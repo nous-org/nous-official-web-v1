@@ -7,7 +7,8 @@ export interface Env {
   TURSO_AUTH_TOKEN:    string;
   GITHUB_CLIENT_ID:    string;
   GITHUB_CLIENT_SECRET: string;
-  SESSION:             KVNamespace;   // si tienes el KV
+  SESSION:             KVNamespace;
+  OAUTH_BASE_URL: string;
 }
 
 declare module 'astro' {
