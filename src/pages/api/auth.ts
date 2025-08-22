@@ -1,24 +1,26 @@
+// src/pages/api/auth.ts
 import type { APIRoute } from 'astro';
-
-export const prerender = false; // ← ¡importante! esto es server-only
+export const prerender = false;
 
 export const GET: APIRoute = async ({ url, locals, redirect }) => {
-  // 1. Variables de entorno inyectadas por el adapter-cloudflare
   const clientId = locals.runtime?.env?.GITHUB_CLIENT_ID;
-  if (!clientId) {
-    return new Response('GITHUB_CLIENT_ID missing', { status: 500 });
-  }
+  const redirectUri = locals.runtime?.env?.AUTH_REDIRECT_URI || 'https://nous.cr/api/callback'; // Fijo
+  if (!clientId) return new Response('GITHUB_CLIENT_ID missing', { status: 500 });
 
-  // 2. Construimos la URL de autorización de GitHub
+  // Genera y guarda state en cookie para validarlo luego
+  const state = crypto.randomUUID();
+
   const githubAuth = new URL('https://github.com/login/oauth/authorize');
   githubAuth.searchParams.set('client_id', clientId);
-  
-  
-  githubAuth.searchParams.set('redirect_uri', `${url.origin}/api/callback`);
-  
-  githubAuth.searchParams.set('scope', 'repo user');
-  githubAuth.searchParams.set('state', crypto.randomUUID());
+  githubAuth.searchParams.set('redirect_uri', redirectUri);
+  githubAuth.searchParams.set('scope', 'repo'); // o 'public_repo' si el repo es público
+  githubAuth.searchParams.set('state', state);
 
-  // 3. Redirigimos (302 por defecto)
-  return redirect(githubAuth.toString());
+  // Cookie segura (ajusta el dominio si usas subdominios)
+  const res = redirect(githubAuth.toString());
+  res.headers.append(
+    'Set-Cookie',
+    `oauth_state=${state}; Path=/; HttpOnly; Secure; SameSite=Lax; Domain=.nous.cr; Max-Age=600`
+  );
+  return res;
 };
