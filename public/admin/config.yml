@@ -2,7 +2,7 @@ backend:
   name: github
   repo: nous-org/nous-official-web-v1
   branch: main
-  
+  base_url: https://nous.cr/
 collections:
   - name: "blog"
     label: "Blog"
