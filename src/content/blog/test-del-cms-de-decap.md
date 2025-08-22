@@ -9,4 +9,4 @@ description: esto es un test
 ---
 Este contenido esta generado **completamente desde el CMS** en el cual podemos editar los blogs
 
-![imagen de desarrollo](src/assets/images/ctabg.png "Desarrollo web")
+
