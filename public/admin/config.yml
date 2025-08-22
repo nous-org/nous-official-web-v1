@@ -2,8 +2,8 @@ backend:
   name: github
   repo: nous-org/nous-official-web-v1
   branch: main
-  site_domain: https://nous.cr.com
-  base_url: https://nous.cr.com
+  site_domain: https://nous.cr
+  base_url: https://nous.cr
   auth_endpoint: /api/auth
 
 collections:
