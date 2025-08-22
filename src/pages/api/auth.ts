@@ -14,7 +14,7 @@ export const GET: APIRoute = async ({ url, locals, redirect }) => {
   githubAuth.searchParams.set('client_id', clientId);
   
   
-  githubAuth.searchParams.set('redirect_uri', `${url.origin}/api/callback`);
+  githubAuth.searchParams.set('redirect_uri', `${url.origin}/admin`);
   
   githubAuth.searchParams.set('scope', 'repo user');
   githubAuth.searchParams.set('state', crypto.randomUUID());
