@@ -8,13 +8,13 @@ export const GET: APIRoute = async ({ locals, redirect }) => {
   if (!clientId) return new Response('GITHUB_CLIENT_ID missing', { status: 500 });
 
   const state = crypto.randomUUID();
-  const githubAuth = new URL('https://github.com/login/oauth/authorize');
-  githubAuth.searchParams.set('client_id', clientId);
-  githubAuth.searchParams.set('redirect_uri', redirectUri);
-  githubAuth.searchParams.set('scope', 'repo'); // o 'public_repo' si el repo es público
-  githubAuth.searchParams.set('state', state);
+  const gh = new URL('https://github.com/login/oauth/authorize');
+  gh.searchParams.set('client_id', clientId);
+  gh.searchParams.set('redirect_uri', redirectUri);
+  gh.searchParams.set('scope', 'repo'); // o 'public_repo' si tu repo es público
+  gh.searchParams.set('state', state);
 
-  const res = redirect(githubAuth.toString());
+  const res = redirect(gh.toString());
   res.headers.append('Set-Cookie', `oauth_state=${state}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=600`);
   return res;
 };
