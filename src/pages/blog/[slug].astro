@@ -1,72 +1,34 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
+export const prerender = false;
+
+import { createClient } from '@libsql/client/web';
 import Layout from '@/layouts/Layout.astro';
-
-export async function getStaticPaths() {
-  const posts = await getCollection('blog');
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-  }));
-}
-
-
 const { slug } = Astro.params;
-const post = await getEntry('blog', slug);
+if (!slug) {
+  return Astro.redirect('/404');
+}
+const env = Astro.locals.runtime.env as {
+  TURSO_DATABASE_URL: string;
+  TURSO_AUTH_TOKEN?: string;
+};
 
-if (!post) {
-  throw new Error(`Entrada no encontrada: ${slug}`);
+const db = createClient({ url: env.TURSO_DATABASE_URL, authToken: env.TURSO_AUTH_TOKEN });
+
+const rs = await db.execute(
+  `SELECT title, content_html, published_at FROM posts WHERE slug = ?`,
+  [slug]
+);
+
+if (rs.rows.length === 0 || !rs.rows[0].published_at) {
+  return Astro.redirect('/404');
 }
 
-const { Content } = await post.render();
+const { title, content_html } = rs.rows[0] as any;
 ---
-<Layout
-    title="Blog - Nous Technologies"
-    backgroundType="primary"
-    useContainer={true}
-    showAurora={false}
-    paddingType="normal"
-    canonical="/blog"
-    ogImage="/images/og-blog.jpg"
-    tags={['AI blog', 'technology articles', 'web development tutorials', 'business automation', 'tech insights']}
-    includeOrganizationSchema={false}
->
-<section class="container max-w-4xl mx-auto px-4 py-24 sm:py-28 lg:py-32">
-  <nav class="mb-6 sm:mb-8">
-    <a href="/blog" class="inline-flex items-center gap-2 text-sm font-medium text-primary-turquoise hover:text-primary-turquoise/90 focus-visible:ring-2 focus-visible:ring-primary-turquoise rounded">
-      ← Back to blog
-    </a>
-  </nav>
 
-  <article class="rounded-xl border border-primary-purple/20 bg-primary-black/30 backdrop-blur-sm p-6 sm:p-8 lg:p-10">
-    <header class="mb-6 sm:mb-8">
-      <time class="block text-sm text-primary-purple/70" datetime={post.data.date.toISOString()}>
-        {post.data.date.toLocaleDateString()}
-      </time>
-      <h1 class="mt-2 text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-primary-turquoise">
-        {post.data.title}
-      </h1>
-      {post.data.tags && post.data.tags.length > 0 && (
-        <ul aria-label="Tags" class="mt-4 flex flex-wrap gap-2">
-          {post.data.tags.slice(0, 6).map((tag) => (
-            <li>
-              <span class="inline-flex items-center rounded-full border border-primary-purple/30 bg-primary-blue/40 px-2.5 py-1 text-xs font-medium text-primary-turquoise">
-                #{tag}
-              </span>
-            </li>
-          ))}
-        </ul>
-      )}
-    </header>
-
-    <div class="text-base sm:text-lg leading-relaxed text-neutral-300 space-y-6" >
-      <Content />
-    </div>
-
-    <footer class="mt-10 pt-6 border-t border-primary-purple/20">
-      <a href="/blog" class="inline-flex items-center gap-2 text-sm font-medium text-primary-turquoise hover:text-primary-turquoise/90 focus-visible:ring-2 focus-visible:ring-primary-turquoise rounded">
-        ← All articles
-      </a>
-    </footer>
-  </article>
-</section>
+<Layout title={title} backgroundType="primary" showAurora={false} useContainer={true}>
+     <section class="mx-auto max-w-3xl px-4 py-6 pt-64 sm:pt-48">
+      <h1 class="mb-6 text-3xl font-semibold tracking-tight text-neutral-100">{title}</h1>
+      <article class="tiptap-content space-y-4" set:html={content_html}></article>
+     </section>
 </Layout>
