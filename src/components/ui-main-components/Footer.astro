@@ -144,7 +144,7 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
                         <li><a href="/" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Home</a></li>
                         <li><a href="/services" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Services</a></li>
                         <li><a href="/portfolio" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Portfolio</a></li>
-                        <li><a href="/blogInConstruction" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Blog</a></li>
+                        <li><a href="/blog" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Blog</a></li>
                         <li><a href="/contact" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Contact</a></li>
                         <li><a href="/products" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Products</a></li>
                         <li><a href="/pricing" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Pricing</a></li>
@@ -175,17 +175,14 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
 </footer>
 
 <script is:inline>
-    // Script para manejar los emails correctamente
     function initializeEmails() {
         const emailLinks = document.querySelectorAll('.email-link');
         
         emailLinks.forEach(link => {
             const email = link.getAttribute('data-email');
             if (email) {
-                // Configurar el href correcto
                 link.href = `mailto:${email}`;
                 
-                // Asegurar que el texto se muestre correctamente
                 if (link.textContent !== email) {
                     link.textContent = email;
                 }
@@ -193,13 +190,13 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
         });
     }
     
-    // Ejecutar cuando el DOM esté listo
+   
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initializeEmails);
     } else {
         initializeEmails();
     }
     
-    // Ejecutar en cada cambio de página
+   
     document.addEventListener('astro:page-load', initializeEmails);
     </script>

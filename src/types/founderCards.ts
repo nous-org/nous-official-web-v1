@@ -57,17 +57,17 @@ export const DEFAULT_FOUNDERS: FounderCard[] = [
             {
                 icon: XIcon.src,
                 name: "X",
-                url: ""
+                url: "https://x.com/ddiaz_ale"
             },
             {
                 icon: LinkedInIcon.src,
                 name: "LinkedIn",
-                url: ""
+                url: "https://www.linkedin.com/in/alessandrodg"
             },
             {
                 icon: InstagramIcon.src,
                 name: "Instagram",
-                url: ""
+                url: "https://www.instagram.com/this._is_.ale/"
             }
         ],
         className: DEFAULT_FOUNDERS_CLASSNAME + "",
@@ -88,12 +88,12 @@ export const DEFAULT_FOUNDERS: FounderCard[] = [
             {
                 icon: LinkedInIcon.src,
                 name: "LinkedIn",
-                url: ""
+                url: "https://www.linkedin.com/in/andrey-mart%C3%ADnez/"
             },
             {
                 icon: InstagramIcon.src,
                 name: "Instagram",
-                url: ""
+                url: "https://www.instagram.com/andrey26mz/"
             }
         ],
         className: DEFAULT_FOUNDERS_CLASSNAME + "",
