@@ -29,8 +29,6 @@
     "/uploads/*",
     "/downloads/*",
     "/media/*",
-    "/admin/*",
-    "/api/admin/*",
     "/api/auth/*",
     "/api/private/*",
     "/.well-known/*",
@@ -72,7 +70,7 @@
       ]
     },
     {
-      "source": "src/assets/(.*)",
+      "source": "/assets/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
