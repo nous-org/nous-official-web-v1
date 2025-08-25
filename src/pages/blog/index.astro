@@ -1,76 +1,64 @@
 ---
-import { getCollection } from 'astro:content';
+export const prerender = false;
 import Layout from '@/layouts/Layout.astro';
+import { createClient } from '@libsql/client/web';
 
-const posts = await getCollection(
-  'blog',
-  ({ data }) => !data.draft            
-);
+const env = Astro.locals.runtime.env as {
+  TURSO_DATABASE_URL: string;
+  TURSO_AUTH_TOKEN?: string;
+};
+
+const db = createClient({ url: env.TURSO_DATABASE_URL, authToken: env.TURSO_AUTH_TOKEN });
+const rs = await db.execute({
+  sql: `SELECT slug, title, published_at FROM posts WHERE published_at IS NOT NULL ORDER BY published_at DESC`,
+  args: [],
+});
+
+// Define a precise type for the data we expect from the query
+type PostSummary = { slug: string; title: string; published_at: string };
+
+// Safely map rows to our type instead of asserting types directly
+const posts: PostSummary[] = rs.rows.map((r) => ({
+  slug: String(r["slug"]),
+  title: String(r["title"]),
+  published_at: String(r["published_at"]),
+  updated_at: String(r["updated_at"]),
+}));
+const formatDate = (iso: string) =>
+   new Date(iso).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' });
 ---
-<Layout
-    title="Blog - Nous Technologies"
-    backgroundType="primary"
-    useContainer={true}
-    showAurora={false}
-    paddingType="normal"
-    canonical="/blog"
-    ogImage="/images/og-blog.jpg"
-    tags={['AI blog', 'technology articles', 'web development tutorials', 'business automation', 'tech insights']}
-    includeOrganizationSchema={false}
->
-<section class="container max-w-7xl mx-auto px-4 py-24 sm:py-28 lg:py-32">
-  <header class="mb-10 sm:mb-12 lg:mb-16 text-center">
-    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-primary-turquoise">
-      Insights & Articles
-    </h1>
-    <p class="mt-3 sm:mt-4 text-base sm:text-lg text-primary-purple/80">
-      Latest thinking from Nous Technologies
-    </p>
-  </header>
-
-  <ul role="list" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
-    {posts.map((post) => (
-      <li>
-        <article class="group h-full rounded-xl border border-primary-purple/20 bg-primary-black/30 backdrop-blur-sm p-5 sm:p-6 lg:p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary-turquoise/50 hover:shadow-lg hover:shadow-primary-turquoise/10 focus-within:ring-2 focus-within:ring-primary-turquoise">
-          <header class="mb-4 sm:mb-5">
-            <time class="block text-sm text-primary-purple/70" datetime={post.data.date.toISOString()}>
-              {post.data.date.toLocaleDateString()}
-            </time>
-            <h3 class="mt-2 text-xl sm:text-2xl font-semibold leading-snug text-primary-turquoise group-hover:text-primary-turquoise">
-              <a href={`/blog/${post.slug}/`} class="inline-flex items-baseline gap-2 outline-none focus-visible:ring-2 focus-visible:ring-primary-turquoise rounded">
-                <span>{post.data.title}</span>
-                <span aria-hidden class="transition-transform duration-300 group-hover:translate-x-1">→</span>
-              </a>
-            </h3>
-          </header>
-
-          {post.data.description && (
-            <p class="text-sm sm:text-base text-primary-purple/80">
-              {post.data.description}
-            </p>
-          )}
-
-          {post.data.tags && post.data.tags.length > 0 && (
-            <ul aria-label="Tags" class="mt-5 flex flex-wrap gap-2">
-              {post.data.tags.slice(0, 4).map((tag) => (
-                <li>
-                  <span class="inline-flex items-center rounded-full border border-primary-purple/30 bg-primary-blue/40 px-2.5 py-1 text-xs font-medium text-primary-turquoise">
-                    #{tag}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-
-          <footer class="mt-6">
-            <a href={`/blog/${post.slug}/`} class="inline-flex items-center gap-2 text-sm font-medium text-primary-turquoise hover:text-primary-turquoise/90 focus-visible:ring-2 focus-visible:ring-primary-turquoise rounded">
-              Read article
-              <span aria-hidden class="transition-transform duration-300 group-hover:translate-x-1">→</span>
-            </a>
-          </footer>
-        </article>
-      </li>
-    ))}
-  </ul>
-</section>
+  
+  <Layout title="Blog" backgroundType="primary" showAurora={false} useContainer={true}>
+       <section class="mx-auto max-w-7xl px-4 py-6 pt-64 sm:pt-48">
+           <h1 class="mb-6 text-5xl font-semibold tracking-tight text-neutral-100 text-center">Blog</h1>
+           <h2 class="mb-6 text-4xl font-semibold tracking-tight text-primary-turquoise text-center">Insights & Articles</h2>
+           <p class="mb-24 text-base text-neutral-400 text-center">Stay updated with our latest insights on software development and Artificial Intelligence. Get curated content delivered to your inbox.</p>
+         
+         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+             {posts.map((p) => (
+               <article
+                 class="group relative rounded-xl border border-neutral-800 bg-neutral-900/30 p-4 shadow-sm shadow-primary-turquoise/10 transition-colors hover:border-primary-turquoise/40 hover:bg-neutral-900/50 focus-within:ring-2 focus-within:ring-primary-turquoise/40"
+               >
+                 <a
+                   href={`/blog/${p.slug}`}
+                   aria-label={`Leer: ${p.title}`}
+                   class="absolute inset-0 rounded-xl focus:outline-none"
+                 />
+               <header class="space-y-2">
+                 <p class="text-xs font-medium text-primary-purple/70">{formatDate(p.published_at)}</p>
+                <h2 class="flex items-start justify-between gap-3 text-2xl font-extrabold leading-snug tracking-tight text-primary-turquoise">
+                   <span class="line-clamp-4">{p.title}</span>
+                  <span aria-hidden class="translate-x-0 transition-transform group-hover:translate-x-1">→</span>
+                </h2>
+              </header>
+               <footer class="mt-4">
+                 <span class="inline-flex items-center gap-2 text-sm font-medium text-primary-purple/90">
+                  Read article <span aria-hidden>→</span>
+                 </span>
+               </footer>
+               </article>
+             ))}
+           </div>
+         </section>
+      
 </Layout>

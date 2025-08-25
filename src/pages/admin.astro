@@ -1,15 +1,125 @@
-<!doctype html>
-<html lang="es">
-  <head>
-   <meta charset="utf-8" />
-   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   <meta name="robots" content="noindex" />
-   <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
-  
+---
+export const prerender = false; // SSR, no cache
+import {AdminEntrypoint} from '@/components/react/AdminEntrypoint';
+import Layout from '@/layouts/Layout.astro';  
+const publishableKey = import.meta.env.CLERK_PUBLISHABLE_KEY;
+if (!publishableKey) {
+  console.warn('Falta VITE_CLERK_PUBLISHABLE_KEY');
+}
+const now = new Date().toISOString();
 
-   <title>Administrador de contenidos</title>
-  </head>
- <body>
-  <script src="https://unpkg.com/decap-cms@^3/dist/decap-cms.js"></script>
- </body>
-</html>
+---
+
+<Layout
+title="Admin"
+backgroundType="primary"
+useContainer={true}
+showAurora={false}
+paddingType="normal"
+canonical="/admin"
+ogImage="/images/og-admin.jpg"
+tags={['admin']}
+includeOrganizationSchema={false}
+>
+<header class="mt-32 sm:mt-40 mb-6">
+  <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-neutral-50">
+    Panel de Administración
+  </h1>
+  <p class="mt-2 max-w-2xl text-sm sm:text-base text-neutral-400 leading-relaxed">
+    Accede con tu cuenta de Nous Technologies para gestionar contenido y publicaciones. Este panel es exclusivo para uso interno.
+  </p>
+</header>
+
+<!-- Alert / Notice -->
+<div
+  role="alert"
+  class="mb-8 rounded-xl border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-amber-200 shadow-sm"
+>
+  <div class="flex items-start gap-3">
+    <svg class="mt-0.5 h-5 w-5 flex-none" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      <path fill-rule="evenodd" d="M9.401 1.592a1 1 0 0 1 1.198 0l7.2 5.4a1 1 0 0 1 .201 1.4l-7.2 9.6a1 1 0 0 1-1.6 0l-7.2-9.6a1 1 0 0 1 .201-1.4l7.2-5.4ZM10 6a1 1 0 0 0-.993.883L9 7v4a1 1 0 0 0 1.993.117L11 11V7a1 1 0 0 0-1-1Zm0 8a1 1 0 0 0-.117 1.993L10 16a1 1 0 0 0 .117-1.993L10 14Z" clip-rule="evenodd" />
+    </svg>
+    <div>
+      <h2 class="text-sm font-semibold leading-6 text-amber-200">Acceso restringido</h2>
+      <p class="mt-1 text-sm text-amber-100/90">
+        Si necesitas una cuenta, contacta a los administradores de Nous Technologies. No compartas tus credenciales.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+  <!-- Main admin workspace -->
+  <section class="lg:col-span-2">
+    <div class="rounded-2xl border border-neutral-800 bg-neutral-900/30 p-4 shadow-sm shadow-primary-turquoise/10">
+      <!-- React Admin entrypoint (handles auth UI and editor) -->
+      <AdminEntrypoint client:load publishableKey={publishableKey} />
+    </div>
+  </section>
+
+  <!-- Right rail: status and quick info -->
+  <aside class="lg:col-span-1 space-y-6">
+    <section class="rounded-xl border border-neutral-800 bg-neutral-900/30 p-4">
+      <h3 id="system-status" class="text-sm font-semibold text-neutral-100">Estado del sistema</h3>
+      <dl class="mt-3 space-y-2 text-sm">
+        <div class="flex items-center justify-between gap-3">
+          <dt class="text-neutral-400">Modo</dt>
+          <dd class="font-medium text-neutral-200">Produccion</dd>
+        </div>
+        <div class="flex items-center justify-between gap-3">
+          <dt class="text-neutral-400">Versión</dt>
+          <dd class="font-medium text-neutral-200">1.0.0</dd>
+        </div>
+        <div class="flex items-center justify-between gap-3">
+          <dt class="text-neutral-400">Clerk key</dt>
+          <dd class={publishableKey ? 'text-emerald-300' : 'text-red-300'}>
+            {publishableKey ? 'Configurada' : 'Faltante'}
+          </dd>
+        </div>
+        <div class="flex items-center justify-between gap-3">
+          <dt class="text-neutral-400">Hora (UTC)</dt>
+          <dd class="font-mono text-xs text-neutral-300">{now}</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="rounded-xl border border-neutral-800 bg-neutral-900/30 p-4">
+      <h3 class="text-sm font-semibold text-neutral-100">Soporte</h3>
+      <p class="mt-2 text-sm text-neutral-400">
+        Para solicitar mejoras o reportar incidencias del panel, comunícate con los administradores de Nous Technologies.
+      </p>
+      <div class="mt-3 flex flex-col gap-2">
+        <a
+          href="mailto:soporte@nous.technology"
+          class="inline-flex items-center justify-center rounded-md border border-primary-turquoise/40 px-3 py-2 text-sm font-medium text-primary-turquoise transition-colors hover:border-primary-turquoise hover:bg-primary-turquoise/10 focus:outline-none focus:ring-2 focus:ring-primary-turquoise/40"
+          aria-label="Contactar soporte por correo"
+        >
+          Contactar soporte
+        </a>
+        <a
+          href="/"
+          class="inline-flex items-center justify-center rounded-md border border-neutral-800 bg-neutral-900/40 px-3 py-2 text-sm text-neutral-200 transition-colors hover:border-primary-turquoise/40 hover:bg-neutral-900/60 focus:outline-none focus:ring-2 focus:ring-primary-turquoise/30"
+          aria-label="Volver al sitio"
+        >
+          Volver al sitio
+        </a>
+      </div>
+    </section>
+
+    <section class="rounded-xl border border-neutral-800 bg-neutral-900/30 p-4">
+      <h3 class="text-sm font-semibold text-neutral-100">Notas</h3>
+      <ul class="mt-2 space-y-2 text-sm text-neutral-400">
+        <li>Los borradores no son públicos hasta que se publiquen.</li>
+        <li>Utiliza títulos descriptivos; el slug se genera automáticamente.</li>
+        <li>Los enlaces se abren en nueva pestaña y usan rel="noopener".</li>
+      </ul>
+    </section>
+  </aside>
+</div>
+
+<footer class="mt-10 border-t border-neutral-800 pt-4">
+  <p class="text-xs text-neutral-500">© {new Date().getFullYear()} Nous Technologies. Todos los derechos reservados.</p>
+</footer>
+</Layout>
+
+
