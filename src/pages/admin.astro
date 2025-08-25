@@ -2,10 +2,9 @@
 export const prerender = false; // SSR, no cache
 import {AdminEntrypoint} from '@/components/react/AdminEntrypoint';
 import Layout from '@/layouts/Layout.astro';  
-const publishableKey = import.meta.env.CLERK_PUBLISHABLE_KEY;
-if (!publishableKey) {
-  console.warn('Falta VITE_CLERK_PUBLISHABLE_KEY');
-}
+const { runtime } = Astro.locals;
+const { CLERK_PUBLISHABLE_KEY } = runtime.env;
+
 const now = new Date().toISOString();
 
 ---
@@ -53,7 +52,7 @@ includeOrganizationSchema={false}
   <section class="lg:col-span-2">
     <div class="rounded-2xl border border-neutral-800 bg-neutral-900/30 p-4 shadow-sm shadow-primary-turquoise/10">
       <!-- React Admin entrypoint (handles auth UI and editor) -->
-      <AdminEntrypoint client:load publishableKey={publishableKey} />
+      <AdminEntrypoint client:load publishableKey={CLERK_PUBLISHABLE_KEY} />
     </div>
   </section>
 
@@ -72,8 +71,8 @@ includeOrganizationSchema={false}
         </div>
         <div class="flex items-center justify-between gap-3">
           <dt class="text-neutral-400">Clerk key</dt>
-          <dd class={publishableKey ? 'text-emerald-300' : 'text-red-300'}>
-            {publishableKey ? 'Configurada' : 'Faltante'}
+          <dd class={CLERK_PUBLISHABLE_KEY ? 'text-emerald-300' : 'text-red-300'}>
+            {CLERK_PUBLISHABLE_KEY ? 'Configurada' : 'Faltante'}
           </dd>
         </div>
         <div class="flex items-center justify-between gap-3">

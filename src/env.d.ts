@@ -9,6 +9,8 @@ export interface Env {
   GITHUB_CLIENT_SECRET: string;
   SESSION:             KVNamespace;
   OAUTH_BASE_URL: string;
+  CLERK_PUBLISHABLE_KEY: string;
+  CLERK_SECRET_KEY: string;
 }
 
 declare module 'astro' {
