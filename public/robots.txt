@@ -1,29 +1,107 @@
+# Robots.txt optimizado para Google Search Console y AI crawlers
+# Permite el acceso completo a todas las páginas públicas
+
 User-agent: *
 Allow: /
 
-# Sitemap
+# ===== SITEMAPS =====
 Sitemap: https://nous.cr/sitemap.xml
 
-# Disallow admin areas (if any)
+# ===== EXCLUSIONES MÍNIMAS =====
+# Solo bloqueamos áreas administrativas y APIs sensibles
 Disallow: /admin/
-Disallow: /api/
-Disallow: /_astro/
+Disallow: /api/auth/
+Disallow: /api/private/
 
-# Allow important resources
+# ===== RECURSOS PERMITIDOS EXPLÍCITAMENTE =====
+# Aseguramos acceso completo a recursos importantes
 Allow: /assets/
 Allow: /images/
+Allow: /static/
+Allow: /_astro/
 Allow: /*.css
 Allow: /*.js
+Allow: /*.json
+Allow: /*.xml
+Allow: /*.ico
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.gif
+Allow: /*.svg
+Allow: /*.webp
+Allow: /*.pdf
 
-# Crawl delay (optional)
-Crawl-delay: 1
-
-# Specific bots
+# ===== CRAWLERS DE GOOGLE =====
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 1
 
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Googlebot-News
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# ===== OTROS MOTORES DE BÚSQUEDA =====
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
 
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# ===== SOCIAL MEDIA CRAWLERS =====
 User-agent: facebookexternalhit
 Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+# ===== AI/LLM CRAWLERS =====
+# Permitir acceso a los principales crawlers de IA
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: AI2Bot
+Allow: /
+
+User-agent: ImagesiftBot
+Allow: /
+
+# ===== CONFIGURACIÓN GENERAL =====
+# Crawl delay conservador para preservar recursos del servidor
+Crawl-delay: 1
+
+# Host canónico (opcional pero recomendado)
+Host: nous.cr
