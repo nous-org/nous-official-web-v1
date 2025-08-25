@@ -9,7 +9,6 @@ Sitemap: https://nous.cr/sitemap.xml
 
 # ===== EXCLUSIONES MÍNIMAS =====
 # Solo bloqueamos áreas administrativas y APIs sensibles
-Disallow: /admin/
 Disallow: /api/auth/
 Disallow: /api/private/
 
