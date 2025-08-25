@@ -1,5 +1,7 @@
 ---
 export const prerender = false;
+import { ShootingStars } from '@/components/react/ShootingStars';
+import { StarsBackground } from '@/components/react/StarBackground';
 import Layout from '@/layouts/Layout.astro';
 import { createClient } from '@libsql/client/web';
 
@@ -60,5 +62,18 @@ const formatDate = (iso: string) =>
              ))}
            </div>
          </section>
+
+         <div class="absolute inset-0 pointer-events-none overflow-hidden z-[-1]">
+          <div class="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center_10%,black_20%,transparent_70%)] opacity-60">
+              <ShootingStars client:load 
+              minDelay={1000}
+              maxDelay={1500}
+              starColor="#1AD6B3"
+              starHeight={2}
+              starWidth={20}
+             />
+              <StarsBackground client:load />
+          </div>
+        </div>
       
 </Layout>

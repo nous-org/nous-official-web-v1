@@ -3,6 +3,8 @@ export const prerender = false;
 
 import { createClient } from '@libsql/client/web';
 import Layout from '@/layouts/Layout.astro';
+import { ShootingStars } from '@/components/react/ShootingStars';
+import { StarsBackground } from '@/components/react/StarBackground';
 const { slug } = Astro.params;
 if (!slug) {
   return Astro.redirect('/404');
@@ -27,8 +29,164 @@ const { title, content_html } = rs.rows[0] as any;
 ---
 
 <Layout title={title} backgroundType="primary" showAurora={false} useContainer={true}>
-     <section class="mx-auto max-w-3xl px-4 py-6 pt-64 sm:pt-48">
-      <h1 class="mb-6 text-3xl font-semibold tracking-tight text-neutral-100">{title}</h1>
-      <article class="tiptap-content space-y-4" set:html={content_html}></article>
-     </section>
+  <a id="top" class="sr-only" aria-hidden="true"></a>
+
+  <header class="mx-auto max-w-5xl px-4 pt-56 sm:pt-44">
+    <nav aria-label="Volver a blog" class="mb-6">
+      <a
+        href="/blog"
+        class="inline-flex items-center gap-2 rounded-full border border-neutral-800/80 bg-neutral-900/50 px-4 py-2 text-sm font-medium text-neutral-200 shadow-sm backdrop-blur transition-colors hover:bg-neutral-800/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-turquoise/60"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+          <path fill-rule="evenodd" d="M15.78 4.22a.75.75 0 0 1 0 1.06L9.06 12l6.72 6.72a.75.75 0 1 1-1.06 1.06l-7.25-7.25a.75.75 0 0 1 0-1.06l7.25-7.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+        </svg>
+        <span>Volver</span>
+      </a>
+    </nav>
+
+    <h1 class="mb-12 text-3xl font-semibold tracking-tight text-primary-turquoise sm:text-4xl lg:text-5xl">
+      {title}
+    </h1>
+  </header>
+
+  <section
+    aria-labelledby="post-title"
+    class="mx-auto max-w-5xl px-4 pb-16 sm:pb-24"
+  >
+    <h2 id="post-title" class="sr-only">{title}</h2>
+
+    <article
+      class="tiptap-content space-y-6 text-neutral-300"
+      set:html={content_html}
+    ></article>
+  </section>
+
+  <!-- Scroll to top floating button -->
+  <button
+    id="scrollTopBtn"
+    type="button"
+    aria-label="Ir arriba"
+    class="fixed bottom-6 right-6 z-40 inline-flex h-11 w-11 items-center justify-center rounded-full border border-neutral-800/80 bg-neutral-900/70 text-neutral-200 shadow-lg backdrop-blur transition-all hover:scale-105 hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-turquoise/60 opacity-0 pointer-events-none"
+  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="#ffffff" d="m11 7.825l-4.9 4.9q-.3.3-.7.288t-.7-.313q-.275-.3-.288-.7t.288-.7l6.6-6.6q.15-.15.325-.212T12 4.425t.375.063t.325.212l6.6 6.6q.275.275.275.688t-.275.712q-.3.3-.712.3t-.713-.3L13 7.825V19q0 .425-.288.713T12 20t-.712-.288T11 19z"/></svg>
+  </button>
+
+  <div class="absolute inset-0 pointer-events-none overflow-hidden z-[-1]">
+    <div class="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center_10%,black_20%,transparent_70%)] opacity-60">
+        <ShootingStars client:load 
+        minDelay={1000}
+        maxDelay={1500}
+        starColor="#1AD6B3"
+        starHeight={2}
+        starWidth={20}
+       />
+        <StarsBackground client:load />
+    </div>
+  </div>
 </Layout>
+<script is:inline>
+  
+  (function () {
+    'use strict';
+    
+    let scrollBtn = null;
+    let isVisible = false;
+    let ticking = false;
+    let cleanup = null;
+    
+    const SCROLL_THRESHOLD = 240;
+    const TRANSITION_CLASSES = {
+      show: ['opacity-0', 'pointer-events-none'],
+      hide: ['opacity-0', 'pointer-events-none']
+    };
+
+    const handleScroll = () => {
+      if (ticking || !scrollBtn) return;
+      
+      ticking = true;
+      requestAnimationFrame(() => {
+        const shouldShow = window.scrollY > SCROLL_THRESHOLD;
+        
+          
+        if (shouldShow !== isVisible) {
+          isVisible = shouldShow;
+          
+          if (isVisible) {
+            scrollBtn.classList.remove(...TRANSITION_CLASSES.show);
+          } else {
+            scrollBtn.classList.add(...TRANSITION_CLASSES.hide);
+          }
+        }
+        
+        ticking = false;
+      });
+    };
+
+    const handleClick = (e) => {
+      e.preventDefault();
+      
+      if ('scrollBehavior' in document.documentElement.style) {
+        window.scrollTo({ 
+          top: 0, 
+          behavior: 'smooth' 
+        });
+      } else {
+        window.scrollTo(0, 0);
+      }
+    };
+    const init = () => {
+      if (cleanup) cleanup();
+      
+        scrollBtn = document.getElementById('scrollTopBtn');
+      if (!scrollBtn) {
+        console.warn('Scroll button with ID "scrollTopBtn" not found');
+        return;
+      }
+
+      isVisible = false;
+      ticking = false;
+      
+      window.addEventListener('scroll', handleScroll, { 
+        passive: true,
+        capture: false 
+      });
+      scrollBtn.addEventListener('click', handleClick, { passive: false });
+      
+      handleScroll();
+      
+      cleanup = () => {
+        if (scrollBtn) {
+          window.removeEventListener('scroll', handleScroll);
+          scrollBtn.removeEventListener('click', handleClick);
+        }
+        scrollBtn = null;
+        isVisible = false;
+        ticking = false;
+      };
+    };
+
+    const handlePageLoad = () => {
+      requestAnimationFrame(() => {
+        init();
+      });
+    };
+
+    const handleBeforeSwap = () => {
+      if (cleanup) {
+        cleanup();
+        cleanup = null;
+      }
+    };
+
+    document.addEventListener('astro:page-load', handlePageLoad);
+    document.addEventListener('astro:before-swap', handleBeforeSwap);
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', handlePageLoad);
+    } else {
+      handlePageLoad();
+    }
+
+    window.addEventListener('beforeunload', handleBeforeSwap);
+  })();
+</script>
