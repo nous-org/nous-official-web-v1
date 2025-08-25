@@ -1,18 +1,144 @@
 {
   "version": 1,
+  "index": "index.html",
   "include": [
     "/*"
   ],
   "exclude": [
     "/_image",
-    "/_astro/*",
     "/_image/*",
+    "/_astro/*",
+    "/assets/*",
+    "/static/*",
     "/favicon.ico",
     "/favicon.svg",
+    "/favicon-16x16.png",
+    "/favicon-32x32.png",
+    "/apple-touch-icon.png",
+    "/web-app-manifest-*.png",
+    "/android-chrome-*.png",
+    "/mstile-*.png",
+    "/safari-pinned-tab.svg",
+    "/browserconfig.xml",
+    "/manifest.json",
+    "/site.webmanifest",
     "/fonts/*",
     "/images/*",
-    "/sitemap-0.xml",
+    "/screenshots/*",
+    "/icons/*",
+    "/uploads/*",
+    "/downloads/*",
+    "/media/*",
+    "/admin/*",
+    "/api/admin/*",
+    "/api/auth/*",
+    "/api/private/*",
+    "/.well-known/*",
+    "/sitemap.xml",
+    "/sitemap-*.xml",
     "/sitemap-index.xml",
-    "/robots.txt"
-  ]
+    "/robots.txt",
+    "/humans.txt",
+    "/ads.txt",
+    "/security.txt",
+    "/*.css",
+    "/*.js",
+    "/*.map",
+    "/*.json",
+    "/*.xml",
+    "/*.txt",
+    "/sw.js",
+    "/workbox-*.js",
+    "/service-worker.js"
+  ],
+  "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "status": 404,
+      "dest": "/404.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/_astro/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "src/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/images/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=2592000"
+        }
+      ]
+    },
+    {
+      "source": "/fonts/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*\\.(css|js|woff|woff2|ttf|eot))",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*\\.(png|jpg|jpeg|gif|svg|webp|avif|ico))",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=2592000"
+        }
+      ]
+    },
+    {
+      "source": "/manifest.json",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/manifest+json"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ]
+    },
+    {
+      "source": "/(robots\\.txt|sitemap.*\\.xml)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
+      ]
+    }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
 }
