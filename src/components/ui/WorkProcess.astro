@@ -10,7 +10,7 @@ interface ProcessStep {
     title: string;
     description: string;
     icon: string;
-    color: "turquoise" | "purple" | "blue" | "green";
+    color: "accent";
 }
 
 const PROCESS_STEPS: ProcessStep[] = [
@@ -19,28 +19,28 @@ const PROCESS_STEPS: ProcessStep[] = [
         title: "Listen",
         description: "We first listen to your specific needs, understanding your challenges and goals to create the perfect foundation.",
         icon: "ear",
-        color: "turquoise"
+        color: "accent"
     },
     {
         step: 2,
         title: "Design",
         description: "Then design a clear and viable solution, mapping out every detail to ensure optimal results and user experience.",
         icon: "design",
-        color: "purple"
+        color: "accent"
     },
     {
         step: 3,
         title: "Deliver",
         description: "Deliver a professional implementation with cutting-edge technology, following best practices and quality standards.",
         icon: "rocket",
-        color: "blue"
+        color: "accent"
     },
     {
         step: 4,
         title: "Support",
         description: "Finally provide ongoing support to ensure real results, with maintenance, updates, and continuous optimization.",
         icon: "support",
-        color: "green"
+        color: "accent"
     }
 ];
 
@@ -59,29 +59,29 @@ const PROCESS_STEPS: ProcessStep[] = [
         <!-- Process Steps Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-6 relative">
             <!-- Connection Lines (Desktop Only) -->
-            <div class="hidden lg:block absolute top-24 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-turquoise via-primary-purple to-primary-turquoise opacity-30" aria-hidden="true"></div>
+            <div class="hidden lg:block absolute top-24 left-0 right-0 h-0.5 bg-gradient-to-r from-accent via-primary-purple to-accent opacity-30" aria-hidden="true"></div>
             
             {PROCESS_STEPS.map((step, index) => (
                 <article 
-                    class="group relative flex flex-col items-center p-4 rounded-xl border border-neutral-700 bg-gradient-to-br from-primary-black/80 to-primary-turquoise/10 backdrop-blur-sm transition-all duration-50"
+                    class="group relative flex flex-col items-center p-4 rounded-xl border border-outline bg-gradient-to-br from-primary-black/80 to-accent/10 backdrop-blur-sm transition-all duration-50"
                     aria-labelledby={`step-${step.step}-title`}
                 >
                     <!-- Step Number Badge -->
                     <div class={`absolute -top-4 -left-4 w-12 h-12 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-lg transition-all duration-300 z-10
-                        ${step.color === 'turquoise' ? 'bg-primary-blue border border-primary-turquoise text-primary-turquoise ' : ''}
-                        ${step.color === 'purple' ? 'bg-primary-blue border border-primary-turquoise text-primary-turquoise ' : ''}
-                        ${step.color === 'blue' ? 'bg-primary-blue border border-primary-turquoise text-primary-turquoise ' : ''}
-                        ${step.color === 'green' ? 'bg-primary-blue border border-primary-turquoise text-primary-turquoise ' : ''}
+                        ${step.color === 'accent' ? 'bg-primary-blue border border-outline text-accent ' : ''}
+                        ${step.color === 'accent' ? 'bg-primary-blue border border-outline text-accent ' : ''}
+                        ${step.color === 'accent' ? 'bg-primary-blue border border-outline text-accent ' : ''}
+                        ${step.color === 'accent' ? 'bg-primary-blue border border-outline text-accent ' : ''}
                     `}>
                         {step.step}
                     </div>
 
                     <!-- Icon Container -->
                     <div class={`w-16 h-16 sm:w-20 sm:h-20 lg:w-16 lg:h-16 rounded-full flex items-center justify-center mb-6 sm:mb-8 transition-all duration-300 group-hover:rotate-12
-                        ${step.color === 'turquoise' ? 'bg-primary-turquoise/20 border-2 border-primary-turquoise/40' : ''}
-                        ${step.color === 'purple' ? 'bg-primary-turquoise/20 border-2 border-primary-turquoise/40' : ''}
-                        ${step.color === 'blue' ? 'bg-primary-turquoise/20 border-2 border-primary-turquoise/40' : ''}
-                        ${step.color === 'green' ? 'bg-primary-turquoise/20 border-2 border-primary-turquoise/40' : ''}
+                        ${step.color === 'accent' ? 'bg-accent/20 border-2 border-accent/40' : ''}
+                        ${step.color === 'accent' ? 'bg-accent/20 border-2 border-accent/40' : ''}
+                        ${step.color === 'accent' ? 'bg-accent/20 border-2 border-accent/40' : ''}
+                        ${step.color === 'accent' ? 'bg-accent/20 border-2 border-accent/40' : ''}
                     `}>
                         <!-- Dynamic SVG Icons -->
                         {step.icon === 'ear' && (
@@ -103,10 +103,10 @@ const PROCESS_STEPS: ProcessStep[] = [
                         <h3 
                             id={`step-${step.step}-title`}
                             class={`text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 transition-colors duration-300
-                                ${step.color === 'turquoise' ? 'text-primary-turquoise' : ''}
-                                ${step.color === 'purple' ? 'text-primary-turquoise' : ''}
-                                ${step.color === 'blue' ? 'text-primary-turquoise' : ''}
-                                ${step.color === 'green' ? 'text-primary-turquoise' : ''}
+                                ${step.color === 'accent' ? 'text-accent' : ''}
+                                ${step.color === 'accent' ? 'text-accent' : ''}
+                                ${step.color === 'accent' ? 'text-accent' : ''}
+                                ${step.color === 'accent' ? 'text-accent' : ''}
                             `}
                         >
                             {step.title}
@@ -119,7 +119,7 @@ const PROCESS_STEPS: ProcessStep[] = [
                     
                     <!-- Progress Indicator (Mobile) -->
                     {index < PROCESS_STEPS.length - 1 && (
-                        <div class="lg:hidden absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-0.5 h-8 bg-gradient-to-b from-primary-turquoise to-transparent opacity-30" aria-hidden="true"></div>
+                        <div class="lg:hidden absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-0.5 h-8 bg-gradient-to-b from-accent to-transparent opacity-30" aria-hidden="true"></div>
                     )}
                 </article>
             ))}
@@ -127,7 +127,7 @@ const PROCESS_STEPS: ProcessStep[] = [
 
         <!-- Call to Action -->
         <footer class="text-center mt-5 lg:mt-10">
-            <div class="bg-gradient-to-br from-primary-black/50 to-primary-turquoise/10 border border-primary-turquoise/30 rounded-xl p-8 sm:p-10 lg:p-12">
+            <div class="bg-gradient-to-br from-primary-black/50 to-accent/10 border border-outline/50 rounded-xl p-8 sm:p-10 lg:p-12">
                 <h3 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-6">
                     Ready to Start Your Project?
                 </h3>
@@ -137,7 +137,7 @@ const PROCESS_STEPS: ProcessStep[] = [
                 <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
                    <ButtonVariant
                    text="Contact us" 
-                   variant="secondary" 
+                   variant="primary" 
                    href="/contact" 
                    scheduleIcon={false} 
                    strokeColor="#060114" 

@@ -5,6 +5,7 @@ import {
   motion,
 } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
+import { ButtonVariant } from "@/components/react/Buttons/ButtonVariant";
 
 interface TimelineEntry {
   title: string;
@@ -37,15 +38,21 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
       ref={containerRef}
     >
       <div className="max-w-7xl mx-auto py-20 md:px-3 px-4">
-        <h2 className="text-4xl font-bold md:text-4xl mb-4 text-black dark:text-white max-w-4xl appear-subtle">
+        <h2 className="text-4xl font-bold md:text-4xl mb-4 text-black dark:text-white appear-subtle">
           Nous it's more than a company
         </h2>
-        <p className="text-neutral-700 dark:text-neutral-300 text-md md:text-lg lg:max-w-[40%] md:max-w-[80%] max-w-[90%] appear-subtle">
-          We are a team of passionate professionals who are dedicated to
-          delivering the best possible results for our clients. We are committed
-          to providing exceptional service and support to help our clients
-          achieve their goals.
+        <p className="text-neutral-700 dark:text-neutral-300 text-md md:text-lg appear-subtle">
+        We’re a promise that work can feel lighter. We turn ambition into momentum—clarity, craft, and care—until the future you imagined is simply how you operate.
         </p>
+        <div className="mt-6 w-[20%]">
+          <ButtonVariant
+            text="Meet the team"
+            href="/about"
+            variant="primary"
+            target="_self"
+            ariaLabel="Meet the team"
+          />
+        </div>
       </div>
 
       <div ref={ref} className="relative max-w-7xl mx-auto pb-20">

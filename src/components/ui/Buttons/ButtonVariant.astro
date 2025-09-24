@@ -1,11 +1,12 @@
 ---
+
 import ScheduleIcon from "@/components/icons/ScheduleIcon.astro"
 import ArrowIcon from "@/components/icons/arrowIcon.astro"
 
 interface Props {
   href?: string;
   text?: string;
-  variant?: "primary" | "secondary" | "primaryPurple" | "secondaryTurquoise";
+  variant?: "primary" | "secondary" | "primaryPurple" | "secondaryTurquoise" | "darkBlue";
   className?: string;
   scheduleIcon?: boolean;
   arrowIcon?: boolean;
@@ -32,16 +33,18 @@ const {
   justify = "center",
 } = Astro.props;
 
-const baseStyles = `px-5 py-1 font-medium rounded-${rounded} transition-colors group flex justify-${justify} items-center gap-2 w-auto md:w-${width} cursor-pointer`;
+const baseStyles = `px-5 py-1 font-medium rounded-${rounded} transition-all duration-300 group flex justify-${justify} items-center gap-2 w-auto md:w-${width} cursor-pointer`;
 
 const variants = {
-  primary: "bg-primary-purple text-primary-blue hover:bg-primary-purple/90",
+  primary: "bg-accent text-primary-blue hover:bg-hover hover:shadow-[0_0_8px_0_rgba(0,0,0,0.1)] hover:shadow-accent",
   secondary:
-    " text-primary-blue hover:bg-primary-turquoise/80 bg-primary-turquoise",
+    " text-primary-blue hover:bg-primary-blue hover:text-outline border border-primary-blue",
   primaryPurple:
-    "bg-transparent border-2 border-primary-purple text-primary-purple hover:bg-primary-purple/40",
+    "bg-transparent border-2 border-outline text-accent hover:bg-outline hover:text-primary-blue",
   secondaryTurquoise:
     "border-2 border-primary-turquoise text-primary-turquoise hover:bg-primary-turquoise/30",
+  darkBlue:
+    "bg-primary-blue text-outline hover:bg-primary-blue/90",
 };
 ---
 

@@ -11,6 +11,8 @@ Sitemap: https://nous.cr/sitemap.xml
 # Solo bloqueamos áreas administrativas y APIs sensibles
 Disallow: /api/auth/
 Disallow: /api/private/
+Disallow: /pricing
+Disallow: /products
 
 # ===== RECURSOS PERMITIDOS EXPLÍCITAMENTE =====
 # Aseguramos acceso completo a recursos importantes

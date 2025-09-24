@@ -141,17 +141,17 @@ const allFAQs: FAQItem[] = FAQ_CATEGORIES.flatMap(category => category.questions
                     <div class="space-y-4 sm:space-y-6" role="list">
                         {category.questions.map((faq) => (
                             <details 
-                                class="group bg-neutral-900/50 border border-neutral-800 rounded-md sm:rounded-xl overflow-hidden transition-all duration-300 hover:border-primary-turquoise/30 hover:shadow-lg hover:shadow-primary-turquoise/5 appear-subtle" 
+                                class="group bg-neutral-900/50 border border-neutral-800 rounded-md sm:rounded-xl overflow-hidden transition-all duration-300 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 appear-subtle" 
                                 role="listitem"
                             >
                                 <summary class="flex items-center justify-between p-4 sm:p-6 cursor-pointer focus:outline-none ">
-                                    <h4 class="text-base sm:text-lg font-semibold text-white pr-4 leading-relaxed group-hover:text-primary-turquoise transition-colors duration-200">
+                                    <h4 class="text-base sm:text-lg font-semibold text-white pr-4 leading-relaxed group-hover:text-accent transition-colors duration-200">
                                         {faq.question}
                                     </h4>
                                     
                                     <div class="flex-shrink-0 ml-4">
                                         <svg 
-                                            class="w-5 h-5 sm:w-6 sm:h-6 text-neutral-400 transition-all duration-300 group-hover:text-primary-turquoise group-open:rotate-45 group-open:text-primary-turquoise" 
+                                            class="w-5 h-5 sm:w-6 sm:h-6 text-neutral-400 transition-all duration-300 group-hover:text-accent group-open:rotate-45 group-open:text-accent" 
                                             fill="none" 
                                             stroke="currentColor" 
                                             viewBox="0 0 24 24"
@@ -179,7 +179,7 @@ const allFAQs: FAQItem[] = FAQ_CATEGORIES.flatMap(category => category.questions
 
         
         <footer class="text-center mt-16 sm:mt-20 lg:mt-24 appear-subtle">
-            <div class="bg-gradient-to-br from-primary-black/50 to-primary-turquoise/10 border border-primary-turquoise/30 rounded-lg sm:rounded-xl p-6 sm:p-8 lg:p-10">
+            <div class="bg-gradient-to-br from-primary-black/50 to-accent/10 border border-accent/30 rounded-lg sm:rounded-xl p-6 sm:p-8 lg:p-10">
                 <h3 class="text-3xl sm:text-4xl lg:text-4xl font-bold text-white mb-3 sm:mb-4">
                     Still have questions?
                 </h3>
@@ -189,7 +189,7 @@ const allFAQs: FAQItem[] = FAQ_CATEGORIES.flatMap(category => category.questions
                 <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
                 <ButtonVariant
                  text="Contact us" 
-                 variant="secondary" 
+                 variant="primary" 
                  href="/contact" 
                  scheduleIcon={false} 
                  strokeColor="#060114" 

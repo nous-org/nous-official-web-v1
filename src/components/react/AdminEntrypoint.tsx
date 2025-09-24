@@ -58,8 +58,19 @@ function AdminApp() {
   const [posts, setPosts] = useState<
     Array<{ id: number; slug: string; title: string; published_at: string | null; updated_at: string }>
   >([]);
+  
+  // Blog post fields matching Astro content schema
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
+  const [description, setDescription] = useState('');
+  const [excerpt, setExcerpt] = useState('');
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState('');
+  const [authorName, setAuthorName] = useState('NOUS');
+  const [authorBio, setAuthorBio] = useState('Experts in web development and AI solutions');
+  const [featured, setFeatured] = useState(false);
+  const [category, setCategory] = useState<'AI' | 'Web Development' | 'Business' | 'Technology' | 'Tutorial'>('AI');
+  const [draft, setDraft] = useState(false);
 
   // Refs para los menús (v3 requiere elementos DOM)
   const bubbleMenuRef = useRef<HTMLDivElement | null>(null);
@@ -122,8 +133,21 @@ function AdminApp() {
   }
 
   async function loadPosts() {
-    const res = await authFetch('/api/admin/posts');
-    if (res.ok) setPosts(await res.json());
+    try {
+      // For now, we'll use a simple approach to list blog posts
+      // In a real implementation, you might want to create an API endpoint
+      // that reads the blog directory and returns post metadata
+      const res = await authFetch('/api/admin/blog-list');
+      if (res.ok) {
+        setPosts(await res.json());
+      } else {
+        // Fallback: show empty list if endpoint doesn't exist yet
+        setPosts([]);
+      }
+    } catch (error) {
+      console.error('Error loading posts:', error);
+      setPosts([]);
+    }
   }
 
   useEffect(() => {
@@ -171,49 +195,160 @@ function AdminApp() {
     });
   }
 
+  // Helper functions for tags
+  function addTag() {
+    if (tagInput.trim() && tags.length < 5 && !tags.includes(tagInput.trim())) {
+      setTags([...tags, tagInput.trim()]);
+      setTagInput('');
+    }
+  }
+
+  function removeTag(tagToRemove: string) {
+    setTags(tags.filter(tag => tag !== tagToRemove));
+  }
+
+  function clearForm() {
+    setTitle('');
+    setSlug('');
+    setDescription('');
+    setExcerpt('');
+    setTags([]);
+    setTagInput('');
+    setAuthorName('NOUS');
+    setAuthorBio('Experts in web development and AI solutions');
+    setFeatured(false);
+    setCategory('AI');
+    setDraft(false);
+    editor?.commands.setContent('<p>Empieza a escribir…</p>');
+  }
+
   async function save(publish = false) {
     if (!editor) return;
 
-    const rawHtml = editor.getHTML();
-    // Incluye 'mark' para Highlight y atributos usados por alineación
-    const html = sanitizeCurrentHtml(rawHtml);
+    // Validation
+    if (!title.trim()) {
+      alert('El título es requerido');
+      return;
+    }
+    if (!slug.trim()) {
+      alert('El slug es requerido');
+      return;
+    }
+    if (!description.trim()) {
+      alert('La descripción es requerida');
+      return;
+    }
+    if (!excerpt.trim()) {
+      alert('El excerpt es requerido');
+      return;
+    }
+    if (excerpt.length > 200) {
+      alert('El excerpt debe tener máximo 200 caracteres');
+      return;
+    }
 
-    const json = editor.getJSON();
+    // Convert HTML to Markdown (simplified conversion)
+    const htmlContent = editor.getHTML();
+    const markdownContent = htmlToMarkdown(htmlContent);
 
-    const res = await authFetch('/api/admin/posts', {
+    // Create frontmatter
+    const frontmatter = {
+      title,
+      date: new Date().toISOString(),
+      draft: !publish,
+      description,
+      excerpt,
+      tags,
+      author: {
+        name: authorName,
+        bio: authorBio
+      },
+      featured,
+      category
+    };
+
+    const res = await authFetch('/api/admin/blog-posts', {
       method: 'POST',
       body: JSON.stringify({
-        title,
         slug,
-        contentHtml: html,
-        contentJson: json,
-        publish,
+        frontmatter,
+        content: markdownContent,
+        publish
       }),
     });
 
     if (res.ok || res.status === 204) {
-      setTitle('');
-      setSlug('');
-      editor.commands.setContent('<p></p>');
+      clearForm();
       await loadPosts();
-      alert(publish ? 'Publicado' : 'Guardado');
+      alert(publish ? 'Post publicado' : 'Borrador guardado');
     } else {
-      alert('Error guardando');
+      const error = await res.text();
+      alert('Error guardando: ' + error);
     }
   }
 
-  // ---- NUEVOS ENDPOINTS: drafts y posts por slug ----
-  async function loadDraftBySlug(s: string) {
-    const res = await authFetch(`/api/admin/drafts/${encodeURIComponent(s)}`);
+  // Simple HTML to Markdown conversion
+  function htmlToMarkdown(html: string): string {
+    return html
+      .replace(/<h1[^>]*>(.*?)<\/h1>/gi, '# $1')
+      .replace(/<h2[^>]*>(.*?)<\/h2>/gi, '## $1')
+      .replace(/<h3[^>]*>(.*?)<\/h3>/gi, '### $1')
+      .replace(/<strong[^>]*>(.*?)<\/strong>/gi, '**$1**')
+      .replace(/<em[^>]*>(.*?)<\/em>/gi, '*$1*')
+      .replace(/<u[^>]*>(.*?)<\/u>/gi, '$1')
+      .replace(/<code[^>]*>(.*?)<\/code>/gi, '`$1`')
+      .replace(/<a[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi, '[$2]($1)')
+      .replace(/<hr[^>]*>/gi, '\n---\n')
+      .replace(/<br[^>]*>/gi, '\n')
+      .replace(/<p[^>]*>(.*?)<\/p>/gi, '$1\n\n')
+      .replace(/<[^>]*>/g, '') // Remove remaining HTML tags
+      .replace(/\n\n+/g, '\n\n') // Clean up multiple newlines
+      .trim();
+  }
+
+  // ---- Blog post management functions ----
+  async function loadBlogPostBySlug(s: string) {
+    const res = await authFetch(`/api/admin/blog-post/${encodeURIComponent(s)}`);
     if (!res.ok) {
-      alert('Borrador no encontrado');
+      alert('Post no encontrado');
       return;
     }
-    const data = (await res.json()) as { draft: { slug: string; title: string; content_html: string } };
-    setTitle(data.draft.title);
-    setSlug(data.draft.slug);
-    editor?.commands.setContent(data.draft.content_html || '<p></p>');
+    const data: { frontmatter: any; content: string } = await res.json();
+    
+    // Load all the fields from the blog post
+    setTitle(data.frontmatter.title || '');
+    setSlug(s);
+    setDescription(data.frontmatter.description || '');
+    setExcerpt(data.frontmatter.excerpt || '');
+    setTags(data.frontmatter.tags || []);
+    setAuthorName(data.frontmatter.author?.name || 'NOUS');
+    setAuthorBio(data.frontmatter.author?.bio || 'Experts in web development and AI solutions');
+    setFeatured(data.frontmatter.featured || false);
+    setCategory(data.frontmatter.category || 'AI');
+    setDraft(data.frontmatter.draft || false);
+    
+    // Convert markdown back to HTML for the editor
+    const htmlContent = markdownToHtml(data.content);
+    editor?.commands.setContent(htmlContent);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Simple Markdown to HTML conversion for editing
+  function markdownToHtml(markdown: string): string {
+    return markdown
+      .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+      .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+      .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .replace(/`(.*?)`/g, '<code>$1</code>')
+      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>')
+      .replace(/^---$/gm, '<hr>')
+      .replace(/\n\n/g, '</p><p>')
+      .replace(/^(.+)$/gm, '<p>$1</p>')
+      .replace(/<p><\/p>/g, '')
+      .replace(/<p>(<h[1-6]>.*<\/h[1-6]>)<\/p>/g, '$1')
+      .replace(/<p>(<hr>)<\/p>/g, '$1');
   }
 
   async function updateDraftBySlug(s: string) {
@@ -299,6 +434,112 @@ function AdminApp() {
             onChange={(e) => setSlug(e.target.value)}
             className="w-full rounded-md border border-neutral-800 bg-neutral-900/50 px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-primary-turquoise/70 focus:ring-2 focus:ring-primary-turquoise/40"
           />
+
+          {/* Blog Metadata Fields */}
+          <textarea
+            placeholder="Descripción del post (SEO)"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={2}
+            className="w-full rounded-md border border-neutral-800 bg-neutral-900/50 px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-primary-turquoise/70 focus:ring-2 focus:ring-primary-turquoise/40 resize-none"
+          />
+
+          <div className="relative">
+            <textarea
+              placeholder="Excerpt (máximo 200 caracteres)"
+              value={excerpt}
+              onChange={(e) => setExcerpt(e.target.value)}
+              rows={2}
+              maxLength={200}
+              className="w-full rounded-md border border-neutral-800 bg-neutral-900/50 px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-primary-turquoise/70 focus:ring-2 focus:ring-primary-turquoise/40 resize-none"
+            />
+            <div className="absolute bottom-2 right-2 text-xs text-neutral-500">
+              {excerpt.length}/200
+            </div>
+          </div>
+
+          {/* Tags Input */}
+          <div className="space-y-2">
+            <div className="flex gap-2">
+              <input
+                placeholder="Agregar tag (máximo 5)"
+                value={tagInput}
+                onChange={(e) => setTagInput(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
+                disabled={tags.length >= 5}
+                className="flex-1 rounded-md border border-neutral-800 bg-neutral-900/50 px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-primary-turquoise/70 focus:ring-2 focus:ring-primary-turquoise/40 disabled:opacity-50"
+              />
+              <button
+                type="button"
+                onClick={addTag}
+                disabled={tags.length >= 5 || !tagInput.trim()}
+                className="rounded-md border border-primary-turquoise/60 bg-primary-turquoise/15 px-3 py-2 text-xs text-primary-turquoise transition-colors hover:bg-primary-turquoise/25 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Agregar
+              </button>
+            </div>
+            {tags.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-flex items-center gap-1 rounded-full bg-primary-turquoise/20 px-2 py-1 text-xs text-primary-turquoise"
+                  >
+                    {tag}
+                    <button
+                      type="button"
+                      onClick={() => removeTag(tag)}
+                      className="hover:text-red-400 transition-colors"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Author Fields */}
+          <div className="grid grid-cols-2 gap-3">
+            <input
+              placeholder="Nombre del autor"
+              value={authorName}
+              onChange={(e) => setAuthorName(e.target.value)}
+              className="w-full rounded-md border border-neutral-800 bg-neutral-900/50 px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-primary-turquoise/70 focus:ring-2 focus:ring-primary-turquoise/40"
+            />
+            <input
+              placeholder="Bio del autor"
+              value={authorBio}
+              onChange={(e) => setAuthorBio(e.target.value)}
+              className="w-full rounded-md border border-neutral-800 bg-neutral-900/50 px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-primary-turquoise/70 focus:ring-2 focus:ring-primary-turquoise/40"
+            />
+          </div>
+
+          {/* Category and Options */}
+          <div className="grid grid-cols-2 gap-3">
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value as any)}
+              className="w-full rounded-md border border-neutral-800 bg-neutral-900/50 px-3 py-2 text-neutral-100 outline-none ring-0 transition-colors focus:border-primary-turquoise/70 focus:ring-2 focus:ring-primary-turquoise/40"
+            >
+              <option value="AI">AI</option>
+              <option value="Web Development">Web Development</option>
+              <option value="Business">Business</option>
+              <option value="Technology">Technology</option>
+              <option value="Tutorial">Tutorial</option>
+            </select>
+            <div className="flex items-center gap-4">
+              <label className="flex items-center gap-2 text-sm text-neutral-300">
+                <input
+                  type="checkbox"
+                  checked={featured}
+                  onChange={(e) => setFeatured(e.target.checked)}
+                  className="rounded border-neutral-800 bg-neutral-900/50 text-primary-turquoise focus:ring-primary-turquoise/40"
+                />
+                Destacado
+              </label>
+            </div>
+          </div>
 
           {/* Toolbar superior */}
           {editor && (
@@ -465,7 +706,7 @@ function AdminApp() {
                 {!p.published_at && (
                   <>
                     <button
-                      onClick={() => loadDraftBySlug(p.slug)}
+                      onClick={() => loadBlogPostBySlug(p.slug)}
                       className="inline-flex items-center justify-center rounded-md border border-neutral-700 bg-neutral-800/40 px-2.5 py-1.5 text-xs text-neutral-200 transition-colors hover:border-primary-turquoise/40 hover:bg-neutral-800/60 focus:outline-none focus:ring-2 focus:ring-primary-turquoise/30 hover:cursor-pointer"
                       title="Editar borrador"
                       aria-label="Editar borrador"

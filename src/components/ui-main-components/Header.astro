@@ -5,12 +5,13 @@ import HeaderButton from '@/components/ui/Buttons/HeaderButton.astro';
 import type { NavLink } from '@/components/ui/NavegationLinks.astro';
 
 const headerNavLinks: NavLink[] = [
-    { href: '/about', label: 'About', ariaLabel: 'Learn more about Nous Technologies' },
-    { href: '/products', label: 'Products', ariaLabel: 'Explore our AI products' },
+    { href: '/', label: 'Home', ariaLabel: 'Go to home page' },
+    { href: '/about', label: 'About Us', ariaLabel: 'Learn more about Nous Technologies' },
+    // { href: '/products', label: 'Products', ariaLabel: 'Explore our AI products' },
     { href: '/services', label: 'Services', ariaLabel: 'Discover our automation services' },
-    { href: '/pricing', label: 'Pricing', ariaLabel: 'View pricing plans' },
+    // { href: '/pricing', label: 'Pricing', ariaLabel: 'View pricing plans' },
     { href: '/blog', label: 'Blog', ariaLabel: 'Get in touch with us' },
-    { href: '/contact', label: 'Contact', ariaLabel: 'Get in touch with us' }
+    // { href: '/contact', label: 'Contact us', ariaLabel: 'Get in touch with us' }
 ];
 ---
 
@@ -56,7 +57,7 @@ const headerNavLinks: NavLink[] = [
 
 <nav 
     id="mobile-menu" 
-    class="fixed bottom-0 left-0 right-0 z-40 h-[50dvh] w-full translate-y-full rounded-t-3xl border-t border-[#A894FF]/80 bg-[#060114]/90 pb-[env(safe-area-inset-bottom,1rem)] backdrop-blur-lg shadow-lg transition-transform duration-300 md:hidden"
+    class="fixed bottom-0 left-0 right-0 z-40 h-[50dvh] w-full translate-y-full rounded-t-3xl border-t border-outline bg-[#060114]/90 pb-[env(safe-area-inset-bottom,1rem)] backdrop-blur-lg shadow-lg transition-transform duration-300 md:hidden"
     aria-label="Mobile navigation"
 >
     <div class="relative h-full w-full px-6 pt-8">

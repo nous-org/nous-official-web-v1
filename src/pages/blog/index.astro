@@ -1,66 +1,52 @@
 ---
-export const prerender = false;
+import { getCollection } from 'astro:content';
 import { ShootingStars } from '@/components/react/ShootingStars';
 import { StarsBackground } from '@/components/react/StarBackground';
 import Layout from '@/layouts/Layout.astro';
-import { createClient } from '@libsql/client/web';
+import BlogCard from '@/components/ui/BlogCard.astro';
 
-const env = Astro.locals.runtime.env as {
-  TURSO_DATABASE_URL: string;
-  TURSO_AUTH_TOKEN?: string;
-};
 
-const db = createClient({ url: env.TURSO_DATABASE_URL, authToken: env.TURSO_AUTH_TOKEN });
-const rs = await db.execute({
-  sql: `SELECT slug, title, published_at FROM posts WHERE published_at IS NOT NULL ORDER BY published_at DESC`,
-  args: [],
+const allPosts = await getCollection('blog', ({ data }) => {
+  return data.draft !== true;
 });
 
-// Define a precise type for the data we expect from the query
-type PostSummary = { slug: string; title: string; published_at: string };
 
-// Safely map rows to our type instead of asserting types directly
-const posts: PostSummary[] = rs.rows.map((r) => ({
-  slug: String(r["slug"]),
-  title: String(r["title"]),
-  published_at: String(r["published_at"]),
-  updated_at: String(r["updated_at"]),
-}));
-const formatDate = (iso: string) =>
-   new Date(iso).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' });
+const posts = allPosts.sort((a, b) => {
+  return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+});
+
+
+const featuredPosts = posts.filter(post => post.data.featured);
+const regularPosts = posts.filter(post => !post.data.featured);
+
 ---
   
   <Layout title="Blog" backgroundType="primary" showAurora={false} useContainer={true}>
        <section class="mx-auto max-w-7xl px-4 py-6 pt-64 sm:pt-48">
            <h1 class="mb-6 text-5xl font-semibold tracking-tight text-neutral-100 text-center">Blog</h1>
-           <h2 class="mb-6 text-4xl font-semibold tracking-tight text-primary-turquoise text-center">Insights & Articles</h2>
+           <h2 class="mb-6 text-4xl font-semibold tracking-tight text-accent text-center">Insights & Articles</h2>
            <p class="mb-24 text-base text-neutral-400 text-center">Stay updated with our latest insights on software development and Artificial Intelligence. Get curated content delivered to your inbox.</p>
          
-         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-             {posts.map((p) => (
-               <article
-                 class="group relative rounded-xl border border-neutral-800 bg-neutral-900/30 p-4 shadow-sm shadow-primary-turquoise/10 transition-colors hover:border-primary-turquoise/40 hover:bg-neutral-900/50 focus-within:ring-2 focus-within:ring-primary-turquoise/40"
-               >
-                 <a
-                   href={`/blog/${p.slug}`}
-                   aria-label={`Leer: ${p.title}`}
-                   class="absolute inset-0 rounded-xl focus:outline-none"
-                 />
-               <header class="space-y-2">
-                 <p class="text-xs font-medium text-primary-purple/70">{formatDate(p.published_at)}</p>
-                <h2 class="flex items-start justify-between gap-3 text-2xl font-extrabold leading-snug tracking-tight text-primary-turquoise">
-                   <span class="line-clamp-4">{p.title}</span>
-                  <span aria-hidden class="translate-x-0 transition-transform group-hover:translate-x-1">→</span>
-                </h2>
-              </header>
-               <footer class="mt-4">
-                 <span class="inline-flex items-center gap-2 text-sm font-medium text-primary-purple/90">
-                  Read article <span aria-hidden>→</span>
-                 </span>
-               </footer>
-               </article>
-             ))}
+         <!-- Posts Destacados -->
+         {featuredPosts.length > 0 && (
+           <div class="mb-12">
+             <h3 class="mb-8 text-2xl font-semibold text-accent sm:text-3xl">
+               Featured Articles
+             </h3>
+             <div class="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-2">
+               {featuredPosts.map((post) => (
+                 <BlogCard post={post} featured={true} />
+               ))}
+             </div>
            </div>
+         )}
+
+         <!-- Todos los Posts -->
+         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
+           {posts.map((post) => (
+             <BlogCard post={post} featured={post.data.featured} />
+           ))}
+         </div>
          </section>
 
          <div class="absolute inset-0 pointer-events-none overflow-hidden z-[-1]">

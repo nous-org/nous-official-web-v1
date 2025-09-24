@@ -29,9 +29,9 @@ export const ButtonVariant: React.FC<ButtonVariantProps> = ({
   const baseStyles = `px-5 py-1 font-medium rounded-full transition-colors group flex justify-center items-center gap-2 w-auto ${width ? `md:w-${width}` : ''}`;
   
   const variants = {
-    primary: "bg-primary-purple text-primary-blue hover:bg-primary-purple/90",
+    primary: "bg-accent text-primary-blue hover:bg-hover",
     secondary: "text-primary-blue hover:bg-primary-turquoise/80 bg-primary-turquoise",
-    primaryPurple: "bg-transparent border-2 border-primary-purple text-primary-purple hover:bg-primary-purple/40",
+    primaryPurple: "bg-transparent border-2 border-outline text-accent hover:bg-outline hover:text-primary-blue",
     secondaryTurquoise: "border-2 border-primary-turquoise text-primary-turquoise hover:bg-primary-turquoise/30",
   };
   return (

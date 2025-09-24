@@ -5,9 +5,9 @@ import SubmitButton from "@/components/ui/Buttons/SubmitButton.astro";
 
 const chips = [
   {
-    id: "software-consulting",
-    label: "Software Consulting",
-    value: "software-consulting",
+    id: "technology-advisory",
+    label: "Technology Advisory",
+    value: "technology-advisory",
   },
   { id: "web-development", label: "Web Development", value: "web-development" },
   { id: "ai-automation", label: "AI Automation", value: "ai-automation" },
@@ -15,8 +15,7 @@ const chips = [
 ---
 
 <div class="w-auto">
-  <GradientTittle title="Let's build your next big idea Contact us today!" />
-
+  <GradientTittle title="Tell us about your project." subHead="We reply within 1 business day with clear next steps." />
   <!-- Message containers -->
   <div
     id="success-message"
@@ -61,8 +60,8 @@ const chips = [
                 for={chip.id}
                 class="inline-flex items-center px-4 py-2 rounded-full border-2 border-gray-300 
                      cursor-pointer transition-all duration-200 
-                     hover:border-primary-turquoise hover:bg-primary-turquoise hover:text-primary-blue
-                     peer-checked:bg-primary-turquoise peer-checked:text-primary-blue peer-checked:border-primary-turquoise"
+                     hover:border-accent hover:bg-accent hover:text-primary-blue
+                     peer-checked:bg-accent peer-checked:text-primary-blue peer-checked:border-accent"
               >
                 {chip.label}
               </label>
@@ -72,10 +71,12 @@ const chips = [
       </div>
     </div>
 
-    <Inputs type="text" placeholder="Name" name="name" />
-    <Inputs type="email" placeholder="Email" name="email" />
-    <Inputs type="text" placeholder="Subject" name="subject" />
-    <Inputs type="textarea" placeholder="I have a awesome idea! I want to share it with you, let's make it happen!" name="message" />
+    <Inputs id="Name" type="text" placeholder="John Doe" name="name" />
+    <Inputs id="E-mail" type="email" placeholder="john.doe@example.com" name="email" />
+    <Inputs id="Phone" type="tel" placeholder="+506 6186 5634" name="phone" />
+    <Inputs id="Preferred Contact" type="text" placeholder="Whatsapp, E-mail" name="preferredContact" />
+    <Inputs id="Subject" type="text" placeholder="Message Subject" name="subject" />
+    <Inputs id="Message" type="textarea" placeholder="What are you trying to build or automate?" name="message" />
 
     <div class="flex justify-center mt-2">
       <SubmitButton
@@ -83,7 +84,7 @@ const chips = [
         type="submit"
         text="Send"
         icon={true}
-        variant="secondary"
+        variant="primary"
       />
     </div>
   </form>

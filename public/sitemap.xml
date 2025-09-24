@@ -29,20 +29,20 @@
     <priority>0.9</priority>
   </url>
 
-  <!-- Páginas comerciales importantes -->
+  <!-- Páginas comerciales importantes
   <url>
     <loc>https://nous.cr/pricing</loc>
     <lastmod>2025-08-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  </url>
+  </url> -->
 
-  <url>
+  <!-- <url>
     <loc>https://nous.cr/products</loc>
     <lastmod>2025-08-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  </url>
+  </url> -->
 
   <url>
     <loc>https://nous.cr/about</loc>

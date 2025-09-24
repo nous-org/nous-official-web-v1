@@ -1,6 +1,6 @@
 ---
 import ButtonVariant from '@/components/ui/Buttons/ButtonVariant.astro';
-import NousLogo from '@/assets/NousLogo.png';
+import NousLogo from '@/assets/NousLogo.svg';
 
 interface HeroButton {
     text?: string;
@@ -25,15 +25,15 @@ interface Props {
 const {
     buttons = [
         {
-            text: 'Contact',
-            variant: 'secondary',
+            text: 'Book a 15-min intro call',
+            variant: 'primary',
             href: '/contact',
             target: '_self',
             ariaLabel: 'Contact us for consultation'
         },
         {
             text: 'Request a demo',
-            variant: 'primary',
+            variant: 'primaryPurple',
             href: '/contact',
             target: '_self',
             ariaLabel: 'Request a product demonstration'
@@ -49,12 +49,12 @@ const {
     className = ''
 } = Astro.props;
 
-// Determine heading level based on context
+
 const HeadingTag = isMainHero ? 'h1' : 'h2';
 const imgSrc = typeof img === 'string' ? img : img.src;
 ---
 
-<!-- Hero Call-to-Action Section -->
+
 <section 
     class={`relative z-10 pt-40 mb-72 px-4 sm:px-6 lg:px-8 ${className} animate-blurred-fade-in`}
     aria-labelledby="hero-cta-heading"

@@ -15,7 +15,7 @@ interface Props {
 
 //default button
 const defaultButton: Button = {
-    text: 'Talk with us',
+    text: 'Talk to us',
     href: '/contact',
     className: '',
     target: '_self',
@@ -40,7 +40,7 @@ const {
 <a
     class={[
         'hidden lg:flex px-8 py-2 rounded-full font-medium text-lg transition-colors duration-300 cursor-pointer items-center',
-        'bg-transparent text-[#A894FF] border border-[#6E3BFF] hover:bg-[#6E3BFF]/20 hover:text-white',
+        'bg-transparent text-accent border border-outline hover:bg-outline hover:text-primary-blue',
         className
     ].join(' ')}
     href={button.href}
