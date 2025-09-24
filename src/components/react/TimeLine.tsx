@@ -44,7 +44,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
         <p className="text-neutral-700 dark:text-neutral-300 text-md md:text-lg appear-subtle">
         We’re a promise that work can feel lighter. We turn ambition into momentum—clarity, craft, and care—until the future you imagined is simply how you operate.
         </p>
-        <div className="mt-6 w-[20%]">
+        <div className="mt-6 md:w-[40%]">
           <ButtonVariant
             text="Meet the team"
             href="/about"
