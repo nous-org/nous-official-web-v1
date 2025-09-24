@@ -39,7 +39,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
     >
       <div className="max-w-7xl mx-auto py-20 md:px-3 px-4">
         <h2 className="text-4xl font-bold md:text-4xl mb-4 text-black dark:text-white appear-subtle">
-          Nous it's more than a company
+          NOUS it's more than a company
         </h2>
         <p className="text-neutral-700 dark:text-neutral-300 text-md md:text-lg appear-subtle">
         We’re a promise that work can feel lighter. We turn ambition into momentum—clarity, craft, and care—until the future you imagined is simply how you operate.
