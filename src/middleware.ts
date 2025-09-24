@@ -2,6 +2,16 @@ import type { APIContext, MiddlewareHandler } from 'astro';
 
 export const onRequest: MiddlewareHandler = async (context, next) => {
   try {
+    // Block access to products and pricing pages
+    const pathname = context.url.pathname;
+    if (pathname === '/products' || pathname === '/pricing' || 
+        pathname === '/products/' || pathname === '/pricing/') {
+      return new Response(null, {
+        status: 404,
+        statusText: 'Not Found'
+      });
+    }
+
     // Add security headers
     const response = await next();
     
