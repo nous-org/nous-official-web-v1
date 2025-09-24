@@ -1,7 +1,4 @@
 ---
-// Pricing page is not available - return 404
-return new Response(null, {
-  status: 404,
-  statusText: 'Not Found'
-});
+
+return Astro.redirect('/404');
 ---
