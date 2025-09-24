@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 import { useAnimate } from "motion/react";
 import { stagger } from "motion";
 import { cn } from "@/lib/utils";
-import { GoCopilot } from "react-icons/go";
+
 
 interface IconConfig {
   component: React.ComponentType<{ className?: string }>;
@@ -40,11 +40,10 @@ function useReducedMotion(): boolean {
 
 
 export function CardDemo({
-  borderColor = "border-primary-turquoise",
+  borderColor = "border-outline",
   accentColor = "primary-turquoise",
-  title = "The most powerfull tool",
-  description = `Let AI take care of repetitive processes, 
-                 we adapt any flow to improve your productivity`,
+  title = "Make AI your unfair advantage.",
+  description = `We build on leading AI platforms to remove busywork and unlock growth.`,
   icons,
   iconSet = "default"
 }: CardDemoProps) {
@@ -408,6 +407,13 @@ export const GithubLogo = ({className}: {className?: string}) => {
     )
   }
 
+  export const XaiLogo = ({className}: {className?: string}) => {
+    return (
+      <svg fill="currentColor" fill-rule="evenodd" height="46" width="46" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Grok</title><path d="M6.469 8.776L16.512 23h-4.464L2.005 8.776H6.47zm-.004 7.9l2.233 3.164L6.467 23H2l4.465-6.324zM22 2.582V23h-3.659V7.764L22 2.582zM22 1l-9.952 14.095-2.233-3.163L17.533 1H22z"></path></svg>
+      
+    )
+  }
+
 
 export const DEFAULT_ICONS: IconConfig[] = [
     {
@@ -416,7 +422,7 @@ export const DEFAULT_ICONS: IconConfig[] = [
       containerClassName: "h-12 w-12 circle-1"
     },
     {
-      component: GoCopilot,
+      component: XaiLogo,
       className: "h-12 w-12 text-white",
       containerClassName: "h-16 w-16 circle-2"
     },

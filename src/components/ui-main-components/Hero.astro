@@ -5,24 +5,25 @@ import HeroCta from '@/components/ui/HeroCta.astro';
 
 <HeroCta 
 buttons={[{
-    text: 'Contact',
-    variant: 'secondary',
+    text: 'Book a 15-min intro call',
+    variant: 'primary',
     href: '/contact',
     target: '_self',
     ariaLabel: 'Button'
 }, {
-        text: 'Products',
-        variant: 'secondaryTurquoise',
-        href: '/products',
+        text: 'See services',
+        variant: 'primaryPurple',
+        href: '/services',
         target: '_self',
         ariaLabel: 'Button'
     }]}
-    titleClassName='lg:text-6xl max-w-6xl md:text-5xl text-2xl font-archivo-black mb-10 text-neutral-200 text-center'
-    subtitle='Your brand, your identity, and your processes, all running automatically'
+    isMainHero={true}
+    titleClassName='lg:text-7xl max-w-6xl md:text-5xl text-2xl font-archivo-black mb-10 text-neutral-200 text-center'
+    subtitle='We design, build, and maintain automations and web experiences that cut busywork, reduce errors, and ship faster / We replace repetitive processes with AI-driven workflows and modern web builds—measurable, secure, and maintainable.'
     subtitleClassName='lg:text-xl md:text-lg text-sm text-center text-neutral-400'
     >
     <span slot="title" >
-        Intelligent <span class="bg-gradient-to-r from-primary-purple via-primary-turquoise to-primary-turquoise bg-clip-text text-transparent">automation with AI</span>, web development, and tailored products for your business
+          <span class="bg-gradient-to-r from-gradient-start via-gradient-middle to-gradient-end bg-clip-text text-transparent">AI automation that runs your operations</span> 
     </span>
 </HeroCta>
 

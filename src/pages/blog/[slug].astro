@@ -1,64 +1,177 @@
 ---
-export const prerender = false;
-
-import { createClient } from '@libsql/client/web';
+export const prerender = true;
+import { getCollection, type CollectionEntry } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
 import { ShootingStars } from '@/components/react/ShootingStars';
 import { StarsBackground } from '@/components/react/StarBackground';
-const { slug } = Astro.params;
-if (!slug) {
-  return Astro.redirect('/404');
+import NousLogoSvg from '@/assets/NousLogo.svg';
+import SubscribeToNewsletter from '@/components/ui/SubscribeToNewsLetter.astro';
+import MainCta from '@/components/ui/MainCta.astro';
+import ContactCta from '@/components/ui/ContactCta.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => {
+    return data.draft !== true;
+  });
+  
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
 }
-const env = Astro.locals.runtime.env as {
-  TURSO_DATABASE_URL: string;
-  TURSO_AUTH_TOKEN?: string;
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+// Función para calcular tiempo de lectura
+function calculateReadingTime(content: string): number {
+  const wordsPerMinute = 200;
+  const words = content.trim().split(/\s+/).length;
+  return Math.ceil(words / wordsPerMinute);
+}
+
+const readingTime = post.data.readingTime || calculateReadingTime(post.body);
+
+// Formatear fecha
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }).format(date);
 };
-
-const db = createClient({ url: env.TURSO_DATABASE_URL, authToken: env.TURSO_AUTH_TOKEN });
-
-const rs = await db.execute(
-  `SELECT title, content_html, published_at FROM posts WHERE slug = ?`,
-  [slug]
-);
-
-if (rs.rows.length === 0 || !rs.rows[0].published_at) {
-  return Astro.redirect('/404');
-}
-
-const { title, content_html } = rs.rows[0] as any;
 ---
 
-<Layout title={title} backgroundType="primary" showAurora={false} useContainer={true}>
+<Layout title={post.data.title} backgroundType="primary" showAurora={false} useContainer={true}>
   <a id="top" class="sr-only" aria-hidden="true"></a>
 
   <header class="mx-auto max-w-5xl px-4 pt-56 sm:pt-44">
-    <nav aria-label="Volver a blog" class="mb-6">
+    <!-- Breadcrumbs Navigation -->
+    <nav aria-label="Breadcrumb" class="mb-6">
+      <ol class="flex flex-wrap items-center gap-2 text-sm text-neutral-400">
+        <li>
+          <a 
+            href="/" 
+            class="inline-flex items-center gap-1 transition-colors hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 rounded"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            <span class="hidden sm:inline">Home</span>
+          </a>
+        </li>
+        <li class="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-neutral-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+        <li>
+          <a 
+            href="/blog" 
+            class="transition-colors hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 rounded"
+          >
+            Blog
+          </a>
+        </li>
+        <li class="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-neutral-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+        <li>
+          <span class="text-neutral-200 font-medium line-clamp-1" aria-current="page">
+            {post.data.title.length > 50 ? `${post.data.title.substring(0, 50)}...` : post.data.title}
+          </span>
+        </li>
+      </ol>
+    </nav>
+    <!-- Back Button -->
+    <nav aria-label="Back to blog" class="mb-6">
       <a
         href="/blog"
-        class="inline-flex items-center gap-2 rounded-full border border-neutral-800/80 bg-neutral-900/50 px-4 py-2 text-sm font-medium text-neutral-200 shadow-sm backdrop-blur transition-colors hover:bg-neutral-800/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-turquoise/60"
+        class="inline-flex items-center gap-2 rounded-full border border-neutral-800/80 bg-neutral-900/50 px-4 py-2 text-sm font-medium text-neutral-200 shadow-sm backdrop-blur transition-colors hover:bg-neutral-800/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
           <path fill-rule="evenodd" d="M15.78 4.22a.75.75 0 0 1 0 1.06L9.06 12l6.72 6.72a.75.75 0 1 1-1.06 1.06l-7.25-7.25a.75.75 0 0 1 0-1.06l7.25-7.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
         </svg>
-        <span>Volver</span>
+        <span>Back</span>
       </a>
     </nav>
 
-    <h1 class="mb-12 text-3xl font-semibold tracking-tight text-primary-turquoise sm:text-4xl lg:text-5xl">
-      {title}
+    <!-- Metadatos del post -->
+    <div class="mb-8 flex flex-wrap items-center gap-4 text-sm text-neutral-400">
+      <time datetime={post.data.date.toISOString()}>
+        {formatDate(post.data.date)}
+      </time>
+      <span class="h-1 w-1 rounded-full bg-neutral-600"></span>
+      <span class="flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        {readingTime} min of reading
+      </span>
+      {post.data.category && (
+        <>
+          <span class="h-1 w-1 rounded-full bg-neutral-600"></span>
+          <span class="rounded-full bg-accent/10 px-2 py-1 text-xs font-medium text-accent">
+            {post.data.category}
+          </span>
+        </>
+      )}
+    </div>
+
+    <h1 class="mb-6 text-3xl font-semibold tracking-tight text-outline sm:text-4xl lg:text-5xl">
+      {post.data.title}
     </h1>
+
+    <!-- Excerpt y autor -->
+    <div class="mb-8 space-y-4">
+      <p class="text-lg leading-relaxed text-neutral-300 sm:text-xl">
+        {post.data.excerpt}
+      </p>
+      
+      <div class="flex items-center gap-3 border-t border-neutral-800/50 pt-4">
+        <img
+          src={post.data.author.avatar || NousLogoSvg.src}
+          alt={`Avatar de ${post.data.author.name}`}
+          class="h-10 w-10 rounded-full border-2 border-primary-turquoise/20 object-cover"
+          loading="lazy"
+          decoding="async"
+        />
+        <div>
+          <p class="font-medium text-neutral-200">{post.data.author.name}</p>
+          {post.data.author.bio && (
+            <p class="text-sm text-neutral-400">{post.data.author.bio}</p>
+          )}
+        </div>
+      </div>
+    </div>
+
+    <!-- Tags -->
+    {post.data.tags.length > 0 && (
+      <div class="mb-8 flex flex-wrap gap-2">
+        {post.data.tags.map((tag) => (
+          <span class="inline-flex items-center rounded-md bg-neutral-800/50 px-3 py-1 text-sm font-medium text-neutral-300">
+            #{tag}
+          </span>
+        ))}
+      </div>
+    )}
   </header>
 
   <section
     aria-labelledby="post-title"
     class="mx-auto max-w-5xl px-4 pb-16 sm:pb-24"
   >
-    <h2 id="post-title" class="sr-only">{title}</h2>
+    <h2 id="post-title" class="sr-only">{post.data.title}</h2>
 
-    <article
-      class="tiptap-content space-y-6 text-neutral-300"
-      set:html={content_html}
-    ></article>
+    <article class="prose prose-lg prose-invert max-w-none space-y-6 text-neutral-300">
+      <Content />
+    </article>
   </section>
 
   <!-- Scroll to top floating button -->
@@ -83,6 +196,9 @@ const { title, content_html } = rs.rows[0] as any;
         <StarsBackground client:load />
     </div>
   </div>
+  <SubscribeToNewsletter />
+  <MainCta/>
+  <ContactCta/>
 </Layout>
 <script is:inline>
   

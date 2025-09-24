@@ -2,7 +2,7 @@
 import type { Button } from "@/types/callToAction";
 import Layout from "@/layouts/Layout.astro";
 import ContentPagesHero from "@/components/ui/ContentPagesHero.astro";
-import { ServicesMarquee } from "@/components/react/ServicesMarquee";
+// import { ServicesMarquee } from "@/components/react/ServicesMarquee";
 import OurServices from "@/components/ui/OurServices.astro";
 import Contact from "@/components/ui-main-components/Contact.astro";
 import ServicesCards from "@/components/ui/ServicesCards.astro";
@@ -24,12 +24,12 @@ const breadcrumbs = [
 
 const HERO: Hero = {
     title: "What Nous does?",
-    subtitle:
-        "We are your intelligent automation, custom web development, and AI consulting team that grows with you.",
+    subtitle:"Sharp takes, field notes, and working playbooks on AI, web, and tech decisions—written for people who ship.",
+    
     buttons: [
         {
             text: "Contact",
-            variant: "secondary",
+            variant: "primary",
             href: "/contact",
             scheduleIcon: false,
             strokeColor: "#060114",
@@ -39,10 +39,10 @@ const HERO: Hero = {
         },
         {
             text: "Schedule",
-            variant: "secondaryTurquoise",
+            variant: "primaryPurple",
             href: "/contact",
             scheduleIcon: true,
-            strokeColor: "#1AD6B3",
+            strokeColor: "#D0BFFF",
             arrowIcon: false,
             target: "_self",
             ariaLabel: "Request a demo",
@@ -91,14 +91,14 @@ const { title, subtitle, buttons } = HERO;
     price="1000"
   />
     <div class="px-4">
-        <ContentPagesHero title={title} subtitle={subtitle} buttons={buttons} />
+        <ContentPagesHero title={title} text={subtitle} buttons={buttons} />
         <OurServices />
         <ServicesCards />
         <WorkProcess />
     </div>
-    <div class="px-0 md:px-4">
+    <!-- <div class="px-0 md:px-4">
         <ServicesMarquee client:load />
-    </div>
+    </div> -->
     <div class="px-4">
         <FrequentlyQuestions />
     </div>

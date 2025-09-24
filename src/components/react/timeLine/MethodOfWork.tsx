@@ -32,21 +32,21 @@ interface MethodOfWorkProps {
 
 export const MethodOfWork = ({ 
     title = "Our Methodology", 
-    subtitle = "Nous accompany you throughout the process with transparency and consultancy. ",
+    subtitle = "An agile, human partnership: clear communication, short cycles, and creativity that ships. We move in weeks, learn every sprint, and stay by your side until it sticks. ",
     automationCard = {
-        title: "Strategy & Design?",
+        title: "Design the path.",
         subtitle: "Define your vision",
-        description: "We listen to your goals, analyze processes, and design a customized plan that blends AI, web development, and automation to meet your needs"
+        description: "We map goals and processes, pick where AI helps most, and define success metrics. You leave with a staged plan—owners, timelines, and the first wins."
     },
     consultingCard = {
-        title: "Build & Integrate",
+        title: "Build what matters.",
         subtitle: "Create and connect",
-        description: "We develop your solution using modern technologies and AI, ensuring full integration with your current tools and scalable performance"
+        description: "We move from prototype to production fast, delivering clean, testable work that connects to your existing tools. Security and observability are baked in."
     },
     webDevCard = {
-        title: "Launch & Evolve",
+        title: "Launch, measure, evolve.",
         subtitle: "Launch & Evolve",
-        description: "We validate with MVPs, optimize for quality, launch your product, and keep evolving it with real-world data and support"
+        description: "Ship, learn from real usage, and improve weekly. We train your team and stay until the results are undeniable."
     },
     className = "",
 }: MethodOfWorkProps) => {

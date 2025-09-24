@@ -7,6 +7,8 @@ const contactSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
   subject: z.string().min(1, 'Subject is required').max(200, 'Subject must be less than 200 characters'),
   message: z.string().min(10, 'Message must be at least 10 characters').max(2000, 'Message must be less than 2000 characters'),
+  phone: z.string().optional(),
+  preferredContact: z.string(),
   interests: z.array(z.string()).optional().default([])
 });
 
@@ -22,17 +24,19 @@ export const POST: APIRoute = async ({ request,locals }) => {
       email: formData.get('email') as string,
       subject: formData.get('subject') as string,
       message: formData.get('message') as string,
+      phone: formData.get('phone') as string,
+      preferredContact: formData.get('preferredContact') as string,
       interests: formData.getAll('interests') as string[] // Para múltiples checkboxes
     };
 
     // Validar con zod
     const validatedData = contactSchema.parse(rawData);
-    const { name, email, subject, message, interests } = validatedData;
+    const { name, email, subject, message, phone, preferredContact, interests } = validatedData;
     
     const interestsText = interests && interests.length > 0 
       ? interests.map(interest => {
           switch(interest) {
-            case 'software-consulting': return 'Software Consulting';
+            case 'technology-advisory': return 'Technology Advisory';
             case 'web-development': return 'Web Development';
             case 'ai-automation': return 'AI Automation';
             default: return interest;
@@ -64,7 +68,8 @@ export const POST: APIRoute = async ({ request,locals }) => {
                   My name is <strong>${name}</strong> and you can reach me at
                   <a href="mailto:${email}" style="color:#060114; text-decoration:none;">
                     ${email}
-                  </a>.<br><br>
+                  </a>${phone ? ` or by phone at <strong>${phone}</strong>` : ''}.<br><br>
+                  ${preferredContact ? `My preferred contact method is <em>${preferredContact}</em>.<br><br>` : ''}
                   I'm interested in <em>${interestsText}</em> and the subject of my message is
                   <strong>"${subject}"</strong>.<br><br>
                   Here's what I'd like to share:
@@ -117,15 +122,20 @@ export const POST: APIRoute = async ({ request,locals }) => {
             <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
               <p style="font-size: 16px; margin-top: 0;">Hi ${name},</p>
               
-              <p style="font-size: 16px;">Thank you for reaching out to Nous Technologies! We've received your message and our team will review it shortly.</p>
+              <p style="font-size: 16px; margin: 20px 0;">
+                Thank you for reaching out to <strong>Nous Technologies</strong>! 🚀<br><br>
+                We've received your message about <em>"${subject}"</em> and our team will review it carefully. 
+                ${preferredContact ? `We'll contact you via your preferred method: <strong>${preferredContact}</strong>.` : 'We\'ll get back to you via email.'}<br><br>
+                <strong>What happens next?</strong><br>
+                • We'll review your project details within 1 business day<br>
+                • Our team will prepare a personalized response<br>
+                • We'll reach out with next steps and any questions
+              </p>
               
               <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #060114;">
-                <h3 style="color: #060114; margin-top: 0; font-size: 18px;">What happens next?</h3>
-                <ul style="margin: 10px 0; padding-left: 20px;">
-                  <li style="margin-bottom: 8px;">Our team will review your inquiry within 24 hours</li>
-                  <li style="margin-bottom: 8px;">We'll respond with next steps or schedule a consultation</li>
-                  <li style="margin-bottom: 8px;">If urgent, feel free to call us directly</li>
-                </ul>
+                <h3 style="color: #060114; margin-top: 0; font-size: 18px;">Your Contact Information</h3>
+                <p style="margin: 10px 0;">Email: <a href="mailto:${email}" style="color:#060114; text-decoration:none;">${email}</a></p>
+                ${phone ? `<p style="margin: 10px 0;">Phone: <strong>${phone}</strong></p>` : ''}
               </div>
               
               <p style="font-size: 16px;">In the meantime, feel free to explore our services and learn more about how we can help transform your business with AI automation, web development, and technology consulting.</p>

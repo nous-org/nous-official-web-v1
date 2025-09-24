@@ -3,18 +3,19 @@ import ItServiceImage from '@/assets/serviceCards/ITConsulting.webp';
 import WebDevelopmentImage from '@/assets/serviceCards/WebDevelopment.webp';
 import AIAutomationImage from '@/assets/serviceCards/IaAtutomation.webp';
 import { Tabs } from "@/components/react/Tabs";
+import type { ReactNode } from 'react';
 
 export function ServiceTabs() {
   const tabs = [
     {
-      title: "IT Consulting",
+      title: "Technology Advisory",
     
       value: "it-consulting",
-      description: "We offer IT consulting services focused on identifying opportunities for technological improvement, optimizing infrastructure, and aligning digital solutions with your business's strategic objectives.",
+      description: (<><strong>We help you make confident technology decisions.</strong> From current-state audit to a 90-day roadmap, we design the right architecture, pick the right tools, and plan a realistic rollout—secure, scalable, and maintainable.</>),
       content: (
-        <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br  from-primary-black to-primary-turquoise group">
-          <p className="z-50 relative">IT Consulting</p>
-          <ServiceImage image={ItServiceImage} alt="IT Consulting service" description="We offer IT consulting services focused on identifying opportunities for technological improvement, optimizing infrastructure, and aligning digital solutions with your business's strategic objectives." />
+        <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-5xl font-semibold text-white bg-gradient-to-br  from-primary-black to-accent group leading-relaxed">
+          <p className="z-50 relative">Technology Advisory</p>
+          <ServiceImage image={ItServiceImage} alt="Technology Advisory service" description={<><strong>We help you make confident technology decisions.</strong> From current-state audit to a 90-day roadmap, we design the right architecture, pick the right tools, and plan a realistic rollout—secure, scalable, and maintainable.</>} />
         </div>
       ),
     },
@@ -22,22 +23,22 @@ export function ServiceTabs() {
       title: "Web Development",
      
       value: "web-development",
-      description: "Combining best practices in responsive design, optimized speed, and cutting-edge technologies like React, Astro, and Tailwind CSS. We create personalized, scalable, and user-centric digital experiences.",
+      description: (<><strong>We build fast, accessible web experiences that convert.</strong>From UX/UI and design systems to Astro/React builds and Core Web Vitals, we ship clean, maintainable code and measurable performance—robust, standards-based, and SEO-ready.</>),
       content: (
-        <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-primary-black to-primary-turquoise group">
+        <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-semibold leading-relaxed text-white bg-gradient-to-br from-primary-black to-accent group">
           <p className="z-50 relative">Web Development</p>
-          <ServiceImage image={WebDevelopmentImage} alt="Web Development service" description="Combining best practices in responsive design, optimized speed, and cutting-edge technologies like React, Astro, and Tailwind CSS. We create personalized, scalable, and user-centric digital experiences." />
+          <ServiceImage image={WebDevelopmentImage} alt="Web Development service" description={<><strong>We build fast, accessible web experiences that convert.</strong> From UX/UI and design systems to Astro/React builds and Core Web Vitals, we ship clean, maintainable code and measurable performance—robust, standards-based, and SEO-ready.</>} />
         </div>
       ),
     },
     {
       title: "AI Automation",
       value: "ai-automation",
-      description: "We boost operational efficiency through advanced automation powered by artificial intelligence. We design and implement solutions that optimize workflows, integrate chatbots, analyze data in real time, and reduce repetitive tasks. ",
+      description: (<><strong>We turn repetitive processes into AI-powered workflows</strong>WhatsApp intake & routing, scheduling, document extraction, email-to-ticket triage, and CRM & payment sync—reliable by design, measurable end-to-end, and compliant.</>),
       content: (
-        <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-primary-black to-primary-turquoise group">
+        <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-semibold leading-relaxed text-white bg-gradient-to-br from-primary-black to-accent group">
           <p className="z-50 relative">AI Automation</p>
-          <ServiceImage image={AIAutomationImage} alt="AI Automation service" description="We boost operational efficiency through advanced automation powered by artificial intelligence. We design and implement solutions that optimize workflows, integrate chatbots, analyze data in real time, and reduce repetitive tasks." />
+          <ServiceImage image={AIAutomationImage} alt="AI Automation service" description={<><strong>We turn repetitive processes into AI-powered workflows</strong> WhatsApp intake & routing, scheduling, document extraction, email-to-ticket triage, and CRM & payment sync—reliable by design, measurable end-to-end, and compliant.</>} />
         </div>
       ),
     },
@@ -51,7 +52,7 @@ export function ServiceTabs() {
   );
 }
 
-const ServiceImage = ({ image, alt, description }: { image: any; alt: string; description: string }) => {
+const ServiceImage = ({ image, alt, description }: { image: any; alt: string; description: ReactNode }) => {
   return (
     <div className="relative w-full h-full flex flex-col justify-end items-center ">
         <div className="object-cover object-left-top h-[95%] md:h-[95%] absolute -bottom-5 inset-x-0 w-[95%] rounded-xl mx-auto bg-black opacity-64 z-40 group-hover:scale-[1.02] transition-transform duration-500"/>
@@ -63,7 +64,7 @@ const ServiceImage = ({ image, alt, description }: { image: any; alt: string; de
         className="object-cover object-left-top h-[95%] md:h-[95%] absolute -bottom-5 inset-x-0 w-[95%] rounded-xl mx-auto blur-[0.5px] group-hover:scale-[1.02] transition-transform duration-500"
       />
       <div className="relative z-50 flex items-center justify-center h-full px-4 pb-8">
-        <p className="text-center text-white text-sm sm:text-sm md:text-3xl lg:text-4xl md:font-bold font-medium max-w-3xl mt-10">
+        <p className="text-center text-white text-sm sm:text-sm md:text-3xl lg:text-4xl md:font-medium font-medium max-w-3xl mt-10">
           {description}
         </p>
       </div>

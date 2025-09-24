@@ -1,13 +1,12 @@
 ---
 import ColorDivider from "@/components/ui/ColorDivider.astro"
-import footerLogo from "@/assets/footerLogo.png"
+import NousLogo from "@/assets/NousLogo.svg"
 import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
-
 ---
 
 <footer class="relative bg-gradient-to-t from-primary-black to-primary-blue">
     
-    <ColorDivider colorDivider="primary-turquoise"/>   
+    <ColorDivider colorDivider="primary-purple"/>   
 
     <div class="mt-10 container max-w-7xl mx-auto px-4 ">
         <!-- Main Footer Content -->
@@ -16,13 +15,13 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
             <!-- Company Section -->
             <section class="col-span-1 sm:col-span-2 lg:col-span-1 space-y-4">
                 <header>
-                    <img src={footerLogo.src} alt="Nous Technologies Logo" class="w-auto h-8 mb-4" />
+                    <img src={NousLogo.src} alt="Nous Technologies Logo" class="w-auto h-8 mb-4" />
                 </header>
-                <p class="text-neutral-300 text-sm leading-relaxed">Your vision, our technology, let's make it real.</p>
+                <p class="text-neutral-300 text-sm leading-relaxed">Your vision, shipped.</p>
                 <div class="space-y-3">
                     <ButtonVariant 
                         text="Talk to us" 
-                        variant="secondary" 
+                        variant="primary" 
                         href="/contact" 
                         rounded="md" 
                         scheduleIcon={true} 
@@ -31,12 +30,12 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
                         className="w-full sm:w-auto"
                     />
                     <ButtonVariant 
-                        text="Explore our plans" 
-                        variant="secondaryTurquoise" 
-                        href="/pricing" 
+                        text="See services" 
+                        variant="primary" 
+                        href="/services" 
                         rounded="md" 
                         arrowIcon={true} 
-                        strokeColor="#1AD6B3" 
+                        strokeColor="#060114" 
                         justify="between"
                         className="w-full sm:w-auto"
                     />
@@ -46,40 +45,23 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
             <!-- Contact Section -->
             <section class="col-span-1 space-y-4">
                 <header>
-                    <h3 class="text-xl sm:text-2xl font-medium text-primary-turquoise mb-3">Contact</h3>
+                    <h3 class="text-xl sm:text-2xl font-medium text-accent mb-3">Contact</h3>
                 </header>
                 <address class="not-italic">
                     <ul class="space-y-2 text-neutral-300">
                         <li>
                             <a 
                               href="#" 
-                              class="hover:text-primary-turquoise transition-colors duration-200 email-link" 
+                              class="hover:text-hover transition-colors duration-200 email-link" 
                               data-email="contacto@nous.cr"
                             >
                                 contacto@nous.cr
                             </a>
                         </li>
-                        <li>
-                            <a 
-                              href="#" 
-                              class="hover:text-primary-turquoise transition-colors duration-200 email-link" 
-                              data-email="soporte@nous.cr"
-                            >
-                                soporte@nous.cr
-                            </a>
-                        </li>
-                        <li>
-                            <a 
-                              href="#" 
-                              class="hover:text-primary-turquoise transition-colors duration-200 email-link" 
-                              data-email="ventas@nous.cr"
-                            >
-                                ventas@nous.cr
-                            </a>
-                        </li>
                     </ul>
+                    <p class="text-neutral-300 text-xs leading-relaxed">We reply within 1 business day.</p>
                     <div class="mt-4">
-                        <a href="tel:+50661865634" class="text-primary-turquoise hover:text-primary-purple transition-colors duration-200 font-medium">
+                        <a href="wa.me/50661865634" class="text-accent hover:text-hover transition-colors duration-200 font-medium">
                             (+506) 6186 5634
                         </a>
                     </div>
@@ -89,45 +71,84 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
             <!-- Newsletter Section -->
             <section class="col-span-1 space-y-4">
                 <header>
-                    <h3 class="text-xl sm:text-2xl font-medium text-primary-turquoise mb-3">Newsletter</h3>
+                    <h3 class="text-xl sm:text-2xl font-medium text-accent mb-3">Newsletter</h3>
                 </header>
-                <div class="space-y-3">
-                    <ButtonVariant 
-                        text="Subscribe" 
-                        variant="secondary" 
-                        href="/pricing#newsletter"
-                        rounded="md" 
-                        arrowIcon={true} 
-                        strokeColor="#060114" 
-                        justify="between"
-                        className="w-full sm:w-auto"
-                    />
-                    <p class="text-neutral-400 text-xs leading-relaxed">
-                        We are always working to improve our services, subscribe to our newsletter to stay updated.
-                    </p>
+                
+                <!-- Newsletter Form -->
+                <form id="footer-newsletter-form" method="POST" action="/api/subscribe" class="space-y-3">
+                    <div class="flex flex-col gap-2">
+                        <input
+                            id="footer-email-address"
+                            type="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            required
+                            class="w-full rounded-md border border-neutral-700 bg-neutral-900/50 px-3 py-2 text-sm text-neutral-200 placeholder-neutral-500 backdrop-blur transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+                        />
+                        <button
+                            type="submit"
+                            class="w-full rounded-md bg-accent px-3 py-2 text-sm font-medium text-primary-black transition-all hover:bg-accent/90 hover:shadow-sm hover:shadow-accent focus:outline-none focus:ring-2 focus:ring-accent/50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer duration-200"
+                        >
+                            Subscribe
+                        </button>
+                    </div>
+
+                    <!-- Status Messages -->
+                    <div id="footer-email-error" class="hidden" role="alert" aria-live="polite">
+                        <div class="flex items-center gap-2 text-xs text-red-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span id="footer-error-message">Please enter a valid email address</span>
+                        </div>
+                    </div>
+
+                    <div id="footer-success-message" class="hidden" role="alert" aria-live="polite">
+                        <div class="flex items-center gap-2 text-xs text-green-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span id="footer-success-text">Successfully subscribed!</span>
+                        </div>
+                    </div>
+
+                    <div id="footer-loading-message" class="hidden" role="status" aria-live="polite">
+                        <div class="flex items-center gap-2 text-xs text-accent">
+                            <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <span>Subscribing...</span>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="space-y-1">
+                    <p class="text-neutral-400 text-xs leading-relaxed">Monthly. No spam. Unsubscribe anytime.</p>
+                    <a href="/privacyPolicy" class="text-neutral-400 text-xs leading-relaxed hover:text-accent transition-colors">By subscribing you agree to our Privacy Policy</a>
                 </div>
             </section>
 
             <!-- Products Section -->
             <section class="col-span-1 space-y-4">
                 <header>
-                    <h3 class="text-xl sm:text-2xl font-medium text-primary-turquoise mb-3">Products</h3>
+                    <h3 class="text-xl sm:text-2xl font-medium text-accent mb-3">Services</h3>
                 </header>
                 <nav>
                     <ul class="space-y-2 text-neutral-300">
                         <li>
-                            <a href="/pricing" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">
-                                WhatsApp AI Chatbot
+                            <a href="/services#our-services" class="hover:text-accent transition-colors duration-200 text-sm">
+                                Technology Advisory
                             </a>
                         </li>
                         <li>
-                            <a href="/pricing" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">
+                            <a href="/services#our-services" class="hover:text-accent transition-colors duration-200 text-sm">
                                 Web Development
                             </a>
                         </li>
                         <li>
-                            <a href="/pricing" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">
-                                Workflow Automation
+                            <a href="/services#our-services" class="hover:text-accent transition-colors duration-200 text-sm">
+                                AI Automation
                             </a>
                         </li>
                     </ul>
@@ -137,18 +158,19 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
             <!-- Company Navigation Section -->
             <section class="col-span-1 space-y-4">
                 <header>
-                    <h3 class="text-xl sm:text-2xl font-medium text-primary-turquoise mb-3">Company</h3>
+                    <h3 class="text-xl sm:text-2xl font-medium text-accent mb-3">Company</h3>
                 </header>
                 <nav>
                     <ul class="space-y-2 text-neutral-300">
-                        <li><a href="/" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Home</a></li>
-                        <li><a href="/services" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Services</a></li>
-                        <li><a href="/portfolio" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Portfolio</a></li>
-                        <li><a href="/blog" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Blog</a></li>
-                        <li><a href="/contact" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Contact</a></li>
-                        <li><a href="/products" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Products</a></li>
-                        <li><a href="/pricing" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">Pricing</a></li>
-                        <li><a href="/about" class="hover:text-primary-turquoise transition-colors duration-200 text-sm">About</a></li>
+                        <li><a href="/" class="hover:text-accent transition-colors duration-200 text-sm">Home</a></li>
+                        <li><a href="/services" class="hover:text-accent transition-colors duration-200 text-sm">Services</a></li>
+                        <li><a href="/portfolio" class="hover:text-accent transition-colors duration-200 text-sm">Portfolio</a></li>
+                        <li><a href="/blog" class="hover:text-accent transition-colors duration-200 text-sm">Blog</a></li>
+                        <li><a href="/contact" class="hover:text-accent transition-colors duration-200 text-sm">Contact Us</a></li>
+                        <li><a href="/about" class="hover:text-accent transition-colors duration-200 text-sm">About Us</a></li>
+                        <!-- <li><a href="/products" class="hover:text-accent transition-colors duration-200 text-sm">Products</a></li> -->
+                        <!-- <li><a href="/pricing" class="hover:text-accent transition-colors duration-200 text-sm">Pricing</a></li> -->
+                        
                     </ul>
                 </nav>
             </section>
@@ -158,7 +180,7 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
         <div class="border-t border-neutral-800 mt-12 pt-8">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-8">
                 <p class="text-neutral-400 font-light text-sm">
-                    Nous  2025. All rights reserved.
+                    NOUS  2025. All rights reserved.
                 </p>
                 <nav class="flex flex-col sm:flex-row gap-2 sm:gap-6">
                     <a href="/privacyPolicy" class="text-neutral-400 hover:text-primary-turquoise transition-colors duration-200 text-sm">
@@ -199,4 +221,104 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
     
    
     document.addEventListener('astro:page-load', initializeEmails);
-    </script>
+
+    // Footer Newsletter Form Handler
+    function initializeFooterNewsletter() {
+        const form = document.getElementById('footer-newsletter-form');
+        if (!form) return;
+        
+        // Evitar múltiples inicializaciones
+        if (form.dataset.initialized === 'true') return;
+        form.dataset.initialized = 'true';
+
+        const emailInput = document.getElementById('footer-email-address');
+        const submitButton = form.querySelector('button[type="submit"]');
+        const errorBox = document.getElementById('footer-email-error');
+        const successBox = document.getElementById('footer-success-message');
+        const loadingBox = document.getElementById('footer-loading-message');
+        const errorText = document.getElementById('footer-error-message');
+        const successText = document.getElementById('footer-success-text');
+
+        let busy = false;
+
+        function hideAll() {
+            errorBox?.classList.add('hidden');
+            successBox?.classList.add('hidden');
+            loadingBox?.classList.add('hidden');
+        }
+
+        function showError(msg) {
+            hideAll();
+            if (errorText) errorText.textContent = msg;
+            errorBox?.classList.remove('hidden');
+        }
+
+        function showSuccess(msg) {
+            hideAll();
+            if (successText) successText.textContent = msg;
+            successBox?.classList.remove('hidden');
+        }
+
+        function showLoading() {
+            hideAll();
+            loadingBox?.classList.remove('hidden');
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (busy) {
+                console.log('Form submission already in progress, ignoring...');
+                return;
+            }
+            busy = true;
+
+            const email = emailInput?.value?.trim();
+            if (!email) {
+                showError('Please enter your email address');
+                busy = false;
+                return;
+            }
+
+            showLoading();
+            if (submitButton) submitButton.disabled = true;
+
+            try {
+                console.log('Submitting newsletter subscription for:', email);
+                const formData = new FormData();
+                formData.append('email', email);
+                
+                const response = await fetch('/api/subscribe', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                console.log('Newsletter API response:', { status: response.status, data });
+
+                if (response.ok) {
+                    showSuccess(data.message || 'Successfully subscribed!');
+                    form.reset();
+                } else {
+                    showError(data.message || 'Something went wrong. Please try again.');
+                }
+            } catch (error) {
+                console.error('Newsletter submission error:', error);
+                showError('Network error. Please check your connection and try again.');
+            } finally {
+                console.log('Resetting busy state');
+                busy = false;
+                if (submitButton) submitButton.disabled = false;
+            }
+        });
+    }
+
+    // Initialize footer newsletter on page load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeFooterNewsletter);
+    } else {
+        initializeFooterNewsletter();
+    }
+    
+    document.addEventListener('astro:page-load', initializeFooterNewsletter);
+</script>

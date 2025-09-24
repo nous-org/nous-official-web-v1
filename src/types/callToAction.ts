@@ -1,6 +1,6 @@
 export interface Button {
     text: string;
-    variant: 'primary' | 'secondary' | 'primaryPurple' | 'secondaryTurquoise';
+    variant: 'primary' | 'secondary' | 'primaryPurple' | 'secondaryTurquoise' | 'darkBlue';
     href: string;
     scheduleIcon: boolean;
     strokeColor?: string;
@@ -31,51 +31,51 @@ export interface CallToActionProps {
 
 export const defaultSections: CTASection[] = [
     {
-        title: "Identify opportunities",
+        title: "Stop guessing. Start shipping.",
         subtitle: "",
-        description: "Optimize processes, and achieve your goals with high-impact technology.",
+        description: "Get a clear plan and a site that actually converts—done with you, not to you.",
         style: {
-            background: "bg-gradient-to-br from-primary-turquoise/40 to-primary-black/40 border border-primary-turquoise",
-            textColor: "text-white",
-            shadowColor: "primary-turquoise",
-            titleColor: "text-primary-turquoise",
+            background: "bg-accent to-primary-black/40 border border-accent",
+            textColor: "text-primary-blue/70",
+            shadowColor: "accent",
+            titleColor: "text-primary-blue",
         },
         buttons: [
             {
-                text: "Explore our plans",
-                href: "/pricing",
+                text: "Talk to an advisor",
+                href: "/contact",
                 scheduleIcon: false,
                 strokeColor: "",
                 arrowIcon: false,
-                variant: "secondary",
+                variant: "darkBlue",
                 target: "_self",
                 ariaLabel: "Explore our plans"
             },
             {
-                text: "See our products",
-                href: "/products",
+                text: "See how we build sites",
+                href: "/portfolio",
                 scheduleIcon: false,
                 strokeColor: "",
                 arrowIcon: false,
-                variant: "secondaryTurquoise",
+                variant: "secondary",
                 target: "_self",
                 ariaLabel: "See our products"
             }
         ]
     },
     {
-        title: "Boost your busines",
+        title: "Your ops, on autopilot.",
         subtitle: "",
-        description: "Customized digital solutions in web development, artificial intelligence automation, and technology consulting.",
+        description: "Give your team back hours with AI workflows that reply instantly, reduce errors, and scale with you.",
         style: {
-            background: "bg-gradient-to-bl from-primary-purple/40 to-primary-black/40 border border-primary-purple",
-            textColor: "text-white",
+            background: "bg-gradient-to-bl from-outline/40 to-primary-black/40 border border-outline",
+            textColor: "text-neutral-300",
             shadowColor: "primary-purple",
-            titleColor: "text-primary-purple",
+            titleColor: "text-outline",
         },
         buttons: [
             {
-                text: "Contact us",
+                text: "Turn busywork off",
                 href: "/contact",
                 variant: "primary",
                 scheduleIcon: false,
@@ -85,11 +85,11 @@ export const defaultSections: CTASection[] = [
                 ariaLabel: "Contact us"
             },
             {
-                text: "Services",
+                text: "Explore automation use cases",
                 href: "/services",
                 variant: "primaryPurple",
                 scheduleIcon: false,
-                arrowIcon: true,
+                arrowIcon: false,
                 strokeColor: "",
                 target: "_self",
                 ariaLabel: "See our services"

@@ -7,7 +7,7 @@ export const Bento = () => {
   return (
     <div>
       <p className="mb-4 text-sm font-normal sm:mb-6 sm:text-base md:mb-8 md:text-lg lg:text-xl text-neutral-200">
-        We offer a range of services to help you boost your business and take it to the next level.
+      Move faster, reduce busywork, and turn more visits into wins—starting now.
       </p>
 
       {/* Single Adaptive Bento Grid */}
@@ -34,14 +34,14 @@ export const Bento = () => {
                            text-lg
                            md:text-xl
                            lg:text-xl xl:text-2xl">
-                Need to automate a message or voice assistant?
+                Automate conversations.
               </h3>
               <p className="text-neutral-300
                           text-sm mb-4
                           md:text-base md:mb-0
                           lg:text-base lg:pr-20 lg:mb-0
                           xl:text-lg font-medium">
-                Our team automates your workflow and creates a bot that adapts to your needs.
+                Instant replies on WhatsApp, web, or voice. Capture details, route requests, and hand off to your team when it matters.
               </p>
             </div>
           </div>
@@ -62,14 +62,14 @@ export const Bento = () => {
                         text-lg
                         md:text-xl
                         lg:text-xl xl:text-2xl">
-              We offer professional technological consulting
+              Design your technology strategy.
             </h3>
             <p className="text-neutral-200
                         text-sm
                         md:text-base
                         lg:text-base
                         xl:text-lg">
-              Schedule with us and we will identify your company's pain points and provide professional advice.
+              Cut through the noise. We align your goals with a staged plan—what to build, what to buy, and what to skip—so progress is fast and de-risked.
             </p>
           </div>
         </div>
@@ -86,14 +86,14 @@ export const Bento = () => {
                        text-lg
                        md:text-xl
                        lg:text-xl xl:text-2xl">
-              Professional web development adapted to all types of businesses
+              Launch a site that converts.
             </h3>
             <p className="text-neutral-300
                       text-sm
                       md:text-base
                       lg:text-base
                       xl:text-lg font-medium">
-              Give your brand a professional identity with modern, optimized designs and integrate it with AI to stand out in the market.
+              Fast, accessible, SEO-ready—and built on a system you can evolve weekly. Look premium, load instantly, sell more.
             </p>
           </div>
           {/* WebDev Image - Desktop Only */}

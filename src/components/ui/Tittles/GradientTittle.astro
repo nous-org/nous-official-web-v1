@@ -2,10 +2,12 @@
 
 interface GradientTittleProps {
     title: string;
+    subHead?: string;
 }
 
-const { title } = Astro.props;
+const { title, subHead } = Astro.props;
 
 ---
 
-<h3 class="sm:text-4xl md:text-6xl xl:text-7xl text-2xl font-bold mb-12 bg-gradient-to-br from-primary-purple via-primary-turquoise to-primary-turquoise bg-clip-text text-transparent">{title}</h3>
+<h3 class="sm:text-4xl md:text-6xl xl:text-7xl text-2xl font-bold mb-12 bg-gradient-to-br from-gradient-end via-gradient-middle to-gradient-end bg-clip-text text-transparent">{title}</h3>
+{subHead && <p class="text-sm font-medium text-neutral-300 -mt-10 mb-6">{subHead}</p>}

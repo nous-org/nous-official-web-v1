@@ -21,21 +21,21 @@ const defaultLinks: NavLink[] = [
         label: 'About',
         ariaLabel: 'Learn more about Nous Technologies'
     },
-    { 
-        href: '#products', 
-        label: 'Products',
-        ariaLabel: 'Explore our AI products'
-    },
+    // { 
+    //     href: '#products', 
+    //     label: 'Products',
+    //     ariaLabel: 'Explore our AI products'
+    // },
     { 
         href: '#services', 
         label: 'Services',
         ariaLabel: 'Discover our automation services'
     },
-    { 
+     { 
         href: '#pricing', 
-        label: 'Pricing',
-        ariaLabel: 'View pricing plans'
-    },
+         label: 'Pricing',
+         ariaLabel: 'View pricing plans'
+     },
     { 
         href: '#contact', 
         label: 'Contact',
@@ -55,7 +55,7 @@ const {
 
 // Dynamic classes based on props
 const containerClasses = [
-    'flex border-2 border-[#A894FF]/50 shadow-[0_0_10px_0_rgba(0,0,0,0.1)] shadow-[#A894FF]/20 rounded-full px-8 py-4 bg-[#060114]',
+    'flex border-2 border-outline shadow-[0_0_10px_0_rgba(0,0,0,0.1)] shadow-[#A894FF]/40 rounded-full px-8 py-4 bg-[#060114]',
     variant === 'horizontal' ? 'flex-row' : 'flex-col',
     spacing === 'sm' ? 'gap-6' : spacing === 'md' ? 'gap-8' : 'gap-12',
     className

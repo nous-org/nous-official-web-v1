@@ -5,54 +5,54 @@ export interface InfoText{
 
 export const DEFAULT_INFO_TEXT: InfoText[] = [
     {
-        
-        description: "Boost your business with AI-powered automation. Modern challenges require modern solutions. ",
+        title: "AI-powered automation for business.",
+        description: "Streamline workflows, cut manual work, and scale outcomes fast.",
     },
     {
-        
-        description: "Our platform harnesses the power of AI to streamline your workflows, reduce manual effort, and amplify productivity like never before.",
+        title: "ROI first, not hype.",
+        description: "We pinpoint where AI creates real business value—clear wins before you invest big.",
     },
     {
-        
-        description: "Smart Process Automation We analyze your workflows, identify bottlenecks, and automate repetitive tasks — from data entry to customer interactions.",
+        title: "Speed to impact.",
+        description: "Quick pilots that ship in shorter timelines, prove results, and de-risk the path to scale.",
     },
     {
-        
-        description: "Custom-built Integrations Whether you're a startup or an enterprise, we adapt to your tools, your logic, and your pace. Think of us as your AI co-pilot.",
+        title: "Safety & trust built-in.",
+        description: "Privacy-safe by design, human-in-the-loop, audit trails, and compliance from day one.",
     },
     {
-        
-        description: "Real-time Insight & Optimization Track performance, receive smart suggestions, and continuously refine your processes through intelligent feedback.",
+        title: "Future-proof by default.",
+        description: "Best models today, easy to swap tomorrow—no vendor lock-in, no dead ends.",
     },
     {
-        
-        description: "Safe. Reliable. Scalable. Built with modern standards, your data is protected while scaling smoothly with your needs.",
+        title: "Backed by OpenAI.",
+        description: "Sam Altman—OpenAI’s CEO—was excited about NOUS’s mission to accelerate AI adoption in Costa Rica and Latin America and invested $60,000 in OpenAI API credits to help us get started because he believes in our mission.",
     },
 ]
 
 export const DEFAULT_INFO_TEXT_2: InfoText[] = [
     {
         title: 'Modern web development with purpose',
-        description: "We don’t just build websites we craft intelligent, scalable, and customized digital experiences powered by AI.",
+        description: "We craft accessible, conversion-focused experiences aligned to your goals and users—not just pages.",
     },
     {
         title: 'Tailor-made solutions',
-        description: "From small business websites to enterprise platforms, we adapt to your goals, industry, and users to create something truly yours.",
+        description: "From startup sites to enterprise platforms, we adapt to your industry, audience, and KPIs—with design systems that scale.",
     },
     {
-        title: 'Integrated AI systems',
-        description: "Chatbots, smart assistants, automated flows, and decision-making logic — all built into your product with modern AI tools.",
+        title: 'AI-ready when it adds value.',
+        description: "Integrate assistants, smart search, bots, and automated flows where they move the needle—measurable outcomes, no hype.",
     },
     {
-        title: 'End-to-end development From UX/UI to backend infrastructure',
-        description: "We deliver complete solutions. Web apps, internal tools, dashboards, and more.",
+        title: 'End-to-end: UX/UI to backend.',
+        description: "UX research, UI design, Astro & React frontends, APIs, databases, and cloud infrastructure—one accountable team.",
     },
     {
-        title: 'Built for scale & performance',
-        description: "We use today’s top frameworks and cloud infrastructure to ensure your product is fast, secure, and ready to grow.",
+        title: 'Built for speed, SEO, and accessibility.',
+        description: "Core Web Vitals, semantic HTML, WCAG 2.2 AA, and modern CDN/caching—pages open fast, are indexable, rank better on Google, and are inclusive by default.",
     },
     {
-        title: 'Always evolving Need to iterate? Launch new features?',
-        description: "We support ongoing improvements with agile practices",
+        title: 'Built to evolve.',
+        description: "Reusable components and a stable codebase mean new pages and features go live in days, not quarters.",
     },
 ]

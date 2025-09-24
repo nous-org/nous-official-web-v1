@@ -17,7 +17,7 @@ const { founders = DEFAULT_FOUNDERS, className = "" } = Astro.props;
         founders.map((founder) => (
             <!-- Individual Founder Card -->
             <article 
-                class="relative flex flex-col gap-4 bg-gradient-to-br border border-primary-turquoise from-primary-blue/60 to-primary-turquoise/20 md:hover:to-primary-turquoise/30 rounded-xl p-4 hover:border-primary-turquoise/60 transition-colors duration-300"
+                class="relative flex flex-col gap-4 bg-gradient-to-br border border-outline from-primary-blue/60 to-accent/20 md:hover:to-accent/30 rounded-xl p-4 hover:border-accent/60 transition-colors duration-300"
                 aria-labelledby={`founder-${founder.name.replace(/\s+/g, '-').toLowerCase()}`}
             >
                 <!-- Founder Header with Image and Basic Info -->
@@ -27,7 +27,7 @@ const { founders = DEFAULT_FOUNDERS, className = "" } = Astro.props;
                         <img 
                             src={founder.image} 
                             alt={`${founder.name}, ${founder.position} at Nous Technologies`}
-                            class="w-28 h-28 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full object-cover border-2 border-primary-turquoise lg:absolute lg:-top-16 xl:-top-18 lg:right-4 xl:right-5 z-10"
+                            class="w-28 h-28 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full object-cover border-2 border-outline lg:absolute lg:-top-16 xl:-top-18 lg:right-4 xl:right-5 z-10"
                             loading="lazy"
                         />
                     </div>
@@ -40,7 +40,7 @@ const { founders = DEFAULT_FOUNDERS, className = "" } = Astro.props;
                         >
                             {founder.name}
                         </h3>
-                        <p class="text-sm sm:text-base md:text-lg font-medium text-primary-turquoise mt-1">
+                        <p class="text-sm sm:text-base md:text-lg font-medium text-accent mt-1">
                             {founder.position}
                         </p>
                     </div>
@@ -61,7 +61,7 @@ const { founders = DEFAULT_FOUNDERS, className = "" } = Astro.props;
                                 href={link.url || '#'} 
                                 target={link.url ? '_blank' : undefined}
                                 rel={link.url ? 'noopener noreferrer' : undefined}
-                                class="text-neutral-400 hover:text-primary-turquoise transition-all duration-300 p-1 rounded-md hover:bg-primary-turquoise/40 hover:scale-[1.1]
+                                class="text-neutral-400 hover:text-accent transition-all duration-300 p-1 rounded-md hover:bg-accent/40 hover:scale-[1.1]
                                 hover:animate-pop"
                                 aria-label={`Visit ${founder.name} on ${link.name}`}
                                 aria-disabled={!link.url ? 'true' : undefined}
