@@ -2,24 +2,61 @@
 
 
 interface Props {
-    type: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date' | 'time' | 'datetime-local' | 'month' | 'week' | 'color' | 'file' | 'hidden' | 'image' | 'range' | 'reset' | 'submit' | 'button' | 'checkbox' | 'radio' | 'textarea';
+    type: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date' | 'time' | 'datetime-local' | 'month' | 'week' | 'color' | 'file' | 'hidden' | 'image' | 'range' | 'reset' | 'submit' | 'button' | 'checkbox' | 'radio' | 'textarea' | 'select';
     placeholder: string;
     className?: string;
     id?: string;
     textareaClassName?: string;
+    selectClassName?: string;
     name?: string;
+    options?: Array<{ value: string; label: string; }>;
 }
 const defaultClassName = 'w-full p-2 pb-4 bg-transparent border-b border-neutral-600 focus:border-accent hover:border-accent transition-colors duration-300 font-medium text-lg cursor-pointer focus:outline-none';
-;
 const defaultTextareaClassName = 'w-full p-2 pb-6 bg-primary-black border border-neutral-600 focus:border-accent hover:border-accent transition-colors duration-300 font-medium text-lg cursor-pointer focus:outline-none rounded-md min-h-[20dvh]';
+const defaultSelectClassName = `
+  w-full
+  p-2 pb-4
+  border-b border-neutral-600
+  bg-primary-blue
+  text-neutral-400
+  focus:border-accent hover:border-accent
+  focus:text-white hover:text-white
+  transition-colors duration-300
+  font-medium text-lg
+  cursor-pointer
+  focus:outline-none
+  appearance-none
+`;
 
-const { type, placeholder, className = defaultClassName, textareaClassName = defaultTextareaClassName, name, id } = Astro.props;
+const { type, placeholder, className = defaultClassName, textareaClassName = defaultTextareaClassName, selectClassName = defaultSelectClassName, name, id, options = [] } = Astro.props;
 ---
 
 {type === 'textarea' ? (
-    <label for={name}>{id}:</label>
-    <textarea placeholder={placeholder} class={textareaClassName} name={name} required autocomplete="off"></textarea>
+    <>
+        <label for={name} class="block text-lg font-medium text-gray-200 mb-2">{id}:</label>
+        <textarea placeholder={placeholder} class={textareaClassName} name={name} required autocomplete="off"></textarea>
+    </>
+) : type === 'select' ? (
+    <>
+        <label for={name} class="block text-lg font-medium text-gray-200 mb-2">{id}:</label>
+        <div class="relative">
+            <select name={name} class={selectClassName} required>
+                <option value="" disabled selected>{placeholder}</option>
+                {options.map((option) => (
+                    <option value={option.value}>{option.label}</option>
+                ))}
+            </select>
+            <!-- Custom dropdown arrow -->
+            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </div>
+        </div>
+    </>
 ) : (
-    <label for={name}>{id}:</label>
-    <input type={type} placeholder={placeholder} class={className} name={name} required autocomplete="off" />
+    <>
+        <label for={name} class="block text-lg font-medium text-gray-200 mb-2">{id}:</label>
+        <input type={type} placeholder={placeholder} class={className} name={name} required autocomplete="off" />
+    </>
 )}
