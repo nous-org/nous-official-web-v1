@@ -8,11 +8,13 @@ const contactSchema = z.object({
   subject: z.string().min(1, 'Subject is required').max(200, 'Subject must be less than 200 characters'),
   message: z.string().min(10, 'Message must be at least 10 characters').max(2000, 'Message must be less than 2000 characters'),
   phone: z.string().optional(),
-  preferredContact: z.string(),
+  preferredContact: z.enum(['email', 'whatsapp', 'phone', 'video-call', 'any'], {
+    errorMap: () => ({ message: 'Please select a valid preferred contact method' })
+  }),
   interests: z.array(z.string()).optional().default([])
 });
 
-export const POST: APIRoute = async ({ request,locals }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const { RESEND_API_KEY } = locals.runtime.env;
     const resend = new Resend(RESEND_API_KEY);
@@ -44,6 +46,20 @@ export const POST: APIRoute = async ({ request,locals }) => {
         }).join(', ')
       : 'Not specified';
 
+    // Format preferred contact method for display
+    const formatPreferredContact = (method: string) => {
+      switch(method) {
+        case 'email': return 'Email';
+        case 'whatsapp': return 'WhatsApp';
+        case 'phone': return 'Phone Call';
+        case 'video-call': return 'Video Call';
+        case 'any': return 'Any method is fine';
+        default: return method;
+      }
+    };
+
+    const formattedPreferredContact = formatPreferredContact(preferredContact);
+
     const companyEmailHtml = `
       <!DOCTYPE html>
       <html>
@@ -69,7 +85,7 @@ export const POST: APIRoute = async ({ request,locals }) => {
                   <a href="mailto:${email}" style="color:#060114; text-decoration:none;">
                     ${email}
                   </a>${phone ? ` or by phone at <strong>${phone}</strong>` : ''}.<br><br>
-                  ${preferredContact ? `My preferred contact method is <em>${preferredContact}</em>.<br><br>` : ''}
+                  ${preferredContact ? `My preferred contact method is <em>${formattedPreferredContact}</em>.<br><br>` : ''}
                   I'm interested in <em>${interestsText}</em> and the subject of my message is
                   <strong>"${subject}"</strong>.<br><br>
                   Here's what I'd like to share:
@@ -125,7 +141,7 @@ export const POST: APIRoute = async ({ request,locals }) => {
               <p style="font-size: 16px; margin: 20px 0;">
                 Thank you for reaching out to <strong>Nous Technologies</strong>! 🚀<br><br>
                 We've received your message about <em>"${subject}"</em> and our team will review it carefully. 
-                ${preferredContact ? `We'll contact you via your preferred method: <strong>${preferredContact}</strong>.` : 'We\'ll get back to you via email.'}<br><br>
+                ${preferredContact ? `We'll contact you via your preferred method: <strong>${formattedPreferredContact}</strong>.` : 'We\'ll get back to you via email.'}<br><br>
                 <strong>What happens next?</strong><br>
                 • We'll review your project details within 1 business day<br>
                 • Our team will prepare a personalized response<br>
