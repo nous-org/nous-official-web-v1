@@ -15,7 +15,7 @@ export function ServiceTabs() {
       content: (
         <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-5xl font-semibold text-white bg-gradient-to-br  from-primary-black to-accent group leading-relaxed">
           <p className="z-50 relative">Technology Advisory</p>
-          <ServiceImage image={ItServiceImage} alt="Technology Advisory service" description={<><strong className="text-neutral-200 font-extrabold text-shadow-sm text-shadow-accent text-4xl">We help you make confident technology decisions.</strong> From current-state audit to a 90-day roadmap, we design the right architecture, pick the right tools, and plan a realistic rollout—secure, scalable, and maintainable.</>} />
+          <ServiceImage image={ItServiceImage} alt="Technology Advisory service" description={<><strong className="text-neutral-200 font-extrabold text-shadow-sm text-shadow-accent md:text-4xl text-normal">We help you make confident technology decisions.</strong> From current-state audit to a 90-day roadmap, we design the right architecture, pick the right tools, and plan a realistic rollout—secure, scalable, and maintainable.</>} />
         </div>
       ),
     },
@@ -27,7 +27,7 @@ export function ServiceTabs() {
       content: (
         <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-semibold leading-relaxed text-white bg-gradient-to-br from-primary-black to-accent group">
           <p className="z-50 relative">Web Development</p>
-          <ServiceImage image={WebDevelopmentImage} alt="Web Development service" description={<><strong className="text-neutral-200 font-extrabold text-shadow-sm text-shadow-accent text-4xl">We build fast, accessible web experiences that convert.</strong> From UX/UI and design systems to Astro/React builds and Core Web Vitals, we ship clean, maintainable code and measurable performance—robust, standards-based, and SEO-ready.</>} />
+          <ServiceImage image={WebDevelopmentImage} alt="Web Development service" description={<><strong className="text-neutral-200 font-extrabold text-shadow-sm text-shadow-accent md:text-4xl text-normal">We build fast, accessible web experiences that convert.</strong> From UX/UI and design systems to Astro/React builds and Core Web Vitals, we ship clean, maintainable code and measurable performance—robust, standards-based, and SEO-ready.</>} />
         </div>
       ),
     },
@@ -38,7 +38,7 @@ export function ServiceTabs() {
       content: (
         <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-semibold leading-relaxed text-white bg-gradient-to-br from-primary-black to-accent group">
           <p className="z-50 relative">AI Automation</p>
-          <ServiceImage image={AIAutomationImage} alt="AI Automation service" description={<><strong className="text-neutral-200 font-extrabold text-shadow-sm text-shadow-accent text-4xl">We turn repetitive processes into AI-powered workflows.</strong> WhatsApp intake & routing, scheduling, document extraction, email-to-ticket triage, and CRM & payment sync—reliable by design, measurable end-to-end, and compliant.</>} />
+          <ServiceImage image={AIAutomationImage} alt="AI Automation service" description={<><strong className="text-neutral-200 font-extrabold text-shadow-sm text-shadow-accent md:text-4xl text-normal">We turn repetitive processes into AI-powered workflows.</strong> WhatsApp intake & routing, scheduling, document extraction, email-to-ticket triage, and CRM & payment sync—reliable by design, measurable end-to-end, and compliant.</>} />
         </div>
       ),
     },
