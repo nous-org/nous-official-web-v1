@@ -18,7 +18,7 @@ export function TimeLineNous() {
       ),
     },
     {
-      title: "Ready to the next level?",
+      title: "Ready to go to the next level?",
       content: (
         <TimeLineCta />
       ),
