@@ -14,6 +14,28 @@ interface FAQCategory {
 }
 
 const FAQ_CATEGORIES: FAQCategory[] = [
+{
+        title: "Getting Started",
+        description: "How to begin your project with NOUS",
+        questions: [
+            {
+                question: "How do I get started with NOUS?",
+                answer: "Simply contact us through our website or schedule a consultation. We'll discuss your needs, provide a detailed proposal, and outline the next steps. Our initial consultation is always free and focused on understanding your goals."
+            },
+            {
+                question: "What information do you need to provide a quote?",
+                answer: "We need to understand your business goals, current challenges, technical requirements, timeline expectations, and budget range. The more details you provide about your project, the more accurate our proposal will be."
+            },
+            {
+                question: "Do you offer free consultations?",
+                answer: "Yes! We offer free initial consultations to understand your needs and determine how we can best help your business. This includes a preliminary assessment and strategic recommendations at no cost."
+            },
+            {
+                question: "What regions do you serve?",
+                answer: "We primarily serve Latin America but work with clients globally. Our team is experienced in working remotely and can adapt to different time zones and cultural contexts to ensure effective collaboration."
+            }
+        ]
+    },
     {
         title: "Services & Solutions",
         description: "Learn about our AI automation, web development, and consulting services",
@@ -33,28 +55,6 @@ const FAQ_CATEGORIES: FAQCategory[] = [
             {
                 question: "Do you work with companies of all sizes?",
                 answer: "Yes! We collaborate with companies of all sizes, from startups to large industries throughout Latin America. Our solutions are scalable and can be adapted to meet the specific needs and budget of any organization."
-            }
-        ]
-    },
-    {
-        title: "Pricing & Process",
-        description: "Understand our pricing structure and project workflow",
-        questions: [
-            {
-                question: "How do you determine project pricing?",
-                answer: "Our pricing starts from $199 for AI automation, $299 for web development, and $399 for consulting. Final costs depend on project scope, complexity, timeline, and specific requirements. We provide detailed estimates after understanding your needs."
-            },
-            {
-                question: "What is your typical project timeline?",
-                answer: "Project timelines vary based on complexity. AI automation projects typically take 2-4 weeks, web development projects 4-8 weeks, and consulting engagements 2-12 weeks. We provide realistic timelines during our initial consultation."
-            },
-            {
-                question: "What is your project workflow?",
-                answer: "We follow a pragmatic and collaborative approach: First, we listen to your specific needs. Then, we design a clear and viable solution. Next, we deliver professional implementation. Finally, we provide ongoing support to ensure real results."
-            },
-            {
-                question: "Do you offer payment plans or financing?",
-                answer: "Yes, we offer flexible payment options including milestone-based payments, monthly payment plans for larger projects, and custom financing arrangements. We work with you to find a payment structure that fits your budget."
             }
         ]
     },
@@ -80,28 +80,7 @@ const FAQ_CATEGORIES: FAQCategory[] = [
             }
         ]
     },
-    {
-        title: "Getting Started",
-        description: "How to begin your project with Nous Technologies",
-        questions: [
-            {
-                question: "How do I get started with Nous Technologies?",
-                answer: "Simply contact us through our website or schedule a consultation. We'll discuss your needs, provide a detailed proposal, and outline the next steps. Our initial consultation is always free and focused on understanding your goals."
-            },
-            {
-                question: "What information do you need to provide a quote?",
-                answer: "We need to understand your business goals, current challenges, technical requirements, timeline expectations, and budget range. The more details you provide about your project, the more accurate our proposal will be."
-            },
-            {
-                question: "Do you offer free consultations?",
-                answer: "Yes! We offer free initial consultations to understand your needs and determine how we can best help your business. This includes a preliminary assessment and strategic recommendations at no cost."
-            },
-            {
-                question: "What regions do you serve?",
-                answer: "We primarily serve Latin America but work with clients globally. Our team is experienced in working remotely and can adapt to different time zones and cultural contexts to ensure effective collaboration."
-            }
-        ]
-    }
+    
 ];
 
 
@@ -124,7 +103,7 @@ const allFAQs: FAQItem[] = FAQ_CATEGORIES.flatMap(category => category.questions
         </header>
 
         
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12">
             {FAQ_CATEGORIES.map((category) => (
                 <article class="space-y-6 sm:space-y-8">
                     
@@ -205,7 +184,7 @@ const allFAQs: FAQItem[] = FAQ_CATEGORIES.flatMap(category => category.questions
 <style>
     
     details[open] summary ~ * {
-        animation: slideDown 0.3s ease-out;
+        animation: slideDown 0.5s ease-out;
     }
     
     details summary {

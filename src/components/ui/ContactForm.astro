@@ -15,7 +15,7 @@ const chips = [
 ---
 
 <div class="w-auto">
-  <GradientTittle title="Tell us about your project." subHead="We reply within 1 business day with clear next steps." />
+  <GradientTittle title="Tell us about your project." subHead="We reply within <strong>1 business day</strong> with clear next steps." />
   <!-- Message containers -->
   <div
     id="success-message"
@@ -75,10 +75,10 @@ const chips = [
     <Inputs id="E-mail" type="email" placeholder="john.doe@example.com" name="email" />
     <Inputs id="Phone" type="tel" placeholder="+506 6186 5634" name="phone" />
     <Inputs 
-      id="Preferred Contact" 
-      type="select" 
-      placeholder="Select your preferred contact method" 
+      id="Preferred Contact Method" 
+      type="radio" 
       name="preferredContact"
+      placeholder="Preferred Contact Method"
       options={[
         { value: "email", label: "Email" },
         { value: "whatsapp", label: "WhatsApp" },

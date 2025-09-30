@@ -32,11 +32,11 @@ export const DEFAULT_INFO_TEXT: InfoText[] = [
 
 export const DEFAULT_INFO_TEXT_2: InfoText[] = [
     {
-        title: 'Modern web development with purpose',
+        title: 'Modern web development with purpose.',
         description: "We craft accessible, conversion-focused experiences aligned to your goals and users—not just pages.",
     },
     {
-        title: 'Tailor-made solutions',
+        title: 'Tailor-made solutions.',
         description: "From startup sites to enterprise platforms, we adapt to your industry, audience, and KPIs—with design systems that scale.",
     },
     {

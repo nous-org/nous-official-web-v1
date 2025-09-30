@@ -2,7 +2,7 @@
 
 
 interface Props {
-    type: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date' | 'time' | 'datetime-local' | 'month' | 'week' | 'color' | 'file' | 'hidden' | 'image' | 'range' | 'reset' | 'submit' | 'button' | 'checkbox' | 'radio' | 'textarea' | 'select';
+    type: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date' | 'time' | 'datetime-local' | 'month' | 'week' | 'color' | 'file' | 'hidden' | 'image' | 'range' | 'reset' | 'submit' | 'button' | 'checkbox' | 'radio' | 'textarea' | 'select' | 'radio';
     placeholder: string;
     className?: string;
     id?: string;
@@ -53,6 +53,35 @@ const { type, placeholder, className = defaultClassName, textareaClassName = def
                 </svg>
             </div>
         </div>
+    </>
+) : type === 'radio' ? (
+    <>
+        <fieldset class="space-y-3">
+            <legend class="block text-lg font-medium text-gray-200 mb-4">{id}:</legend>
+            {options.map((option) => (
+                <div class="flex items-center space-x-3 group">
+                    <div class="relative">
+                        <input 
+                            type="radio" 
+                            id={`${name}-${option.value}`}
+                            name={name} 
+                            value={option.value}
+                            class="sr-only peer"
+                            required
+                        />
+                        <div class="w-5 h-5 border-2 border-neutral-600 rounded-full peer-checked:border-accent peer-focus:border-accent group-hover:border-accent transition-colors duration-300 flex items-center justify-center">
+                            <div class="w-2.5 h-2.5 bg-accent rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-300"></div>
+                        </div>
+                    </div>
+                    <label 
+                        for={`${name}-${option.value}`}
+                        class="text-lg font-medium text-neutral-300 cursor-pointer peer-checked:text-white group-hover:text-white transition-colors duration-300"
+                    >
+                        {option.label}
+                    </label>
+                </div>
+            ))}
+        </fieldset>
     </>
 ) : (
     <>

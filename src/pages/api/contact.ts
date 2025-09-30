@@ -8,15 +8,15 @@ const contactSchema = z.object({
   subject: z.string().min(1, 'Subject is required').max(200, 'Subject must be less than 200 characters'),
   message: z.string().min(10, 'Message must be at least 10 characters').max(2000, 'Message must be less than 2000 characters'),
   phone: z.string().optional(),
-  preferredContact: z.enum(['email', 'whatsapp', 'phone', 'video-call', 'any'], {
+  preferredContact: z.enum(['email', 'whatsapp'], {
     errorMap: () => ({ message: 'Please select a valid preferred contact method' })
   }),
   interests: z.array(z.string()).optional().default([])
 });
 
-export const POST: APIRoute = async ({ request, locals }) => {
+export const POST: APIRoute = async ({ request }) => {
   try {
-    const { RESEND_API_KEY } = locals.runtime.env;
+    const RESEND_API_KEY = import.meta.env.RESEND_API_KEY;
     const resend = new Resend(RESEND_API_KEY);
     
     // Extraer datos del formulario
@@ -51,9 +51,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
       switch(method) {
         case 'email': return 'Email';
         case 'whatsapp': return 'WhatsApp';
-        case 'phone': return 'Phone Call';
-        case 'video-call': return 'Video Call';
-        case 'any': return 'Any method is fine';
         default: return method;
       }
     };
@@ -66,12 +63,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>New Contact Form Submission - Nous Technologies</title>
+          <title>New Contact Form Submission - NOUS</title>
         </head>
         <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 1000px; margin: 0 auto; padding: 20px;">
           <div style="background: linear-gradient(135deg, #060114 0%, #04000F 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
             <h1 style="color: white; margin: 0; font-size: 24px;">New Contact Form Submission</h1>
-            <p style="color: white; margin: 10px 0 0 0; opacity: 0.9;">Nous Technologies</p>
+            <p style="color: white; margin: 10px 0 0 0; opacity: 0.9;">NOUS</p>
           </div>
           
           <div style="background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px;">
@@ -126,12 +123,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Thank you for contacting Nous Technologies</title>
+          <title>Thank you for contacting NOUS</title>
         </head>
         <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 1000px; margin: 0 auto; padding: 20px;">
           <div style="background: linear-gradient(135deg, #060114 0%, #04000F 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
             <h1 style="color: white; margin: 0; font-size: 24px;">Thank You for Contacting Us!</h1>
-            <p style="color: white; margin: 10px 0 0 0; opacity: 0.9;">Nous Technologies</p>
+            <p style="color: white; margin: 10px 0 0 0; opacity: 0.9;">NOUS</p>
           </div>
           
           <div style="background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px;">
@@ -139,7 +136,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
               <p style="font-size: 16px; margin-top: 0;">Hi ${name},</p>
               
               <p style="font-size: 16px; margin: 20px 0;">
-                Thank you for reaching out to <strong>Nous Technologies</strong>! 🚀<br><br>
+                Thank you for reaching out to <strong>NOUS</strong>! 🚀<br><br>
                 We've received your message about <em>"${subject}"</em> and our team will review it carefully. 
                 ${preferredContact ? `We'll contact you via your preferred method: <strong>${formattedPreferredContact}</strong>.` : 'We\'ll get back to you via email.'}<br><br>
                 <strong>What happens next?</strong><br>
@@ -161,11 +158,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
               </div>
               
               <p style="font-size: 16px;">Best regards,<br>
-              <strong>The Nous Technologies Team</strong></p>
+              <strong>The NOUS Team</strong></p>
               
               <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; text-align: center;">
                 <p style="color: #666; font-size: 14px; margin: 5px 0;">
-                  <strong>Nous Technologies</strong><br>
+                  <strong>NOUS</strong><br>
                   Intelligent Automation | Web Development | AI Consulting
                 </p>
                 <p style="color: #666; font-size: 12px; margin: 10px 0 0 0;">
