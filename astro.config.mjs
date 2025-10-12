@@ -34,8 +34,6 @@ export default defineConfig({
         'https://nous.cr',
         'https://nous.cr/about',
         'https://nous.cr/services',
-        'https://nous.cr/products',
-        'https://nous.cr/pricing',
         'https://nous.cr/blog',
         'https://nous.cr/contact',
       ],
