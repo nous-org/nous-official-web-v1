@@ -14,9 +14,9 @@ const contactSchema = z.object({
   interests: z.array(z.string()).optional().default([])
 });
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   try {
-    const RESEND_API_KEY = import.meta.env.RESEND_API_KEY;
+    const { RESEND_API_KEY } = locals.runtime.env;
     const resend = new Resend(RESEND_API_KEY);
     
     // Extraer datos del formulario
