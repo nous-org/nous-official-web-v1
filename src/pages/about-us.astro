@@ -8,7 +8,7 @@ import MainCta from '@/components/ui/MainCta.astro';
 import BreadcrumbSchema from '@/components/seo/BreadCrumbs.astro';
 const breadcrumbs = [
   { name: 'Home', url: '/' },
-  { name: 'About', url: '/about' }
+  { name: 'About', url: '/about-us' }
 ];
 
 ---
@@ -19,7 +19,7 @@ const breadcrumbs = [
     useContainer={true}
     showAurora={false}
     paddingType="normal"
-    canonical="/about"
+    canonical="/about-us"
     ogImage="/images/og-default.jpg"
     tags={[
         'about us', 
@@ -41,7 +41,7 @@ const breadcrumbs = [
     includeOrganizationSchema={false}
 >
     <BreadcrumbSchema items={breadcrumbs} />
-    <ContentPagesHero subtitle='Build what’s next, beautifully' text='A senior, hands-on team from Costa Rica for what moves the needle now—AI automation to free time or modern web development to win customers, delivered calmly and fast.'/>
+    <ContentPagesHero subtitle='Build what’s next, beautifully.' text='A senior, hands-on team from Costa Rica for what moves the needle now—AI automation to free time or modern web development to win customers, delivered calmly and fast.'/>
     <AboutBento />
     <FoundersSection />
     <MainCta />

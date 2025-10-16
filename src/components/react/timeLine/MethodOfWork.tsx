@@ -31,30 +31,32 @@ interface MethodOfWorkProps {
 
 
 export const MethodOfWork = ({ 
-    title = "Our Methodology", 
+    title = "", 
     subtitle = "An agile, human partnership: clear communication, short cycles, and creativity that ships. We move in weeks, learn every sprint, and stay by your side until it sticks. ",
     automationCard = {
         title: "Design the path.",
-        subtitle: "Define your vision",
+        subtitle: "",
         description: "We map goals and processes, pick where AI helps most, and define success metrics. You leave with a staged plan—owners, timelines, and the first wins."
     },
     consultingCard = {
         title: "Build what matters.",
-        subtitle: "Create and connect",
+        subtitle: "",
         description: "We move from prototype to production fast, delivering clean, testable work that connects to your existing tools. Security and observability are baked in."
     },
     webDevCard = {
         title: "Launch, measure, evolve.",
-        subtitle: "Launch & Evolve",
+        subtitle: "",
         description: "Ship, learn from real usage, and improve weekly. We train your team and stay until the results are undeniable."
     },
     className = "",
 }: MethodOfWorkProps) => {
   return (
     <div className={className}>
-        <h2 className="text-4xl font-bold md:text-4xl mb-4 text-white max-w-4xl">
+        {title && (
+            <h2 className="text-4xl font-bold md:text-4xl mb-4 text-white max-w-4xl">
           {title}
         </h2>
+        )}
         <h3 className="text-lg font-medium md:text-xl mb-4 text-neutral-300 max-w-4xl">
           {subtitle}
         </h3>
@@ -74,7 +76,7 @@ export const MethodOfWork = ({
          
           <div className="relative z-20 h-full
                         flex flex-col
-                        md:flex-row md:items-center md:gap-4
+                        md:flex-row md:gap-4
                         lg:grid lg:grid-cols-1 lg:gap-4">
             <div className="flex-1 lg:col-span-2">
               <h3 className="font-bold mb-2 lg:mb-3
@@ -93,7 +95,7 @@ export const MethodOfWork = ({
                           text-sm mb-4
                           md:text-base md:mb-0
                           lg:text-base lg:mb-0
-                          xl:text-lg font-medium">
+                          xl:text-lg font-medium leading-relaxed">
                 {automationCard.description}
               </p>
             </div>

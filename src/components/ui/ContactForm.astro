@@ -59,9 +59,9 @@ const chips = [
               <label
                 for={chip.id}
                 class="inline-flex items-center px-4 py-2 rounded-full border-2 border-gray-400 
-                     cursor-pointer transition-all duration-200 
-                     hover:border-accent hover:bg-accent hover:text-primary-blue
-                     peer-checked:bg-accent peer-checked:text-primary-blue peer-checked:border-accent"
+                     cursor-pointer transition-all duration-400 
+                     hover:border-accent hover:bg-accent hover:text-primary-blue hover:shadow-[0_0_10px_0_rgba(255,255,255,0.2)] hover:scale-[1.03]
+                     peer-checked:bg-accent peer-checked:text-primary-blue peer-checked:border-accent"  
               >
                 {chip.label}
               </label>
@@ -71,8 +71,8 @@ const chips = [
       </div>
     </div>
 
-    <Inputs id="Name" type="text" placeholder="John Doe" name="name" />
-    <Inputs id="E-mail" type="email" placeholder="john.doe@example.com" name="email" />
+    <Inputs id="Name" type="text" placeholder="NOUS" name="name" />
+    <Inputs id="E-mail" type="email" placeholder="contacto@nous.cr" name="email" />
     <Inputs id="Phone" type="tel" placeholder="+506 6186 5634" name="phone" />
     <Inputs 
       id="Preferred Contact Method" 
@@ -84,7 +84,7 @@ const chips = [
         { value: "whatsapp", label: "WhatsApp" },
       ]}
     />
-    <Inputs id="Subject" type="text" placeholder="Message Subject" name="subject" />
+    <Inputs id="Subject" type="text" placeholder="Hi!" name="subject" />
     <Inputs id="Message" type="textarea" placeholder="What are you trying to build or automate?" name="message" />
 
     <div class="flex justify-center mt-2">

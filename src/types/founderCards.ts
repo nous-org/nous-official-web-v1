@@ -27,7 +27,7 @@ export const DEFAULT_FOUNDERS: FounderCard[] = [
         name: "Roberto Pereira Ugalde",
         position: "Chief Executive Officer (CEO) & Co-founder",
         image: FounderRoberto.src,   
-        description: "Sets the vision. Edits to the essential. Owns the experience. Roberto makes the future feel inevitable. He frames the why, cuts everything that’s not essential, and aligns design, engineering, and go-to-market around one clear story customers can feel. He sets the bar—and keeps it there—owning the product end-to-end from first pixel to last mile across LatAm.",
+        description: `<span class="font-semibold text-outline">Sets the vision. Edits to the essential. Owns the experience.</span> Roberto makes the future feel inevitable. He frames the why, cuts everything that’s not essential, and aligns design, engineering, and go-to-market around one clear story customers can feel. He sets the bar—and keeps it there—owning the product end-to-end from first pixel to last mile across LatAm.`,
         socialLinks: [
             {
                 icon: XIcon.src,
@@ -58,7 +58,7 @@ export const DEFAULT_FOUNDERS: FounderCard[] = [
         name: "Alessandro Díaz González",
         position: "Chief Technology Officer (CTO) & Co-founder",
         image: FounderAlessandro.src,
-        description: "The engineer who makes it “just work”—fast, stable, elegant. Alessandro reduces complexity to the essential and turns it into systems that carry real load. He prototypes quickly, measures ruthlessly, and simplifies again until latency drops, reliability climbs, and the code feels inevitable. He obsesses over clear architecture, automation by default, and durability in production. He doesn’t just direct—he builds—leaving behind platforms the business can scale on without drama.",
+        description: `<span class="font-semibold text-outline">The engineer who makes it "just work"—fast, stable, elegant.</span> Alessandro reduces complexity to the essential and turns it into systems that carry real load. He prototypes quickly, measures ruthlessly, and simplifies again until latency drops, reliability climbs, and the code feels inevitable. He obsesses over clear architecture, automation by default, and durability in production. He doesn't just direct—he builds—leaving behind platforms the business can scale on without drama.`,
         socialLinks: [
             {
                 icon: XIcon.src,
@@ -89,7 +89,7 @@ export const DEFAULT_FOUNDERS: FounderCard[] = [
         name: "Andrey Martínez Zambrana",
         position: "Chief Product Officer (CPO) & Co-founder",
         image: FounderAndrey.src,
-        description: "Simplicity with intent. Design that feels inevitable. Andrey turns strategy into experiences you can feel: fewer, better decisions; typography with rhythm; motion that guides, not distracts. He treats product and design as one craft—clarity, tactility, and care in every detail. He listens to customers, tests with users, and edits without mercy until each flow is obvious and every choice has purpose. The result: products people want to use—and that the business can scale.",
+        description: `<span class="font-semibold text-outline">Simplicity with intent. Design that feels inevitable.</span> Andrey turns strategy into experiences you can feel: fewer, better decisions; typography with rhythm; motion that guides, not distracts. He treats product and design as one craft—clarity, tactility, and care in every detail. He listens to customers, tests with users, and edits without mercy until each flow is obvious and every choice has purpose. The result: products people want to use—and that the business can scale.`,
         socialLinks: [
             {
                 icon: XIcon.src,

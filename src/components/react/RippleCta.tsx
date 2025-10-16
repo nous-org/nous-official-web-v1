@@ -16,7 +16,7 @@ export function RippleCta() {
         <ButtonVariant
           variant="primary"
           text="Contact"
-          href="/contact"
+          href="/contact-us"
           target="_blank"
         />
         <ButtonVariant

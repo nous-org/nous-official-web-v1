@@ -17,29 +17,29 @@ interface Props {
 
 const {
     colorDivider = "primary-purple",
-    title = "About Us",
+    title = "About NOUS",
     text = "",
     subtitle = "",
     buttons = [
         {
-            text: "See services",
+            text: "Talk to us",
             scheduleIcon: false,
             arrowIcon: true,
             strokeColor: "",
             variant: "primary",
-            href: "/services",
+            href: "/contact-us",
             target: "_self",
-            ariaLabel: "See services",
+            ariaLabel: "Talk to us",
         },
         {
-            text: "Talk to us",
+            text: "See services",
             scheduleIcon: false,
             arrowIcon: false,
             strokeColor: "",
             variant: "primaryPurple",
-            href: "/contact",
+            href: "/services",
             target: "_self",
-            ariaLabel: "Talk to us",
+            ariaLabel: "See services",
         },
     ],
 } = Astro.props as Props;
