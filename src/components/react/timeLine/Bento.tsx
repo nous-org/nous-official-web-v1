@@ -46,7 +46,7 @@ export const Bento = () => {
             </div>
           </div>
           {/* WhatsApp Image */}
-          <img src={whatsApp.src} alt="whatsapp" className="w-auto h-[60%] lg:block md:block sm:block xl:w-auto xl:h-44 absolute bottom-0 -right-5 md:-right-14 opacity-100 contrast-100" />
+          <img src={whatsApp.src} alt="whatsapp" className="w-auto h-[60%] lg:block md:block sm:block xl:w-auto xl:h-44 absolute -bottom-12 -right-5 sm:-right-4 md:-right-12 lg:-right-28  md:-bottom-16 lg:-bottom-12 sm:-bottom-12 opacity-100 contrast-100" />
         </div>
 
         {/* Consulting Card */}

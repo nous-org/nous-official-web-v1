@@ -47,7 +47,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
         <div className="mt-6 md:w-[40%]">
           <ButtonVariant
             text="Meet the team"
-            href="/about"
+            href="/about-us"
             variant="primary"
             target="_self"
             ariaLabel="Meet the team"

@@ -48,9 +48,7 @@ const { founders = DEFAULT_FOUNDERS, className = "" } = Astro.props;
 
                 <!-- Founder Description -->
                 <div class="flex-1">
-                    <p class="text-sm sm:text-base md:text-lg text-neutral-300 leading-relaxed text-pretty">
-                        {founder.description}
-                    </p>
+                    <p class="text-sm sm:text-base md:text-lg text-neutral-300 leading-relaxed text-pretty" set:html={founder.description} />
                 </div>
 
                 <!-- Social Media Links -->

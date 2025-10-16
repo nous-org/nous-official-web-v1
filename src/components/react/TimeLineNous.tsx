@@ -6,7 +6,7 @@ import { TimeLineCta } from '@/components/react/timeLine/TimeLineCta'
 export function TimeLineNous() {
   const data = [
     {
-      title: "Boost your business ",
+      title: "Boost your business!",
       content: (
         <Bento />
       ),
