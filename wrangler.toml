@@ -14,8 +14,7 @@ GITHUB_CLIENT_ID="Ov23lic82UR7k65SfmnV"
 GITHUB_CLIENT_SECRET="9e561cd163873111aad5cd1266b6c4a6bd4d4973"
 CLERK_PUBLISHABLE_KEY="pk_live_Y2xlcmsubm91cy5jciQ"
 CLERK_SECRET_KEY="sk_live_sdn3YfI63VAqxOkgDM4oNoclf5EwGlON53yW0WleCm"
-id = "f44753d9da9e4677a6e9cc500cc2d9cb"PUBLIC_CLERK_PUBLISHABLE_KEY=pk_live_Y2xlcmsubm91cy5jciQ
-
 
 [[kv_namespaces]]
 binding = "SESSION"
+id = "f44753d9da9e4677a6e9cc500cc2d9cb"
