@@ -9,6 +9,7 @@ import SubscribeToNewsletter from '@/components/ui/SubscribeToNewsLetter.astro';
 import MainCta from '@/components/ui/MainCta.astro';
 import ContactCta from '@/components/ui/ContactCta.astro';
 import { marked } from 'marked';
+import { createClerkClient } from '@clerk/backend';
 
 const { slug } = Astro.params;
 const { runtime } = Astro.locals;
@@ -21,7 +22,7 @@ const db = createDbClient(runtime.env as { TURSO_DATABASE_URL: string; TURSO_AUT
 
 // Query post from database
 const result = await db.execute(
-  "SELECT id, slug, title, content, categorie, tags, createdAt, updatedAt FROM posts WHERE slug = ? AND status = 'PUBLISHED'",
+  "SELECT id, slug, title, content, categorie, tags, authorId, createdAt, updatedAt FROM posts WHERE slug = ? AND status = 'PUBLISHED'",
   [slug]
 );
 
@@ -77,6 +78,36 @@ if (frontmatterMatch) {
   }
 }
 
+// Helper function to get role based on name
+function getAuthorRole(name: string): string {
+  const lowerName = name.toLowerCase();
+  if (lowerName.includes('alessandro')) return 'Chief Technology Officer (CTO)';
+  if (lowerName.includes('roberto')) return 'Chief Executive Officer (CEO)';
+  if (lowerName.includes('andrey')) return 'Chief Product Officer (CPO)';
+  return '';
+}
+
+// Fetch author info from Clerk
+let authorData = { name: 'NOUS', avatar: NousLogoSvg.src, bio: 'Experts in web development and AI solutions', role: '' };
+
+if (row.authorId && row.authorId !== 'admin') {
+  try {
+    const clerk = createClerkClient({ secretKey: runtime.env.CLERK_SECRET_KEY as string });
+    const user = await clerk.users.getUser(row.authorId);
+    
+    const fullName = user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.username || user.emailAddresses[0]?.emailAddress || 'Anonymous';
+    
+    authorData = {
+      name: fullName,
+      avatar: user.imageUrl || NousLogoSvg.src,
+      bio: user.publicMetadata?.bio as string || '',
+      role: getAuthorRole(fullName)
+    };
+  } catch (error) {
+    console.error('Error fetching author from Clerk:', error);
+  }
+}
+
 // Create post object
 const post = {
   slug: row.slug,
@@ -88,7 +119,7 @@ const post = {
     category: row.categorie,
     tags: JSON.parse(row.tags || '[]'),
     featured: frontmatter.featured === true,
-    author: frontmatter.author || { name: 'NOUS', bio: 'Experts in web development and AI solutions' },
+    author: authorData,
     draft: false
   }
 };
@@ -213,6 +244,9 @@ const formatDate = (date: Date) => {
         />
         <div>
           <p class="font-medium text-neutral-200">{post.data.author.name}</p>
+          {post.data.author.role && (
+            <p class="text-sm font-medium text-accent">{post.data.author.role}</p>
+          )}
           {post.data.author.bio && (
             <p class="text-sm text-neutral-400">{post.data.author.bio}</p>
           )}
@@ -374,3 +408,97 @@ const formatDate = (date: Date) => {
     window.addEventListener('beforeunload', handleBeforeSwap);
   })();
 </script>
+
+<style is:global>
+  article.prose h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #1AD6B3;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+  }
+
+  article.prose h2 {
+    font-size: 1.875rem;
+    font-weight: 600;
+    color: #f5f5f5;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+    line-height: 1.3;
+  }
+
+  article.prose h3 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #e5e5e5;
+    margin-bottom: 0.75rem;
+    margin-top: 1.5rem;
+    line-height: 1.4;
+  }
+
+  article.prose p {
+    color: #d4d4d4;
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+
+  article.prose a {
+    color: #1AD6B3;
+    text-decoration: none;
+  }
+
+  article.prose a:hover {
+    text-decoration: underline;
+  }
+
+  article.prose strong {
+    color: #f5f5f5;
+    font-weight: 600;
+  }
+
+  article.prose code {
+    color: #1AD6B3;
+    background-color: rgba(38, 38, 38, 0.5);
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+  }
+
+  article.prose pre {
+    background-color: #171717;
+    border: 1px solid #262626;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+  article.prose pre code {
+    background-color: transparent;
+    padding: 0;
+  }
+
+  article.prose ul,
+  article.prose ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  article.prose li {
+    color: #d4d4d4;
+    margin-bottom: 0.5rem;
+  }
+
+  article.prose blockquote {
+    border-left: 4px solid #1AD6B3;
+    padding-left: 1rem;
+    color: #a3a3a3;
+    font-style: italic;
+    margin: 1.5rem 0;
+  }
+
+  article.prose img {
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    margin: 1.5rem 0;
+  }
+</style>
