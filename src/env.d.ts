@@ -6,6 +6,8 @@ export interface Env {
   TURSO_DATABASE_URL:  string;
   TURSO_AUTH_TOKEN:    string;
   GITHUB_CLIENT_ID:    string;
+  TURSO_NEWSLETTER_URL: string;
+  TURSO_NEWSLETTER_TOKEN: string;
   GITHUB_CLIENT_SECRET: string;
   SESSION:             KVNamespace;
   OAUTH_BASE_URL: string;
