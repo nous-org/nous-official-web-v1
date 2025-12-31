@@ -1,20 +1,59 @@
 ---
-import { getCollection } from 'astro:content';
+export const prerender = false;
+import { createDbClient } from '@/lib/db';
 import { ShootingStars } from '@/components/react/ShootingStars';
 import { StarsBackground } from '@/components/react/StarBackground';
 import Layout from '@/layouts/Layout.astro';
 import BlogCard from '@/components/ui/BlogCard.astro';
 
+const { runtime } = Astro.locals;
+const db = createDbClient(runtime.env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
 
-const allPosts = await getCollection('blog', ({ data }) => {
-  return data.draft !== true;
+// Query published posts from Turso database
+const result = await db.execute(
+  "SELECT id, slug, title, content, categorie, tags, createdAt, updatedAt FROM posts WHERE status = 'PUBLISHED' ORDER BY createdAt DESC"
+);
+
+// Transform database rows to match blog card format
+const posts = result.rows.map((row: any) => {
+  // Parse frontmatter from markdown content
+  const content = row.content || '';
+  const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
+  let frontmatter: any = {};
+  
+  if (frontmatterMatch) {
+    const fm = frontmatterMatch[1];
+    // Simple YAML parsing
+    fm.split('\n').forEach(line => {
+      const match = line.match(/^(\w+):\s*(.+)$/);
+      if (match) {
+        const [, key, value] = match;
+        if (value === 'true') frontmatter[key] = true;
+        else if (value === 'false') frontmatter[key] = false;
+        else frontmatter[key] = value.replace(/^"(.*)"$/, '$1');
+      }
+    });
+  }
+
+  // Extract body content (remove frontmatter)
+  const bodyMatch = content.match(/^---\n[\s\S]*?\n---\n([\s\S]*)$/);
+  const bodyContent = bodyMatch ? bodyMatch[1].trim() : content;
+
+  return {
+    slug: row.slug,
+    body: bodyContent,
+    data: {
+      title: row.title,
+      date: new Date(row.createdAt),
+      excerpt: frontmatter.excerpt || '',
+      category: row.categorie,
+      tags: JSON.parse(row.tags || '[]'),
+      featured: frontmatter.featured === true,
+      author: frontmatter.author || { name: 'NOUS', bio: 'Experts in web development and AI solutions' },
+      draft: false
+    }
+  };
 });
-
-
-const posts = allPosts.sort((a, b) => {
-  return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
-});
-
 
 const featuredPosts = posts.filter(post => post.data.featured);
 const regularPosts = posts.filter(post => !post.data.featured);

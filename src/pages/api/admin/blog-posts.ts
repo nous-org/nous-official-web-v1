@@ -1,7 +1,6 @@
-import type { APIRoute } from 'astro';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
-import { existsSync } from 'fs';
+import type { APIContext } from 'astro';
+import { createDbClient } from '@/lib/db';
+import { requireClerk } from '@/lib/auth';
 
 interface BlogPostRequest {
   slug: string;
@@ -23,23 +22,30 @@ interface BlogPostRequest {
   publish: boolean;
 }
 
-export const POST: APIRoute = async ({ request }) => {
+function json(data: unknown, init: number | ResponseInit = 200) {
+  const initObj = typeof init === 'number' ? { status: init } : init;
+  return new Response(JSON.stringify(data), {
+    ...initObj,
+    headers: { 'content-type': 'application/json', ...(initObj as ResponseInit).headers },
+  });
+}
+
+export async function POST({ request, locals }: APIContext) {
   try {
+    await requireClerk(request, locals.runtime.env as { CLERK_SECRET_KEY: string });
+
     const body = await request.json() as BlogPostRequest;
     const { slug, frontmatter, content, publish } = body;
 
     // Validate required fields
     if (!slug || !frontmatter || !content) {
-      return new Response(JSON.stringify({
+      return json({
         success: false,
         message: 'Missing required fields: slug, frontmatter, or content'
-      }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
+      }, 400);
     }
 
-    // Create the markdown content with frontmatter
+    // Create the markdown content with frontmatter for storage
     const yamlFrontmatter = Object.entries(frontmatter)
       .map(([key, value]) => {
         if (key === 'tags' && Array.isArray(value)) {
@@ -59,48 +65,75 @@ export const POST: APIRoute = async ({ request }) => {
       })
       .join('\n');
 
-    const markdownContent = `---
-${yamlFrontmatter}
----
+    const markdownContent = `---\n${yamlFrontmatter}\n---\n\n${content}`;
 
-${content}`;
+    const db = createDbClient(locals.runtime.env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
 
-    // Create the blog directory if it doesn't exist
-    const blogDir = join(process.cwd(), 'src', 'content', 'blog');
-    if (!existsSync(blogDir)) {
-      await mkdir(blogDir, { recursive: true });
+    // Generate ID for new posts (timestamp-based)
+    const postId = `post_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const now = Date.now();
+
+    // Check if post already exists
+    const existing = await db.execute('SELECT id FROM posts WHERE slug = ?', [slug]);
+    
+    if (existing.rows.length > 0) {
+      // Update existing post
+      await db.execute(
+        `UPDATE posts SET 
+          title = ?,
+          content = ?,
+          categorie = ?,
+          tags = ?,
+          status = ?,
+          updatedAt = ?
+         WHERE slug = ?`,
+        [
+          frontmatter.title,
+          markdownContent,
+          frontmatter.category || 'AI',
+          JSON.stringify(frontmatter.tags || []),
+          publish ? 'PUBLISHED' : 'DRAFT',
+          now,
+          slug
+        ]
+      );
+    } else {
+      // Insert new post - without excerpt column (doesn't exist in actual DB)
+      await db.execute(
+        `INSERT INTO posts (id, slug, title, content, categorie, tags, status, authorId, views, createdAt, updatedAt) 
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          postId,
+          slug,
+          frontmatter.title,
+          markdownContent,
+          frontmatter.category || 'AI',
+          JSON.stringify(frontmatter.tags || []),
+          publish ? 'PUBLISHED' : 'DRAFT',
+          'admin', // Default authorId
+          0, // Initial views
+          now,
+          now
+        ]
+      );
     }
 
-    // Create the filename (ensure it ends with .md)
-    const filename = slug.endsWith('.md') ? slug : `${slug}.md`;
-    const filepath = join(blogDir, filename);
-
-    // Write the file
-    await writeFile(filepath, markdownContent, 'utf-8');
-
-    return new Response(JSON.stringify({
+    return json({
       success: true,
       message: publish ? 'Post published successfully' : 'Draft saved successfully',
       data: {
         slug,
-        filepath: filepath.replace(process.cwd(), ''),
         published: publish
       }
-    }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
     });
 
   } catch (error) {
     console.error('Error saving blog post:', error);
     
-    return new Response(JSON.stringify({
+    return json({
       success: false,
       message: 'Error saving blog post',
       error: error instanceof Error ? error.message : 'Unknown error'
-    }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' }
-    });
+    }, 500);
   }
-};
+}
