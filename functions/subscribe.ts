@@ -14,8 +14,8 @@ const subscriptionSchema = z.object({
 export const POST: APIRoute = async ({ request }) => {
   try {
     const turso = createClient({
-      url: import.meta.env.TURSO_DATABASE_URL!,
-      authToken: import.meta.env.TURSO_AUTH_TOKEN!,
+      url: import.meta.env.TURSO_NEWSLETTER_URL!,
+      authToken: import.meta.env.TURSO_NEWSLETTER_TOKEN!,
     });
 
     // Manejar tanto FormData como URLSearchParams
