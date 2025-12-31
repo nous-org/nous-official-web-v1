@@ -6,7 +6,7 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
   # CSP más permisivo para bots de Google y herramientas SEO
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https: *.google.com *.googletagmanager.com *.gstatic.com; style-src 'self' 'unsafe-inline' https: *.googleapis.com; img-src 'self' data: https: blob: *.google.com *.googleusercontent.com; font-src 'self' data: https: *.gstatic.com *.googleapis.com; connect-src 'self' https: *.google-analytics.com *.googletagmanager.com *.google.com; media-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self' *.google.com; manifest-src 'self'; worker-src 'self' blob:;
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https: *.google.com *.googletagmanager.com *.gstatic.com clerk.nous.cr *.clerk.accounts.dev; style-src 'self' 'unsafe-inline' https: *.googleapis.com; img-src 'self' data: https: blob: *.google.com *.googleusercontent.com clerk.nous.cr; font-src 'self' data: https: *.gstatic.com *.googleapis.com; connect-src 'self' https: *.google-analytics.com *.googletagmanager.com *.google.com clerk.nous.cr *.clerk.accounts.dev; media-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self' *.google.com; manifest-src 'self'; worker-src 'self' blob:;
 
 # Archivos específicos para verificación de Google
 /google*.html
