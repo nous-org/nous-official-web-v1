@@ -1,6 +1,6 @@
 ---
-export const prerender = true;
-import { getCollection, type CollectionEntry } from 'astro:content';
+export const prerender = false;
+import { createDbClient } from '@/lib/db';
 import Layout from '@/layouts/Layout.astro';
 import { ShootingStars } from '@/components/react/ShootingStars';
 import { StarsBackground } from '@/components/react/StarBackground';
@@ -8,24 +8,93 @@ import NousLogoSvg from '@/assets/NousLogo.svg';
 import SubscribeToNewsletter from '@/components/ui/SubscribeToNewsLetter.astro';
 import MainCta from '@/components/ui/MainCta.astro';
 import ContactCta from '@/components/ui/ContactCta.astro';
+import { marked } from 'marked';
 
-export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => {
-    return data.draft !== true;
-  });
+const { slug } = Astro.params;
+const { runtime } = Astro.locals;
+
+if (!slug) {
+  return Astro.redirect('/blog');
+}
+
+const db = createDbClient(runtime.env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
+
+// Query post from database
+const result = await db.execute(
+  "SELECT id, slug, title, content, categorie, tags, createdAt, updatedAt FROM posts WHERE slug = ? AND status = 'PUBLISHED'",
+  [slug]
+);
+
+if (result.rows.length === 0) {
+  return Astro.redirect('/blog');
+}
+
+const row = result.rows[0] as any;
+const markdownContent = row.content || '';
+
+// Parse frontmatter
+const frontmatterMatch = markdownContent.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+let frontmatter: any = {};
+let bodyContent = markdownContent;
+
+if (frontmatterMatch) {
+  const [, fm, body] = frontmatterMatch;
+  bodyContent = body;
   
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-    props: { post },
-  }));
+  // Parse YAML frontmatter
+  const lines = fm.split('\n');
+  let inAuthor = false;
+  
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    
+    if (trimmed === 'author:') {
+      inAuthor = true;
+      frontmatter.author = {};
+      continue;
+    }
+    
+    if (inAuthor && trimmed.startsWith('  ')) {
+      const [key, ...valueParts] = trimmed.substring(2).split(':');
+      const value = valueParts.join(':').trim().replace(/^"(.*)"$/, '$1');
+      frontmatter.author[key.trim()] = value;
+      continue;
+    } else if (inAuthor) {
+      inAuthor = false;
+    }
+    
+    if (trimmed.includes(':')) {
+      const [key, ...valueParts] = trimmed.split(':');
+      const value = valueParts.join(':').trim();
+      
+      if (value === 'true' || value === 'false') {
+        frontmatter[key] = value === 'true';
+      } else {
+        frontmatter[key] = value.replace(/^"(.*)"$/, '$1');
+      }
+    }
+  }
 }
 
-interface Props {
-  post: CollectionEntry<'blog'>;
-}
+// Create post object
+const post = {
+  slug: row.slug,
+  body: bodyContent,
+  data: {
+    title: row.title,
+    date: new Date(row.createdAt),
+    excerpt: frontmatter.excerpt || '',
+    category: row.categorie,
+    tags: JSON.parse(row.tags || '[]'),
+    featured: frontmatter.featured === true,
+    author: frontmatter.author || { name: 'NOUS', bio: 'Experts in web development and AI solutions' },
+    draft: false
+  }
+};
 
-const { post } = Astro.props;
-const { Content } = await post.render();
+// Render markdown to HTML
+const htmlContent = marked.parse(bodyContent);
 
 // Función para calcular tiempo de lectura
 function calculateReadingTime(content: string): number {
@@ -169,8 +238,7 @@ const formatDate = (date: Date) => {
   >
     <h2 id="post-title" class="sr-only">{post.data.title}</h2>
 
-    <article class="prose prose-lg prose-invert max-w-none space-y-6 text-neutral-300">
-      <Content />
+    <article class="prose prose-lg prose-invert max-w-none space-y-6 text-neutral-300" set:html={htmlContent}>
     </article>
   </section>
 

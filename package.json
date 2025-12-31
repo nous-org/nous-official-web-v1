@@ -40,6 +40,7 @@
     "decap-cms-app": "^3.8.3",
     "dompurify": "^3.2.6",
     "lowlight": "^3.3.0",
+    "marked": "^17.0.1",
     "motion": "^12.23.11",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

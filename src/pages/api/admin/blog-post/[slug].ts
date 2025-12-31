@@ -1,56 +1,60 @@
-import type { APIRoute } from 'astro';
-import { readFile } from 'fs/promises';
-import { join } from 'path';
-import { existsSync } from 'fs';
+import type { APIContext } from 'astro';
+import { createDbClient } from '@/lib/db';
+import { requireClerk } from '@/lib/auth';
 
-export const GET: APIRoute = async ({ params }) => {
+function json(data: unknown, init: number | ResponseInit = 200) {
+  const initObj = typeof init === 'number' ? { status: init } : init;
+  return new Response(JSON.stringify(data), {
+    ...initObj,
+    headers: { 'content-type': 'application/json', ...(initObj as ResponseInit).headers },
+  });
+}
+
+export async function GET({ params, request, locals }: APIContext) {
   try {
+    await requireClerk(request, locals.runtime.env as { CLERK_SECRET_KEY: string });
+
     const { slug } = params;
     
     if (!slug) {
-      return new Response(JSON.stringify({
+      return json({
         success: false,
         message: 'Slug is required'
-      }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
+      }, 400);
     }
 
-    const filename = slug.endsWith('.md') ? slug : `${slug}.md`;
-    const filepath = join(process.cwd(), 'src', 'content', 'blog', filename);
+    const db = createDbClient(locals.runtime.env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
     
-    if (!existsSync(filepath)) {
-      return new Response(JSON.stringify({
+    const result = await db.execute(
+      'SELECT slug, title, content FROM posts WHERE slug = ?',
+      [slug]
+    );
+    
+    if (result.rows.length === 0) {
+      return json({
         success: false,
         message: 'Blog post not found'
-      }), {
-        status: 404,
-        headers: { 'Content-Type': 'application/json' }
-      });
+      }, 404);
     }
 
-    const content = await readFile(filepath, 'utf-8');
+    const row = result.rows[0] as any;
+    const markdownContent = row.content;
     
-    // Parse frontmatter and content
-    const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+    // Parse frontmatter and content from stored markdown
+    const frontmatterMatch = markdownContent.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
     
     if (!frontmatterMatch) {
-      return new Response(JSON.stringify({
+      return json({
         success: false,
         message: 'Invalid markdown format'
-      }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
+      }, 400);
     }
 
-    const [, frontmatterText, markdownContent] = frontmatterMatch;
+    const [, frontmatterText, content] = frontmatterMatch;
     
     // Parse frontmatter (simple YAML parsing)
     const frontmatter: any = {};
     const lines = frontmatterText.split('\n');
-    let currentKey = '';
     let inAuthor = false;
     
     for (const line of lines) {
@@ -81,8 +85,8 @@ export const GET: APIRoute = async ({ params }) => {
           frontmatter[key] = value
             .slice(1, -1)
             .split(',')
-            .map(tag => tag.trim().replace(/^"(.*)"$/, '$1'))
-            .filter(tag => tag);
+            .map((tag: string) => tag.trim().replace(/^"(.*)"$/, '$1'))
+            .filter((tag: string) => tag);
         } else if (value === 'true' || value === 'false') {
           frontmatter[key] = value === 'true';
         } else if (value.match(/^\d{4}-\d{2}-\d{2}/)) {
@@ -93,26 +97,20 @@ export const GET: APIRoute = async ({ params }) => {
       }
     }
 
-    return new Response(JSON.stringify({
+    return json({
       success: true,
       frontmatter,
-      content: markdownContent.trim(),
-      slug: slug.replace('.md', '')
-    }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
+      content: content.trim(),
+      slug: slug
     });
 
   } catch (error) {
     console.error('Error loading blog post:', error);
     
-    return new Response(JSON.stringify({
+    return json({
       success: false,
       message: 'Error loading blog post',
       error: error instanceof Error ? error.message : 'Unknown error'
-    }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' }
-    });
+    }, 500);
   }
-};
+}

@@ -19,7 +19,7 @@ export async function DELETE({ params, locals, request }: APIContext) {
   const db = createDbClient(locals.runtime.env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
 
   // Solo elimina si está publicado
-  await db.execute('DELETE FROM posts WHERE slug = ? AND published_at IS NOT NULL', [slug]);
+  await db.execute('DELETE FROM posts WHERE slug = ? AND status = ?', [slug, 'PUBLISHED']);
 
   return new Response(null, { status: 204 });
 }
