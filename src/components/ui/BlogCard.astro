@@ -1,9 +1,29 @@
 ---
-import type { CollectionEntry } from 'astro:content';
 import NousLogoSvg from '@/assets/NousLogo.svg';
 
+interface BlogPost {
+  slug: string;
+  body: string;
+  data: {
+    title: string;
+    date: Date;
+    excerpt: string;
+    category?: string;
+    tags: string[];
+    featured: boolean;
+    author: {
+      name: string;
+      avatar?: string;
+      bio?: string;
+      role?: string;
+    };
+    draft: boolean;
+    readingTime?: number;
+  };
+}
+
 interface Props {
-  post: CollectionEntry<'blog'>;
+  post: BlogPost;
   featured?: boolean;
 }
 
@@ -136,6 +156,11 @@ const displayTags = data.tags.slice(0, 2);
           <p class="truncate text-sm font-medium text-neutral-200 sm:text-base">
             {data.author.name}
           </p>
+          {data.author.role && (
+            <p class="truncate text-xs font-medium text-accent">
+              {data.author.role}
+            </p>
+          )}
           {data.author.bio && (
             <p class="truncate text-xs text-neutral-400 sm:text-sm">
               {data.author.bio}

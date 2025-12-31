@@ -1,18 +1,77 @@
 ---
 export const prerender = false;
 import { createDbClient } from '@/lib/db';
+import { createClerkClient } from '@clerk/backend';
 import { ShootingStars } from '@/components/react/ShootingStars';
 import { StarsBackground } from '@/components/react/StarBackground';
 import Layout from '@/layouts/Layout.astro';
 import BlogCard from '@/components/ui/BlogCard.astro';
+import NousLogoSvg from '@/assets/NousLogo.svg';
 
 const { runtime } = Astro.locals;
 const db = createDbClient(runtime.env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
 
-// Query published posts from Turso database
+// Query published posts from Turso database (including authorId)
 const result = await db.execute(
-  "SELECT id, slug, title, content, categorie, tags, createdAt, updatedAt FROM posts WHERE status = 'PUBLISHED' ORDER BY createdAt DESC"
+  "SELECT id, slug, title, content, categorie, tags, authorId, createdAt, updatedAt FROM posts WHERE status = 'PUBLISHED' ORDER BY createdAt DESC"
 );
+
+// Helper function to get role based on name
+function getAuthorRole(name: string): string {
+  const lowerName = name.toLowerCase();
+  if (lowerName.includes('alessandro')) return 'Chief Technology Officer (CTO)';
+  if (lowerName.includes('roberto')) return 'Chief Executive Officer (CEO)';
+  if (lowerName.includes('andrey')) return 'Chief Product Officer (CPO)';
+  return '';
+}
+
+// Default author data
+const defaultAuthor = { 
+  name: 'NOUS', 
+  avatar: NousLogoSvg.src, 
+  bio: 'Experts in web development and AI solutions',
+  role: ''
+};
+
+// Get unique author IDs to fetch from Clerk
+const authorIds = [...new Set(
+  result.rows
+    .map((row: any) => row.authorId)
+    .filter((id: string | null) => id && id !== 'admin')
+)] as string[];
+
+// Fetch all authors from Clerk in parallel
+const authorsMap = new Map<string, { name: string; avatar: string; bio: string; role: string }>();
+
+if (authorIds.length > 0) {
+  try {
+    const clerk = createClerkClient({ secretKey: runtime.env.CLERK_SECRET_KEY as string });
+    const authorPromises = authorIds.map(async (authorId: string) => {
+      try {
+        const user = await clerk.users.getUser(authorId);
+        const fullName = user.firstName && user.lastName 
+          ? `${user.firstName} ${user.lastName}` 
+          : user.username || user.emailAddresses[0]?.emailAddress || 'Anonymous';
+        return {
+          id: authorId,
+          data: {
+            name: fullName,
+            avatar: user.imageUrl || NousLogoSvg.src,
+            bio: (user.publicMetadata?.bio as string) || '',
+            role: getAuthorRole(fullName)
+          }
+        };
+      } catch {
+        return { id: authorId, data: defaultAuthor };
+      }
+    });
+    
+    const authors = await Promise.all(authorPromises);
+    authors.forEach(({ id, data }) => authorsMap.set(id, data));
+  } catch (error) {
+    console.error('Error fetching authors from Clerk:', error);
+  }
+}
 
 // Transform database rows to match blog card format
 const posts = result.rows.map((row: any) => {
@@ -39,6 +98,11 @@ const posts = result.rows.map((row: any) => {
   const bodyMatch = content.match(/^---\n[\s\S]*?\n---\n([\s\S]*)$/);
   const bodyContent = bodyMatch ? bodyMatch[1].trim() : content;
 
+  // Get author data from Clerk or use default
+  const authorData = row.authorId && row.authorId !== 'admin' 
+    ? authorsMap.get(row.authorId) || defaultAuthor
+    : defaultAuthor;
+
   return {
     slug: row.slug,
     body: bodyContent,
@@ -49,7 +113,7 @@ const posts = result.rows.map((row: any) => {
       category: row.categorie,
       tags: JSON.parse(row.tags || '[]'),
       featured: frontmatter.featured === true,
-      author: frontmatter.author || { name: 'NOUS', bio: 'Experts in web development and AI solutions' },
+      author: authorData,
       draft: false
     }
   };

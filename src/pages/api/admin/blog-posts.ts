@@ -32,7 +32,7 @@ function json(data: unknown, init: number | ResponseInit = 200) {
 
 export async function POST({ request, locals }: APIContext) {
   try {
-    await requireClerk(request, locals.runtime.env as { CLERK_SECRET_KEY: string });
+    const { userId } = await requireClerk(request, locals.runtime.env as { CLERK_SECRET_KEY: string });
 
     const body = await request.json() as BlogPostRequest;
     const { slug, frontmatter, content, publish } = body;
@@ -110,7 +110,7 @@ export async function POST({ request, locals }: APIContext) {
           frontmatter.category || 'AI',
           JSON.stringify(frontmatter.tags || []),
           publish ? 'PUBLISHED' : 'DRAFT',
-          'admin', // Default authorId
+          userId, // Clerk user ID from authenticated user
           0, // Initial views
           now,
           now
