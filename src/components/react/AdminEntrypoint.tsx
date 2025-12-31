@@ -757,7 +757,7 @@ export function AdminEntrypoint({ publishableKey }: Props) {
         <AdminApp />
       </SignedIn >
       <SignedOut>
-        <div className="grid min-h-auto place-items-center">
+        <div className="grid min-h-screen place-items-center">
           <SignInButton mode="modal" >
             <button
               type="button"

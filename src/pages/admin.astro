@@ -60,7 +60,7 @@ includeOrganizationSchema={false}
   <section class="lg:col-span-2">
     <div class="rounded-2xl border border-neutral-800 bg-neutral-900/30 p-4 shadow-sm shadow-primary-turquoise/10">
       <!-- React Admin entrypoint (handles auth UI and editor) -->
-      <AdminEntrypoint client:load publishableKey={CLERK_PUBLISHABLE_KEY} />
+      <AdminEntrypoint client:only="react" publishableKey={CLERK_PUBLISHABLE_KEY} />
     </div>
   </section>
 
