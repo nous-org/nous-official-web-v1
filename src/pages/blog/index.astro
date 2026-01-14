@@ -11,9 +11,9 @@ import NousLogoSvg from '@/assets/NousLogo.svg';
 const { runtime } = Astro.locals;
 const db = createDbClient(runtime.env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
 
-// Query published posts from Turso database (including authorId)
+// Query posts from database
 const result = await db.execute(
-  "SELECT id, slug, title, content, categorie, tags, authorId, createdAt, updatedAt FROM posts WHERE status = 'PUBLISHED' ORDER BY createdAt DESC"
+  "SELECT id, slug, title, content, categorie, tags, authorId, createdAt, updatedAt, featured FROM posts WHERE status = 'PUBLISHED' ORDER BY createdAt DESC"
 );
 
 // Helper function to get role based on name
@@ -112,7 +112,7 @@ const posts = result.rows.map((row: any) => {
       excerpt: frontmatter.excerpt || '',
       category: row.categorie,
       tags: JSON.parse(row.tags || '[]'),
-      featured: frontmatter.featured === true,
+      featured: row.featured === true || row.featured === 1,
       author: authorData,
       draft: false
     }

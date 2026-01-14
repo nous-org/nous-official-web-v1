@@ -1,0 +1,78 @@
+---
+interface Props {
+  content: string;
+}
+
+const { content } = Astro.props;
+
+// Check if content is HTML or markdown
+function isHTML(content: string): boolean {
+  return /<\/?[a-z][\s\S]*>/i.test(content);
+}
+
+// Process HTML to add Tailwind classes to lists
+function processListHTML(html: string) {
+  return html
+    .replace(/<ul>/g, '<ul class="list-disc list-inside ml-6 mb-4 space-y-2 text-neutral-300">')
+    .replace(/<ol>/g, '<ol class="list-decimal list-inside ml-6 mb-4 space-y-2 text-neutral-300">')
+    .replace(/<li>/g, '<li class="text-neutral-300">');
+}
+
+// Import marked for markdown parsing
+import { marked } from 'marked';
+
+let processedContent = '';
+let isHtmlContent = isHTML(content);
+
+if (isHtmlContent) {
+  // Process HTML content
+  processedContent = processListHTML(content);
+} else {
+  // Parse markdown to HTML
+  processedContent = await marked.parse(content);
+  processedContent = processListHTML(processedContent);
+}
+---
+
+<div class="blog-content-processed" set:html={processedContent}></div>
+
+<style>
+  .blog-content-processed h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #9b6fff;
+    margin-bottom: 1.5rem;
+    margin-top: 2.5rem;
+    line-height: 1.2;
+  }
+  
+  .blog-content-processed h2 {
+    font-size: 1.875rem;
+    font-weight: 600;
+    color: #f5f5f5;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+    line-height: 1.3;
+  }
+  
+  .blog-content-processed h3 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #e5e5e5;
+    margin-bottom: 0.75rem;
+    margin-top: 1.5rem;
+    line-height: 1.4;
+  }
+  
+  .blog-content-processed p {
+    margin-bottom: 1rem;
+    color: rgb(212 212 212);
+    line-height: 1.625;
+  }
+  
+  .blog-content-processed hr {
+    border: none;
+    border-top: 1px solid rgb(38 38 38);
+    margin: 2rem 0;
+  }
+</style>

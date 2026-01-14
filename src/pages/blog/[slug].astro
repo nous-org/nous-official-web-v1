@@ -9,6 +9,7 @@ import SubscribeToNewsletter from '@/components/ui/SubscribeToNewsLetter.astro';
 import MainCta from '@/components/ui/MainCta.astro';
 import ContactCta from '@/components/ui/ContactCta.astro';
 import { marked } from 'marked';
+import BlogContentRenderer from '@/components/ui/BlogContentRenderer.astro';
 import { createClerkClient } from '@clerk/backend';
 
 const { slug } = Astro.params;
@@ -22,7 +23,7 @@ const db = createDbClient(runtime.env as { TURSO_DATABASE_URL: string; TURSO_AUT
 
 // Query post from database
 const result = await db.execute(
-  "SELECT id, slug, title, content, categorie, tags, authorId, createdAt, updatedAt FROM posts WHERE slug = ? AND status = 'PUBLISHED'",
+  "SELECT id, slug, title, content, categorie, tags, authorId, createdAt, updatedAt, featured FROM posts WHERE slug = ? AND status = 'PUBLISHED'",
   [slug]
 );
 
@@ -118,14 +119,31 @@ const post = {
     excerpt: frontmatter.excerpt || '',
     category: row.categorie,
     tags: JSON.parse(row.tags || '[]'),
-    featured: frontmatter.featured === true,
+    featured: row.featured === true || row.featured === 1,
     author: authorData,
     draft: false
   }
 };
 
-// Render markdown to HTML
-const htmlContent = marked.parse(bodyContent);
+// Check if content is JSON format or markdown
+let htmlContent = '';
+let isJsonContent = false;
+try {
+  const trimmedContent = bodyContent.trim();
+  if (trimmedContent.startsWith('{')) {
+    const parsed = JSON.parse(trimmedContent);
+    if (parsed.blocks && Array.isArray(parsed.blocks)) {
+      isJsonContent = true;
+    }
+  }
+} catch (e) {
+  // Not JSON, will use markdown
+}
+
+if (!isJsonContent) {
+  // Render markdown to HTML for backward compatibility
+  htmlContent = await marked.parse(bodyContent);
+}
 
 // Función para calcular tiempo de lectura
 function calculateReadingTime(content: string): number {
@@ -272,7 +290,10 @@ const formatDate = (date: Date) => {
   >
     <h2 id="post-title" class="sr-only">{post.data.title}</h2>
 
-    <article class="prose prose-lg prose-invert max-w-none space-y-6 text-neutral-300" set:html={htmlContent}>
+    <article class="prose prose-lg prose-invert max-w-none space-y-6 text-neutral-300">
+      <BlogContentRenderer content={bodyContent}>
+        <div set:html={htmlContent}></div>
+      </BlogContentRenderer>
     </article>
   </section>
 
@@ -413,7 +434,7 @@ const formatDate = (date: Date) => {
   article.prose h1 {
     font-size: 2.25rem;
     font-weight: 700;
-    color: #1AD6B3;
+    color: #e4d9ff;
     margin-bottom: 1.5rem;
     line-height: 1.2;
   }
