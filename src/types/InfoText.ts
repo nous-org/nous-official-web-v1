@@ -24,10 +24,6 @@ export const DEFAULT_INFO_TEXT: InfoText[] = [
         title: "Future-proof by default.",
         description: "Best models today, easy to swap tomorrow—no vendor lock-in, no dead ends.",
     },
-    {
-        title: "Backed by OpenAI.",
-        description: "Sam Altman—OpenAI’s CEO—was excited about NOUS’s mission to accelerate AI adoption in Costa Rica and Latin America and invested $60,000 in OpenAI API credits to help us get started because he believes in our mission.",
-    },
 ]
 
 export const DEFAULT_INFO_TEXT_2: InfoText[] = [
