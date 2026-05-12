@@ -5,6 +5,18 @@ dist/
 .astro/
 .wrangler/
 
+# generated QA and audit artifacts
+QA_REPORT*.md
+seo_qa_report_*.md
+lighthouse*.json
+playwright-report/
+test-results/
+coverage/
+*.har
+
+# local AI/editor agent state
+.windsurf/
+
 # dependencies
 node_modules/
 

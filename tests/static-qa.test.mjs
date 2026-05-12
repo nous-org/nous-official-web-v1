@@ -26,10 +26,19 @@ test('manual public sitemap is not present', () => {
   assert.equal(existsSync(repoFile('public/sitemap.xml')), false);
 });
 
-test('generated and local build artifacts are ignored or absent', async () => {
+test('generated, local, and audit artifacts are ignored or absent', async () => {
   const gitignore = await readText('.gitignore');
   assert.match(gitignore, /^\.wrangler\/$/m);
+  assert.match(gitignore, /^\.windsurf\/$/m);
+  assert.match(gitignore, /^seo_qa_report_\*\.md$/m);
+  assert.match(gitignore, /^QA_REPORT\*\.md$/m);
+  assert.match(gitignore, /^playwright-report\/$/m);
+  assert.match(gitignore, /^test-results\/$/m);
+  assert.match(gitignore, /^coverage\/$/m);
   assert.equal(existsSync(repoFile('functions')), false);
+  assert.equal(existsSync(repoFile('.windsurf')), false);
+  assert.equal(existsSync(repoFile('QA_REPORT.md')), false);
+  assert.equal(existsSync(repoFile('seo_qa_report_nous.cr_2026-05-12.md')), false);
 });
 
 test('robots references generated sitemap index and blocks sensitive routes', async () => {
@@ -56,11 +65,49 @@ test('repo copy avoids stale NOUS Technologies branding in source files', async 
   }
 });
 
-test('retired pricing and products pages do not exist as source routes', () => {
-  assert.equal(existsSync(repoFile('src/pages/pricing.astro')), false);
-  assert.equal(existsSync(repoFile('src/pages/products.astro')), false);
-  assert.equal(existsSync(repoFile('src/pages/es/pricing.astro')), false);
-  assert.equal(existsSync(repoFile('src/pages/es/products.astro')), false);
+test('retired and legacy redirect pages do not exist as source routes', () => {
+  for (const route of [
+    'src/pages/about-us.astro',
+    'src/pages/contact-us.astro',
+    'src/pages/pricing.astro',
+    'src/pages/products.astro',
+    'src/pages/es/about-us.astro',
+    'src/pages/es/contact-us.astro',
+    'src/pages/es/pricing.astro',
+    'src/pages/es/products.astro',
+  ]) {
+    assert.equal(existsSync(repoFile(route)), false, `${route} should be handled by edge redirects, not source pages`);
+  }
+});
+
+test('unused legacy assets are not kept in source control', () => {
+  for (const asset of [
+    'public/1.png',
+    'public/favicon.png',
+    'src/assets/NousLogo.png',
+    'src/assets/WebDev.webp',
+    'src/assets/bg-bento.webp',
+    'src/assets/bg.webp',
+    'src/assets/ctaBg.webp',
+    'src/assets/footerLogo.png',
+    'src/assets/whats.webp',
+    'src/assets/founders/FounderAlessandro.webp',
+    'src/assets/founders/FounderAndrey.webp',
+    'src/assets/founders/FounderRoberto.webp',
+    'src/assets/images/aiautomatization.png',
+    'src/assets/images/ctabg.png',
+    'src/assets/images/webdevelopment.webp',
+  ]) {
+    assert.equal(existsSync(repoFile(asset)), false, `${asset} is an unused legacy asset`);
+  }
+});
+
+test('web app manifest uses current NOUS positioning', async () => {
+  const manifest = JSON.parse(await readText('public/site.webmanifest'));
+  assert.equal(manifest.name, 'NOUS - AI Transformation Agency');
+  assert.equal(manifest.short_name, 'NOUS');
+  assert.match(manifest.description, /AI transformation/);
+  assert.equal(manifest.lang, 'en');
 });
 
 test('edge redirects cover retired and canonical URL variants', async () => {
