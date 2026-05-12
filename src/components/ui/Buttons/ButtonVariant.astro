@@ -40,6 +40,7 @@ const justifyClass = justify === "between" ? "justify-between" : justify === "st
 const widthClass = width === "full" ? "md:w-full" : width === "fit" ? "md:w-fit" : "";
 const baseStyles = `min-h-11 px-5 py-2.5 text-sm sm:text-base font-medium tracking-normal ${radiusClass} transition-all duration-200 group inline-flex ${justifyClass} items-center gap-2 w-auto ${widthClass} cursor-pointer border focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/60 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-black active:scale-[0.98]`;
 const computedRel = rel || (target === "_blank" ? "noopener noreferrer" : undefined);
+const computedAriaLabel = ariaLabel && text && ariaLabel.includes(text) ? ariaLabel : undefined;
 
 const variants = {
   primary: "border-transparent bg-outline text-primary-black shadow-sm shadow-outline/10 hover:bg-hover hover:shadow-outline/20",
@@ -57,7 +58,7 @@ const variants = {
 
 <a
   href={href}
-  aria-label={ariaLabel}
+  aria-label={computedAriaLabel}
   target={target}
   rel={computedRel}
   class:list={[baseStyles, variants[variant], className]}

@@ -4,6 +4,7 @@ import Footer from '@/components/ui-main-components/Footer.astro';
 import { AuroraBackground } from '@/components/react/AuroraBackground.tsx';
 import SEOBase from '@/components/seo/SEO.astro';
 import OrganizationSchema from '@/components/seo/OrganizationSchema.astro';
+import WebSiteSchema from '@/components/seo/WebSiteSchema.astro';
 import { alternateLocalePath, commonCopy, normalizeLocale, SITE_URL, type Locale } from '@/lib/i18n';
 import '@/styles/global.css'
 
@@ -28,6 +29,7 @@ interface Props {
   tags?: string[];
   noindex?: boolean;
   nofollow?: boolean;
+  isErrorPage?: boolean;
   
   // Schema Props
   customSchema?: any;
@@ -56,6 +58,7 @@ const {
   tags = [],
   noindex = false,
   nofollow = false,
+  isErrorPage = false,
   
   // Schema
   customSchema,
@@ -135,14 +138,24 @@ const mainClasses = useContainer
       noindex={noindex}
       nofollow={nofollow}
       locale={currentLocale}
+      suppressCanonical={isErrorPage}
     />
 
-    <link rel="alternate" hreflang="en" href={`${SITE_URL}${englishPath}`} />
-    <link rel="alternate" hreflang="es-CR" href={`${SITE_URL}${spanishPath}`} />
-    <link rel="alternate" hreflang="x-default" href={`${SITE_URL}${englishPath}`} />
+    {!isErrorPage && (
+      <>
+        <link rel="alternate" hreflang="en" href={`${SITE_URL}${englishPath}`} />
+        <link rel="alternate" hreflang="es-CR" href={`${SITE_URL}${spanishPath}`} />
+        <link rel="alternate" hreflang="x-default" href={`${SITE_URL}${englishPath}`} />
+      </>
+    )}
     
     <!-- Organization Schema (solo en páginas principales) -->
-    {includeOrganizationSchema && <OrganizationSchema />}
+    {includeOrganizationSchema && !isErrorPage && (
+      <>
+        <OrganizationSchema />
+        <WebSiteSchema />
+      </>
+    )}
     
     <!-- Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -152,7 +165,7 @@ const mainClasses = useContainer
   </head>
 
   <body class={`${getBgClass()} relative ${getOverflowClass()}`}>
-    {showAurora && <AuroraBackground client:load/>}
+    {showAurora && <AuroraBackground client:idle/>}
   
     <a href="#main-content" class="sr-only fixed left-4 top-4 z-[100] rounded-full bg-outline px-4 py-2 text-sm font-medium text-primary-black focus:not-sr-only focus:outline-none focus:ring-2 focus:ring-outline/60 focus:ring-offset-2 focus:ring-offset-primary-black">
       {copy.skipLink}

@@ -1,15 +1,75 @@
 import type { MiddlewareHandler } from 'astro';
 
+const permanentRedirect = (url: URL) => new Response(null, {
+  status: 301,
+  headers: {
+    Location: url.toString(),
+    'Cache-Control': 'public, max-age=3600',
+  },
+});
+
+const hasFileExtension = (pathname: string) =>
+  /\/[^/]+\.[a-z0-9]{2,8}$/i.test(pathname);
+
+const isLocalHost = (hostname: string) =>
+  hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
+
 export const onRequest: MiddlewareHandler = async (context, next) => {
   try {
-    // Keep deprecated placeholder routes unavailable even if a stale file reappears.
     const pathname = context.url.pathname;
-    if (pathname === '/products' || pathname === '/pricing' || 
-        pathname === '/products/' || pathname === '/pricing/') {
-      return new Response(null, {
-        status: 404,
-        statusText: 'Not Found'
-      });
+
+    if (context.url.hostname === 'www.nous.cr') {
+      const canonicalHost = new URL(context.url);
+      canonicalHost.hostname = 'nous.cr';
+      return permanentRedirect(canonicalHost);
+    }
+
+    if (
+      import.meta.env.PROD
+      && context.url.protocol === 'http:'
+      && !isLocalHost(context.url.hostname)
+    ) {
+      const httpsUrl = new URL(context.url);
+      httpsUrl.protocol = 'https:';
+      return permanentRedirect(httpsUrl);
+    }
+
+    const redirectMap: Record<string, string> = {
+      '/about-us': '/about',
+      '/about-us/': '/about',
+      '/contact-us': '/contact',
+      '/contact-us/': '/contact',
+      '/es/about-us': '/es/about',
+      '/es/about-us/': '/es/about',
+      '/es/contact-us': '/es/contact',
+      '/es/contact-us/': '/es/contact',
+      '/pricing': '/services',
+      '/pricing/': '/services',
+      '/products': '/services',
+      '/products/': '/services',
+      '/es/pricing': '/es/services',
+      '/es/pricing/': '/es/services',
+      '/es/products': '/es/services',
+      '/es/products/': '/es/services',
+      '/blog/chatgpt-5-is-here-learn-about-its-improvements-use-cases-in-education-business-and-programming-and-the-future-of-ai': '/blog/building-a-more-intelligent-world',
+      '/blog/chatgpt-5-is-here-learn-about-its-improvements-use-cases-in-education-business-and-programming-and-the-future-of-ai/': '/blog/building-a-more-intelligent-world',
+    };
+
+    const mappedPath = redirectMap[pathname];
+    if (mappedPath) {
+      const redirectUrl = new URL(context.url);
+      redirectUrl.pathname = mappedPath;
+      return permanentRedirect(redirectUrl);
+    }
+
+    if (
+      pathname.length > 1
+      && pathname.endsWith('/')
+      && !hasFileExtension(pathname.slice(0, -1))
+    ) {
+      const noSlashUrl = new URL(context.url);
+      noSlashUrl.pathname = pathname.replace(/\/+$/, '');
+      return permanentRedirect(noSlashUrl);
     }
 
     const response = await next();

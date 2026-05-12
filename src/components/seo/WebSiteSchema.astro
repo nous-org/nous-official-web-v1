@@ -1,0 +1,16 @@
+---
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://nous.cr/#website",
+  "name": "NOUS",
+  "url": "https://nous.cr/",
+  "inLanguage": ["en", "es-CR"],
+  "publisher": {
+    "@id": "https://nous.cr/#organization"
+  },
+  "description": "NOUS helps organizations in Costa Rica and Latin America build, deploy, and adopt AI systems that turn intelligence into practical work."
+};
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />

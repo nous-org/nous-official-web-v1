@@ -16,6 +16,7 @@ export interface Props {
   noindex?: boolean;
   nofollow?: boolean;
   locale?: Locale;
+  suppressCanonical?: boolean;
 }
 
 const {
@@ -50,6 +51,7 @@ const {
   noindex = false,
   nofollow = false,
   locale = 'en',
+  suppressCanonical = false,
 } = Astro.props;
 
 const currentLocale = normalizeLocale(locale);
@@ -87,7 +89,7 @@ const finalSchema = schema;
 {tags.length > 0 && <meta name="keywords" content={tags.join(', ')} />}
 
 <!-- Canonical URL -->
-<link rel="canonical" href={fullCanonical} />
+{!suppressCanonical && <link rel="canonical" href={fullCanonical} />}
 
 <!-- Robots -->
 {(noindex || nofollow) && (
@@ -96,7 +98,7 @@ const finalSchema = schema;
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={type} />
-<meta property="og:url" content={fullCanonical} />
+{!suppressCanonical && <meta property="og:url" content={fullCanonical} />}
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={fullImage} />
@@ -112,13 +114,13 @@ const finalSchema = schema;
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={fullCanonical} />
+{!suppressCanonical && <meta property="twitter:url" content={fullCanonical} />}
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={fullImage} />
 <meta property="twitter:image:alt" content={imageAlt} />
-<meta property="twitter:site" content="@nous506" />
-<meta property="twitter:creator" content="@nous506" />
+<meta property="twitter:site" content="@nousdotcr" />
+<meta property="twitter:creator" content="@nousdotcr" />
 
 <!-- Additional Meta Tags -->
 <meta name="theme-color" content="#060114" />

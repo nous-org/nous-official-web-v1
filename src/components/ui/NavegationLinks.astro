@@ -55,6 +55,9 @@ const {
     ariaLabel = 'Main navigation'
 } = Astro.props;
 
+const accessibleLabelFor = (link: NavLink) =>
+    link.ariaLabel && link.ariaLabel.includes(link.label) ? link.ariaLabel : undefined;
+
 // Dynamic classes based on props
 const containerClasses = [
     'flex border border-outline/70 shadow-[0_0_28px_-12px_rgba(220,212,255,0.75)] rounded-full px-8 lg:px-10 py-4 bg-[#060114]/80 backdrop-blur-xl',
@@ -73,7 +76,7 @@ const containerClasses = [
                     data-astro-reload={link.href === '/' ? true : undefined}
                     class={link.className || defaultLinkClass}
                     target={link.target || '_self'}
-                    aria-label={link.ariaLabel || link.label}
+                    aria-label={accessibleLabelFor(link)}
                 >
                     {link.label}
                 </a>

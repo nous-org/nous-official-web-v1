@@ -97,7 +97,7 @@ export function authErrorResponse(error: unknown) {
 
 export async function requireClerk(req: Request, env: AdminAuthEnv) {
   if (!env.CLERK_SECRET_KEY) {
-    throw new AuthError(500, 'AUTH_CONFIGURATION_MISSING', 'Admin authentication is not configured.');
+    throw new AuthError(403, 'ADMIN_AUTH_UNAVAILABLE', 'Admin access is unavailable.');
   }
 
   const auth = req.headers.get('authorization') || '';

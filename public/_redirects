@@ -1,0 +1,44 @@
+# Cloudflare Pages edge redirects for canonical SEO URLs.
+# Keep legacy and trailing-slash variants on a single hop before Astro SSR runs.
+
+/services/ /services 301
+/about/ /about 301
+/contact/ /contact 301
+/blog/ /blog 301
+/blog/building-a-more-intelligent-world/ /blog/building-a-more-intelligent-world 301
+/privacy-policy/ /privacy-policy 301
+/terms-and-conditions/ /terms-and-conditions 301
+/portfolio/ /portfolio 301
+/admin/ /admin 301
+
+/es/ /es 301
+/es/services/ /es/services 301
+/es/about/ /es/about 301
+/es/contact/ /es/contact 301
+/es/blog/ /es/blog 301
+/es/blog/building-a-more-intelligent-world/ /es/blog/building-a-more-intelligent-world 301
+/es/privacy-policy/ /es/privacy-policy 301
+/es/terms-and-conditions/ /es/terms-and-conditions 301
+/es/portfolio/ /es/portfolio 301
+/es/admin/ /es/admin 301
+
+/about-us /about 301
+/about-us/ /about 301
+/contact-us /contact 301
+/contact-us/ /contact 301
+/pricing /services 301
+/pricing/ /services 301
+/products /services 301
+/products/ /services 301
+
+/es/about-us /es/about 301
+/es/about-us/ /es/about 301
+/es/contact-us /es/contact 301
+/es/contact-us/ /es/contact 301
+/es/pricing /es/services 301
+/es/pricing/ /es/services 301
+/es/products /es/services 301
+/es/products/ /es/services 301
+
+/blog/chatgpt-5-is-here-learn-about-its-improvements-use-cases-in-education-business-and-programming-and-the-future-of-ai /blog/building-a-more-intelligent-world 301
+/blog/chatgpt-5-is-here-learn-about-its-improvements-use-cases-in-education-business-and-programming-and-the-future-of-ai/ /blog/building-a-more-intelligent-world 301

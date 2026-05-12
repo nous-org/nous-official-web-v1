@@ -51,17 +51,6 @@ const responseCopy = {
 export const POST: APIRoute = async ({ request }) => {
   let locale = inferLocale(request);
   try {
-    const { TURSO_NEWSLETTER_URL, TURSO_NEWSLETTER_TOKEN } = getRuntimeEnv();
-    if (!TURSO_NEWSLETTER_URL || !TURSO_NEWSLETTER_TOKEN) {
-      return new Response(JSON.stringify({
-        success: false,
-        message: responseCopy[locale].unavailable
-      }), {
-        status: 503,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
     const clientIp = getClientIp(request);
     const ipLimit = checkRateLimit(`subscribe:ip:${clientIp}`, 8, 10 * 60_000);
     if (ipLimit.limited) {
@@ -76,11 +65,6 @@ export const POST: APIRoute = async ({ request }) => {
         }
       });
     }
-
-    const turso = createClient({
-      url: TURSO_NEWSLETTER_URL,
-      authToken: TURSO_NEWSLETTER_TOKEN,
-    });
 
     // Accept both FormData and URLSearchParams submissions.
     let rawData;
@@ -97,6 +81,13 @@ export const POST: APIRoute = async ({ request }) => {
       rawData = {
         email: params.get('email') || '',
         locale: params.get('locale') || locale
+      };
+      locale = inferLocale(request, rawData.locale);
+    } else if (contentType.includes('application/json')) {
+      const jsonData = await request.json().catch(() => ({})) as Record<string, unknown>;
+      rawData = {
+        email: typeof jsonData.email === 'string' ? jsonData.email : '',
+        locale: typeof jsonData.locale === 'string' ? jsonData.locale : locale
       };
       locale = inferLocale(request, rawData.locale);
     } else {
@@ -148,6 +139,22 @@ export const POST: APIRoute = async ({ request }) => {
         headers: { 'Content-Type': 'application/json' }
       });
     }
+
+    const { TURSO_NEWSLETTER_URL, TURSO_NEWSLETTER_TOKEN } = getRuntimeEnv();
+    if (!TURSO_NEWSLETTER_URL || !TURSO_NEWSLETTER_TOKEN) {
+      return new Response(JSON.stringify({
+        success: false,
+        message: responseCopy[locale].unavailable
+      }), {
+        status: 503,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    const turso = createClient({
+      url: TURSO_NEWSLETTER_URL,
+      authToken: TURSO_NEWSLETTER_TOKEN,
+    });
 
     const ipAddress = clientIp;
     const userAgent = request.headers.get('user-agent')?.substring(0, 255) || 'unknown';
