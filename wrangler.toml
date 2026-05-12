@@ -1,7 +1,10 @@
-# wrangler.toml - Cloudflare Workers
+# wrangler.toml - Cloudflare Pages
 name = "nous-official-web-v1"
 compatibility_date = "2026-05-11"
 compatibility_flags = ["nodejs_compat"]
+
+# Astro build output directory. It must contain the generated worker and assets.
+pages_build_output_dir = "./dist"
 
 [vars]
 SITE_URL="https://nous.cr"
