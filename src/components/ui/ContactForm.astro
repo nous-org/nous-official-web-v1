@@ -5,24 +5,26 @@ import SubmitButton from "@/components/ui/Buttons/SubmitButton.astro";
 
 const chips = [
   {
-    id: "technology-advisory",
-    label: "Technology Advisory",
-    value: "technology-advisory",
+    id: "ai-strategy",
+    label: "AI strategy",
+    value: "ai-strategy",
   },
-  { id: "web-development", label: "Web Development", value: "web-development" },
-  { id: "ai-automation", label: "AI Automation", value: "ai-automation" },
+  { id: "automation-agents", label: "Automation & agents", value: "automation-agents" },
+  { id: "systems-integrations", label: "Systems & integrations", value: "systems-integrations" },
+  { id: "training-adoption", label: "Training & adoption", value: "training-adoption" },
+  { id: "not-sure", label: "Not sure yet", value: "not-sure" },
 ];
 ---
 
 <div class="w-auto">
-  <GradientTittle title="Tell us about your project." subHead="We reply within <strong>1 business day</strong> with clear next steps." />
+  <GradientTittle title="Let’s find your highest-leverage AI opportunity." subHead="Hermes, our customer service agent, will establish first contact, ask a few initial questions, and help clarify the next step." />
   <!-- Message containers -->
   <div
     id="success-message"
     class="hidden mb-4 p-4 border border-primary-turquoise text-primary-turquoise rounded-lg"
   >
     <p class="font-medium">
-      Thank you for your message! We'll get back to you within 24 hours.
+      Thanks. We received your message. Hermes will establish first contact shortly.
     </p>
   </div>
 
@@ -31,24 +33,23 @@ const chips = [
     class="hidden mb-4 p-4 border border-red-400 text-red-700 rounded-lg"
   >
     <p class="font-medium" id="error-text">
-      There was an error sending your message. Please try again.
+      Something went wrong. Please try again or contact us directly at hello@nous.cr.
     </p>
   </div>
 
   <form
     id="contact-form"
-    class="flex flex-col gap-4"
+    class="flex flex-col gap-5"
     method="POST"
     action="/api/contact"
   >
-    <div class="flex flex-col gap-4">
-      <label for="interests" class="block text-lg font-medium text-white"
-        >I'm interested in:</label
-      >
-      <div class="flex flex-wrap gap-2">
+    <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+    <div class="flex flex-col gap-3">
+      <span id="home-interests-label" class="block text-lg font-medium text-white">What are you exploring?</span>
+      <div class="grid grid-cols-1 gap-2 sm:grid-cols-2" role="group" aria-labelledby="home-interests-label">
         {
           chips.map((chip) => (
-            <div>
+            <div class:list={["min-w-0", chip.value === "not-sure" && "sm:col-span-2 sm:mx-auto sm:w-[calc(50%-0.25rem)]"]}>
               <input
                 type="checkbox"
                 id={chip.id}
@@ -58,10 +59,10 @@ const chips = [
               />
               <label
                 for={chip.id}
-                class="inline-flex items-center px-4 py-2 rounded-full border-2 border-gray-400 
-                     cursor-pointer transition-all duration-400 
-                     hover:border-accent hover:bg-accent hover:text-primary-blue hover:shadow-[0_0_10px_0_rgba(255,255,255,0.2)] hover:scale-[1.03]
-                     peer-checked:bg-accent peer-checked:text-primary-blue peer-checked:border-accent"  
+                class="inline-flex w-full items-center justify-center px-4 py-2 rounded-full border-2 border-gray-400
+                     cursor-pointer transition-all duration-400
+                     hover:border-outline hover:bg-outline/10 hover:text-white
+                     peer-checked:bg-outline peer-checked:text-primary-black peer-checked:border-outline"
               >
                 {chip.label}
               </label>
@@ -71,39 +72,42 @@ const chips = [
       </div>
     </div>
 
-    <Inputs id="Name" type="text" placeholder="NOUS" name="name" />
-    <Inputs id="E-mail" type="email" placeholder="contacto@nous.cr" name="email" />
-    <Inputs id="Phone" type="tel" placeholder="+506 6186 5634" name="phone" />
-    <Inputs 
-      id="Preferred Contact Method" 
-      type="radio" 
+    <Inputs id="Name" type="text" placeholder="Roberto Pereira Ugalde" name="name" />
+    <Inputs id="E-mail" type="email" placeholder="roberto@nous.cr" name="email" />
+    <Inputs id="Phone number" type="tel" placeholder="+50661865634" name="phone" required={false} />
+    <Inputs
+      id="Preferred contact method"
+      type="radio"
       name="preferredContact"
       placeholder="Preferred Contact Method"
       options={[
-        { value: "email", label: "Email" },
+        { value: "email", label: "E-mail" },
         { value: "whatsapp", label: "WhatsApp" },
       ]}
     />
-    <Inputs id="Subject" type="text" placeholder="Hi!" name="subject" />
-    <Inputs id="Message" type="textarea" placeholder="What are you trying to build or automate?" name="message" />
+    <Inputs id="Subject" type="text" placeholder="AI for customer support" name="subject" />
+    <Inputs id="Message" type="textarea" placeholder="Tell us what your organization is trying to improve, automate, understand, or build." name="message" />
 
-    <div class="flex justify-center mt-2">
+    <div class="flex justify-start">
       <SubmitButton
         id="submit-button"
         type="submit"
-        text="Send"
+        text="Send message"
         icon={true}
         variant="primary"
+        className="w-full sm:w-auto"
       />
     </div>
   </form>
 </div>
 
 <script is:inline lang="ts">
-  
+
   document.addEventListener("astro:page-load", () => {
     const form = document.getElementById("contact-form");
     if (!form) return;
+    if (form.dataset.initialized === "true") return;
+    form.dataset.initialized = "true";
 
     const submitBtn = form.querySelector('button[type="submit"]');
     const okBox = document.getElementById("success-message");
@@ -127,8 +131,8 @@ const chips = [
     }
     function setBtnLoading(v) {
       if (!(submitBtn instanceof HTMLButtonElement)) return;
-      submitBtn.classList.toggle("is-loading", v);  
-      submitBtn.disabled = v;                       
+      submitBtn.classList.toggle("is-loading", v);
+      submitBtn.disabled = v;
       submitBtn.setAttribute("aria-busy", v ? "true" : "false");
     }
 

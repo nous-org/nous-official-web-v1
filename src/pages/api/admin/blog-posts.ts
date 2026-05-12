@@ -1,6 +1,7 @@
 import type { APIContext } from 'astro';
 import { createDbClient } from '@/lib/db';
-import { requireClerk } from '@/lib/auth';
+import { authErrorResponse, requireClerk } from '@/lib/auth';
+import { getRuntimeEnv } from '@/lib/runtime-env';
 
 interface BlogPostRequest {
   slug: string;
@@ -30,9 +31,10 @@ function json(data: unknown, init: number | ResponseInit = 200) {
   });
 }
 
-export async function POST({ request, locals }: APIContext) {
+export async function POST({ request }: APIContext) {
   try {
-    const { userId } = await requireClerk(request, locals.runtime.env as { CLERK_SECRET_KEY: string });
+    const env = getRuntimeEnv();
+    const { userId } = await requireClerk(request, env);
 
     const body = await request.json() as BlogPostRequest;
     const { slug, frontmatter, content, publish } = body;
@@ -67,10 +69,10 @@ export async function POST({ request, locals }: APIContext) {
 
     const markdownContent = `---\n${yamlFrontmatter}\n---\n\n${content}`;
 
-    const db = createDbClient(locals.runtime.env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
+    const db = createDbClient(env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
 
     // Generate ID for new posts (timestamp-based)
-    const postId = `post_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const postId = `post_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
     const now = Date.now();
 
     // Check if post already exists
@@ -128,6 +130,10 @@ export async function POST({ request, locals }: APIContext) {
     });
 
   } catch (error) {
+    if ((error as { name?: string })?.name === 'AuthError') {
+      return authErrorResponse(error);
+    }
+
     console.error('Error saving blog post:', error);
     
     return json({

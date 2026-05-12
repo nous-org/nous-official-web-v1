@@ -2,45 +2,79 @@
 import Layout from "@/layouts/Layout.astro";
 import NotFoundIcon from "@/components/icons/404.astro";
 import ButtonVariant from "@/components/ui/Buttons/ButtonVariant.astro";
-
 ---
 
 <Layout
-    title="404 - Page Not Found"
+    title="Page Not Found / NOUS"
+    description="The page you are looking for could not be found."
     backgroundType="primary"
-    showAurora={true}
-    useContainer={true}
-    paddingType="normal"
+    showAurora={false}
+    useContainer={false}
+    paddingType="zero"
 >
     <section
-        class="flex flex-col items-center justify-center min-h-screen space-y-4"
+        class="relative isolate flex min-h-screen items-center overflow-hidden px-4 pb-20 pt-36 sm:pt-44"
+        aria-labelledby="not-found-heading"
     >
-        <NotFoundIcon />
-        <p class="text-4xl font-bold text-white mb-4">Ooops! Page Not Found</p>
-        <p class="text-neutral-400 text-lg mb-8">
-            It seems you are lost, don't worry we are here to help you
-        </p>
-        <div class="flex gap-4">
-            <ButtonVariant
-                text="Home"
-                variant="secondary"
-                href="/"
-                scheduleIcon={false}
-                strokeColor="#060114"
-                arrowIcon={true}
-                target="_self"
-                ariaLabel="Home"
-            />
-            <ButtonVariant
-                text="Contact us"
-                variant="secondaryTurquoise"
-                href="/contact-us"
-                scheduleIcon={false}
-                strokeColor="#1AD6B3"
-                arrowIcon={true}
-                target="_self"
-                ariaLabel="Contact us"
-            />
+        <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(220,212,255,0.16),transparent_34%),radial-gradient(circle_at_80%_55%,rgba(191,177,255,0.1),transparent_30%)]" aria-hidden="true"></div>
+        <div class="pointer-events-none absolute inset-x-0 top-32 h-px bg-gradient-to-r from-transparent via-outline/25 to-transparent" aria-hidden="true"></div>
+
+        <div class="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-12 lg:grid-cols-[0.95fr_1.05fr]">
+            <div class="mx-auto max-w-2xl text-center lg:mx-0 lg:text-left">
+                <p class="text-sm font-medium uppercase tracking-[0.22em] text-outline">404</p>
+                <h1
+                    id="not-found-heading"
+                    class="mt-5 text-5xl font-medium leading-[1.02] tracking-normal text-white sm:text-6xl lg:text-7xl"
+                >
+                    This route does not exist.
+                </h1>
+                <p class="mt-6 text-lg leading-relaxed text-neutral-300 sm:text-xl">
+                    The page you are looking for is not available. Return home, explore what NOUS does, or start a conversation if you need a hand finding the right path.
+                </p>
+
+                <div class="mt-8 flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
+                    <ButtonVariant
+                        text="Go home"
+                        variant="primary"
+                        href="/"
+                        scheduleIcon={false}
+                        strokeColor="#060114"
+                        arrowIcon={false}
+                        target="_self"
+                        ariaLabel="Go home"
+                        className="w-full sm:w-auto"
+                    />
+                    <ButtonVariant
+                        text="Explore services"
+                        variant="primaryPurple"
+                        href="/services"
+                        scheduleIcon={false}
+                        strokeColor="#DCD4FF"
+                        arrowIcon={false}
+                        target="_self"
+                        ariaLabel="Explore services"
+                        className="w-full sm:w-auto"
+                    />
+                    <ButtonVariant
+                        text="Talk to NOUS"
+                        variant="secondary"
+                        href="/contact"
+                        scheduleIcon={false}
+                        strokeColor="#DCD4FF"
+                        arrowIcon={false}
+                        target="_self"
+                        ariaLabel="Talk to NOUS"
+                        className="w-full sm:w-auto"
+                    />
+                </div>
+            </div>
+
+            <div class="relative mx-auto w-full max-w-2xl lg:max-w-none">
+                <div class="absolute inset-0 rounded-full bg-outline/10 blur-3xl" aria-hidden="true"></div>
+                <div class="relative rounded-[2rem] border border-outline/15 bg-white/[0.025] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.24)] backdrop-blur sm:p-10">
+                    <NotFoundIcon className="mx-auto max-w-full opacity-95" animationDuration="5.5s" />
+                </div>
+            </div>
         </div>
     </section>
 </Layout>

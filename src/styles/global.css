@@ -6,24 +6,40 @@
 html{
   scroll-behavior: smooth;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}
 @theme{
     /* colors for theme */
-    --color-primary-purple: #8458FF;
-    --color-primary-turquoise: #1AD6B3;
+    --color-primary-purple: #8F7AFF;
+    --color-primary-turquoise: #9EE7FF;
     --color-primary-blue: #060114;
     --color-primary-black: #04000F;
     /* colors for buttons */
-    --color-accent: #B08CFF;
-    --color-hover:#9B70FF;
-    --color-outline:#D0BFFF;
+    --color-accent: #C9BFFF;
+    --color-hover:#E7E1FF;
+    --color-outline:#DCD4FF;
 
     /* fonts */
-    --font-archivo-black: 'ArchivoBlack-Regular', sans-serif;
-    --font-tiktok-sans: 'TikTokSans-Regular', sans-serif;
+    --font-heading: 'Geist', sans-serif;
+    --font-body: 'Geist', sans-serif;
+    --font-ui: 'Geist', sans-serif;
     /* colors for gradients */
-    --color-gradient-start:#C9B6FF;
-    --color-gradient-middle:#EC6FFF;
-    --color-gradient-end:#FFC3E6;
+    --color-gradient-start:#FFFFFF;
+    --color-gradient-middle:#ECE7FF;
+    --color-gradient-end:#BFB1FF;
 }
 
 @theme inline {
@@ -94,6 +110,12 @@ html{
   }
   
   .appear {
+    opacity: 1;
+    transform: none;
+  }
+
+  @supports (animation-timeline: view()) {
+  .appear {
     view-timeline-name: --appear;
     view-timeline-axis: block;
     
@@ -114,8 +136,15 @@ html{
     animation-duration: 1ms; /* Necesario para que funcione con animation-timeline */
     will-change: transform, opacity;
   }
+  }
   
   /* Opcional: Variante con menor movimiento para elementos más serios */
+  .appear-subtle {
+    opacity: 1;
+    transform: none;
+  }
+
+  @supports (animation-timeline: view()) {
   .appear-subtle {
     view-timeline-name: --appear-subtle;
     view-timeline-axis: block;
@@ -127,7 +156,14 @@ html{
     animation-range: entry 10% cover 40%;
     animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
+  }
   
+  .appear-left {
+    opacity: 1;
+    transform: none;
+  }
+
+  @supports (animation-timeline: view()) {
   .appear-left {
     view-timeline-name: --appear-left;
     view-timeline-axis: block;
@@ -149,6 +185,7 @@ html{
     animation-duration: 1ms; /* Necesario para que funcione con animation-timeline */
     will-change: transform, opacity;
   }
+  }
   @keyframes fadeInScaleSubtle {
     from {
       opacity: 0;
@@ -163,7 +200,7 @@ html{
   @keyframes fadeInScaleLeft {
     from {
       opacity: 0;
-      transform: scale(0.95) translateX(-200px);
+      transform: scale(0.98) translateX(-48px);
       filter: blur(5px);
     }
     to {
@@ -180,7 +217,7 @@ html{
     }
   
     .tiptap-content h2 {
-      @apply text-2xl md:text-3xl font-bold text-primary-purple mb-3;
+      @apply text-2xl md:text-3xl font-medium text-outline mb-3;
     }
   
     .tiptap-content h3 {

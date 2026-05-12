@@ -52,7 +52,7 @@ export const Tabs = ({
             }}
             onMouseEnter={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
-            className={cn("relative px-2 py-2 sm:px-4 sm:py-3 md:px-6 md:py-4 h-auto rounded-full min-w-0 flex-shrink-0", tabClassName)}
+            className={cn("relative px-2 py-2 sm:px-4 sm:py-3 md:px-6 md:py-4 h-auto rounded-full min-w-0 flex-shrink-0 transition-colors", tabClassName)}
             style={{
               transformStyle: "preserve-3d",
             }}
@@ -62,13 +62,13 @@ export const Tabs = ({
                 layoutId="clickedbutton"
                 transition={{ type: "spring", bounce: 0.3, duration: 0.6 }}
                 className={cn(
-                  "absolute inset-0 bg-accent/30 border border-outline rounded-full h-8 sm:h-10 md:h-12 lg:h-auto",
+                  "absolute inset-0 bg-outline/12 border border-outline/45 rounded-full h-8 sm:h-10 md:h-12 lg:h-auto shadow-sm shadow-outline/10",
                   activeTabClassName
                 )}
               />
             )}
 
-            <span className="relative block text-white text-xs sm:text-sm md:text-base lg:text-lg font-medium whitespace-nowrap hover:cursor-pointer">
+            <span className="relative block text-neutral-100 text-xs sm:text-sm md:text-base lg:text-lg font-medium whitespace-nowrap hover:cursor-pointer">
               {tab.title}
             </span>
           </button>

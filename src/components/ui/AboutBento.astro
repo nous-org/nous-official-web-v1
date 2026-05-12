@@ -1,78 +1,95 @@
 ---
 import NousLogo from "@/assets/NousLogo.svg";
 
+const beliefs = [
+  {
+    title: "AI first. Technology wide.",
+    description:
+      "NOUS leads with AI, but we build whatever the transformation needs: agents, automations, apps, integrations, data flows, websites, internal tools, and the infrastructure around them."
+  },
+  {
+    title: "Deployment over theater.",
+    description:
+      "AI creates value only when it changes real work. We care about prototypes, but we care more about useful systems that teams can trust, adopt, and improve."
+  },
+  {
+    title: "Independent by design.",
+    description:
+      "The intelligence layer is moving quickly. We stay model-aware, provider-aware, and use-case driven so organizations can choose what actually fits."
+  }
+];
+
+const capabilities = [
+  "Understand the organization, workflows, and constraints.",
+  "Find the highest-leverage places for AI to improve the work.",
+  "Design the solution, operating model, and adoption path.",
+  "Build the agents, automations, products, and integrations.",
+  "Deploy, train, measure, and improve with the team."
+];
 ---
-<!-- About Us Bento Grid Section -->
-<section 
-    class="mt-40 sm:mt-48 lg:mt-64 xl:mt-80 appear-subtle "
-    aria-labelledby="about-section-heading"
->
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 sm:gap-6 ">
-        
-        
-        <article class="md:col-span-2 lg:col-span-6 bg-gradient-to-br border border-outline from-primary-blue/20 to-outline/20 rounded-xl p-6 sm:p-8">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-center">
-                
-                <div class="flex justify-center lg:justify-start items-center order-1 lg:order-1">
-                    <img 
-                        src={NousLogo.src} 
-                        alt="Nous Technologies Logo" 
-                        class="w-auto h-16 sm:h-20 lg:h-24" 
-                        loading="lazy"
-                    />   
-                </div>
-                
-                
-                <div class="lg:col-span-2 order-2 lg:order-2">
-                    <h2 
-                        id="about-section-heading"
-                        class="font-archivo-black text-2xl sm:text-3xl lg:text-4xl xl:text-5xl mb-4 sm:mb-6 text-accent leading-tight"
-                    >
-                    Founded with a clear vision:
-                    </h2>
-                    <p class="text-base sm:text-lg lg:text-xl text-pretty text-neutral-300 leading-relaxed">
-                        To democratize technology consulting in Latin America—giving every company, from startups to large enterprises, access to independent guidance and production-ready execution in two tracks: AI automation and modern web development.
-                    </p>
-                </div>
-            </div>
-        </article>
 
-        
-        <article class="md:col-span-1 lg:col-span-2 bg-gradient-to-br border border-outline from-primary-blue/20 to-outline/20 rounded-xl p-4 sm:p-6 ">
-            <header class="mb-4 sm:mb-6">
-                <h3 class="font-archivo-black text-xl sm:text-2xl lg:text-3xl xl:text-4xl text-accent">
-                    Purpose
-                </h3>
-            </header>
-            <p class="text-sm sm:text-base lg:text-lg text-pretty text-neutral-300 leading-relaxed">
-                <span class="font-semibold text-outline">Turn real problems into momentum.</span> We remove busywork with automation or win customers with high-performing web—measured in hours saved, revenue gained, and happier users. Pragmatic, outcome-first, no hype.
-            </p>
-        </article>
+<section class="mx-auto max-w-5xl px-4 pb-16 sm:pb-24" aria-labelledby="about-section-heading">
+  <div class="space-y-6">
+    <article class="relative isolate overflow-hidden rounded-[2rem] border border-outline/15 bg-white/[0.025] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.18)] backdrop-blur sm:p-10">
+      <div class="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-outline/60 to-transparent" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(220,212,255,0.14),transparent_44%)]" aria-hidden="true"></div>
 
-        
-        <article class="md:col-span-1 lg:col-span-2 bg-gradient-to-br border border-outline from-primary-blue/20 to-outline/20 rounded-xl p-4 sm:p-6">
-            <header class="mb-4 sm:mb-6">
-                <h3 class="font-archivo-black text-xl sm:text-2xl lg:text-3xl xl:text-4xl text-accent">
-                    Vision
-                </h3>
-            </header>
-            <p class="text-sm sm:text-base lg:text-lg text-pretty text-neutral-300 leading-relaxed">
-                <span class="font-semibold text-outline">Latam, world-class by default.</span> By 2030, be the region’s most trusted partner for practical technology change—making AI automation and web excellence accessible to organizations of any size. World-class delivery without a Silicon Valley zip code.
-            </p>
-        </article>
+      <div class="relative z-10 grid gap-8 lg:grid-cols-[0.8fr_1.6fr] lg:items-center">
+        <div class="flex justify-start">
+          <img
+            src={NousLogo.src}
+            alt="NOUS logo"
+            class="h-14 w-auto sm:h-16 lg:h-20"
+            loading="lazy"
+          />
+        </div>
 
-        
-        <article class="md:col-span-2 lg:col-span-2 bg-gradient-to-br border border-outline from-primary-blue/20 to-outline/20 rounded-xl p-4 sm:p-6">
-            <header class="mb-4 sm:mb-6">
-                <h3 class="font-archivo-black text-xl sm:text-2xl lg:text-3xl xl:text-4xl text-accent">
-                    Mission
-                </h3>
-            </header>
-            <p class="text-sm sm:text-base lg:text-lg text-pretty text-neutral-300 leading-relaxed">
-                <span class="font-semibold text-outline">Empower teams to work smarter and grow faster.</span> Founded in 2025 in Costa Rica, we provide clear advisory, short cycles, and solutions that run reliably in production—independent, vendor-neutral, and committed to outcomes you can measure.
-            </p>
+        <div>
+          <p class="text-sm font-medium uppercase tracking-[0.18em] text-outline">Why NOUS exists</p>
+          <h2 id="about-section-heading" class="mt-3 text-2xl font-medium leading-tight text-white sm:text-3xl">
+            Organizations need a partner between the AI labs and the work that actually needs to change.
+          </h2>
+          <p class="mt-5 text-base leading-relaxed text-neutral-300 sm:text-justify sm:text-lg">
+            Intelligence is becoming available on tap. The foundation models will keep improving, but every organization still has to decide what to build with that intelligence: new workflows, better customer experiences, stronger operations, smarter internal tools, and systems that make people more capable. NOUS helps make that translation concrete.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <div class="grid gap-6 md:grid-cols-3">
+      {beliefs.map((belief) => (
+        <article class="rounded-[2rem] border border-outline/15 bg-white/[0.022] p-6 shadow-[0_18px_64px_rgba(0,0,0,0.16)] backdrop-blur">
+          <h3 class="text-xl font-medium leading-tight text-outline">
+            {belief.title}
+          </h3>
+          <p class="mt-4 text-sm leading-relaxed text-neutral-300 md:text-justify">
+            {belief.description}
+          </p>
         </article>
-        
+      ))}
     </div>
+
+    <article class="grid gap-8 rounded-[2rem] border border-outline/15 bg-white/[0.025] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.16)] backdrop-blur sm:p-10 lg:grid-cols-[1fr_1.15fr] lg:items-center">
+      <div>
+        <p class="text-sm font-medium uppercase tracking-[0.18em] text-outline">What we do</p>
+        <h2 class="mt-3 text-2xl font-medium leading-tight text-white sm:text-3xl">
+          We turn AI into operating capacity.
+        </h2>
+        <p class="mt-5 text-base leading-relaxed text-neutral-300">
+          Our work starts with the organization, not the model. We study the decisions, workflows, data, tools, and customer moments where intelligence could create leverage, then build the technology and adoption path that makes it useful in daily work.
+        </p>
+      </div>
+
+      <ol class="space-y-3">
+        {capabilities.map((item, index) => (
+          <li class="flex gap-4 rounded-full border border-white/10 bg-white/[0.03] px-4 py-3 text-sm leading-relaxed text-neutral-300">
+            <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-outline/25 bg-outline/10 text-xs font-medium text-outline">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ol>
+    </article>
+  </div>
 </section>

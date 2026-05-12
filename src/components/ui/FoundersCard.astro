@@ -1,7 +1,6 @@
 ---
 import { DEFAULT_FOUNDERS } from '@/types/founderCards';
-import { ShootingStars } from '../react/ShootingStars';
-import { StarsBackground } from '../react/StarBackground';
+import { sanitizeHtml } from '@/lib/security';
 
 interface Props {
     founders?: typeof DEFAULT_FOUNDERS;
@@ -9,102 +8,94 @@ interface Props {
 }
 
 const { founders = DEFAULT_FOUNDERS, className = "" } = Astro.props;
+
+function getInitials(name: string): string {
+    return name
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part.charAt(0))
+        .join('')
+        .toUpperCase();
+}
 ---
 
 <!-- Founders Grid Container -->
-<div class={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-20 sm:mt-32 lg:mt-40 ${className} appear-left`}>
+<div class={`grid grid-cols-1 gap-6 pt-8 md:grid-cols-2 sm:pt-10 ${className} appear-left`}>
     {founders.length > 0 ? (
         founders.map((founder) => (
             <!-- Individual Founder Card -->
-            <article 
-                class="relative flex flex-col gap-4 bg-gradient-to-br border border-outline from-primary-blue/60 to-accent/20 md:hover:to-accent/30 rounded-xl p-4 hover:border-accent/60 transition-colors duration-300"
+            <article
+                class="relative flex min-h-full flex-col gap-5 overflow-hidden rounded-[2rem] border border-outline/15 bg-white/[0.025] p-5 shadow-[0_18px_64px_rgba(0,0,0,0.16)] backdrop-blur transition-colors duration-300 hover:border-outline/35 sm:p-6"
                 aria-labelledby={`founder-${founder.name.replace(/\s+/g, '-').toLowerCase()}`}
             >
-                <!-- Founder Header with Image and Basic Info -->
-                <header class="flex flex-col gap-4">
-                    <!-- Profile Image -->
-                    <div class="flex justify-center lg:justify-start">
-                        <img 
-                            src={founder.image} 
-                            alt={`${founder.name}, ${founder.position} at Nous Technologies`}
-                            class="w-28 h-28 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full object-cover object-center overflow-hidden border-2 border-outline lg:absolute lg:-top-16 xl:-top-18 lg:right-4 xl:right-5 z-10"
-                            loading="lazy"
-                        />
+                <div class="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-outline/35 to-transparent" aria-hidden="true"></div>
+
+                <header class="flex items-center gap-4">
+                    <div class="shrink-0">
+                        {founder.image ? (
+                            <div class="h-16 w-16 overflow-hidden rounded-full border border-outline/25 bg-outline/10 sm:h-20 sm:w-20">
+                                <img
+                                    src={founder.image}
+                                    alt={`${founder.name}, ${founder.position} at NOUS`}
+                                    class={`h-full w-full object-cover ${founder.imageClassName || "object-center"}`}
+                                    loading="lazy"
+                                />
+                            </div>
+                        ) : (
+                            <div
+                                aria-hidden="true"
+                                class="flex h-16 w-16 items-center justify-center rounded-full border border-outline/25 bg-outline/10 text-lg font-medium text-outline sm:h-20 sm:w-20"
+                            >
+                                {getInitials(founder.name)}
+                            </div>
+                        )}
                     </div>
-                    
-                    <!-- Name and Position -->
-                    <div class="text-center sm:text-left">
-                        <h3 
+                    <div>
+                        <h3
                             id={`founder-${founder.name.replace(/\s+/g, '-').toLowerCase()}`}
-                            class="text-lg sm:text-xl md:text-2xl text-white leading-tight"
+                            class="text-lg font-medium leading-tight text-white"
                         >
                             {founder.name}
                         </h3>
-                        <p class="text-sm sm:text-base md:text-lg font-medium text-accent mt-1">
+                        <p class="mt-1 text-xs font-medium leading-snug text-outline sm:text-[0.8125rem]">
                             {founder.position}
                         </p>
                     </div>
                 </header>
 
-                <!-- Founder Description -->
                 <div class="flex-1">
-                    <p class="text-sm sm:text-base md:text-lg text-neutral-300 leading-relaxed text-pretty" set:html={founder.description} />
+                    <p class="text-sm leading-relaxed text-neutral-300 md:text-justify" set:html={sanitizeHtml(founder.description)} />
                 </div>
 
-                <!-- Social Media Links -->
                 <nav aria-label={`${founder.name} social media links`}>
-                    <div class="flex gap-3 sm:gap-4 justify-center sm:justify-start z-10">
-                        {founder.socialLinks.map((link) => (
-                            <a 
-                                href={link.url || '#'} 
-                                target={link.url ? '_blank' : undefined}
-                                rel={link.url ? 'noopener noreferrer' : undefined}
-                                class="text-neutral-400 hover:text-accent transition-all duration-300 p-1 rounded-md hover:bg-accent/40 hover:scale-[1.1]
-                                hover:animate-pop"
+                    <div class="flex gap-3">
+                        {founder.socialLinks.filter((link) => link.url).map((link) => (
+                            <a
+                                href={link.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="rounded-full border border-white/10 bg-white/[0.03] p-2 text-neutral-400 transition-all duration-300 hover:border-outline/40 hover:bg-outline/10 hover:text-outline"
                                 aria-label={`Visit ${founder.name} on ${link.name}`}
-                                aria-disabled={!link.url ? 'true' : undefined}
-                                tabindex={!link.url ? '-1' : undefined}
                             >
-                                <img 
-                                    src={link.icon} 
+                                <img
+                                    src={link.icon}
                                     alt={`${link.name} icon`}
-                                    class="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6"
+                                    class="h-4 w-4"
                                     loading="lazy"
                                 />
                             </a>
                         ))}
                     </div>
                 </nav>
-                <div class="pointer-events-none ">
-                    <div class="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center_10%,black_20%,transparent_95%)] opacity-60"> 
-
-                    <ShootingStars 
-                        client:visible
-                        minDelay={1800}
-                        maxDelay={2000}
-                        minSpeed={6}
-                        maxSpeed={10}
-                        starColor="#1AD6B3"
-                        starHeight={2}
-                        starWidth={20}
-                        trailColor="#8458FF"
-                        />
-                    <StarsBackground client:visible 
-                    starDensity={0.00040}
-                    twinkleProbability={0.9}
-                    maxTwinkleSpeed={2}
-                    />
-                        </div>
-                </div>
             </article>
         ))
     ) : (
         <!-- Empty State -->
         <div class="col-span-full text-center py-12">
             <p class="text-neutral-400 text-lg">
-                No founders information available.
+                No team information available.
             </p>
         </div>
     )}
 </div>
-

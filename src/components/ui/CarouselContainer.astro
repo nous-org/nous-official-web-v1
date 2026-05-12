@@ -15,33 +15,33 @@ const slides: Slide[] = [
     {
         title: "Chatbot flows",
         button: "Demo",
-        href: '/contact-us',
+        href: '/contact',
         target: '_self',
         ariaLabel: 'Button to request ademo or contact',
         src:  chatBotFlows.src      
     },
     {
-        title: "AI Automation",
+        title: "Intelligence Deployment",
         button: "Talk to us",
         src: aiAutomation.src,
-        href: '/contact-us',
+        href: '/contact',
         target: '_self',
         ariaLabel: 'Button to request ademo or contact',
     },
     {
-        title: "Custom Web Development",
+        title: "AI-Ready Systems",
         button: "Portfolio",
         src: webDevelopment.src,
         href: '/portfolio',
         target: '_self',
-        ariaLabel: 'Button to view our web development portfolio',
+        ariaLabel: 'Button to view our portfolio',
     },
     
 ]
 ---
 <div class="overflow-hidden md:h-[78vh] mt-52 relative appear-subtle"
     >
-    <div class="absolute inset-0 top-5 bg-gradient-to-b from-primary-blue via-primary-purple to-primary-black [mask-image:radial-gradient(ellipse_at_center_40%,black_10%,transparent_60%)] opacity-100 z-0"/>
+    <div class="absolute inset-0 top-5 bg-gradient-to-b from-primary-blue via-outline/20 to-primary-black [mask-image:radial-gradient(ellipse_at_center_40%,black_10%,transparent_60%)] opacity-100 z-0"/>
     <Carousel 
     slides={slides} 
     client:load 

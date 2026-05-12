@@ -1,117 +1,388 @@
 ---
-import type { Button } from "@/types/callToAction";
 import Layout from "@/layouts/Layout.astro";
 import ContentPagesHero from "@/components/ui/ContentPagesHero.astro";
-// import { ServicesMarquee } from "@/components/react/ServicesMarquee";
-import OurServices from "@/components/ui/OurServices.astro";
-import Contact from "@/components/ui-main-components/Contact.astro";
-import ServicesCards from "@/components/ui/ServicesCards.astro";
-import WorkProcess from "@/components/ui/WorkProcess.astro";
 import ServiceSchema from "@/components/seo/ServicesSchema.astro";
 import BreadcrumbSchema from "@/components/seo/BreadCrumbs.astro";
-import FrequentlyQuestions from "@/components/ui/FrequentlyQuestions.astro";
+import FAQSchema from "@/components/seo/FaqSchema.astro";
 
-
-interface Hero {
-    title: string;
-    subtitle: string;
-    buttons: Button[];
-}
 const breadcrumbs = [
-    { name: "Home", url: "/" },
-    { name: "Services", url: "/services" },
+  { name: "Home", url: "/" },
+  { name: "Services", url: "/services" },
 ];
 
-const HERO: Hero = {
-    title: "What Nous does?",
-    subtitle:"Sharp takes, field notes, and working playbooks on AI, web, and tech decisions—written for people who ship.",
-    
-    buttons: [
-        {
-            text: "Book a 15-min intro call",
-            variant: "primary",
-            href: "/contact-us",
-            scheduleIcon: false,
-            strokeColor: "#060114",
-            arrowIcon: true,
-            target: "_self",
-            ariaLabel: "Contact",
-        },
-        {
-            text: "About us",
-            variant: "primaryPurple",
-            href: "/about-us",
-            scheduleIcon: false,
-            strokeColor: "#D0BFFF",
-            arrowIcon: false,
-            target: "_self",
-            ariaLabel: "Request a demo",
-        },
-    ],
+const hero = {
+  title: "AI deployment for real organizations.",
+  subtitle: "NOUS helps teams build around intelligence.",
+  text: "From Costa Rica to Latin America, we work with leaders, operators, and technical teams to turn AI capability into production systems people can use every day.",
 };
-const { title, subtitle, buttons } = HERO;
+
+const services = [
+  {
+    eyebrow: "01",
+    title: "AI Transformation Strategy",
+    description:
+      "We help organizations decide where intelligence belongs, what should be built first, and how AI should change the way work actually happens.",
+    points: [
+      "Opportunity diagnostics and executive roadmaps.",
+      "Priority workflow selection.",
+      "Governance, risk, and adoption planning.",
+    ],
+  },
+  {
+    eyebrow: "02",
+    title: "Intelligence Deployment",
+    description:
+      "We design and deploy agents, copilots, automations, and decision-support systems that connect AI models to real tasks, tools, data, and processes.",
+    points: [
+      "Customer service and operations agents.",
+      "Workflow automation and handoff design.",
+      "Human-in-the-loop controls and evaluations.",
+    ],
+  },
+  {
+    eyebrow: "03",
+    title: "AI-Ready Systems",
+    description:
+      "AI rarely works alone. We build the software, integrations, internal tools, web products, and technical foundations required to make intelligence useful.",
+    points: [
+      "Custom software and internal platforms.",
+      "Data, API, CRM, and workflow integrations.",
+      "Modernization of systems around AI.",
+    ],
+  },
+  {
+    eyebrow: "04",
+    title: "Training & Adoption",
+    description:
+      "Deployment only matters when teams trust it and use it. We help people understand the system, adopt new workflows, and improve from real usage.",
+    points: [
+      "Team training and operating playbooks.",
+      "Change management and rollout support.",
+      "Measurement, iteration, and continuous improvement.",
+    ],
+  },
+];
+
+const deploymentSteps = [
+  {
+    title: "Diagnose the work",
+    text: "We start with the organization as it is: goals, bottlenecks, systems, permissions, data, customer touchpoints, and the workflows where better intelligence could create leverage.",
+  },
+  {
+    title: "Choose the priority workflows",
+    text: "We narrow the field to the use cases that are valuable, feasible, measurable, and close enough to real operations to matter.",
+  },
+  {
+    title: "Design around the system",
+    text: "We map how AI should connect to people, data, tools, approvals, controls, and existing business processes before anything is treated as production.",
+  },
+  {
+    title: "Build, test, and deploy",
+    text: "We ship working systems, test them against real scenarios, tune the experience, and deploy them into the environment where the work happens.",
+  },
+  {
+    title: "Train, measure, improve",
+    text: "We help teams adopt the new workflow, watch how it performs, and keep improving the system as models, tools, and organizational needs evolve.",
+  },
+];
+
+const opportunities = [
+  {
+    title: "Customer operations",
+    text: "First-contact agents, support workflows, lead qualification, service triage, and follow-up systems that feel clear instead of robotic.",
+  },
+  {
+    title: "Internal productivity",
+    text: "Knowledge assistants, document workflows, research support, reporting, meeting prep, and operational automation for teams that repeat too much manual work.",
+  },
+  {
+    title: "Commercial systems",
+    text: "Sales enablement, CRM intelligence, proposal workflows, campaign support, pipeline operations, and decision systems for revenue teams.",
+  },
+  {
+    title: "Technical modernization",
+    text: "Web applications, internal portals, integrations, databases, APIs, and infrastructure that make the organization ready for AI deployment.",
+  },
+  {
+    title: "Decision support",
+    text: "Systems that help teams reason over data, policies, customer context, operational constraints, and complex tradeoffs with more consistency.",
+  },
+  {
+    title: "Training and governance",
+    text: "Practical AI literacy, usage guidelines, review loops, permissions, evaluation criteria, and rollout plans for responsible adoption.",
+  },
+];
+
+const principles = [
+  {
+    title: "Deployment over demos",
+    text: "A prototype is useful only if it points toward a system people can actually rely on.",
+  },
+  {
+    title: "People stay in the loop",
+    text: "The best AI systems increase judgment, speed, and consistency without hiding accountability.",
+  },
+  {
+    title: "Technology is chosen for the job",
+    text: "We work across models, tools, and software patterns instead of forcing every problem into one stack.",
+  },
+  {
+    title: "Controls are part of the product",
+    text: "Permissions, data boundaries, evaluations, handoffs, and escalation paths are designed from the beginning.",
+  },
+  {
+    title: "The system should improve",
+    text: "AI deployment is not a one-time install. It is an operating capability that gets better with usage and feedback.",
+  },
+];
+
+const faqs = [
+  {
+    question: "Do we need a clear AI use case before talking to NOUS?",
+    answer:
+      "No. Many organizations start with a broad sense that something should work better. We help identify the highest-leverage opportunities and decide what is worth building first.",
+  },
+  {
+    question: "Do you only build AI systems?",
+    answer:
+      "No. AI is the center of our work, but deployment often requires software, integrations, infrastructure, websites, internal tools, data workflows, and training. NOUS handles the surrounding technology so intelligence can actually work.",
+  },
+  {
+    question: "Can NOUS work with our existing team or vendors?",
+    answer:
+      "Yes. We can work with leadership, operators, internal technical teams, agencies, software vendors, and existing technology partners. The goal is to make deployment practical inside the organization you already have.",
+  },
+  {
+    question: "What does a successful deployment look like?",
+    answer:
+      "A successful deployment is used in daily work, connects to real tools and data, respects the right controls, and creates an outcome the organization can observe, measure, and improve.",
+  },
+  {
+    question: "How do you choose which AI project to deploy first?",
+    answer:
+      "We look for the intersection of value, feasibility, adoption, and operational clarity. The best first deployment is usually specific enough to ship, important enough to matter, and measurable enough to learn from.",
+  },
+  {
+    question: "Can NOUS work with our existing tools and systems?",
+    answer:
+      "Yes. Most deployments need to connect with the tools an organization already uses, including CRMs, e-mail, WhatsApp, internal databases, documents, websites, APIs, and operational workflows.",
+  },
+  {
+    question: "Which AI models or providers do you work with?",
+    answer:
+      "We stay model-flexible. The right provider depends on the use case, data requirements, cost profile, latency, reliability, and the level of reasoning or multimodal capability the workflow needs.",
+  },
+  {
+    question: "What happens after the first deployment?",
+    answer:
+      "We measure how the system performs, improve it from real usage, train the team, and identify the next workflows where intelligence can create leverage. The goal is to build an operating capability, not a one-time demo.",
+  },
+];
 ---
 
 <Layout
-    title="NOUS Services"
-    backgroundType="primary"
-    useContainer={true}
-    showAurora={false}
-    paddingType="zero"
-    canonical="/services"
-    ogImage="/images/og-default.jpg"
-    tags={[
-        "AI consulting",
-        "web development", 
-        "business automation",
-        "machine learning",
-        "digital transformation",
-        "consultoría en IA",
-        "desarrollo web",
-        "automatización de procesos",
-        "aprendizaje automático",
-        "transformación digital",
-        "servicios de IA",
-        "desarrollo de software",
-        "consultoría tecnológica",
-        "inteligencia artificial",
-    ]}
-    includeOrganizationSchema={false}
+  title="Services / NOUS"
+  description="NOUS helps organizations in Costa Rica and Latin America deploy AI into real workflows through strategy, agents, automation, AI-ready systems, training, and adoption."
+  backgroundType="primary"
+  useContainer={false}
+  showAurora={false}
+  paddingType="zero"
+  canonical="/services"
+  ogImage="/images/og-default.jpg"
+  tags={[
+    "AI deployment",
+    "AI transformation",
+    "intelligence deployment",
+    "AI consulting",
+    "AI agents",
+    "business automation",
+    "AI-ready systems",
+    "Costa Rica AI company",
+    "Latin America AI company",
+    "technology consulting",
+    "software development",
+    "workflow automation",
+    "AI adoption",
+  ]}
+  includeOrganizationSchema={false}
 >
-    <BreadcrumbSchema items={breadcrumbs} />
-    <ServiceSchema
-    serviceName="AI Consulting & Strategy"
-    description="Strategic AI implementation consulting to help businesses leverage artificial intelligence for competitive advantage"
-    category="Technology Consulting"
-    price="600"
-  />
-  
+  <BreadcrumbSchema items={breadcrumbs} />
+  <FAQSchema faqs={faqs} />
+
   <ServiceSchema
-    serviceName="Custom Web Development"
-    description="Bespoke web application development using modern technologies and best practices"
-    category="Software Development"
-    price="500"
+    serviceName="AI Transformation Strategy"
+    description="AI opportunity diagnostics, deployment roadmaps, workflow prioritization, governance planning, and adoption strategy for organizations in Costa Rica and Latin America."
+    category="AI Strategy"
+    provider="NOUS"
   />
-  
   <ServiceSchema
-    serviceName="Business Process Automation"
-    description="Automate repetitive tasks and optimize workflows using AI and custom software solutions"
-    category="Business Automation"
-    price="1000"
+    serviceName="Intelligence Deployment"
+    description="Design, build, test, and deployment of AI agents, copilots, automations, and decision-support systems connected to real business workflows."
+    category="AI Deployment"
+    provider="NOUS"
   />
-    <div class="px-4">
-        <ContentPagesHero title={title} text={subtitle} buttons={buttons} />
-        <OurServices />
-        <ServicesCards />
-        <WorkProcess />
-    </div>
-    <!-- <div class="px-0 md:px-4">
-        <ServicesMarquee client:load />
-    </div> -->
-    <div class="px-4">
-        <FrequentlyQuestions />
+  <ServiceSchema
+    serviceName="AI-Ready Systems"
+    description="Software, integrations, web products, internal tools, APIs, data workflows, and technical infrastructure required to deploy AI reliably."
+    category="Technology Services"
+    provider="NOUS"
+  />
+  <ServiceSchema
+    serviceName="Training and Adoption"
+    description="Team training, operating playbooks, rollout support, governance guidance, and continuous improvement for AI adoption."
+    category="AI Adoption"
+    provider="NOUS"
+  />
+
+  <ContentPagesHero title={hero.title} subtitle={hero.subtitle} text={hero.text} />
+
+  <section id="services" class="mx-auto max-w-6xl px-4 pb-20 sm:pb-24" aria-labelledby="services-heading">
+    <div class="grid gap-6 lg:grid-cols-2 lg:items-end lg:gap-4">
+      <div>
+        <p class="text-sm font-medium uppercase tracking-[0.2em] text-outline">What we do</p>
+        <h2 id="services-heading" class="mt-4 max-w-3xl text-3xl font-medium leading-tight text-white sm:text-5xl">
+          Build the systems that make AI useful.
+        </h2>
+      </div>
+      <p class="max-w-3xl text-left text-base leading-relaxed text-neutral-300 md:text-justify sm:text-lg lg:max-w-none">
+        The next wave of transformation will not be won by organizations that simply try more AI tools. It will be won by teams that redesign important workflows around intelligence, connect models to the systems they already use, and turn that capability into reliable day-to-day work.
+      </p>
     </div>
 
+    <div class="mt-8 grid gap-4 md:grid-cols-2">
+      {services.map((service) => (
+        <article class="group relative overflow-hidden rounded-[1.5rem] border border-outline/15 bg-white/[0.025] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.18)] backdrop-blur transition-colors duration-200 hover:border-outline/35 hover:bg-outline/[0.055] sm:p-8">
+          <div class="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-outline/50 to-transparent" aria-hidden="true" />
+          <div class="flex items-start justify-between gap-6">
+            <h3 class="text-2xl font-medium leading-tight text-white sm:text-3xl">{service.title}</h3>
+            <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-outline/20 bg-outline/10 text-xs font-medium text-outline">
+              {service.eyebrow}
+            </span>
+          </div>
+          <p class="mt-5 text-left text-sm leading-relaxed text-neutral-300 md:text-justify sm:text-base">
+            {service.description}
+          </p>
+          <ul class="mt-6 space-y-3">
+            {service.points.map((point) => (
+              <li class="flex gap-3 text-sm leading-relaxed text-neutral-400">
+                <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-outline" aria-hidden="true"></span>
+                <span>{point}</span>
+              </li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </section>
 
-    <Contact />
+  <section class="mx-auto max-w-6xl px-4 py-20 sm:py-24" aria-labelledby="deployment-heading">
+    <div class="grid gap-6 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+      <article class="rounded-[2rem] border border-outline/15 bg-[radial-gradient(circle_at_50%_0%,rgba(220,212,255,0.14),transparent_42%),rgba(255,255,255,0.025)] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.2)] backdrop-blur sm:p-10">
+        <p class="text-sm font-medium uppercase tracking-[0.2em] text-outline">Deployment model</p>
+        <h2 id="deployment-heading" class="mt-4 text-3xl font-medium leading-tight text-white sm:text-5xl">
+          From AI ambition to production work.
+        </h2>
+        <p class="mt-5 text-left text-base leading-relaxed text-neutral-300 md:text-justify sm:text-lg">
+          We start from the operating reality of the organization, not from a generic AI catalog. The work is to understand where intelligence can create measurable leverage, then design and deploy the surrounding system so people can trust it, use it, and improve it.
+        </p>
+      </article>
+
+      <ol class="grid gap-3">
+        {deploymentSteps.map((step, index) => (
+          <li class="grid gap-4 rounded-[1.25rem] border border-white/10 bg-white/[0.025] p-5 backdrop-blur sm:grid-cols-[3.5rem_1fr] sm:items-start">
+            <span class="flex h-11 w-11 items-center justify-center rounded-full border border-outline/25 bg-outline/10 text-sm font-medium text-outline">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <div>
+              <h3 class="text-lg font-medium text-white">{step.title}</h3>
+              <p class="mt-2 text-left text-sm leading-relaxed text-neutral-400 md:text-justify sm:text-base">{step.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-20 sm:py-24" aria-labelledby="opportunities-heading">
+    <header class="max-w-4xl">
+      <p class="text-sm font-medium uppercase tracking-[0.2em] text-outline">Where we help</p>
+      <h2 id="opportunities-heading" class="mt-4 text-3xl font-medium leading-tight text-white sm:text-5xl">
+        We deploy intelligence where work happens.
+      </h2>
+      <p class="mt-5 text-left text-base leading-relaxed text-neutral-300 md:text-justify sm:text-lg">
+        NOUS can start with one focused workflow or support a broader transformation across teams. The common thread is practical deployment: systems connected to real work, not isolated experiments.
+      </p>
+    </header>
+
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {opportunities.map((item) => (
+        <article class="rounded-[1.25rem] border border-outline/15 bg-white/[0.025] p-5 backdrop-blur transition-colors duration-200 hover:border-outline/35 hover:bg-outline/[0.05]">
+          <h3 class="text-lg font-medium text-white">{item.title}</h3>
+          <p class="mt-3 text-left text-sm leading-relaxed text-neutral-400 md:text-justify">{item.text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-20 sm:py-24" aria-labelledby="principles-heading">
+    <div class="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+      <div>
+        <p class="text-sm font-medium uppercase tracking-[0.2em] text-outline">How we think</p>
+        <h2 id="principles-heading" class="mt-4 text-3xl font-medium leading-tight text-white sm:text-5xl">
+          Deployment is an operating discipline.
+        </h2>
+      </div>
+      <div class="grid gap-3">
+        {principles.map((principle) => (
+          <article class="grid gap-3 rounded-[1.25rem] border border-white/10 bg-white/[0.025] p-5 backdrop-blur sm:grid-cols-[0.7fr_1fr]">
+            <h3 class="text-lg font-medium text-white">{principle.title}</h3>
+            <p class="text-left text-sm leading-relaxed text-neutral-400 md:text-justify sm:text-base">{principle.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-20 sm:py-24" aria-labelledby="faq-heading">
+    <header class="max-w-4xl">
+      <p class="text-sm font-medium uppercase tracking-[0.2em] text-outline">Questions</p>
+      <h2 id="faq-heading" class="mt-4 text-3xl font-medium leading-tight text-white sm:text-5xl">
+        Before we build, we get clear.
+      </h2>
+    </header>
+    <div class="mt-8 grid gap-4 md:grid-cols-2">
+      {faqs.map((faq) => (
+        <details class="group rounded-[1.25rem] border border-outline/15 bg-white/[0.025] p-5 backdrop-blur transition-colors duration-200 open:border-outline/35 open:bg-outline/[0.05]">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-lg font-medium text-white">
+            {faq.question}
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-outline/25 text-outline transition-transform group-open:rotate-45" aria-hidden="true">
+              +
+            </span>
+          </summary>
+          <p class="mt-4 text-left text-sm leading-relaxed text-neutral-400 md:text-justify sm:text-base">{faq.answer}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 pb-28 pt-10 sm:pb-36" aria-labelledby="services-cta-heading">
+    <article class="grid gap-8 rounded-[2rem] border border-outline/15 bg-[radial-gradient(circle_at_20%_0%,rgba(220,212,255,0.16),transparent_36%),rgba(255,255,255,0.025)] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.22)] backdrop-blur sm:p-10 lg:grid-cols-[1fr_auto] lg:items-center">
+      <div>
+        <p class="text-sm font-medium uppercase tracking-[0.2em] text-outline">Start with one workflow</p>
+        <h2 id="services-cta-heading" class="mt-4 max-w-3xl text-3xl font-medium leading-tight text-white sm:text-5xl">
+          Find the AI opportunity worth deploying first.
+        </h2>
+        <p class="mt-5 max-w-3xl text-left text-base leading-relaxed text-neutral-300 md:text-justify sm:text-lg">
+          Bring the problem, the process, or the ambition. We will help turn it into a practical path: what to build, what to connect, what to measure, and how to make it useful for the team.
+        </p>
+      </div>
+      <a
+        href="/contact"
+        class="inline-flex min-h-12 items-center justify-center rounded-full border border-transparent bg-outline px-6 py-3 text-sm font-medium uppercase tracking-[0.12em] text-primary-black transition-colors hover:bg-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/60"
+        aria-label="Talk to NOUS about AI deployment"
+      >
+        Talk to NOUS
+      </a>
+    </article>
+  </section>
 </Layout>

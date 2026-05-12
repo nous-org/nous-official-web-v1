@@ -21,6 +21,7 @@ interface CardDemoProps {
   description?: string;
   icons?: IconConfig[];
   iconSet?: "default" | "secondary";
+  justifyDescription?: boolean;
 }
 
 
@@ -41,11 +42,12 @@ function useReducedMotion(): boolean {
 
 export function CardDemo({
   borderColor = "border-outline",
-  accentColor = "primary-turquoise",
-  title = "Make AI your unfair advantage.",
-  description = `We build on leading AI platforms to remove busywork and unlock growth.`,
+  accentColor = "outline",
+  title = "Bring leading AI models into real work.",
+  description = `The intelligence layer is advancing fast. NOUS helps organizations choose the right models, connect them to tools and data, and deploy them where work happens.`,
   icons,
-  iconSet = "default"
+  iconSet = "default",
+  justifyDescription = false
 }: CardDemoProps) {
 
   const selectedIcons = useMemo<IconConfig[]>(
@@ -61,7 +63,7 @@ export function CardDemo({
         <Skeleton icons={selectedIcons} accentColor={accentColor} />
       </CardSkeletonContainer>
       <CardTitle>{title}</CardTitle>
-      <CardDescription>{description}</CardDescription>
+      <CardDescription className={justifyDescription ? "text-left md:text-justify" : ""}>{description}</CardDescription>
     </Card>
   );
 }
@@ -86,12 +88,12 @@ const Skeleton = React.memo(function Skeleton({
     if (!scope.current || reducedMotion) return;
 
     const controls = animate(
-      ".circle", 
+      ".circle",
       { scale: SCALE, y: Y },
       { ...MOTION_OPTS, delay: stagger(0.8) }
     );
 
-    return controls.cancel; 
+    return controls.cancel;
   }, [animate, reducedMotion]);
 
   return (
@@ -99,7 +101,7 @@ const Skeleton = React.memo(function Skeleton({
       ref={scope}
       className="relative flex h-full items-center justify-center overflow-hidden p-8"
     >
-      <div className="flex shrink-0 flex-row items-center justify-center gap-2">
+      <div className="flex shrink-0 flex-row items-center justify-center gap-1.5 sm:gap-2 md:gap-3">
         {icons.map((cfg, idx) => {
           const Icon = cfg.component;
           return (
@@ -130,8 +132,8 @@ function Card({
   return (
     <div
       className={cn(
-        `group w-auto max-w-full rounded-xl border bg-primary-black 
-         p-6 md:max-w-[30rem] max-h-[35rem]`,
+        `group flex h-[28rem] w-auto max-w-full flex-col rounded-xl border bg-primary-black
+         p-6 md:h-[35rem] md:max-w-[30rem]`,
         borderColor,
         className
       )}
@@ -191,9 +193,9 @@ function CardSkeletonContainer({
         "z-40 h-[15rem] rounded-xl md:h-[20rem]",
         className,
         showGradient &&
-          "bg-primary-purple/10 [mask-image:radial-gradient(50%_50%_at_50%_50%,#1AD6B3_20%,transparent_100%)]"
+          "bg-outline/10 [mask-image:radial-gradient(50%_50%_at_50%_50%,#DCD4FF_20%,transparent_100%)]"
       )}
-      style={{ "--accent": `var(--${accentColor})` } as React.CSSProperties}
+      style={{ "--accent": `var(--color-${accentColor})` } as React.CSSProperties}
     >
       {children}
     </div>
@@ -209,15 +211,17 @@ const Circle = React.memo(function Circle({
   className?: string;
   accentColor: string;
 }) {
- 
+
   return (
     <motion.div
       className={cn(
-        "flex h-16 w-16 items-center justify-center rounded-full shadow-[inset_0px_0px_30px_0_rgba(0,0,0,0.1)]",
+        "grid h-16 w-16 shrink-0 place-items-center rounded-full border border-outline/20 shadow-[inset_0px_0px_30px_0_rgba(220,212,255,0.08),0_10px_30px_-20px_rgba(220,212,255,0.7)]",
         className
       )}
-      style={{ backgroundColor: `var(--${accentColor})40` }}
-      initial={false} 
+      style={{
+        backgroundColor: `color-mix(in srgb, var(--color-${accentColor}) 18%, transparent)`
+      }}
+      initial={false}
     >
       {children}
     </motion.div>
@@ -234,12 +238,11 @@ export const ClaudeLogo = ({ className }: { className?: string }) => {
       imageRendering="optimizeQuality"
       fillRule="evenodd"
       clipRule="evenodd"
-      viewBox="0 0 512 512"
+      viewBox="100 135 320 250"
       className={className}
     >
-      <rect fill="#CC9B7A" width="512" height="512" rx="104.187" ry="105.042" />
       <path
-        fill="#1F1F1E"
+        fill="currentColor"
         fillRule="nonzero"
         d="M318.663 149.787h-43.368l78.952 212.423 43.368.004-78.952-212.427zm-125.326 0l-78.952 212.427h44.255l15.932-44.608 82.846-.004 16.107 44.612h44.255l-79.126-212.427h-45.317zm-4.251 128.341l26.91-74.701 27.083 74.701h-53.993z"
       />
@@ -273,7 +276,7 @@ export const GeminiLogo = ({ className }: { className?: string }) => {
     >
       <path
         d="M16 8.016A8.522 8.522 0 008.016 16h-.032A8.521 8.521 0 000 8.016v-.032A8.521 8.521 0 007.984 0h.032A8.522 8.522 0 0016 7.984v.032z"
-        fill="url(#prefix__paint0_radial_980_20147)"
+        fill="currentColor"
       />
       <defs>
         <radialGradient
@@ -331,15 +334,15 @@ export const MetaIconOutline = ({ className }: { className?: string }) => {
         </linearGradient>
       </defs>
       <path
-        fill="#0081fb"
+        fill="currentColor"
         d="M31.06,126c0,11,2.41,19.41,5.56,24.51A19,19,0,0,0,53.19,160c8.1,0,15.51-2,29.79-21.76,11.44-15.83,24.92-38,34-52l15.36-23.6c10.67-16.39,23-34.61,37.18-47C181.07,5.6,193.54,0,206.09,0c21.07,0,41.14,12.21,56.5,35.11,16.81,25.08,25,56.67,25,89.27,0,19.38-3.82,33.62-10.32,44.87C271,180.13,258.72,191,238.13,191V160c17.63,0,22-16.2,22-34.74,0-26.42-6.16-55.74-19.73-76.69-9.63-14.86-22.11-23.94-35.84-23.94-14.85,0-26.8,11.2-40.23,31.17-7.14,10.61-14.47,23.54-22.7,38.13l-9.06,16c-18.2,32.27-22.81,39.62-31.91,51.75C84.74,183,71.12,191,53.19,191c-21.27,0-34.72-9.21-43-23.09C3.34,156.6,0,141.76,0,124.85Z"
       />
       <path
-        fill="url(#linear-gradient)"
+        fill="currentColor"
         d="M24.49,37.3C38.73,15.35,59.28,0,82.85,0c13.65,0,27.22,4,41.39,15.61,15.5,12.65,32,33.48,52.63,67.81l7.39,12.32c17.84,29.72,28,45,33.93,52.22,7.64,9.26,13,12,19.94,12,17.63,0,22-16.2,22-34.74l27.4-.86c0,19.38-3.82,33.62-10.32,44.87C271,180.13,258.72,191,238.13,191c-12.8,0-24.14-2.78-36.68-14.61-9.64-9.08-20.91-25.21-29.58-39.71L146.08,93.6c-12.94-21.62-24.81-37.74-31.68-45C107,40.71,97.51,31.23,82.35,31.23c-12.27,0-22.69,8.61-31.41,21.78Z"
       />
       <path
-        fill="url(#linear-gradient-2)"
+        fill="currentColor"
         d="M82.35,31.23c-12.27,0-22.69,8.61-31.41,21.78C38.61,71.62,31.06,99.34,31.06,126c0,11,2.41,19.41,5.56,24.51L10.14,167.91C3.34,156.6,0,141.76,0,124.85,0,94.1,8.44,62.05,24.49,37.3,38.73,15.35,59.28,0,82.85,0Z"
       />
     </svg>
@@ -359,7 +362,7 @@ export const AstroLogo = ({ className }: { className?: string }) => {
           </clipPath>
           </defs>
       </svg>
-  
+
     )
   }
   export const NextLogo = ({ className }: { className?: string }) => {
@@ -375,97 +378,168 @@ export const AstroLogo = ({ className }: { className?: string }) => {
     )
   }
 
-  
+
 export const ReactLogo = ({className}: {className?: string}) => {
     return (
-      <svg width="61" height="61" viewBox="0 0 61 61" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="61" height="61" viewBox="0 0 61 61" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
   <path d="M48.4096 21.8475C47.8136 21.6439 47.2133 21.4543 46.6087 21.2787C46.709 20.8707 46.8015 20.4604 46.8862 20.0478C48.2499 13.4153 47.3582 8.07208 44.3148 6.31314C41.4007 4.6253 36.6216 6.38424 31.8005 10.5898C31.3265 11.0048 30.8622 11.4322 30.4076 11.872C30.1045 11.5799 29.7937 11.2939 29.4751 11.0141C24.4221 6.51712 19.3574 4.62297 16.3174 6.38774C13.4033 8.07907 12.5373 13.1018 13.7647 19.3881C13.8875 20.0097 14.0254 20.6287 14.1785 21.2449C13.4819 21.4424 12.7911 21.6601 12.1071 21.8977C6.19039 23.9667 2.40674 27.2106 2.40674 30.5746C2.40674 34.0506 6.46781 37.5358 12.6375 39.6491C13.138 39.8193 13.6431 39.9774 14.1528 40.1235C13.9873 40.7833 13.8408 41.4504 13.7134 42.1249C12.5478 48.3028 13.4569 53.2066 16.3652 54.8874C19.369 56.6231 24.4081 54.8396 29.3201 50.5384C29.7086 50.1981 30.0971 49.8387 30.4857 49.4602C30.9768 49.935 31.4819 50.3959 32.001 50.8427C36.7568 54.9434 41.4531 56.5997 44.3567 54.9142C47.3582 53.1728 48.3339 47.9041 47.0668 41.4943C46.9697 41.0047 46.8578 40.5051 46.7311 39.9953C47.0855 39.8904 47.4324 39.782 47.772 39.6701C54.183 37.5405 58.3595 34.0972 58.3595 30.5781C58.3572 27.1978 54.4523 23.9329 48.4096 21.8475ZM33.373 12.3966C37.5028 8.79361 41.3634 7.37153 43.1235 8.38797C44.9967 9.47084 45.7252 13.8373 44.5479 19.5641C44.4702 19.9371 44.3863 20.3089 44.2961 20.6796C41.8315 20.119 39.3323 19.7234 36.8151 19.4953C35.3739 17.4191 33.794 15.4427 32.0861 13.5797C32.5042 13.1741 32.9324 12.7797 33.3706 12.3966H33.373ZM18.9273 33.4491C19.4331 34.4282 19.962 35.3953 20.5137 36.3504C21.0755 37.3248 21.6611 38.2849 22.2703 39.2306C20.5382 39.0424 18.817 38.765 17.1135 38.3995C17.6078 36.8003 18.2162 35.1393 18.9273 33.4491ZM18.9273 27.8156C18.2279 26.1615 17.6357 24.5343 17.1497 22.963C18.7466 22.6052 20.4484 22.3126 22.2225 22.0912C21.628 23.019 21.0561 23.9604 20.5067 24.9155C19.9573 25.8705 19.4297 26.8372 18.9238 27.8156H18.9273ZM20.1978 30.6329C20.9345 29.0966 21.7279 27.5898 22.578 26.1126C23.4274 24.6361 24.3315 23.1935 25.2905 21.7846C26.955 21.6587 28.6615 21.5923 30.3854 21.5923C32.1094 21.5923 33.8264 21.6587 35.4898 21.7858C36.4386 23.1915 37.3373 24.6291 38.1859 26.0986C39.0344 27.5681 39.8383 29.0679 40.5976 30.5979C39.8484 32.1397 39.0465 33.6527 38.1917 35.1369C37.3439 36.6134 36.4502 38.0603 35.5107 39.4777C33.8497 39.5943 32.1304 39.6584 30.3819 39.6584C28.6335 39.6584 26.9468 39.6036 25.3161 39.4976C24.3502 38.084 23.4387 36.6352 22.5815 35.1509C21.7244 33.6667 20.9287 32.1607 20.1943 30.6329H20.1978ZM40.2607 36.334C40.8241 35.3565 41.3649 34.3661 41.8833 33.3628C42.5939 34.9738 43.221 36.6203 43.7623 38.2958C42.0387 38.684 40.2961 38.9816 38.5414 39.1875C39.1335 38.248 39.7066 37.2969 40.2607 36.334ZM41.8599 27.8167C41.344 26.8337 40.8074 25.8624 40.2502 24.9027C39.7062 23.9562 39.1394 23.0213 38.5495 22.0982C40.3341 22.3243 42.0464 22.625 43.6515 22.9922C43.1354 24.6293 42.5375 26.2396 41.8599 27.8167ZM30.4088 15.292C31.5727 16.5639 32.6717 17.8936 33.7017 19.2762C31.4986 19.1712 29.294 19.1712 27.0879 19.2762C28.1754 17.8378 29.2886 16.5031 30.4088 15.292ZM17.5203 8.45907C19.3924 7.3727 23.5315 8.92532 27.8945 12.8034C28.1731 13.0517 28.454 13.3116 28.7337 13.5809C27.0171 15.4436 25.426 17.4183 23.971 19.4918C21.4593 19.7181 18.965 20.1074 16.5039 20.6574C16.3617 20.0855 16.2335 19.5097 16.1193 18.93C15.0644 13.5412 15.7626 9.479 17.5203 8.45907ZM14.7916 37.8156C14.3253 37.6827 13.8649 37.5385 13.4103 37.3831C10.6827 36.4506 8.42957 35.2337 6.88277 33.9084C5.498 32.7206 4.79629 31.5351 4.79629 30.5746C4.79629 28.5336 7.83393 25.9296 12.8998 24.1637C13.5362 23.9422 14.1781 23.7398 14.8254 23.5564C15.5777 25.9742 16.4889 28.3398 17.553 30.6376C16.4763 32.9672 15.5538 35.365 14.7916 37.8156ZM27.7453 48.734C25.5737 50.6364 23.3986 51.985 21.4812 52.6646C19.7584 53.2742 18.3864 53.2917 17.5576 52.8126C15.7929 51.7927 15.0585 47.854 16.0598 42.5713C16.1787 41.9497 16.3147 41.328 16.4678 40.7063C18.9535 41.2417 21.4729 41.6074 24.0083 41.8009C25.4776 43.8852 27.0818 45.871 28.8107 47.7456C28.4633 48.0871 28.1078 48.4158 27.7453 48.734ZM30.4752 46.0274C29.3422 44.8024 28.2115 43.4467 27.1088 41.9897C28.1805 42.0317 29.2715 42.0526 30.3819 42.0526C31.5219 42.0526 32.6503 42.0282 33.7623 41.978C32.7361 43.3828 31.639 44.7344 30.4752 46.0274ZM44.9897 49.36C44.6563 51.1597 43.9861 52.3603 43.1573 52.8406C41.3937 53.864 37.6229 52.534 33.5571 49.0266C33.0909 48.6256 32.6246 48.1955 32.1502 47.7444C33.8454 45.8625 35.412 43.8686 36.8396 41.7764C39.389 41.5603 41.9205 41.1689 44.4162 40.6049C44.5304 41.0665 44.6314 41.5188 44.7192 41.9617C45.2799 44.7942 45.3603 47.3563 44.9897 49.36ZM47.0179 37.3959C46.7125 37.4973 46.3978 37.5953 46.0784 37.6908C45.2959 35.2616 44.3492 32.8883 43.2447 30.5875C44.3077 28.3173 45.2174 25.9785 45.9676 23.5867C46.54 23.7533 47.096 23.9282 47.631 24.1135C52.8087 25.8993 55.9676 28.5429 55.9676 30.5746C55.9676 32.7427 52.5558 35.5566 47.0179 37.3959Z" fill="#FFF"/>
   <path d="M30.3817 35.5811C31.3737 35.5843 32.3443 35.2931 33.1707 34.7443C33.9971 34.1955 34.6421 33.4138 35.024 32.4983C35.4058 31.5827 35.5074 30.5744 35.3159 29.601C35.1243 28.6277 34.6482 27.7331 33.9479 27.0305C33.2476 26.3279 32.3546 25.8489 31.3818 25.6542C30.4091 25.4594 29.4005 25.5577 28.4837 25.9366C27.5669 26.3155 26.7831 26.9579 26.2316 27.7825C25.6801 28.6071 25.3858 29.5768 25.3858 30.5688C25.3844 31.2261 25.5125 31.8771 25.7629 32.4848C26.0133 33.0925 26.381 33.6448 26.845 34.1103C27.3089 34.5758 27.8601 34.9453 28.4669 35.1977C29.0738 35.45 29.7244 35.5803 30.3817 35.5811Z" fill="#FFF"/>
   </svg>
-  
+
     )
   }
-  
+
 
   export const BDLogo = ({className}: {className?: string}) => {
     return (
       <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
   <path d="M30.5043 2.75586H4.98309C4.27727 2.75586 3.70703 3.3261 3.70703 4.03192V12.9644H31.7804V4.03192C31.7804 3.3261 31.2102 2.75586 30.5043 2.75586ZM8.81128 9.45519C7.93 9.45519 7.2162 8.74139 7.2162 7.86011C7.2162 6.97883 7.93 6.26503 8.81128 6.26503C9.69256 6.26503 10.4064 6.97883 10.4064 7.86011C10.4064 8.74139 9.69256 9.45519 8.81128 9.45519ZM3.70703 37.2095C3.70703 37.9154 4.27727 38.4856 4.98309 38.4856H30.5043C31.2102 38.4856 31.7804 37.9154 31.7804 37.2095V28.2771H3.70703V37.2095ZM8.81128 31.7863C9.69256 31.7863 10.4064 32.5001 10.4064 33.3814C10.4064 34.2626 9.69256 34.9764 8.81128 34.9764C7.93 34.9764 7.2162 34.2626 7.2162 33.3814C7.2162 32.5001 7.93 31.7863 8.81128 31.7863ZM3.70703 25.725H31.7804V15.5165H3.70703V25.725ZM8.81128 19.0257C9.69256 19.0257 10.4064 19.7394 10.4064 20.6207C10.4064 21.502 9.69256 22.2158 8.81128 22.2158C7.93 22.2158 7.2162 21.502 7.2162 20.6207C7.2162 19.7394 7.93 19.0257 8.81128 19.0257Z" fill="#FFF"/>
   </svg>
-  
+
     )
   }
 
-  
+
 export const GithubLogo = ({className}: {className?: string}) => {
     return (
-      <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
       <path d="M22.5112 3.78516C20.0477 3.78516 17.6083 4.27038 15.3323 5.21312C13.0563 6.15585 10.9884 7.53765 9.2464 9.2796C5.72836 12.7976 3.75195 17.5691 3.75195 22.5444C3.75195 30.8359 9.13585 37.8706 16.5833 40.3656C17.5212 40.5157 17.8214 39.9341 17.8214 39.4276V36.2573C12.6251 37.3829 11.5183 33.7436 11.5183 33.7436C10.6553 31.5675 9.43599 30.986 9.43599 30.986C7.7289 29.8229 9.56731 29.8604 9.56731 29.8604C11.4432 29.9918 12.4375 31.7926 12.4375 31.7926C14.0695 34.644 16.8271 33.7999 17.8964 33.3497C18.0652 32.1303 18.553 31.3049 19.0782 30.8359C14.9137 30.3669 10.5428 28.7537 10.5428 21.6064C10.5428 19.5241 11.2556 17.8546 12.475 16.5227C12.2874 16.0537 11.6308 14.1027 12.6626 11.5702C12.6626 11.5702 14.2383 11.0637 17.8214 13.4837C19.3033 13.071 20.9166 12.8646 22.5112 12.8646C24.1057 12.8646 25.719 13.071 27.201 13.4837C30.784 11.0637 32.3597 11.5702 32.3597 11.5702C33.3915 14.1027 32.7349 16.0537 32.5473 16.5227C33.7667 17.8546 34.4795 19.5241 34.4795 21.6064C34.4795 28.7724 30.0899 30.3482 25.9066 30.8172C26.5819 31.3987 27.201 32.543 27.201 34.2876V39.4276C27.201 39.9341 27.5011 40.5344 28.4578 40.3656C35.9052 37.8519 41.2704 30.8359 41.2704 22.5444C41.2704 20.0809 40.7851 17.6415 39.8424 15.3655C38.8997 13.0896 37.5179 11.0216 35.7759 9.2796C34.034 7.53765 31.966 6.15585 29.69 5.21312C27.414 4.27038 24.9747 3.78516 22.5112 3.78516Z" fill="#FFF"/>
       </svg>
-      
-  
+
+
     )
   }
 
   export const XaiLogo = ({className}: {className?: string}) => {
     return (
-      <svg fill="currentColor" fillRule="evenodd" height="46" width="46" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Grok</title><path d="M6.469 8.776L16.512 23h-4.464L2.005 8.776H6.47zm-.004 7.9l2.233 3.164L6.467 23H2l4.465-6.324zM22 2.582V23h-3.659V7.764L22 2.582zM22 1l-9.952 14.095-2.233-3.163L17.533 1H22z"></path></svg>
-      
+      <svg fill="currentColor" fillRule="evenodd" height="46" width="46" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className={className}><title>Grok</title><path d="M6.469 8.776L16.512 23h-4.464L2.005 8.776H6.47zm-.004 7.9l2.233 3.164L6.467 23H2l4.465-6.324zM22 2.582V23h-3.659V7.764L22 2.582zM22 1l-9.952 14.095-2.233-3.163L17.533 1H22z"></path></svg>
+
     )
   }
 
+export const SoftwareIcon = ({ className }: { className?: string }) => {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <rect x="4" y="5" width="16" height="14" rx="2.5" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M4.5 9h15" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      <path d="m10 13-2 2 2 2" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="m14 13 2 2-2 2" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+};
+
+export const DataIcon = ({ className }: { className?: string }) => {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <ellipse cx="12" cy="6" rx="6" ry="2.6" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M6 6v5.8c0 1.45 2.7 2.6 6 2.6s6-1.15 6-2.6V6" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M6 11.8v5.2c0 1.45 2.7 2.6 6 2.6s6-1.15 6-2.6v-5.2" stroke="currentColor" strokeWidth="1.7" />
+    </svg>
+  );
+};
+
+export const IntegrationIcon = ({ className }: { className?: string }) => {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="6.5" cy="12" r="2.6" stroke="currentColor" strokeWidth="1.7" />
+      <circle cx="17.5" cy="6.5" r="2.6" stroke="currentColor" strokeWidth="1.7" />
+      <circle cx="17.5" cy="17.5" r="2.6" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M8.8 10.8 15.1 7.7" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      <path d="m8.8 13.2 6.3 3.1" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  );
+};
+
+export const DigitalExperienceIcon = ({ className }: { className?: string }) => {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <rect x="4" y="5" width="16" height="14" rx="2.5" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M8 10h8" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      <path d="M8 14h4.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      <path d="M15.5 14h.01" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+    </svg>
+  );
+};
+
+export const OperationsIcon = ({ className }: { className?: string }) => {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M8 7h8" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      <path d="M8 12h8" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      <path d="M8 17h8" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      <path d="M5.2 7h.01M5.2 12h.01M5.2 17h.01" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+      <path d="M18.8 7h.01M18.8 12h.01M18.8 17h.01" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+    </svg>
+  );
+};
+
+
+const SIDE_AI_LOGO_CLASS =
+  "block h-[1.55rem] w-[1.55rem] sm:h-7 sm:w-7 text-outline/90 opacity-90 drop-shadow-[0_0_12px_rgba(220,212,255,0.18)]";
+
+const XAI_LOGO_CLASS =
+  "block h-[1.35rem] w-[1.35rem] -translate-x-[0.5px] -translate-y-[1.5px] sm:h-[1.55rem] sm:w-[1.55rem] text-outline/90 opacity-90 drop-shadow-[0_0_12px_rgba(220,212,255,0.18)]";
+
+const CENTER_AI_LOGO_CLASS =
+  "block h-10 w-10 sm:h-12 sm:w-12 text-outline/95 opacity-95 drop-shadow-[0_0_18px_rgba(220,212,255,0.34)]";
+
+const SIDE_AI_CIRCLE_CLASS = "h-12 w-12 sm:h-14 sm:w-14";
+const CAPABILITY_ICON_CLASS =
+  "block h-7 w-7 sm:h-8 sm:w-8 text-outline/90 opacity-90 drop-shadow-[0_0_12px_rgba(220,212,255,0.18)]";
+const CAPABILITY_CIRCLE_CLASS = "h-12 w-12 sm:h-14 sm:w-14";
 
 export const DEFAULT_ICONS: IconConfig[] = [
     {
       component: ClaudeLogo,
-      className: "h-10 w-10",
-      containerClassName: "h-12 w-12 circle-1"
+      className: SIDE_AI_LOGO_CLASS,
+      containerClassName: `${SIDE_AI_CIRCLE_CLASS} circle-1`
     },
     {
       component: XaiLogo,
-      className: "h-12 w-12 text-white",
-      containerClassName: "h-16 w-16 circle-2"
+      className: XAI_LOGO_CLASS,
+      containerClassName: `${SIDE_AI_CIRCLE_CLASS} circle-2`
     },
     {
       component: OpenAILogo,
-      className: "h-14 w-14 text-white",
-      containerClassName: "circle-3 h-18 w-18 "
+      className: CENTER_AI_LOGO_CLASS,
+      containerClassName: "circle-3 h-16 w-16 sm:h-20 sm:w-20"
     },
     {
       component: MetaIconOutline,
-      className: "h-12 w-12",
-      containerClassName: "h-16 w-16 circle-4"
+      className: "block h-[1.55rem] w-[2rem] sm:h-7 sm:w-9 text-outline/90 opacity-90 drop-shadow-[0_0_12px_rgba(220,212,255,0.18)]",
+      containerClassName: `${SIDE_AI_CIRCLE_CLASS} circle-4`
     },
     {
       component: GeminiLogo,
-      className: "h-10 w-10",
-      containerClassName: "h-12 w-12 circle-5"
+      className: SIDE_AI_LOGO_CLASS,
+      containerClassName: `${SIDE_AI_CIRCLE_CLASS} circle-5`
     }
   ];
 
   export const SECONDARY_ICONS: IconConfig[] = [
     {
-      component: GithubLogo,
-      className: "h-12 w-12",
-      containerClassName: "h-16 w-16 circle-1"
-    },{
-        component: NextLogo,
-        className: "h-14 w-14 dark:text-white",
-        containerClassName: "h-16 w-16 circle-2"
-      },
-      {
-        component: AstroLogo,
-        className: "h-12 w-12 dark:text-white",
-        containerClassName: "circle-3 h-18 w-18"
-      },
-      {
-        component: ReactLogo,
-        className: "h-14 w-14",
-        containerClassName: "h-16 w-16 circle-4"
-      },
-      {
-        component: BDLogo,
-        className: "h-12 w-12",
-        containerClassName: "h-16 w-16 circle-5"
-      }
+      component: SoftwareIcon,
+      className: CAPABILITY_ICON_CLASS,
+      containerClassName: `${CAPABILITY_CIRCLE_CLASS} circle-1`
+    },
+    {
+      component: DataIcon,
+      className: CAPABILITY_ICON_CLASS,
+      containerClassName: `${CAPABILITY_CIRCLE_CLASS} circle-2`
+    },
+    {
+      component: IntegrationIcon,
+      className: CAPABILITY_ICON_CLASS,
+      containerClassName: `${CAPABILITY_CIRCLE_CLASS} circle-3`
+    },
+    {
+      component: DigitalExperienceIcon,
+      className: CAPABILITY_ICON_CLASS,
+      containerClassName: `${CAPABILITY_CIRCLE_CLASS} circle-4`
+    },
+    {
+      component: OperationsIcon,
+      className: CAPABILITY_ICON_CLASS,
+      containerClassName: `${CAPABILITY_CIRCLE_CLASS} circle-5`
+    }
   ];

@@ -6,19 +6,19 @@ import { TimeLineCta } from '@/components/react/timeLine/TimeLineCta'
 export function TimeLineNous() {
   const data = [
     {
-      title: "Boost your business!",
+      title: "Where AI creates leverage",
       content: (
         <Bento />
       ),
     },
     {
-      title: "How do we work?",
+      title: "How NOUS guides the transformation",
       content: (
         <MethodOfWork />
       ),
     },
     {
-      title: "Ready to go to the next level?",
+      title: "Ready to make AI useful?",
       content: (
         <TimeLineCta />
       ),

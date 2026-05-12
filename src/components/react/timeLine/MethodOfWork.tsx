@@ -32,28 +32,28 @@ interface MethodOfWorkProps {
 
 export const MethodOfWork = ({ 
     title = "", 
-    subtitle = "An agile, human partnership: clear communication, short cycles, and creativity that ships. We move in weeks, learn every sprint, and stay by your side until it sticks. ",
+    subtitle = "We do not start with tools. We start with the organization: goals, workflows, constraints, people, and the moments where AI can create the most leverage.",
     automationCard = {
-        title: "Design the path.",
+        title: "Understand the organization.",
         subtitle: "",
-        description: "We map goals and processes, pick where AI helps most, and define success metrics. You leave with a staged plan—owners, timelines, and the first wins."
+        description: "We learn how your business works, where time is lost, where decisions slow down, and where customers or teams feel friction."
     },
     consultingCard = {
-        title: "Build what matters.",
+        title: "Choose the first useful deployment.",
         subtitle: "",
-        description: "We move from prototype to production fast, delivering clean, testable work that connects to your existing tools. Security and observability are baked in."
+        description: "We turn ambition into a practical sequence: the first workflow to improve, the systems it needs, the risks to manage, and the metrics that prove value."
     },
     webDevCard = {
-        title: "Launch, measure, evolve.",
+        title: "Build, deploy, train, and improve.",
         subtitle: "",
-        description: "Ship, learn from real usage, and improve weekly. We train your team and stay until the results are undeniable."
+        description: "We ship the working system, connect it to the tools people already use, train the team around it, and keep improving it with real operational feedback."
     },
     className = "",
 }: MethodOfWorkProps) => {
   return (
     <div className={className}>
         {title && (
-            <h2 className="text-4xl font-bold md:text-4xl mb-4 text-white max-w-4xl">
+            <h2 className="text-4xl font-medium md:text-4xl mb-4 text-white max-w-4xl">
           {title}
         </h2>
         )}
@@ -72,30 +72,32 @@ export const MethodOfWork = ({
                       p-4 min-h-auto
                       sm:col-span-2 sm:p-4 sm:min-h-[180px] md:p-4 md:min-h-[220px]
                       lg:col-span-3 lg:row-span-1 lg:p-4 lg:min-h-auto
-                      xl:p-4 border border-primary-purple">
+                      xl:p-4 border border-outline/30">
          
           <div className="relative z-20 h-full
                         flex flex-col
                         md:flex-row md:gap-4
                         lg:grid lg:grid-cols-1 lg:gap-4">
             <div className="flex-1 lg:col-span-2">
-              <h3 className="font-bold mb-2 lg:mb-3
+              <h3 className="font-medium mb-2 lg:mb-3
                            text-lg
                            md:text-xl
-                           lg:text-xl xl:text-4xl">
+                           lg:text-xl xl:text-2xl">
                 {automationCard.title}
               </h3>
-              <h4 className="font-medium mb-2 lg:mb-3
+              {automationCard.subtitle && (
+                <h4 className="font-medium mb-2 lg:mb-3
                            text-sm
-                           md:text-md
-                           lg:text-md xl:text-lg text-primary-purple">
-                {automationCard.subtitle}
-              </h4>
+                           md:text-base
+                           lg:text-base xl:text-lg text-outline">
+                  {automationCard.subtitle}
+                </h4>
+              )}
               <p className="text-neutral-300
                           text-sm mb-4
                           md:text-base md:mb-0
                           lg:text-base lg:mb-0
-                          xl:text-lg font-medium leading-relaxed">
+                          xl:text-lg font-normal leading-relaxed">
                 {automationCard.description}
               </p>
             </div>
@@ -107,22 +109,24 @@ export const MethodOfWork = ({
                       p-4 min-h-[160px]
                       sm:p-4 sm:min-h-[160px] md:p-4 md:min-h-[180px]
                       lg:col-span-2 sm:col-span-2 md:col-span-2 lg:row-span-1 lg:p-6 lg:min-h-auto
-                      xl:p-4 border border-primary-purple overflow-hidden">
+                      xl:p-4 border border-outline/30 overflow-hidden">
           
           
           <div className="flex-1 lg:col-span-2 z-20 relative">
             <h3 className="font-semibold mb-2 lg:mb-3
                         text-lg
                         md:text-xl
-                        lg:text-xl xl:text-4xl">
+                        lg:text-xl xl:text-2xl">
               {consultingCard.title}
             </h3>
-            <h4 className="font-medium mb-2 lg:mb-3
+            {consultingCard.subtitle && (
+              <h4 className="font-medium mb-2 lg:mb-3
                             text-sm
-                            md:text-md
-                            lg:text-md xl:text-lg text-primary-purple">
+                            md:text-base
+                            lg:text-base xl:text-lg text-outline">
                 {consultingCard.subtitle}
               </h4>
+            )}
             <p className="text-neutral-200
                         text-sm
                         md:text-base
@@ -133,36 +137,38 @@ export const MethodOfWork = ({
           </div>
         </div>
 
-        {/* Web Development Card */}
+        {/* AI-ready systems card */}
         <div className="bg-primary-blue rounded-xl relative overflow-hidden group
                       p-4 min-h-[140px]
                       sm:col-span-2 sm:p-4 sm:min-h-[160px] md:p-4 md:min-h-[180px]
                       lg:col-span-5 lg:row-span-1 lg:p-4 lg:min-h-auto
-                      xl:p-4 border border-primary-purple">
+                      xl:p-4 border border-outline/30">
           
           <div className="flex-1 lg:col-span-2 z-20 relative">
-            <h3 className="font-bold mb-2 lg:mb-3
+            <h3 className="font-medium mb-2 lg:mb-3
                        text-lg
                        md:text-xl
-                       lg:text-xl xl:text-4xl">
+                       lg:text-xl xl:text-2xl">
               {webDevCard.title}
             </h3>
-            <h4 className="font-medium mb-2 lg:mb-3
+            {webDevCard.subtitle && (
+              <h4 className="font-medium mb-2 lg:mb-3
                             text-sm
-                            md:text-md
-                            lg:text-md xl:text-lg text-primary-purple">
+                            md:text-base
+                            lg:text-base xl:text-lg text-outline">
                 {webDevCard.subtitle}
               </h4>
+            )}
             <p className="text-neutral-300
                       text-sm
                       md:text-base
                       lg:text-base
-                      xl:text-lg font-medium">
+                      xl:text-lg font-normal">
               {webDevCard.description}
             </p>
 
     
-                <Globe/>
+                <Globe className="top-16 opacity-80" />
             
           </div>
           

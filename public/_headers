@@ -1,35 +1,34 @@
-# Security Headers optimizados para SEO
+# Baseline security headers
 /*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
-  X-XSS-Protection: 1; mode=block
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
-  # CSP más permisivo para bots de Google y herramientas SEO
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https: *.google.com *.googletagmanager.com *.gstatic.com clerk.nous.cr *.clerk.accounts.dev; style-src 'self' 'unsafe-inline' https: *.googleapis.com; img-src 'self' data: https: blob: *.google.com *.googleusercontent.com clerk.nous.cr; font-src 'self' data: https: *.gstatic.com *.googleapis.com; connect-src 'self' https: *.google-analytics.com *.googletagmanager.com *.google.com clerk.nous.cr *.clerk.accounts.dev; media-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self' *.google.com; manifest-src 'self'; worker-src 'self' blob:;
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://clerk.nous.cr https://*.clerk.accounts.dev; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.turso.io https://api.resend.com https://www.googletagmanager.com https://www.google-analytics.com https://clerk.nous.cr https://*.clerk.accounts.dev; media-src 'self' https:; frame-src 'self' https://clerk.nous.cr https://*.clerk.accounts.dev; object-src 'none'; base-uri 'self'; form-action 'self'; manifest-src 'self'; worker-src 'self' blob:;
 
-# Archivos específicos para verificación de Google
+# Google verification files
 /google*.html
   Cache-Control: public, max-age=3600
   Content-Type: text/html; charset=utf-8
-  # Sin restricciones adicionales para verificación
+  # Keep verification files directly accessible.
 
 /googletagmanager.js
   Cache-Control: public, max-age=86400
   Access-Control-Allow-Origin: *
 
-# Sitemap y robots.txt - CRÍTICOS para SEO
+# Sitemap and robots.txt
 /robots.txt
   Cache-Control: public, max-age=86400
   Content-Type: text/plain; charset=utf-8
-  # Permitir acceso completo para bots
+  # Keep crawler instructions directly accessible.
 
 /sitemap*.xml
   Cache-Control: public, max-age=86400
   Content-Type: application/xml; charset=utf-8
   Access-Control-Allow-Origin: *
 
-# Favicon headers optimizados
+# Favicon headers
 /favicon.ico
   Content-Type: image/x-icon
   Cache-Control: public, max-age=31536000, immutable
@@ -67,7 +66,7 @@
   Cache-Control: public, max-age=604800
   Access-Control-Allow-Origin: *
 
-# Assets estáticos
+# Static assets
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
 
@@ -77,12 +76,12 @@
 /fonts/*
   Cache-Control: public, max-age=604800
 
-# HTML pages - Permitir indexación
+# HTML pages
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
-  # Sin X-Robots-Tag restrictivo para permitir indexación
+  # Do not set restrictive X-Robots-Tag headers here.
 
-# JSON-LD y datos estructurados
+# JSON-LD and structured data
 /*.json
   Content-Type: application/json; charset=utf-8
   Cache-Control: public, max-age=3600

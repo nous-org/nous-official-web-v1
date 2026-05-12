@@ -19,7 +19,7 @@ const defaultLinks: NavLink[] = [
     { 
         href: '#about', 
         label: 'About',
-        ariaLabel: 'Learn more about Nous Technologies'
+        ariaLabel: 'Learn more about NOUS'
     },
     // { 
     //     href: '#products', 
@@ -29,7 +29,7 @@ const defaultLinks: NavLink[] = [
     { 
         href: '#services', 
         label: 'Services',
-        ariaLabel: 'Discover our automation services'
+        ariaLabel: 'Discover NOUS services'
     },
      { 
         href: '#pricing', 
@@ -44,7 +44,7 @@ const defaultLinks: NavLink[] = [
 ];
 
 // Default styling classes
-const defaultLinkClass = 'text-white hover:text-[#A894FF] transition-colors duration-300 font-medium text-lg cursor-pointer';
+const defaultLinkClass = 'text-white hover:text-outline transition-colors duration-300 font-medium text-sm lg:text-base uppercase tracking-[0.12em] cursor-pointer';
 
 const {
     links = defaultLinks,
@@ -55,9 +55,9 @@ const {
 
 // Dynamic classes based on props
 const containerClasses = [
-    'flex border-2 border-outline shadow-[0_0_10px_0_rgba(0,0,0,0.1)] shadow-[#A894FF]/40 rounded-full px-8 py-4 bg-[#060114]',
+    'flex border border-outline/70 shadow-[0_0_28px_-12px_rgba(220,212,255,0.75)] rounded-full px-8 lg:px-10 py-4 bg-[#060114]/80 backdrop-blur-xl',
     variant === 'horizontal' ? 'flex-row' : 'flex-col',
-    spacing === 'sm' ? 'gap-6' : spacing === 'md' ? 'gap-8' : 'gap-12',
+    spacing === 'sm' ? 'gap-6 lg:gap-8' : spacing === 'md' ? 'gap-8 lg:gap-10' : 'gap-12',
     className
 ].filter(Boolean).join(' ');
 ---
@@ -68,6 +68,7 @@ const containerClasses = [
             <li>
                 <a 
                     href={link.href}
+                    data-astro-reload={link.href === '/' ? true : undefined}
                     class={link.className || defaultLinkClass}
                     target={link.target || '_self'}
                     aria-label={link.ariaLabel || link.label}

@@ -1,6 +1,7 @@
 import type { APIContext } from 'astro';
 import { createDbClient } from '@/lib/db';
-import { requireClerk } from '@/lib/auth';
+import { authErrorResponse, requireClerk } from '@/lib/auth';
+import { getRuntimeEnv } from '@/lib/runtime-env';
 
 function json(data: unknown, init: number | ResponseInit = 200) {
   const initObj = typeof init === 'number' ? { status: init } : init;
@@ -10,13 +11,19 @@ function json(data: unknown, init: number | ResponseInit = 200) {
   });
 }
 
-export async function GET({ params, locals, request }: APIContext) {
-  await requireClerk(request, locals.runtime.env as { CLERK_SECRET_KEY: string });
+export async function GET({ params, request }: APIContext) {
+  const env = getRuntimeEnv();
+
+  try {
+    await requireClerk(request, env);
+  } catch (error) {
+    return authErrorResponse(error);
+  }
 
   const slug = params?.slug?.trim();
   if (!slug) return json({ error: 'Missing slug' }, 400);
 
-  const db = createDbClient(locals.runtime.env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
+  const db = createDbClient(env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
   const rs = await db.execute(
     'SELECT slug, title, content FROM posts WHERE slug = ? AND status = ?',
     [slug, 'DRAFT']
@@ -28,8 +35,14 @@ export async function GET({ params, locals, request }: APIContext) {
   return json({ draft: { slug: row.slug, title: row.title, content_html: row.content } });
 }
 
-export async function PATCH({ params, locals, request }: APIContext) {
-  await requireClerk(request, locals.runtime.env as { CLERK_SECRET_KEY: string });
+export async function PATCH({ params, request }: APIContext) {
+  const env = getRuntimeEnv();
+
+  try {
+    await requireClerk(request, env);
+  } catch (error) {
+    return authErrorResponse(error);
+  }
 
   const slug = params?.slug?.trim();
   if (!slug) return json({ error: 'Missing slug' }, 400);
@@ -53,15 +66,14 @@ export async function PATCH({ params, locals, request }: APIContext) {
 
   if (typeof body.content_html === 'string') {
     const content = body.content_html;
-    // si quieres limitar tamaño, valida aquí
     updates.push('content = ?');
     values.push(content);
   }
 
   if (updates.length === 0) return json({ error: 'No valid fields to update' }, 400);
 
-  const db = createDbClient(locals.runtime.env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
-  // Asegura que solo actualizas drafts
+  const db = createDbClient(env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
+  // Only update draft posts from this endpoint.
   updates.push('updatedAt = ?');
   values.push(Date.now());
   
@@ -70,7 +82,7 @@ export async function PATCH({ params, locals, request }: APIContext) {
 
   await db.execute(sql, values);
 
-  // Devuelve el borrador actualizado
+  // Return the updated draft.
   const rs = await db.execute(
     'SELECT slug, title, content FROM posts WHERE slug = ? AND status = ?',
     [slug, 'DRAFT']
@@ -81,17 +93,22 @@ export async function PATCH({ params, locals, request }: APIContext) {
   return json({ draft: { slug: row.slug, title: row.title, content_html: row.content } });
 }
 
-export async function DELETE({ params, locals, request }: APIContext) {
-  await requireClerk(request, locals.runtime.env as { CLERK_SECRET_KEY: string });
+export async function DELETE({ params, request }: APIContext) {
+  const env = getRuntimeEnv();
+
+  try {
+    await requireClerk(request, env);
+  } catch (error) {
+    return authErrorResponse(error);
+  }
 
   const slug = params?.slug?.trim();
   if (!slug) return json({ error: 'Missing slug' }, 400);
 
-  const db = createDbClient(locals.runtime.env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
+  const db = createDbClient(env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
 
-  // Solo elimina si es borrador
+  // Only delete draft posts from this endpoint.
   await db.execute('DELETE FROM posts WHERE slug = ? AND status = ?', [slug, 'DRAFT']);
 
-  // Puedes verificar existencia previa, pero para simplicidad retornamos 204
   return new Response(null, { status: 204 });
 }

@@ -1,13 +1,11 @@
 ---
 import ContactCta from '@/components/ui/ContactCta.astro';
-import ServicesCards from '@/components/ui/ServicesCards.astro';
 import {ServiceTabs} from '@/components/react/ServiceTabs';
-import ServiceCardsPurpose from '@/components/ui/ServiceCardsPurpose.astro';
 ---
 
 <section class="max-w-7xl mt-32 mx-auto px-4 container z-10 appear-subtle">
-    <h1 class="text-4xl font-bold text-white mb-4">What NOUS offers</h1>
-    <h3 class="text-xl font-semibold text-neutral-400 md:mb-12 mb-8">Technology Advisory, Web Development, and AI Automation that reduces busywork and errors.</h3>
+    <h2 class="text-4xl font-medium tracking-normal text-white mb-4">The AI transformation partner for ambitious organizations</h2>
+    <p class="text-xl font-normal text-neutral-400 md:mb-12 mb-8">Intelligence is becoming a new utility. NOUS helps organizations decide where to use it, build the systems that deploy it, and make it part of daily work.</p>
     <div >
          <ServiceTabs client:only="react"/>
     </div>

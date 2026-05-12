@@ -1,0 +1,145 @@
+---
+import ContactPageForm from "@/components/ui/ContactPageForm.astro";
+import { ShootingStars } from "@/components/react/ShootingStars";
+import { StarsBackground } from "@/components/react/StarBackground";
+
+export const prerender = false;
+
+const contactMethods = [
+    {
+        label: "E-mail",
+        value: "hello@nous.cr",
+        href: "mailto:hello@nous.cr",
+    },
+    {
+        label: "WhatsApp",
+        value: "+506 6186-5634",
+        href: "https://wa.me/50661865634",
+    },
+    {
+        label: "Location",
+        value: "San José, Costa Rica",
+        href: null,
+    },
+];
+
+const steps = [
+    {
+        title: "Hermes takes the first step.",
+        text: "Our customer service agent will establish first contact, welcome the request, and make the beginning feel clear and easy.",
+    },
+    {
+        title: "We gather what matters.",
+        text: "Hermes will ask a few thoughtful questions and collect the details we need to understand the organization, the challenge, and the opportunity.",
+    },
+    {
+        title: "We find the best next move.",
+        text: "With that context, we can recommend the right next step: a strategy call, a first meeting, a focused demo, a prototype, or a practical roadmap.",
+    },
+];
+---
+
+<section
+    class="relative isolate overflow-hidden px-4 pb-28 pt-36 sm:pb-36 sm:pt-44 lg:pt-48"
+    aria-labelledby="contact-heading"
+>
+    <div
+        class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_10%,rgba(220,212,255,0.14),transparent_34%),radial-gradient(circle_at_86%_60%,rgba(191,177,255,0.1),transparent_30%)]"
+        aria-hidden="true"
+    ></div>
+    <div
+        class="pointer-events-none absolute inset-0 z-0 overflow-hidden [mask-image:radial-gradient(ellipse_at_center_18%,black_20%,transparent_74%)] opacity-60"
+        aria-hidden="true"
+    >
+        <ShootingStars client:only="react"
+            minDelay={1000}
+            maxDelay={1500}
+            starColor="#DCD4FF"
+            starHeight={2}
+            starWidth={20}
+        />
+        <StarsBackground client:only="react" />
+    </div>
+
+    <div class="relative z-10 mx-auto w-full max-w-6xl">
+        <header class="max-w-4xl">
+            <p class="text-sm font-medium uppercase tracking-[0.22em] text-outline">Contact NOUS</p>
+            <h1
+                id="contact-heading"
+                class="mt-5 max-w-3xl bg-gradient-to-r from-gradient-start via-gradient-middle to-gradient-end bg-clip-text text-5xl font-medium leading-[1.02] tracking-normal text-transparent sm:text-6xl lg:text-7xl"
+            >
+                Let’s find your AI opportunity.
+            </h1>
+            <p class="mt-7 max-w-3xl text-left text-lg leading-relaxed text-neutral-300 md:text-justify sm:text-xl">
+                AI is becoming an intelligence layer for every organization. NOUS helps you decide where it belongs, what needs to be built around it, and how to deploy it in a way teams can actually use.
+            </p>
+            <p class="mt-5 max-w-3xl text-left text-base leading-relaxed text-neutral-400 md:text-justify sm:text-lg">
+                Bring a problem, a process, a workflow, or just a sense that something should work better. We will help turn that into a clear next step.
+            </p>
+        </header>
+
+        <div class="mt-10 grid gap-3 sm:grid-cols-3">
+            {
+                contactMethods.map((method) => (
+                    method.href ? (
+                        <a
+                            href={method.href}
+                            class="group rounded-lg border border-white/10 bg-white/[0.03] p-4 transition-colors duration-200 hover:border-outline/45 hover:bg-outline/10"
+                            target={method.href.startsWith("http") ? "_blank" : "_self"}
+                            rel={method.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                        >
+                            <span class="block text-xs font-medium uppercase tracking-[0.16em] text-outline">
+                                {method.label}
+                            </span>
+                            <span class="mt-2 block break-words text-sm font-normal text-neutral-200 group-hover:text-white">
+                                {method.value}
+                            </span>
+                        </a>
+                    ) : (
+                        <div class="rounded-lg border border-white/10 bg-white/[0.03] p-4">
+                            <span class="block text-xs font-medium uppercase tracking-[0.16em] text-outline">
+                                {method.label}
+                            </span>
+                            <span class="mt-2 block text-sm font-normal text-neutral-200">
+                                {method.value}
+                            </span>
+                        </div>
+                    )
+                ))
+            }
+        </div>
+
+        <section
+            class="mt-8 rounded-[1.5rem] border border-white/10 bg-white/[0.025] p-5 backdrop-blur sm:p-8"
+            aria-labelledby="contact-process-heading"
+        >
+            <h2 id="contact-process-heading" class="text-2xl font-medium leading-tight text-white">
+                How it starts
+            </h2>
+            <ol class="mt-6 grid gap-5 lg:grid-cols-3">
+                {
+                    steps.map((step, index) => (
+                        <li class="grid grid-cols-[2.25rem_1fr] gap-4 lg:block">
+                            <span class="flex h-9 w-9 items-center justify-center rounded-full border border-outline/30 bg-outline/10 text-sm font-medium text-outline">
+                                {String(index + 1).padStart(2, "0")}
+                            </span>
+                            <div class="lg:mt-4">
+                                <h3 class="text-base font-medium text-white">{step.title}</h3>
+                                <p class="mt-2 text-left text-sm leading-relaxed text-neutral-400 md:text-justify">
+                                    {step.text}
+                                </p>
+                            </div>
+                        </li>
+                    ))
+                }
+            </ol>
+        </section>
+
+        <div
+            id="form"
+            class="mt-8 scroll-mt-36 rounded-[1.5rem] border border-outline/15 bg-white/[0.035] p-5 shadow-[0_24px_80px_rgba(0,0,0,0.24)] backdrop-blur sm:scroll-mt-40 sm:p-8"
+        >
+            <ContactPageForm />
+        </div>
+    </div>
+</section>

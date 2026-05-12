@@ -1,94 +1,92 @@
 ---
 import ColorDivider from "@/components/ui/ColorDivider.astro"
-import NousLogo from "@/assets/NousLogo.svg"
 import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
 ---
 
 <footer class="relative bg-gradient-to-t from-primary-black to-primary-blue">
-    
-    <ColorDivider colorDivider="primary-purple"/>   
 
-    <div class="mt-10 container max-w-7xl mx-auto px-4 ">
+    <ColorDivider colorDivider="primary-purple"/>
+
+    <div class="container mx-auto mt-10 max-w-7xl px-4">
         <!-- Main Footer Content -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-10">
-            
+        <div class="grid w-full grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1.1fr_0.9fr_max-content] lg:gap-12 xl:gap-14">
+
             <!-- Company Section -->
-            <section class="col-span-1 sm:col-span-2 lg:col-span-1 space-y-4">
-                <header>
-                    <img src={NousLogo.src} alt="Nous Technologies Logo" class="w-auto h-8 mb-4" />
+            <section class="col-span-1 flex flex-col gap-4 sm:col-span-2 lg:col-span-1">
+                <header class="flex flex-col gap-4">
+                    <h2 class="text-2xl font-medium tracking-normal text-white">NOUS</h2>
+                    <p class="text-sm leading-relaxed text-neutral-300">Building a more intelligent world.</p>
                 </header>
-                <p class="text-neutral-300 text-sm leading-relaxed">Your vision, shipped.</p>
-                <div class="space-y-3">
-                    <ButtonVariant 
-                        text="Talk to us" 
-                        variant="primary" 
-                        href="/contact-us" 
-                        rounded="md" 
-                        scheduleIcon={true} 
-                        strokeColor="#060114" 
-                        justify="between"
-                        className="w-full sm:w-auto"
+                <div class="flex w-full flex-col gap-4">
+                    <ButtonVariant
+                        text="Talk to NOUS"
+                        variant="primary"
+                        href="/contact"
+                        rounded="full"
+                        strokeColor="#060114"
+                        justify="center"
+                        className="!w-full"
                     />
-                    <ButtonVariant 
-                        text="See services" 
-                        variant="primaryPurple" 
-                        href="/services" 
-                        rounded="md" 
-                        arrowIcon={true} 
-                        strokeColor="#B08CFF" 
-                        justify="between"
-                        className="w-full sm:w-auto"
+                    <ButtonVariant
+                        text="Explore services"
+                        variant="primaryPurple"
+                        href="/services"
+                        rounded="full"
+                        strokeColor="#DCD4FF"
+                        justify="center"
+                        className="!w-full"
                     />
                 </div>
             </section>
 
             <!-- Contact Section -->
-            <section class="col-span-1 space-y-4">
+            <section class="col-span-1 flex flex-col gap-4 lg:justify-self-end">
                 <header>
-                    <h3 class="text-xl sm:text-2xl font-medium text-accent mb-3">Contact</h3>
+                    <h3 class="text-xl sm:text-2xl font-medium text-outline">Contact</h3>
                 </header>
-                <address class="not-italic">
-                    <ul class="space-y-2 text-neutral-300">
+                <address class="flex flex-col gap-4 not-italic">
+                    <ul class="space-y-4 text-neutral-300">
                         <li>
-                            <a 
-                              href="mailto:contacto@nous.cr"
-                              target="_blank"
-                              class="hover:text-hover transition-colors duration-200 email-link" 
-                              data-email="contacto@nous.cr"
+                            <a
+                              href="mailto:hello@nous.cr"
+                              class="hover:text-hover transition-colors duration-200 email-link"
+                              data-email="hello@nous.cr"
                             >
-                                contacto@nous.cr
+                                hello@nous.cr
                             </a>
                         </li>
                     </ul>
-                    <p class="text-neutral-300 text-xs leading-relaxed">We reply within <strong>1 business day</strong>.</p>
-                    <div class="mt-4">
-                        <a href="https://wa.me/50661865634" target="_blank" class="text-accent hover:text-hover transition-colors duration-200 font-medium">
-                            (+506) 6186 5634
+                    <p class="text-xs leading-relaxed text-neutral-300">Hermes will start the conversation, gather initial context, and route it to the right person at NOUS.</p>
+                    <div>
+                        <a href="https://wa.me/50661865634" target="_blank" rel="noopener noreferrer" class="text-outline hover:text-hover transition-colors duration-200 font-medium">
+                            (+506) 6186-5634
                         </a>
                     </div>
                 </address>
             </section>
 
             <!-- Newsletter Section -->
-            <section class="col-span-1 space-y-4">
+            <section class="col-span-1 flex flex-col gap-4">
                 <header>
-                    <h3 class="text-xl sm:text-2xl font-medium text-accent mb-3">Newsletter</h3>
+                    <h3 class="text-xl sm:text-2xl font-medium text-outline">Newsletter</h3>
                 </header>
-                
+
                 <!-- Newsletter Form -->
-                <form id="footer-newsletter-form" method="POST" action="/api/subscribe" class="space-y-3">
-                    <div class="flex flex-col gap-2">
+                <form id="footer-newsletter-form" method="POST" action="/api/subscribe" class="flex flex-col gap-4">
+                    <div class="flex flex-col gap-4">
+                        <label for="footer-email-address" class="sr-only">E-mail address</label>
                         <input
                             id="footer-email-address"
                             type="email"
                             name="email"
-                            placeholder="Enter your email"
+                            placeholder="roberto@nous.cr"
                             required
-                            class="w-full rounded-md border border-neutral-700 bg-neutral-900/50 px-3 py-2 text-sm text-neutral-200 placeholder-neutral-500 backdrop-blur transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+                            class="min-h-11 w-full rounded-full border border-neutral-700 bg-white/[0.03] px-5 py-2.5 text-sm text-neutral-200 placeholder-neutral-500 backdrop-blur transition-colors hover:border-outline/70 focus:border-outline focus:outline-none focus:ring-2 focus:ring-outline/20"
                         />
+                        <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
                         <button
                             type="submit"
-                            class="w-full rounded-md bg-accent px-3 py-2 text-sm font-medium text-primary-black transition-all hover:bg-accent/90 hover:shadow-sm hover:shadow-accent focus:outline-none focus:ring-2 focus:ring-accent/50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer duration-200"
+                            class="min-h-11 w-full rounded-full border border-transparent bg-outline px-5 py-2.5 text-sm font-medium text-primary-black transition-all duration-200 hover:bg-hover hover:shadow-sm hover:shadow-outline/20 focus:outline-none focus:ring-2 focus:ring-outline/50 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
                         >
                             Subscribe
                         </button>
@@ -100,7 +98,7 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            <span id="footer-error-message">Please enter a valid email address</span>
+                            <span id="footer-error-message">Please enter a valid e-mail address</span>
                         </div>
                     </div>
 
@@ -114,7 +112,7 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
                     </div>
 
                     <div id="footer-loading-message" class="hidden" role="status" aria-live="polite">
-                        <div class="flex items-center gap-2 text-xs text-accent">
+                        <div class="flex items-center gap-2 text-xs text-outline">
                             <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                 <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -124,32 +122,32 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
                     </div>
                 </form>
 
-                <div class="space-y-1">
-                    <p class="text-neutral-400 text-xs leading-relaxed">Monthly. No spam. Unsubscribe anytime.</p>
-                    <p class="text-neutral-400 text-xs leading-relaxed">By subscribing you agree to our <a href="/privacy-policy" class="text-neutral-400 text-xs leading-relaxed hover:text-accent transition-colors">Privacy Policy</a>.</p>
+                <div class="space-y-3">
+                    <p class="text-neutral-400 text-xs leading-relaxed">Field notes on the era of abundant intelligence: how intelligence on tap will reshape decisions, tools, infrastructure, and the organizations ready to use it.</p>
+                    <p class="text-neutral-400 text-xs leading-relaxed">By subscribing you agree to our <a href="/privacy-policy" class="text-neutral-400 text-xs leading-relaxed hover:text-outline transition-colors">Privacy Policy</a>.</p>
                 </div>
             </section>
 
             <!-- Products Section -->
-            <section class="col-span-1 space-y-4">
+            <section class="col-span-1 flex flex-col gap-4">
                 <header>
-                    <h3 class="text-xl sm:text-2xl font-medium text-accent mb-3">Services</h3>
+                    <h3 class="text-xl sm:text-2xl font-medium text-outline">Services</h3>
                 </header>
                 <nav>
-                    <ul class="space-y-2 text-neutral-300">
+                    <ul class="space-y-4 text-neutral-300">
                         <li>
-                            <a href="/services#our-services" class="hover:text-accent transition-colors duration-200 text-sm">
-                                Technology Advisory
+                            <a href="/services#services" class="hover:text-outline transition-colors duration-200 text-sm">
+                                AI Transformation Strategy
                             </a>
                         </li>
                         <li>
-                            <a href="/services#our-services" class="hover:text-accent transition-colors duration-200 text-sm">
-                                Web Development
+                            <a href="/services#services" class="hover:text-outline transition-colors duration-200 text-sm">
+                                Intelligence Deployment
                             </a>
                         </li>
                         <li>
-                            <a href="/services#our-services" class="hover:text-accent transition-colors duration-200 text-sm">
-                                AI Automation
+                            <a href="/services#services" class="hover:text-outline transition-colors duration-200 text-sm">
+                                AI-Ready Systems
                             </a>
                         </li>
                     </ul>
@@ -157,39 +155,37 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
             </section>
 
             <!-- Company Navigation Section -->
-            <section class="col-span-1 space-y-4">
+            <section class="col-span-1 flex flex-col gap-4">
                 <header>
-                    <h3 class="text-xl sm:text-2xl font-medium text-accent mb-3">Company</h3>
+                    <h3 class="text-xl sm:text-2xl font-medium text-outline">Company</h3>
                 </header>
                 <nav>
-                    <ul class="space-y-2 text-neutral-300">
-                        <li><a href="/" class="hover:text-accent transition-colors duration-200 text-sm">Home</a></li>
-                        <li><a href="/services" class="hover:text-accent transition-colors duration-200 text-sm">Services</a></li>
-                        <li><a href="/portfolio" class="hover:text-accent transition-colors duration-200 text-sm">Portfolio</a></li>
-                        <li><a href="/blog" class="hover:text-accent transition-colors duration-200 text-sm">Blog</a></li>
-                        <li><a href="/contact-us" class="hover:text-accent transition-colors duration-200 text-sm">Contact Us</a></li>
-                        <li><a href="/about-us" class="hover:text-accent transition-colors duration-200 text-sm">About Us</a></li>
-                        
-                        
+                    <ul class="space-y-4 text-neutral-300">
+                        <li><a href="/" class="hover:text-outline transition-colors duration-200 text-sm">Home</a></li>
+                        <li><a href="/services" class="hover:text-outline transition-colors duration-200 text-sm">Services</a></li>
+                        <li><a href="/portfolio" class="hover:text-outline transition-colors duration-200 text-sm">Portfolio</a></li>
+                        <li><a href="/about" class="hover:text-outline transition-colors duration-200 text-sm">About</a></li>
+                        <li><a href="/blog" class="hover:text-outline transition-colors duration-200 text-sm">Blog</a></li>
+                        <li><a href="/contact" class="hover:text-outline transition-colors duration-200 text-sm">Talk to NOUS</a></li>
                     </ul>
                 </nav>
             </section>
         </div>
-        
+
         <!-- Footer Bottom -->
         <div class="border-t border-neutral-800 mt-12 pt-8">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-8">
                 <p class="text-neutral-400 font-light text-sm">
-                    NOUS  2025. All rights reserved.
+                    NOUS 2026. All rights reserved.
                 </p>
                 <nav class="flex flex-col sm:flex-row gap-2 sm:gap-6">
-                    <a href="/privacy-policy" class="text-neutral-400 hover:text-primary-turquoise transition-colors duration-200 text-sm">
+                    <a href="/privacy-policy" class="text-neutral-400 hover:text-outline transition-colors duration-200 text-sm">
                         Privacy Policy
                     </a>
-                    <a href="/terms-and-conditions" class="text-neutral-400 hover:text-primary-turquoise transition-colors duration-200 text-sm">
+                    <a href="/terms-and-conditions" class="text-neutral-400 hover:text-outline transition-colors duration-200 text-sm">
                         Terms and Conditions
                     </a>
-                    
+
                 </nav>
             </div>
         </div>
@@ -199,35 +195,35 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
 <script is:inline>
     function initializeEmails() {
         const emailLinks = document.querySelectorAll('.email-link');
-        
+
         emailLinks.forEach(link => {
             const email = link.getAttribute('data-email');
             if (email) {
                 link.href = `mailto:${email}`;
-                
+
                 if (link.textContent !== email) {
                     link.textContent = email;
                 }
             }
         });
     }
-    
-   
+
+
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initializeEmails);
     } else {
         initializeEmails();
     }
-    
-   
+
+
     document.addEventListener('astro:page-load', initializeEmails);
 
-    // Footer Newsletter Form Handler
+    // Footer newsletter form handler.
     function initializeFooterNewsletter() {
         const form = document.getElementById('footer-newsletter-form');
         if (!form) return;
-        
-        // Evitar múltiples inicializaciones
+
+        // Avoid duplicate initialization across Astro page transitions.
         if (form.dataset.initialized === 'true') return;
         form.dataset.initialized = 'true';
 
@@ -266,16 +262,15 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             if (busy) {
-                console.log('Form submission already in progress, ignoring...');
                 return;
             }
             busy = true;
 
             const email = emailInput?.value?.trim();
             if (!email) {
-                showError('Please enter your email address');
+                showError('Please enter your e-mail address');
                 busy = false;
                 return;
             }
@@ -284,17 +279,16 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
             if (submitButton) submitButton.disabled = true;
 
             try {
-                console.log('Submitting newsletter subscription for:', email);
                 const formData = new FormData();
                 formData.append('email', email);
-                
+                formData.append('website', form.querySelector('[name="website"]')?.value || '');
+
                 const response = await fetch('/api/subscribe', {
                     method: 'POST',
                     body: formData
                 });
 
                 const data = await response.json();
-                console.log('Newsletter API response:', { status: response.status, data });
 
                 if (response.ok) {
                     showSuccess(data.message || 'Successfully subscribed!');
@@ -303,10 +297,9 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
                     showError(data.message || 'Something went wrong. Please try again.');
                 }
             } catch (error) {
-                console.error('Newsletter submission error:', error);
+                console.error('Newsletter submission error');
                 showError('Network error. Please check your connection and try again.');
             } finally {
-                console.log('Resetting busy state');
                 busy = false;
                 if (submitButton) submitButton.disabled = false;
             }
@@ -319,6 +312,6 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
     } else {
         initializeFooterNewsletter();
     }
-    
+
     document.addEventListener('astro:page-load', initializeFooterNewsletter);
 </script>

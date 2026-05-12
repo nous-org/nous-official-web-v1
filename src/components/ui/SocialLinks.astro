@@ -7,6 +7,7 @@ import FacebookIcon from '@/components/icons/SocialLinks/Facebook.svg';
 interface SocialLink {
     icon: string;
     url: string;
+    name: string;
 }
 
 interface Props {
@@ -16,23 +17,28 @@ interface Props {
 const DEFAULT_LINKS: SocialLink[] = [
     {
         icon: FacebookIcon.src,
-        url: 'https://www.facebook.com/nousdotcr'
+        url: 'https://www.facebook.com/nousdotcr',
+        name: 'Facebook'
     },
     {
         icon: InstagramIcon.src,
-        url: 'https://www.instagram.com/nousdotcr/'
+        url: 'https://www.instagram.com/nousdotcr/',
+        name: 'Instagram'
     },
     {
         icon: LinkedInIcon.src,
-        url: 'https://www.linkedin.com/company/nousdotcr/'
+        url: 'https://www.linkedin.com/company/nousdotcr/',
+        name: 'LinkedIn'
     },
     {
         icon: WhatsappIcon.src,
-        url: 'https://wa.me/50661865634'
+        url: 'https://wa.me/50661865634',
+        name: 'WhatsApp'
     },
     {
         icon: XIcon.src,
-        url: 'https://x.com/nousdotcr'
+        url: 'https://x.com/nousdotcr',
+        name: 'X'
     },
 ];
 
@@ -42,8 +48,8 @@ const { links = DEFAULT_LINKS } = Astro.props;
 
 <div class="flex gap-6">
     {links.map((link) => (
-        <a href={link.url} target="_blank" rel="noopener noreferrer" class="flex w-12 h-12 items-center border justify-center rounded-full hover:bg-primary-turquoise/20 hover:text-primary-blue hover:border-primary-purple  transition-all duration-300 md:hover:scale-[1.1] md:hover:animate-jiggle md:delay-[100ms]">
-            <img src={link.icon } alt={link.url} />
+        <a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={`Visit NOUS on ${link.name}`} class="flex w-12 h-12 items-center justify-center rounded-full border border-outline/20 text-outline transition-all duration-300 hover:border-outline/55 hover:bg-outline/10 md:hover:scale-[1.06] md:delay-[100ms]">
+            <img src={link.icon } alt="" aria-hidden="true" />
         </a>
     ))}
 </div>

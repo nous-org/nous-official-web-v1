@@ -14,6 +14,7 @@ interface Props {
   width?: string;
   target?: "_blank" | "_self" | "_parent" | "_top";
   ariaLabel?: string;
+  rel?: string;
   rounded?: string;
   justify?: string;
 }
@@ -21,30 +22,35 @@ interface Props {
 const {
   target = "_self",
   width = "auto",
-  href="contact",
+  href="/contact",
   text,
   variant = "primary",
   className = "",
   scheduleIcon = false,
   arrowIcon = false,
-  strokeColor = "#8458FF",
-  ariaLabel = "Button",
+  strokeColor = "#DCD4FF",
+  ariaLabel,
+  rel,
   rounded = "full",
   justify = "center",
 } = Astro.props;
 
-const baseStyles = `px-5 py-1 font-medium rounded-${rounded} transition-all duration-300 group flex justify-${justify} items-center gap-2 w-auto md:w-${width} cursor-pointer`;
+const radiusClass = rounded === "md" ? "rounded-md" : rounded === "lg" ? "rounded-lg" : "rounded-full";
+const justifyClass = justify === "between" ? "justify-between" : justify === "start" ? "justify-start" : justify === "end" ? "justify-end" : "justify-center";
+const widthClass = width === "full" ? "md:w-full" : width === "fit" ? "md:w-fit" : "";
+const baseStyles = `min-h-11 px-5 py-2.5 text-sm sm:text-base font-medium tracking-normal ${radiusClass} transition-all duration-200 group inline-flex ${justifyClass} items-center gap-2 w-auto ${widthClass} cursor-pointer border focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/60 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-black active:scale-[0.98]`;
+const computedRel = rel || (target === "_blank" ? "noopener noreferrer" : undefined);
 
 const variants = {
-  primary: "bg-accent text-primary-blue hover:bg-hover hover:shadow-[0_0_8px_0_rgba(0,0,0,0.1)] hover:shadow-accent",
+  primary: "border-transparent bg-outline text-primary-black shadow-sm shadow-outline/10 hover:bg-hover hover:shadow-outline/20",
   secondary:
-    " text-primary-blue hover:bg-primary-blue hover:text-outline border border-primary-blue",
+    "border-white/10 bg-white/5 text-neutral-100 hover:border-outline/50 hover:bg-white/10",
   primaryPurple:
-    "bg-transparent border-2 border-outline text-accent hover:bg-outline hover:text-primary-blue",
+    "border-outline/45 bg-transparent text-outline hover:bg-outline/10 hover:border-outline",
   secondaryTurquoise:
-    "border-2 border-primary-turquoise text-primary-turquoise hover:bg-primary-turquoise/30",
+    "border-primary-turquoise/45 bg-transparent text-primary-turquoise hover:bg-primary-turquoise/10 hover:border-primary-turquoise",
   darkBlue:
-    "bg-primary-blue text-outline hover:bg-primary-blue/90",
+    "border-white/10 bg-primary-blue/80 text-outline hover:bg-primary-blue",
 };
 ---
 
@@ -53,6 +59,7 @@ const variants = {
   href={href}
   aria-label={ariaLabel}
   target={target}
+  rel={computedRel}
   class:list={[baseStyles, variants[variant], className]}
 >
   {text}
@@ -67,4 +74,3 @@ const variants = {
     )
   }
 </a>
-

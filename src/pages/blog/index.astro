@@ -7,14 +7,32 @@ import { StarsBackground } from '@/components/react/StarBackground';
 import Layout from '@/layouts/Layout.astro';
 import BlogCard from '@/components/ui/BlogCard.astro';
 import NousLogoSvg from '@/assets/NousLogo.svg';
+import ContentPagesHero from '@/components/ui/ContentPagesHero.astro';
+import { getRuntimeEnv } from '@/lib/runtime-env';
+import { staticBlogRows } from '@/lib/blog-fallbacks';
 
-const { runtime } = Astro.locals;
-const db = createDbClient(runtime.env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
+const env = getRuntimeEnv();
+let rows: any[] = [];
+let blogLoadError = false;
 
-// Query posts from database
-const result = await db.execute(
-  "SELECT id, slug, title, content, categorie, tags, authorId, createdAt, updatedAt, featured FROM posts WHERE status = 'PUBLISHED' ORDER BY createdAt DESC"
-);
+if (env.TURSO_DATABASE_URL) {
+  try {
+    const db = createDbClient(env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
+    const result = await db.execute(
+      "SELECT id, slug, title, content, categorie, tags, authorId, createdAt, updatedAt, featured FROM posts WHERE status = 'PUBLISHED' ORDER BY createdAt DESC"
+    );
+    rows = result.rows as any[];
+  } catch (error) {
+    blogLoadError = true;
+    console.error('Error loading blog posts:', error);
+  }
+} else {
+  blogLoadError = true;
+}
+
+if (rows.length === 0) {
+  rows = staticBlogRows;
+}
 
 // Helper function to get role based on name
 function getAuthorRole(name: string): string {
@@ -26,16 +44,16 @@ function getAuthorRole(name: string): string {
 }
 
 // Default author data
-const defaultAuthor = { 
-  name: 'NOUS', 
-  avatar: NousLogoSvg.src, 
-  bio: 'Experts in web development and AI solutions',
+const defaultAuthor = {
+  name: 'NOUS',
+  avatar: NousLogoSvg.src,
+  bio: 'Field notes from NOUS',
   role: ''
 };
 
 // Get unique author IDs to fetch from Clerk
 const authorIds = [...new Set(
-  result.rows
+  rows
     .map((row: any) => row.authorId)
     .filter((id: string | null) => id && id !== 'admin')
 )] as string[];
@@ -45,12 +63,13 @@ const authorsMap = new Map<string, { name: string; avatar: string; bio: string; 
 
 if (authorIds.length > 0) {
   try {
-    const clerk = createClerkClient({ secretKey: runtime.env.CLERK_SECRET_KEY as string });
+    if (!env.CLERK_SECRET_KEY) throw new Error('Missing Clerk secret key');
+    const clerk = createClerkClient({ secretKey: env.CLERK_SECRET_KEY });
     const authorPromises = authorIds.map(async (authorId: string) => {
       try {
         const user = await clerk.users.getUser(authorId);
-        const fullName = user.firstName && user.lastName 
-          ? `${user.firstName} ${user.lastName}` 
+        const fullName = user.firstName && user.lastName
+          ? `${user.firstName} ${user.lastName}`
           : user.username || user.emailAddresses[0]?.emailAddress || 'Anonymous';
         return {
           id: authorId,
@@ -65,7 +84,7 @@ if (authorIds.length > 0) {
         return { id: authorId, data: defaultAuthor };
       }
     });
-    
+
     const authors = await Promise.all(authorPromises);
     authors.forEach(({ id, data }) => authorsMap.set(id, data));
   } catch (error) {
@@ -74,16 +93,16 @@ if (authorIds.length > 0) {
 }
 
 // Transform database rows to match blog card format
-const posts = result.rows.map((row: any) => {
+const posts = rows.map((row: any) => {
   // Parse frontmatter from markdown content
   const content = row.content || '';
   const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
   let frontmatter: any = {};
-  
+
   if (frontmatterMatch) {
     const fm = frontmatterMatch[1];
     // Simple YAML parsing
-    fm.split('\n').forEach(line => {
+    fm.split('\n').forEach((line: string) => {
       const match = line.match(/^(\w+):\s*(.+)$/);
       if (match) {
         const [, key, value] = match;
@@ -99,9 +118,11 @@ const posts = result.rows.map((row: any) => {
   const bodyContent = bodyMatch ? bodyMatch[1].trim() : content;
 
   // Get author data from Clerk or use default
-  const authorData = row.authorId && row.authorId !== 'admin' 
-    ? authorsMap.get(row.authorId) || defaultAuthor
-    : defaultAuthor;
+  const authorData = row.author
+    ? { avatar: NousLogoSvg.src, ...row.author }
+    : row.authorId && row.authorId !== 'admin'
+      ? authorsMap.get(row.authorId) || defaultAuthor
+      : defaultAuthor;
 
   return {
     slug: row.slug,
@@ -109,7 +130,7 @@ const posts = result.rows.map((row: any) => {
     data: {
       title: row.title,
       date: new Date(row.createdAt),
-      excerpt: frontmatter.excerpt || '',
+      excerpt: frontmatter.excerpt || row.excerpt || '',
       category: row.categorie,
       tags: JSON.parse(row.tags || '[]'),
       featured: row.featured === true || row.featured === 1,
@@ -121,48 +142,82 @@ const posts = result.rows.map((row: any) => {
 
 const featuredPosts = posts.filter(post => post.data.featured);
 const regularPosts = posts.filter(post => !post.data.featured);
+const listingPosts = featuredPosts.length > 0 ? regularPosts : posts;
 
 ---
-  
-  <Layout title="NOUS Blog" backgroundType="primary" showAurora={false} useContainer={true}>
-       <section class="mx-auto max-w-7xl px-4 py-6 pt-64 sm:pt-48">
-           <h1 class="mb-6 text-5xl font-semibold tracking-tight text-neutral-100 text-center">Blog</h1>
-           <h2 class="mb-6 text-4xl font-semibold tracking-tight text-accent text-center">Insights & Articles</h2>
-           <p class="mb-24 text-base text-neutral-400 text-center">Sharp takes, field notes, and working playbooks on AI, web, and tech decisions—written for people who ship.</p>
-         
-         <!-- Posts Destacados -->
+
+  <Layout
+    title="Blog / NOUS"
+    description="Field notes from NOUS on AI transformation, abundant intelligence, automation, systems, and the technology decisions shaping organizations."
+    canonical="/blog"
+    backgroundType="primary"
+    showAurora={false}
+    useContainer={false}
+  >
+       <ContentPagesHero
+         title="Blog"
+         subtitle="Field notes on the age of abundant intelligence."
+         text="Essays, observations, and practical thinking from NOUS on AI transformation, deployment, systems, and the work of building a more intelligent world."
+       />
+
+       <section class="mx-auto max-w-7xl px-4 pb-24">
          {featuredPosts.length > 0 && (
-           <div class="mb-12">
-             <h3 class="mb-8 text-2xl font-semibold text-accent sm:text-3xl">
-               Featured Articles
-             </h3>
+           <section class="mb-16" aria-labelledby="featured-posts-heading">
+             <div class="mb-8 flex items-end justify-between gap-4 border-b border-outline/15 pb-4">
+               <div>
+                 <p class="text-xs font-medium uppercase tracking-[0.18em] text-outline">Selected thinking</p>
+                 <h2 id="featured-posts-heading" class="mt-2 text-2xl font-medium tracking-normal text-white sm:text-3xl">
+                   Featured Articles
+                 </h2>
+               </div>
+             </div>
              <div class="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-2">
                {featuredPosts.map((post) => (
                  <BlogCard post={post} featured={true} />
                ))}
              </div>
-           </div>
+           </section>
          )}
 
-         <!-- Todos los Posts -->
-         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
-           {posts.map((post) => (
-             <BlogCard post={post} featured={post.data.featured} />
-           ))}
-         </div>
-         </section>
+         {listingPosts.length > 0 && (
+           <section aria-labelledby="latest-posts-heading">
+             <div class="mb-8 flex items-end justify-between gap-4 border-b border-outline/15 pb-4">
+               <div>
+                 <p class="text-xs font-medium uppercase tracking-[0.18em] text-outline">All notes</p>
+                 <h2 id="latest-posts-heading" class="mt-2 text-2xl font-medium tracking-normal text-white sm:text-3xl">
+                   Latest Articles
+                 </h2>
+               </div>
+             </div>
+             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
+               {listingPosts.map((post) => (
+                 <BlogCard post={post} featured={false} />
+               ))}
+             </div>
+           </section>
+         )}
+
+         {posts.length === 0 && (
+           <div class="rounded-[2rem] border border-outline/15 bg-white/[0.025] p-8 text-center backdrop-blur">
+             <h2 class="text-2xl font-medium text-white">{blogLoadError ? 'Blog is temporarily unavailable.' : 'No articles published yet.'}</h2>
+             <p class="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-neutral-400">
+               {blogLoadError ? 'We could not load the published articles right now. Please try again later.' : 'Field notes from NOUS will appear here once they are published.'}
+             </p>
+           </div>
+         )}
+       </section>
 
          <div class="absolute inset-0 pointer-events-none overflow-hidden z-[-1]">
           <div class="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center_10%,black_20%,transparent_70%)] opacity-60">
-              <ShootingStars client:load 
+              <ShootingStars client:only="react"
               minDelay={1000}
               maxDelay={1500}
-              starColor="#1AD6B3"
+              starColor="#DCD4FF"
               starHeight={2}
               starWidth={20}
              />
-              <StarsBackground client:load />
+              <StarsBackground client:only="react" />
           </div>
         </div>
-      
+
 </Layout>

@@ -32,7 +32,7 @@ const { data, slug } = post;
 
 
 function calculateReadingTime(content: string): number {
-  const wordsPerMinute = 200; 
+  const wordsPerMinute = 200;
   const words = content.trim().split(/\s+/).length;
   return Math.ceil(words / wordsPerMinute);
 }
@@ -53,19 +53,19 @@ const formatDate = (date: Date) => {
 const displayTags = data.tags.slice(0, 2);
 ---
 
-<article 
+<article
   class={`group relative rounded-xl border transition-all duration-300 ${
-    featured 
-      ? 'border-accent/60 bg-gradient-to-br from-accent/5 to-primary-purple/5 shadow-lg shadow-accent/10' 
-      : 'border-neutral-800 bg-neutral-900/30 shadow-sm shadow-accent/5'
-  } hover:border-accent/40 hover:bg-neutral-900/50 hover:shadow-lg hover:shadow-accent/20 hover:-translate-y-1 focus-within:ring-2 focus-within:ring-accent/40 cursor-pointer`}
+    featured
+      ? 'border-outline/35 bg-gradient-to-br from-outline/10 to-primary-purple/5 shadow-lg shadow-outline/10'
+      : 'border-white/10 bg-white/[0.025] shadow-sm shadow-outline/5'
+  } hover:-translate-y-1 hover:border-outline/45 hover:bg-white/[0.045] hover:shadow-lg hover:shadow-outline/10 focus-within:ring-2 focus-within:ring-outline/40 cursor-pointer`}
   role="article"
   aria-labelledby={`post-title-${slug}`}
 >
   <!-- Featured Badge -->
   {featured && (
     <div class="absolute -top-3 left-4 z-20 pointer-events-none">
-      <span class="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-accent to-primary-purple px-3 py-1 text-xs font-semibold text-white shadow-lg">
+      <span class="inline-flex items-center gap-1 rounded-full border border-outline/35 bg-outline px-3 py-1 text-xs font-medium text-primary-black shadow-lg shadow-outline/10">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
@@ -86,19 +86,19 @@ const displayTags = data.tags.slice(0, 2);
     <!-- Header con fecha y categoría -->
     <header class="mb-4 flex items-center justify-between gap-3">
       <div class="flex items-center gap-3">
-        <time 
+        <time
           datetime={data.date.toISOString()}
-          class="text-xs font-medium text-primary-purple/70 sm:text-sm"
+          class="text-xs font-medium text-outline/80 sm:text-sm"
         >
           {formatDate(data.date)}
         </time>
         {data.category && (
-          <span class="rounded-full bg-accent/10 px-2 py-1 text-xs font-medium text-accent">
+          <span class="rounded-full border border-outline/20 bg-outline/10 px-2 py-1 text-xs font-medium text-outline">
             {data.category}
           </span>
         )}
       </div>
-      
+
       <!-- Reading time -->
       <div class="flex items-center gap-1 text-xs text-neutral-400 sm:text-sm">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -109,13 +109,13 @@ const displayTags = data.tags.slice(0, 2);
     </header>
 
     <!-- Título -->
-    <h2 
+    <h2
       id={`post-title-${slug}`}
-      class="mb-3 flex items-start justify-between gap-3 text-xl font-bold leading-tight tracking-tight text-accent transition-colors group-hover:text-accent/90 sm:text-2xl lg:text-3xl"
+      class="mb-3 flex items-start justify-between gap-3 text-xl font-medium leading-tight tracking-normal text-white transition-colors group-hover:text-outline sm:text-2xl lg:text-3xl"
     >
       <span class="line-clamp-3">{data.title}</span>
-      <span 
-        aria-hidden="true" 
+      <span
+        aria-hidden="true"
         class="translate-x-0 transition-transform group-hover:translate-x-1"
       >
         →
@@ -139,25 +139,25 @@ const displayTags = data.tags.slice(0, 2);
     )}
 
     <!-- Footer con autor -->
-    <footer class="flex items-center justify-between gap-4 border-t border-outline/50 pt-4">
+    <footer class="flex items-center justify-between gap-4 border-t border-outline/15 pt-4">
       <!-- Autor -->
       <div class="flex items-center gap-3">
         <div class="relative">
           <img
             src={data.author.avatar || NousLogoSvg.src}
             alt={`Avatar de ${data.author.name}`}
-            class="h-8 w-8 rounded-full border-2 border-accent/20 object-cover sm:h-10 sm:w-10"
+            class="h-8 w-8 rounded-full border-2 border-outline/20 object-cover sm:h-10 sm:w-10"
             loading="lazy"
             decoding="async"
           />
-          <div class="absolute -inset-0.5 rounded-full bg-gradient-to-r from-accent/20 to-primary-purple/20 opacity-0 transition-opacity group-hover:opacity-100"></div>
+          <div class="absolute -inset-0.5 rounded-full bg-gradient-to-r from-outline/20 to-primary-purple/20 opacity-0 transition-opacity group-hover:opacity-100"></div>
         </div>
         <div class="min-w-0 flex-1">
           <p class="truncate text-sm font-medium text-neutral-200 sm:text-base">
             {data.author.name}
           </p>
           {data.author.role && (
-            <p class="truncate text-xs font-medium text-accent">
+            <p class="truncate text-xs font-medium text-outline">
               {data.author.role}
             </p>
           )}
@@ -169,7 +169,7 @@ const displayTags = data.tags.slice(0, 2);
         </div>
       </div>
 
-      
+
     </footer>
   </div>
 </article>

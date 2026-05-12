@@ -4,6 +4,9 @@ import XIcon from '@/components/icons/SocialLinks/XIcon.svg';
 import FounderRoberto from '@/assets/founders/rpu.webp';
 import FounderAlessandro from '@/assets/founders/adg.webp';
 import FounderAndrey from '@/assets/founders/amz.webp';
+import FounderAna from '@/assets/founders/ana.webp';
+import FounderJeffrey from '@/assets/founders/jeffrey.webp';
+import FounderPablo from '@/assets/founders/pablo-studio.webp';
 import GitHubIcon from '@/components/icons/SocialLinks/GitHubIcon.svg';
 export interface FounderCard {
     name: string;
@@ -25,9 +28,9 @@ const DEFAULT_FOUNDERS_CLASSNAME = "flex flex-col gap-4 relative bg-gradient-to-
 export const DEFAULT_FOUNDERS: FounderCard[] = [
     {
         name: "Roberto Pereira Ugalde",
-        position: "Chief Executive Officer (CEO) & Co-founder",
+        position: "Chief Executive Officer (CEO) & Founder",
         image: FounderRoberto.src,   
-        description: `<span class="font-semibold text-outline">Sets the vision. Edits to the essential. Owns the experience.</span> Roberto makes the future feel inevitable. He frames the why, cuts everything that’s not essential, and aligns design, engineering, and go-to-market around one clear story customers can feel. He sets the bar—and keeps it there—owning the product end-to-end from first pixel to last mile across LatAm.`,
+        description: `<span class="font-semibold text-outline">Thinks hard about the future and how we get there.</span> Roberto is focused on the mission behind NOUS: using AI and technology to help build a better world. He shapes the point of view, sharpens the story, and keeps the work anchored to what should actually change for people and organizations.`,
         socialLinks: [
             {
                 icon: XIcon.src,
@@ -47,18 +50,18 @@ export const DEFAULT_FOUNDERS: FounderCard[] = [
             {
                  icon: GitHubIcon.src,
                  name: "GitHub",
-                 url: "https://github.com/nous-rpu"
+                 url: "https://github.com/robertopereiraugalde"
              }
         ],
         className:  DEFAULT_FOUNDERS_CLASSNAME + "",
-        imageClassName: "w-20 h-auto rounded-full object-cover absolute -top-12 right-5",
+        imageClassName: "",
         background: ""
     },
     {
         name: "Alessandro Díaz González",
-        position: "Chief Technology Officer (CTO) & Co-founder",
+        position: "Chief Technology Officer (CTO) & Co-Founder",
         image: FounderAlessandro.src,
-        description: `<span class="font-semibold text-outline">The engineer who makes it "just work"—fast, stable, elegant.</span> Alessandro reduces complexity to the essential and turns it into systems that carry real load. He prototypes quickly, measures ruthlessly, and simplifies again until latency drops, reliability climbs, and the code feels inevitable. He obsesses over clear architecture, automation by default, and durability in production. He doesn't just direct—he builds—leaving behind platforms the business can scale on without drama.`,
+        description: `<span class="font-semibold text-outline">Turns AI ambition into dependable systems.</span> Alessandro owns the technical path from prototype to production: agents, integrations, automations, infrastructure, and software that can carry real workflows without becoming fragile experiments.`,
         socialLinks: [
             {
                 icon: XIcon.src,
@@ -73,7 +76,7 @@ export const DEFAULT_FOUNDERS: FounderCard[] = [
             {
                 icon: InstagramIcon.src,
                 name: "Instagram",
-                url: "https://www.instagram.com/this._is_.ale/"
+                url: "https://www.instagram.com/gonz_dev/"
             },
             {
                 icon: GitHubIcon.src,
@@ -82,14 +85,14 @@ export const DEFAULT_FOUNDERS: FounderCard[] = [
             }
         ],
         className: DEFAULT_FOUNDERS_CLASSNAME + "",
-        imageClassName: "w-20 h-auto rounded-full object-cover absolute -top-12 right-5",
+        imageClassName: "object-center origin-center scale-[1.12] -translate-x-[6%]",
         background: ""
     },
     {
         name: "Andrey Martínez Zambrana",
-        position: "Chief Product Officer (CPO) & Co-founder",
+        position: "Chief Product Officer (CPO) & Co-Founder",
         image: FounderAndrey.src,
-        description: `<span class="font-semibold text-outline">Simplicity with intent. Design that feels inevitable.</span> Andrey turns strategy into experiences you can feel: fewer, better decisions; typography with rhythm; motion that guides, not distracts. He treats product and design as one craft—clarity, tactility, and care in every detail. He listens to customers, tests with users, and edits without mercy until each flow is obvious and every choice has purpose. The result: products people want to use—and that the business can scale.`,
+        description: `<span class="font-semibold text-outline">Makes intelligence usable.</span> Andrey turns strategy and systems into product experiences people can understand, trust, and adopt: clearer flows, better interfaces, and the product judgment that makes new capabilities feel natural.`,
         socialLinks: [
             {
                 icon: XIcon.src,
@@ -113,9 +116,61 @@ export const DEFAULT_FOUNDERS: FounderCard[] = [
             }
         ],
         className: DEFAULT_FOUNDERS_CLASSNAME + "",
-        imageClassName: "w-20 h-auto rounded-full object-cover absolute -top-12 right-5",
+        imageClassName: "",
+        background: ""
+    },
+    {
+        name: "Ana Kwok-Ching",
+        position: "Chief Business Officer (CBO)",
+        image: FounderAna.src,
+        description: `<span class="font-semibold text-outline">Turns strategy into commercial momentum.</span> Ana connects markets, partners, and revenue opportunities around the transformation. She helps NOUS shape the business path for AI adoption: strategic relationships, commercial direction, partnerships, and opportunities that can expand into meaningful growth.`,
+        socialLinks: [
+            {
+                icon: LinkedInIcon.src,
+                name: "LinkedIn",
+                url: "https://www.linkedin.com/in/anakwok/"
+            }
+        ],
+        className: DEFAULT_FOUNDERS_CLASSNAME + "",
+        imageClassName: "object-center origin-center scale-[1.38] -translate-x-[8%] translate-y-[15%]",
+        background: ""
+    },
+    {
+        name: "Jeffrey Quirós Acuña",
+        position: "Head of Growth",
+        image: FounderJeffrey.src,
+        description: `<span class="font-semibold text-outline">Finds the loops that make growth repeatable.</span> Jeffrey focuses on the experiments, channels, funnels, and conversion paths that help NOUS grow faster with discipline. He turns market interest into measurable traction, sharper acquisition, and clearer signals about what is working.`,
+        socialLinks: [
+            {
+                icon: LinkedInIcon.src,
+                name: "LinkedIn",
+                url: "https://www.linkedin.com/in/jefry-quiros-43a9a2193/"
+            },
+            {
+                icon: InstagramIcon.src,
+                name: "Instagram",
+                url: "https://www.instagram.com/medicenjefro/"
+            }
+        ],
+        className: DEFAULT_FOUNDERS_CLASSNAME + "",
+        imageClassName: "object-[center_30%] origin-center scale-[1.1] translate-x-[5%] translate-y-[3%]",
+        background: ""
+    },
+    {
+        name: "Pablo Molina Camareno",
+        position: "Head of Marketing",
+        image: FounderPablo.src,
+        description: `<span class="font-semibold text-outline">Makes the market understand and remember NOUS.</span> Pablo shapes the brand, content, campaigns, and creative direction that carry the AI transformation story into the market. His work builds clarity, trust, and demand around what NOUS believes and what NOUS can help organizations do.`,
+        socialLinks: [
+            {
+                icon: InstagramIcon.src,
+                name: "Instagram",
+                url: "https://www.instagram.com/molinnamusic/"
+            }
+        ],
+        className: DEFAULT_FOUNDERS_CLASSNAME + "",
+        imageClassName: "object-center origin-center scale-[1.85] -translate-x-[36%] translate-y-[18%]",
         background: ""
     }
    
 ]
-

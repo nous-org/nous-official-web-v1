@@ -1,13 +1,15 @@
 ---
 
-interface GradientTittleProps {
+interface Props {
     title: string;
     subHead?: string;
 }
 
-const { title, subHead } = Astro.props;
+import { sanitizeHtml } from '@/lib/security';
+
+const { title, subHead } = Astro.props as Props;
 
 ---
 
-<h3 class="sm:text-4xl md:text-6xl xl:text-7xl text-2xl font-bold mb-12 bg-gradient-to-br from-gradient-end via-gradient-middle to-gradient-end bg-clip-text text-transparent">{title}</h3>
-{subHead && <p class="text-sm font-medium text-neutral-300 -mt-10 mb-6" set:html={subHead}></p>}
+<h3 class="sm:text-4xl md:text-6xl xl:text-7xl text-2xl font-medium leading-[1.05] tracking-normal mb-12 bg-gradient-to-br from-gradient-start via-gradient-middle to-gradient-end bg-clip-text text-transparent">{title}</h3>
+{subHead && <p class="text-sm font-normal leading-relaxed text-neutral-300/90 -mt-10 mb-6" set:html={sanitizeHtml(subHead)}></p>}

@@ -1,0 +1,67 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import ContentPagesHero from '@/components/ui/ContentPagesHero.astro';
+import AboutBento from '@/components/ui/AboutBento.astro';
+import FoundersSection from '@/components/ui/FoundersSection.astro';
+import BreadcrumbSchema from '@/components/seo/BreadCrumbs.astro';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'About', url: '/about' }
+];
+---
+
+<Layout
+  title="About / NOUS"
+  description="NOUS is an AI transformation company helping organizations build, deploy, and adopt intelligence across real work."
+  backgroundType="primary"
+  useContainer={false}
+  showAurora={false}
+  paddingType="zero"
+  canonical="/about"
+  ogImage="/images/og-default.jpg"
+  tags={[
+    'NOUS',
+    'AI transformation',
+    'intelligence deployment',
+    'AI-ready systems',
+    'AI agency',
+    'technology company',
+    'Costa Rica AI company',
+    'business automation',
+    'AI strategy',
+    'AI adoption'
+  ]}
+  includeOrganizationSchema={false}
+>
+  <BreadcrumbSchema items={breadcrumbs} />
+
+  <ContentPagesHero
+    title="About NOUS"
+    subtitle="We turn AI into working capability."
+    text="NOUS connects strategy, systems, and adoption: finding the right opportunities, building what the work requires, and helping teams use it with confidence."
+  />
+
+  <AboutBento />
+  <FoundersSection />
+
+  <section class="mx-auto max-w-5xl px-4 pb-24">
+    <article class="rounded-[2rem] border border-outline/15 bg-white/[0.025] p-6 text-center shadow-[0_24px_80px_rgba(0,0,0,0.18)] backdrop-blur sm:p-10">
+      <p class="text-sm font-medium uppercase tracking-[0.18em] text-outline">Work with NOUS</p>
+      <h2 class="mx-auto mt-3 max-w-4xl text-2xl font-medium leading-tight text-white sm:text-3xl">
+        Build the next version of your organization around AI.
+      </h2>
+      <p class="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-neutral-300 sm:text-lg">
+        Start with a focused conversation about where intelligence can create leverage, what needs to be built around it, and how your team can adopt it with clarity.
+      </p>
+      <div class="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+        <a href="/contact" class="inline-flex min-h-11 items-center justify-center rounded-full border border-transparent bg-outline px-5 py-2.5 text-sm font-medium text-primary-black transition-colors hover:bg-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/60">
+          Talk to NOUS
+        </a>
+        <a href="/services" class="inline-flex min-h-11 items-center justify-center rounded-full border border-outline/45 bg-transparent px-5 py-2.5 text-sm font-medium text-outline transition-colors hover:border-outline hover:bg-outline/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/60">
+          Explore services
+        </a>
+      </div>
+    </article>
+  </section>
+</Layout>

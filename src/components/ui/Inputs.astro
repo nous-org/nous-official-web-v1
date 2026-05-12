@@ -2,7 +2,7 @@
 
 
 interface Props {
-    type: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date' | 'time' | 'datetime-local' | 'month' | 'week' | 'color' | 'file' | 'hidden' | 'image' | 'range' | 'reset' | 'submit' | 'button' | 'checkbox' | 'radio' | 'textarea' | 'select' | 'radio';
+    type: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date' | 'time' | 'datetime-local' | 'month' | 'week' | 'color' | 'file' | 'hidden' | 'image' | 'range' | 'reset' | 'submit' | 'button' | 'checkbox' | 'radio' | 'textarea' | 'select';
     placeholder: string;
     className?: string;
     id?: string;
@@ -10,16 +10,18 @@ interface Props {
     selectClassName?: string;
     name?: string;
     options?: Array<{ value: string; label: string; }>;
+    required?: boolean;
+    autocomplete?: string;
 }
-const defaultClassName = 'w-full p-2 pb-4 bg-transparent border-b border-neutral-600 focus:border-accent hover:border-accent transition-colors duration-300 font-medium text-lg cursor-pointer focus:outline-none';
-const defaultTextareaClassName = 'w-full p-2 pb-6 bg-primary-black border border-neutral-600 focus:border-accent hover:border-accent transition-colors duration-300 font-medium text-lg cursor-pointer focus:outline-none rounded-md min-h-[20dvh]';
+const defaultClassName = 'w-full rounded-lg border border-neutral-700 bg-white/[0.03] px-4 py-3 text-base sm:text-lg font-normal text-white placeholder:text-neutral-500 transition-colors duration-200 hover:border-outline/70 focus:border-outline focus:outline-none focus:ring-2 focus:ring-outline/15';
+const defaultTextareaClassName = 'w-full rounded-lg border border-neutral-700 bg-white/[0.03] px-4 py-3 text-base sm:text-lg font-normal text-white placeholder:text-neutral-500 transition-colors duration-200 hover:border-outline/70 focus:border-outline focus:outline-none focus:ring-2 focus:ring-outline/15 min-h-[20dvh]';
 const defaultSelectClassName = `
   w-full
   p-2 pb-4
   border-b border-neutral-600
   bg-primary-blue
   text-neutral-400
-  focus:border-accent hover:border-accent
+  focus:border-outline hover:border-outline/70
   focus:text-white hover:text-white
   transition-colors duration-300
   font-medium text-lg
@@ -28,19 +30,28 @@ const defaultSelectClassName = `
   appearance-none
 `;
 
-const { type, placeholder, className = defaultClassName, textareaClassName = defaultTextareaClassName, selectClassName = defaultSelectClassName, name, id, options = [] } = Astro.props;
+const inferAutocomplete = (inputName?: string, inputType?: string) => {
+    if (inputName === 'name') return 'name';
+    if (inputName === 'email' || inputType === 'email') return 'email';
+    if (inputName === 'phone' || inputType === 'tel') return 'tel';
+    if (inputName === 'subject') return 'off';
+    return undefined;
+};
+
+const { type, placeholder, className = defaultClassName, textareaClassName = defaultTextareaClassName, selectClassName = defaultSelectClassName, name, id, options = [], required = true, autocomplete } = Astro.props;
+const computedAutocomplete = autocomplete ?? inferAutocomplete(name, type);
 ---
 
 {type === 'textarea' ? (
-    <>
-        <label for={name} class="block text-lg font-medium text-gray-200 mb-2">{id}:</label>
-        <textarea placeholder={placeholder} class={textareaClassName} name={name} required autocomplete="off"></textarea>
-    </>
+    <div class="space-y-2">
+        <label for={name} class="block text-base sm:text-lg font-medium text-gray-200 mb-2">{id}:</label>
+        <textarea id={name} placeholder={placeholder} class={textareaClassName} name={name} required={required}></textarea>
+    </div>
 ) : type === 'select' ? (
-    <>
+    <div class="space-y-2">
         <label for={name} class="block text-lg font-medium text-gray-200 mb-2">{id}:</label>
         <div class="relative">
-            <select name={name} class={selectClassName} required>
+            <select id={name} name={name} class={selectClassName} required={required}>
                 <option value="" disabled selected>{placeholder}</option>
                 {options.map((option) => (
                     <option value={option.value}>{option.label}</option>
@@ -53,39 +64,36 @@ const { type, placeholder, className = defaultClassName, textareaClassName = def
                 </svg>
             </div>
         </div>
-    </>
+    </div>
 ) : type === 'radio' ? (
-    <>
+    <div class="space-y-2">
         <fieldset class="space-y-3">
-            <legend class="block text-lg font-medium text-gray-200 mb-4">{id}:</legend>
-            {options.map((option) => (
-                <label 
-                    for={`${name}-${option.value}`}
-                    class="flex items-center space-x-3 group cursor-pointer"
-                >
-                    <div class="relative">
-                        <input 
-                            type="radio" 
+            <legend class="block text-base sm:text-lg font-medium text-gray-200 mb-3">{id}:</legend>
+            <div class="flex flex-wrap gap-2">
+                {options.map((option) => (
+                    <label
+                        for={`${name}-${option.value}`}
+                        class="group cursor-pointer"
+                    >
+                        <input
+                            type="radio"
                             id={`${name}-${option.value}`}
-                            name={name} 
+                            name={name}
                             value={option.value}
                             class="sr-only peer"
-                            required
+                            required={required}
                         />
-                        <div class="w-5 h-5 border-2 border-neutral-600 rounded-full peer-checked:border-accent peer-checked:bg-accent peer-checked:shadow-[0_0_10px_0_rgba(255,255,255,0.2)] peer-focus:border-accent group-hover:border-accent transition-colors duration-300 flex items-center justify-center">
-                            <div class="w-2.5 h-2.5 bg-accent rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-300"></div>
-                        </div>
-                    </div>
-                    <span class="text-lg font-medium text-neutral-300 group-hover:text-white transition-colors duration-300">
-                        {option.label}
-                    </span>
-                </label>
-            ))}
+                        <span class="inline-flex min-h-11 items-center justify-center rounded-full border border-neutral-700 bg-white/[0.03] px-4 py-2 text-sm font-normal text-neutral-300 transition-colors duration-200 group-hover:border-outline/70 group-hover:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-outline/40 peer-checked:border-outline peer-checked:bg-outline peer-checked:text-primary-black">
+                            {option.label}
+                        </span>
+                    </label>
+                ))}
+            </div>
         </fieldset>
-    </>
+    </div>
 ) : (
-    <>
-        <label for={name} class="block text-lg font-medium text-gray-200 mb-2">{id}:</label>
-        <input type={type} placeholder={placeholder} class={className} name={name} required autocomplete="off" />
-    </>
+    <div class="space-y-2">
+        <label for={name} class="block text-base sm:text-lg font-medium text-gray-200 mb-2">{id}:</label>
+        <input id={name} type={type} placeholder={placeholder} class={className} name={name} required={required} autocomplete={computedAutocomplete} />
+    </div>
 )}
