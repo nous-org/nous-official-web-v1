@@ -1,0 +1,9 @@
+# Default review ownership for the official NOUS website.
+* @robertopereiraugalde
+
+# Deployment and security-sensitive surfaces should always receive owner review.
+.github/workflows/* @robertopereiraugalde
+wrangler.toml @robertopereiraugalde
+src/middleware.ts @robertopereiraugalde
+src/lib/auth.ts @robertopereiraugalde
+src/pages/api/* @robertopereiraugalde

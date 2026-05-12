@@ -41,6 +41,34 @@ test('generated, local, and audit artifacts are ignored or absent', async () => 
   assert.equal(existsSync(repoFile('seo_qa_report_nous.cr_2026-05-12.md')), false);
 });
 
+test('repository metadata and operating docs are present', async () => {
+  for (const file of [
+    'README.md',
+    'CONTRIBUTING.md',
+    'SECURITY.md',
+    'docs/ARCHITECTURE.md',
+    'docs/OPERATIONS.md',
+    'docs/SEO_AND_CONTENT.md',
+    '.github/pull_request_template.md',
+    '.github/CODEOWNERS',
+  ]) {
+    assert.equal(existsSync(repoFile(file)), true, `${file} should exist`);
+  }
+
+  const packageJson = JSON.parse(await readText('package.json'));
+  assert.equal(packageJson.private, true);
+  assert.equal(packageJson.homepage, 'https://nous.cr');
+  assert.equal(packageJson.repository.url, 'https://github.com/nous-org/nous-official-web-v1.git');
+  assert.match(packageJson.description, /AI transformation/);
+  assert.ok(packageJson.scripts.validate, 'package.json should expose a full validation script');
+
+  const readme = await readText('README.md');
+  assert.match(readme, /NOUS Official Website/);
+  assert.match(readme, /docs\/ARCHITECTURE\.md/);
+  assert.match(readme, /docs\/OPERATIONS\.md/);
+  assert.match(readme, /docs\/SEO_AND_CONTENT\.md/);
+});
+
 test('robots references generated sitemap index and blocks sensitive routes', async () => {
   const robots = await readText('public/robots.txt');
   assert.match(robots, /Sitemap:\s*https:\/\/nous\.cr\/sitemap-index\.xml/);
