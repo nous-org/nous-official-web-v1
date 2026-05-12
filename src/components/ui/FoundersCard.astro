@@ -18,6 +18,9 @@ function getInitials(name: string): string {
         .join('')
         .toUpperCase();
 }
+
+const activeSocialLinks = (founder: typeof DEFAULT_FOUNDERS[number]) =>
+    founder.socialLinks.filter((link) => link.url);
 ---
 
 <!-- Founders Grid Container -->
@@ -68,26 +71,28 @@ function getInitials(name: string): string {
                     <p class="text-sm leading-relaxed text-neutral-300 md:text-justify" set:html={sanitizeHtml(founder.description)} />
                 </div>
 
-                <nav aria-label={`${founder.name} social media links`}>
-                    <div class="flex gap-3">
-                        {founder.socialLinks.filter((link) => link.url).map((link) => (
-                            <a
-                                href={link.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="rounded-full border border-white/10 bg-white/[0.03] p-2 text-neutral-400 transition-all duration-300 hover:border-outline/40 hover:bg-outline/10 hover:text-outline"
-                                aria-label={`Visit ${founder.name} on ${link.name}`}
-                            >
-                                <img
-                                    src={link.icon}
-                                    alt={`${link.name} icon`}
-                                    class="h-4 w-4"
-                                    loading="lazy"
-                                />
-                            </a>
-                        ))}
-                    </div>
-                </nav>
+                {activeSocialLinks(founder).length > 0 && (
+                    <nav aria-label={`${founder.name} social media links`}>
+                        <div class="flex gap-3">
+                            {activeSocialLinks(founder).map((link) => (
+                                <a
+                                    href={link.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="rounded-full border border-white/10 bg-white/[0.03] p-2 text-neutral-400 transition-all duration-300 hover:border-outline/40 hover:bg-outline/10 hover:text-outline"
+                                    aria-label={`Visit ${founder.name} on ${link.name}`}
+                                >
+                                    <img
+                                        src={link.icon}
+                                        alt={`${link.name} icon`}
+                                        class="h-4 w-4"
+                                        loading="lazy"
+                                    />
+                                </a>
+                            ))}
+                        </div>
+                    </nav>
+                )}
             </article>
         ))
     ) : (
