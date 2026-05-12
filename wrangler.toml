@@ -1,5 +1,5 @@
 # wrangler.toml - Cloudflare Workers
-name = "nous-official-web-v1"
+name = "nous-cr"
 compatibility_date = "2026-05-11"
 compatibility_flags = ["nodejs_compat"]
 
