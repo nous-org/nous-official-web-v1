@@ -31,7 +31,7 @@ export function localizePath(path: string, locale: Locale): string {
   const [rawPath, hash] = path.split("#");
   const basePath = stripLocalePrefix(rawPath || "/");
   const localizedPath =
-    locale === "es" ? (basePath === "/" ? "/es/" : `/es${basePath}`) : basePath;
+    locale === "es" ? (basePath === "/" ? "/es" : `/es${basePath}`) : basePath;
 
   return hash ? `${localizedPath}#${hash}` : localizedPath;
 }

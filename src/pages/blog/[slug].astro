@@ -158,6 +158,32 @@ function stripLeadingDuplicateTitle(content: string, title: string): string {
 
 const articleBodyContent = stripLeadingDuplicateTitle(bodyContent, post.data.title);
 const readingTime = calculateReadingTime(articleBodyContent);
+const articleCanonicalUrl = `https://nous.cr/blog/${post.slug}`;
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": `${articleCanonicalUrl}#article`,
+  "headline": post.data.title,
+  "description": post.data.excerpt,
+  "image": "https://nous.cr/images/og-default.jpg",
+  "author": {
+    "@type": "Person",
+    "name": post.data.author.name,
+    ...(post.data.author.role && { "jobTitle": post.data.author.role })
+  },
+  "publisher": {
+    "@id": "https://nous.cr/#organization"
+  },
+  "datePublished": post.data.date.toISOString(),
+  "dateModified": row.updatedAt ? new Date(row.updatedAt).toISOString() : post.data.date.toISOString(),
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": articleCanonicalUrl
+  },
+  "inLanguage": "en",
+  "keywords": post.data.tags.join(", "),
+  "timeRequired": `PT${readingTime}M`
+};
 
 // Formatear fecha
 const formatDate = (date: Date) => {
@@ -173,6 +199,7 @@ const formatDate = (date: Date) => {
   title={`${post.data.title} / NOUS`}
   description={post.data.excerpt}
   canonical={`/blog/${post.slug}`}
+  customSchema={articleSchema}
   backgroundType="primary"
   showAurora={false}
   useContainer={false}

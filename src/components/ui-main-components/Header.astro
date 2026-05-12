@@ -24,6 +24,7 @@ const languageTooltip =
     targetLocale === 'es'
         ? 'Haz clic para cambiar el idioma del sitio a español.'
         : "Click to change the site's language to English.";
+const languageAriaLabel = `${languageLabel} - ${copy.alternateLanguageAria}`;
 const headerNavLinks: NavLink[] = [
     { href: localizePath('/', currentLocale), label: copy.nav.home, ariaLabel: copy.navAria.home },
     { href: localizePath('/services', currentLocale), label: copy.nav.services, ariaLabel: copy.navAria.services },
@@ -56,7 +57,7 @@ const headerNavLinks: NavLink[] = [
             href={languageHref}
             data-astro-reload
             class="group/language relative hidden min-h-11 items-center justify-center rounded-full border border-outline/35 bg-white/[0.035] px-4 text-xs font-medium uppercase tracking-[0.14em] text-outline transition-all duration-200 hover:border-outline/70 hover:bg-outline/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/50 md:inline-flex"
-            aria-label={copy.alternateLanguageAria}
+            aria-label={languageAriaLabel}
         >
             {languageLabel}
             <span class="pointer-events-none absolute left-1/2 top-full z-50 mt-3 w-max max-w-[calc(100vw-2rem)] -translate-x-1/2 translate-y-2 whitespace-nowrap rounded-2xl border border-outline/25 bg-[#090316]/95 px-4 py-3 text-center text-[0.72rem] font-normal normal-case leading-relaxed tracking-normal text-neutral-100 opacity-0 shadow-[0_20px_70px_-24px_rgba(220,212,255,0.8)] backdrop-blur-xl transition-all duration-200 group-hover/language:translate-y-0 group-hover/language:opacity-100 group-focus-visible/language:translate-y-0 group-focus-visible/language:opacity-100">
@@ -133,7 +134,7 @@ const headerNavLinks: NavLink[] = [
                 href={languageHref}
                 data-astro-reload
                 class="group/language-mobile relative inline-flex min-h-10 items-center gap-3 rounded-full border border-white/10 bg-white/[0.03] px-4 text-sm font-medium text-neutral-300 transition-all duration-200 hover:border-outline/50 hover:bg-outline/10 hover:text-outline focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/50"
-                aria-label={copy.alternateLanguageAria}
+                aria-label={languageAriaLabel}
             >
                 <span class="text-xs uppercase tracking-[0.18em] text-neutral-500">
                     {currentLocale === "es" ? "Idioma" : "Language"}

@@ -1,11 +1,16 @@
 ---
 const organizationSchema = {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": ["Organization", "ProfessionalService"],
+  "@id": "https://nous.cr/#organization",
   "name": "NOUS",
   "alternateName": "NOUS AI",
-  "url": "https://nous.cr",
-  "logo": "https://nous.cr/images/logo.jpg",
+  "url": "https://nous.cr/",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "https://nous.cr/images/logo.jpg"
+  },
+  "image": "https://nous.cr/images/og-default.jpg",
   "description": "NOUS helps organizations in Costa Rica and Latin America build, deploy, and adopt AI systems that turn intelligence into practical work.",
   "foundingDate": "2025",
   "founders": [
@@ -52,16 +57,23 @@ const organizationSchema = {
     }
   ],
   "sameAs": [
-    "https://github.com/nous-org/",
-    "https://www.facebook.com/nous506",
-    "https://x.com/nous506",
-    "https://www.instagram.com/nous506",
-    "https://www.linkedin.com/company/nous506"
+    "https://www.facebook.com/nousdotcr",
+    "https://x.com/nousdotcr",
+    "https://www.instagram.com/nousdotcr/",
+    "https://www.linkedin.com/company/nousdotcr/"
   ],
-  "serviceArea": {
-    "@type": "Place",
-    "name": "Latin America"
-  },
+  "serviceArea": [
+    {
+      "@type": "Country",
+      "name": "Costa Rica"
+    },
+    {
+      "@type": "Place",
+      "name": "Latin America"
+    }
+  ],
+  "areaServed": ["Costa Rica", "Latin America"],
+  "availableLanguage": ["English", "Spanish"],
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
     "name": "NOUS services",

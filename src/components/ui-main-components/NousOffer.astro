@@ -24,7 +24,7 @@ const copy = currentLocale === "es"
     <h2 class="text-4xl font-medium tracking-normal text-white mb-4">{copy.title}</h2>
     <p class="text-xl font-normal text-neutral-400 md:mb-12 mb-8">{copy.description}</p>
     <div >
-         <ServiceTabs client:only="react" locale={currentLocale}/>
+         <ServiceTabs client:visible locale={currentLocale}/>
     </div>
     <div>
         <ContactCta locale={currentLocale} />

@@ -1,7 +1,6 @@
 ---
 import { CardDemo } from "@/components/react/InfoCard.tsx";
 import InfoText from "@/components/ui/InfoText.astro";
-//import ButtonVariant from "@/components/ui/Buttons/ButtonVariant.astro";
 import { DEFAULT_INFO_TEXT_2, DEFAULT_INFO_TEXT_2_ES } from "@/types/InfoText";
 import { normalizeLocale, type Locale } from "@/lib/i18n";
 
@@ -28,7 +27,7 @@ const systemsCopy = isEs
         <div class="flex flex-col md:mx-0 md:self-center appear-left"
         
         >
-            <CardDemo client:only="react" justifyDescription={true} locale={currentLocale} />
+            <CardDemo client:visible justifyDescription={true} locale={currentLocale} />
             
         </div>
 
@@ -52,7 +51,7 @@ const systemsCopy = isEs
             class="flex flex-col md:mx-0 md:self-center order-1 md:order-2 lg:justify-self-end appear"
             >
             <CardDemo
-                client:only="react"
+                client:visible
                 iconSet="secondary"
                 borderColor="border-outline"
                 title={systemsCopy.title}

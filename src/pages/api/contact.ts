@@ -51,17 +51,6 @@ const responseCopy = {
 export const POST: APIRoute = async ({ request }) => {
   let locale = inferLocale(request);
   try {
-    const { RESEND_API_KEY, CONTACT_RECIPIENT_EMAIL } = getRuntimeEnv();
-    if (!RESEND_API_KEY) {
-      return new Response(JSON.stringify({
-        success: false,
-        message: responseCopy[locale].unavailable
-      }), {
-        status: 503,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
     const clientIp = getClientIp(request);
     const ipLimit = checkRateLimit(`contact:ip:${clientIp}`, 5);
     if (ipLimit.limited) {
@@ -77,28 +66,45 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    const resend = new Resend(RESEND_API_KEY);
+    // Read submitted data before checking mail-provider configuration so invalid
+    // submissions still receive actionable 400 validation responses.
+    let rawData: unknown;
+    const contentType = request.headers.get('content-type') || '';
 
-    // Read form data.
-    const formData = await request.formData();
-    locale = inferLocale(request, formData);
-    if (isHoneypotFilled(formData)) {
-      return new Response(JSON.stringify({ success: true }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      });
+    if (contentType.includes('application/json')) {
+      const jsonData = await request.json().catch(() => ({})) as Record<string, unknown>;
+      locale = jsonData.locale === 'es' ? 'es' : locale;
+      rawData = {
+        name: typeof jsonData.name === 'string' ? jsonData.name : '',
+        email: typeof jsonData.email === 'string' ? jsonData.email : '',
+        subject: typeof jsonData.subject === 'string' ? jsonData.subject : '',
+        message: typeof jsonData.message === 'string' ? jsonData.message : '',
+        phone: typeof jsonData.phone === 'string' ? jsonData.phone : '',
+        preferredContact: typeof jsonData.preferredContact === 'string' ? jsonData.preferredContact : '',
+        interests: Array.isArray(jsonData.interests) ? jsonData.interests.filter((item): item is string => typeof item === 'string') : [],
+        locale
+      };
+    } else {
+      const formData = await request.formData();
+      locale = inferLocale(request, formData);
+      if (isHoneypotFilled(formData)) {
+        return new Response(JSON.stringify({ success: true }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+
+      rawData = {
+        name: formData.get('name') as string,
+        email: formData.get('email') as string,
+        subject: formData.get('subject') as string,
+        message: formData.get('message') as string,
+        phone: formData.get('phone') as string,
+        preferredContact: formData.get('preferredContact') as string,
+        interests: formData.getAll('interests') as string[],
+        locale: formData.get('locale') as string || locale
+      };
     }
-
-    const rawData = {
-      name: formData.get('name') as string,
-      email: formData.get('email') as string,
-      subject: formData.get('subject') as string,
-      message: formData.get('message') as string,
-      phone: formData.get('phone') as string,
-      preferredContact: formData.get('preferredContact') as string,
-      interests: formData.getAll('interests') as string[],
-      locale: formData.get('locale') as string || locale
-    };
 
     // Validate with Zod before using any submitted values.
     const validatedData = contactSchema.parse(rawData);
@@ -124,6 +130,19 @@ export const POST: APIRoute = async ({ request }) => {
         }
       });
     }
+
+    const { RESEND_API_KEY, CONTACT_RECIPIENT_EMAIL } = getRuntimeEnv();
+    if (!RESEND_API_KEY) {
+      return new Response(JSON.stringify({
+        success: false,
+        message: responseCopy[locale].unavailable
+      }), {
+        status: 503,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    const resend = new Resend(RESEND_API_KEY);
 
     const interestsText = interests && interests.length > 0
       ? interests.map(interest => {

@@ -3,17 +3,13 @@
 User-agent: *
 Allow: /
 
-# ===== SITEMAPS =====
-Sitemap: https://nous.cr/sitemap-index.xml
-
 # ===== MINIMAL EXCLUSIONS =====
-# Only block administrative areas, sensitive APIs, and removed placeholder routes.
+# Only block administrative areas and sensitive APIs. Retired public URLs remain
+# crawlable so search engines can see their 301 redirects.
 Disallow: /admin
 Disallow: /api/admin/
 Disallow: /api/auth/
 Disallow: /api/private/
-Disallow: /pricing
-Disallow: /products
 
 # ===== EXPLICITLY ALLOWED RESOURCES =====
 # Ensure crawlers can access important static resources.
@@ -34,31 +30,6 @@ Allow: /*.svg
 Allow: /*.webp
 Allow: /*.pdf
 
-# ===== GOOGLE CRAWLERS =====
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 1
-
-User-agent: Googlebot-Image
-Allow: /
-
-User-agent: Googlebot-News
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
-# ===== OTHER SEARCH ENGINES =====
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 1
-
-User-agent: Slurp
-Allow: /
-
-User-agent: DuckDuckBot
-Allow: /
-
 # ===== SOCIAL MEDIA CRAWLERS =====
 User-agent: facebookexternalhit
 Allow: /
@@ -72,38 +43,5 @@ Allow: /
 User-agent: WhatsApp
 Allow: /
 
-# ===== AI/LLM CRAWLERS =====
-# Allow access for major AI crawlers.
-User-agent: GPTBot
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: CCBot
-Allow: /
-
-User-agent: anthropic-ai
-Allow: /
-
-User-agent: Claude-Web
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: YouBot
-Allow: /
-
-User-agent: AI2Bot
-Allow: /
-
-User-agent: ImagesiftBot
-Allow: /
-
-# ===== GENERAL SETTINGS =====
-# Conservative crawl delay to preserve server resources.
-Crawl-delay: 1
-
-# Canonical host.
-Host: nous.cr
+# ===== SITEMAPS =====
+Sitemap: https://nous.cr/sitemap-index.xml

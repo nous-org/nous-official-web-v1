@@ -27,6 +27,10 @@ const {
     className = '',
     ariaLabel = 'Talk to NOUS'
 } = Astro.props;
+
+const desktopAriaLabel = button.ariaLabel && button.text && button.ariaLabel.includes(button.text)
+    ? button.ariaLabel
+    : undefined;
 ---
 
 <!-- Desktop version - shows text -->
@@ -39,7 +43,7 @@ const {
     href={button.href}
     target={button.target}
     rel={button.target === '_blank' ? 'noopener noreferrer' : undefined}
-    aria-label={button.ariaLabel}
+    aria-label={desktopAriaLabel}
 >
     {button.text}
 </a>
