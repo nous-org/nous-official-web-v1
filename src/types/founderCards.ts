@@ -1,4 +1,3 @@
-import InstagramIcon from '@/components/icons/SocialLinks/InstagramIcon.svg';
 import LinkedInIcon from '@/components/icons/SocialLinks/LinkedInIcon.svg';
 import XIcon from '@/components/icons/SocialLinks/XIcon.svg';
 import FounderRoberto from '@/assets/founders/rpu.webp';
@@ -33,25 +32,20 @@ export const DEFAULT_FOUNDERS: FounderCard[] = [
         description: `<span class="font-semibold text-outline">Thinks hard about the future and how we get there.</span> Roberto is focused on the mission behind NOUS: using AI and technology to help build a better world. He shapes the point of view, sharpens the story, and keeps the work anchored to what should actually change for people and organizations.`,
         socialLinks: [
             {
-                icon: XIcon.src,
-                name: "X",
-                url: "https://x.com/rpereiraugalde"
-            },
+                 icon: GitHubIcon.src,
+                 name: "GitHub",
+                 url: "https://github.com/robertopereiraugalde"
+             },
             {
                 icon: LinkedInIcon.src,
                 name: "LinkedIn",
                 url: "https://www.linkedin.com/in/robertopereiraugalde/"
             },
             {
-                icon: InstagramIcon.src,
-                name: "Instagram",
-                url: "https://www.instagram.com/robertopereiraugalde/"
-            },
-            {
-                 icon: GitHubIcon.src,
-                 name: "GitHub",
-                 url: "https://github.com/robertopereiraugalde"
-             }
+                icon: XIcon.src,
+                name: "X",
+                url: "https://x.com/rpereiraugalde"
+            }
         ],
         className:  DEFAULT_FOUNDERS_CLASSNAME + "",
         imageClassName: "",
@@ -64,9 +58,9 @@ export const DEFAULT_FOUNDERS: FounderCard[] = [
         description: `<span class="font-semibold text-outline">Turns AI ambition into dependable systems.</span> Alessandro owns the technical path from prototype to production: agents, integrations, automations, infrastructure, and software that can carry real workflows without becoming fragile experiments.`,
         socialLinks: [
             {
-                icon: XIcon.src,
-                name: "X",
-                url: "https://x.com/ddiaz_ale"
+                icon: GitHubIcon.src,
+                name: "GitHub",
+                url: "https://github.com/nous-adg"
             },
             {
                 icon: LinkedInIcon.src,
@@ -74,14 +68,9 @@ export const DEFAULT_FOUNDERS: FounderCard[] = [
                 url: "https://www.linkedin.com/in/alessandrodg"
             },
             {
-                icon: InstagramIcon.src,
-                name: "Instagram",
-                url: "https://www.instagram.com/gonz_dev/"
-            },
-            {
-                icon: GitHubIcon.src,
-                name: "GitHub",
-                url: "https://github.com/nous-adg"
+                icon: XIcon.src,
+                name: "X",
+                url: "https://x.com/ddiaz_ale"
             }
         ],
         className: DEFAULT_FOUNDERS_CLASSNAME + "",
@@ -95,24 +84,14 @@ export const DEFAULT_FOUNDERS: FounderCard[] = [
         description: `<span class="font-semibold text-outline">Makes intelligence usable.</span> Andrey turns strategy and systems into product experiences people can understand, trust, and adopt: clearer flows, better interfaces, and the product judgment that makes new capabilities feel natural.`,
         socialLinks: [
             {
-                icon: XIcon.src,
-                name: " X",
-                url: ""
+                icon: GitHubIcon.src,
+                name: "GitHub",
+                url: "https://github.com/nous-amz"
             },
             {
                 icon: LinkedInIcon.src,
                 name: "LinkedIn",
                 url: "https://www.linkedin.com/in/andrey-mart%C3%ADnez/"
-            },
-            {
-                icon: InstagramIcon.src,
-                name: "Instagram",
-                url: "https://www.instagram.com/andrey26mz/"
-            },
-            {
-                icon: GitHubIcon.src,
-                name: "GitHub",
-                url: "https://github.com/nous-amz"
             }
         ],
         className: DEFAULT_FOUNDERS_CLASSNAME + "",
@@ -145,11 +124,6 @@ export const DEFAULT_FOUNDERS: FounderCard[] = [
                 icon: LinkedInIcon.src,
                 name: "LinkedIn",
                 url: "https://www.linkedin.com/in/jefry-quiros-43a9a2193/"
-            },
-            {
-                icon: InstagramIcon.src,
-                name: "Instagram",
-                url: "https://www.instagram.com/medicenjefro/"
             }
         ],
         className: DEFAULT_FOUNDERS_CLASSNAME + "",
@@ -161,13 +135,7 @@ export const DEFAULT_FOUNDERS: FounderCard[] = [
         position: "Head of Marketing",
         image: FounderPablo.src,
         description: `<span class="font-semibold text-outline">Makes the market understand and remember NOUS.</span> Pablo shapes the brand, content, campaigns, and creative direction that carry the AI transformation story into the market. His work builds clarity, trust, and demand around what NOUS believes and what NOUS can help organizations do.`,
-        socialLinks: [
-            {
-                icon: InstagramIcon.src,
-                name: "Instagram",
-                url: "https://www.instagram.com/molinnamusic/"
-            }
-        ],
+        socialLinks: [],
         className: DEFAULT_FOUNDERS_CLASSNAME + "",
         imageClassName: "object-center origin-center scale-[1.85] -translate-x-[36%] translate-y-[18%]",
         background: ""

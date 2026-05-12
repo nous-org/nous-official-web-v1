@@ -138,6 +138,29 @@ test('web app manifest uses current NOUS positioning', async () => {
   assert.equal(manifest.lang, 'en');
 });
 
+test('team cards do not expose Instagram and keep approved social order', async () => {
+  const founderCards = await readText('src/types/founderCards.ts');
+  const founderCardComponent = await readText('src/components/ui/FoundersCard.astro');
+
+  assert.equal(founderCards.includes('InstagramIcon'), false);
+  assert.equal(founderCards.includes('Instagram'), false);
+  assert.equal(founderCards.includes('instagram.com'), false);
+  assert.match(founderCardComponent, /activeSocialLinks\(founder\)\.length > 0/);
+
+  const socialBlocks = [...founderCards.matchAll(/socialLinks:\s*\[([\s\S]*?)\]/g)];
+  assert.ok(socialBlocks.length > 0, 'Expected founder social link blocks');
+
+  for (const [, block] of socialBlocks) {
+    const names = [...block.matchAll(/name:\s*"([^"]+)"/g)].map((match) => match[1]);
+    const sortedNames = names.filter((name) => ['GitHub', 'LinkedIn', 'X'].includes(name));
+    assert.deepEqual(names, sortedNames, `Unexpected social link name found: ${names.join(', ')}`);
+
+    const order = ['GitHub', 'LinkedIn', 'X'];
+    const indexes = names.map((name) => order.indexOf(name));
+    assert.deepEqual(indexes, [...indexes].sort((a, b) => a - b), `Social links should be ordered GitHub, LinkedIn, X: ${names.join(', ')}`);
+  }
+});
+
 test('edge redirects cover retired and canonical URL variants', async () => {
   const redirects = await readText('public/_redirects');
   const expectedRules = [
