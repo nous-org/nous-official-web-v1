@@ -5,26 +5,25 @@ import HeroCta from '@/components/ui/HeroCta.astro';
 
 <HeroCta 
 buttons={[{
-    text: 'Book a 15-min intro call',
+    text: 'Find your AI opportunity',
     variant: 'primary',
-    href: '/contact-us',
+    href: '/contact',
     target: '_self',
-    ariaLabel: 'Button'
+    ariaLabel: 'Find your AI opportunity'
 }, {
-        text: 'See services',
+        text: 'Explore what we do',
         variant: 'primaryPurple',
         href: '/services',
         target: '_self',
-        ariaLabel: 'Button'
+        ariaLabel: 'Explore what NOUS does'
     }]}
     isMainHero={true}
-    titleClassName='lg:text-7xl max-w-6xl md:text-5xl text-2xl font-archivo-black mb-10 text-neutral-200 text-center'
-    subtitle='We design, build, and maintain automations and web experiences that cut busywork, reduce errors, and ship faster.'
-    subtitleClassName='lg:text-xl md:text-lg text-sm text-center text-neutral-400'
+    titleClassName='text-3xl sm:text-4xl md:text-5xl xl:text-6xl 2xl:text-7xl max-w-7xl font-medium leading-[1.05] tracking-normal text-neutral-100 text-center'
+    subtitle='We help organizations turn AI into real advantage: strategy, agents, automation, training, and the systems to deploy intelligence at work.'
+    subtitleClassName='lg:text-xl md:text-lg text-sm text-center text-neutral-300/90 leading-relaxed max-w-4xl mx-auto'
     >
-    <span slot="title" >
-          <span class="bg-gradient-to-r from-gradient-start via-gradient-middle to-gradient-end bg-clip-text text-transparent">AI automation that runs your operations</span> 
+    <span slot="title">
+          <span class="block md:whitespace-nowrap bg-gradient-to-r from-gradient-start via-gradient-middle to-gradient-end bg-clip-text text-transparent">AI is the next transformation.</span>
+          <span class="block md:whitespace-nowrap bg-gradient-to-r from-gradient-start via-gradient-middle to-gradient-end bg-clip-text text-transparent">NOUS helps you lead it.</span>
     </span>
 </HeroCta>
-
-

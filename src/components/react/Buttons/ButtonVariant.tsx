@@ -22,17 +22,17 @@ export const ButtonVariant: React.FC<ButtonVariantProps> = ({
   variant = 'primary',
   className = '',
   icon = false,
-  strokeColor = '#8458FF',
+  strokeColor = '#DCD4FF',
   ariaLabel = 'Button',
 
 }) => {
-  const baseStyles = `px-5 py-1 font-medium rounded-full transition-colors group flex justify-center items-center gap-2 w-auto ${width ? `md:w-${width}` : ''}`;
+  const baseStyles = `min-h-11 px-5 py-2.5 text-sm sm:text-base font-medium tracking-normal rounded-full transition-all duration-200 group inline-flex justify-center items-center gap-2 w-auto border focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/60 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-black active:scale-[0.98] ${width ? `md:w-${width}` : ''}`;
   
   const variants = {
-    primary: "bg-accent text-primary-blue hover:bg-hover",
-    secondary: "text-primary-blue hover:bg-primary-turquoise/80 bg-primary-turquoise",
-    primaryPurple: "bg-transparent border-2 border-outline text-accent hover:bg-outline hover:text-primary-blue",
-    secondaryTurquoise: "border-2 border-primary-turquoise text-primary-turquoise hover:bg-primary-turquoise/30",
+    primary: "border-transparent bg-outline text-primary-black shadow-sm shadow-outline/10 hover:bg-hover hover:shadow-outline/20",
+    secondary: "border-white/10 bg-white/5 text-neutral-100 hover:border-outline/50 hover:bg-white/10",
+    primaryPurple: "border-outline/45 bg-transparent text-outline hover:bg-outline/10 hover:border-outline",
+    secondaryTurquoise: "border-primary-turquoise/45 bg-transparent text-primary-turquoise hover:bg-primary-turquoise/10 hover:border-primary-turquoise",
   };
   return (
     <a 

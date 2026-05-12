@@ -1,18 +1,23 @@
 import type { APIContext } from 'astro';
 import { createDbClient } from '@/lib/db';
-import { requireClerk } from '@/lib/auth';
+import { authErrorResponse, requireClerk } from '@/lib/auth';
+import { getRuntimeEnv } from '@/lib/runtime-env';
 
 export const prerender = false;
 
 export async function GET(ctx: APIContext) {
-  const env = ctx.locals.runtime.env as {
+  const env = getRuntimeEnv();
+
+  try {
+    await requireClerk(ctx.request, env);
+  } catch (error) {
+    return authErrorResponse(error);
+  }
+
+  const db = createDbClient(env as {
     TURSO_DATABASE_URL: string;
     TURSO_AUTH_TOKEN?: string;
-  };
-
-  await requireClerk(ctx.request, ctx.locals.runtime.env as any);
-
-  const db = createDbClient(env);
+  });
   const rs = await db.execute({
     sql: `SELECT id, slug, title, published_at, updated_at FROM posts ORDER BY updated_at DESC`,
     args: [],
@@ -24,7 +29,7 @@ export async function GET(ctx: APIContext) {
 }
 
 export async function POST(ctx: APIContext) {
-  const env = ctx.locals.runtime.env as {
+  const env = getRuntimeEnv() as {
     TURSO_DATABASE_URL: string;
     TURSO_AUTH_TOKEN?: string;
     CLERK_SECRET_KEY: string;
@@ -32,8 +37,8 @@ export async function POST(ctx: APIContext) {
 
   try {
     await requireClerk(ctx.request, env);
-  } catch {
-    return new Response('Unauthorized', { status: 401 });
+  } catch (error) {
+    return authErrorResponse(error);
   }
 
   const db = createDbClient(env);

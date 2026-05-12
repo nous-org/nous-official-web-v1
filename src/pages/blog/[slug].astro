@@ -5,33 +5,41 @@ import Layout from '@/layouts/Layout.astro';
 import { ShootingStars } from '@/components/react/ShootingStars';
 import { StarsBackground } from '@/components/react/StarBackground';
 import NousLogoSvg from '@/assets/NousLogo.svg';
-import SubscribeToNewsletter from '@/components/ui/SubscribeToNewsLetter.astro';
-import MainCta from '@/components/ui/MainCta.astro';
-import ContactCta from '@/components/ui/ContactCta.astro';
-import { marked } from 'marked';
 import BlogContentRenderer from '@/components/ui/BlogContentRenderer.astro';
 import { createClerkClient } from '@clerk/backend';
+import { getRuntimeEnv } from '@/lib/runtime-env';
+import { getStaticBlogRow } from '@/lib/blog-fallbacks';
 
 const { slug } = Astro.params;
-const { runtime } = Astro.locals;
 
 if (!slug) {
-  return Astro.redirect('/blog');
+  return new Response('Not found', { status: 404 });
 }
 
-const db = createDbClient(runtime.env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
+const env = getRuntimeEnv();
+let row: any | undefined;
 
-// Query post from database
-const result = await db.execute(
-  "SELECT id, slug, title, content, categorie, tags, authorId, createdAt, updatedAt, featured FROM posts WHERE slug = ? AND status = 'PUBLISHED'",
-  [slug]
-);
+if (!env.TURSO_DATABASE_URL) {
+  row = getStaticBlogRow(slug);
+} else {
+  try {
+    const db = createDbClient(env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
+    const result = await db.execute(
+      "SELECT id, slug, title, content, categorie, tags, authorId, createdAt, updatedAt, featured FROM posts WHERE slug = ? AND status = 'PUBLISHED'",
+      [slug]
+    );
 
-if (result.rows.length === 0) {
-  return Astro.redirect('/blog');
+    row = (result.rows[0] as any | undefined) || getStaticBlogRow(slug);
+  } catch (error) {
+    console.error('Error loading blog article:', error instanceof Error ? error.message : 'Unknown error');
+    row = getStaticBlogRow(slug);
+  }
 }
 
-const row = result.rows[0] as any;
+if (!row) {
+  return new Response('Not found', { status: 404 });
+}
+
 const markdownContent = row.content || '';
 
 // Parse frontmatter
@@ -42,21 +50,21 @@ let bodyContent = markdownContent;
 if (frontmatterMatch) {
   const [, fm, body] = frontmatterMatch;
   bodyContent = body;
-  
+
   // Parse YAML frontmatter
   const lines = fm.split('\n');
   let inAuthor = false;
-  
+
   for (const line of lines) {
     const trimmed = line.trim();
     if (!trimmed) continue;
-    
+
     if (trimmed === 'author:') {
       inAuthor = true;
       frontmatter.author = {};
       continue;
     }
-    
+
     if (inAuthor && trimmed.startsWith('  ')) {
       const [key, ...valueParts] = trimmed.substring(2).split(':');
       const value = valueParts.join(':').trim().replace(/^"(.*)"$/, '$1');
@@ -65,11 +73,11 @@ if (frontmatterMatch) {
     } else if (inAuthor) {
       inAuthor = false;
     }
-    
+
     if (trimmed.includes(':')) {
       const [key, ...valueParts] = trimmed.split(':');
       const value = valueParts.join(':').trim();
-      
+
       if (value === 'true' || value === 'false') {
         frontmatter[key] = value === 'true';
       } else {
@@ -88,16 +96,21 @@ function getAuthorRole(name: string): string {
   return '';
 }
 
-// Fetch author info from Clerk
-let authorData = { name: 'NOUS', avatar: NousLogoSvg.src, bio: 'Experts in web development and AI solutions', role: '' };
+let authorData = {
+  name: row.author?.name || 'NOUS',
+  avatar: row.author?.avatar || NousLogoSvg.src,
+  bio: row.author?.bio || 'Field notes from the age of abundant intelligence.',
+  role: row.author?.role || '',
+};
 
 if (row.authorId && row.authorId !== 'admin') {
   try {
-    const clerk = createClerkClient({ secretKey: runtime.env.CLERK_SECRET_KEY as string });
+    if (!env.CLERK_SECRET_KEY) throw new Error('Missing Clerk secret key');
+    const clerk = createClerkClient({ secretKey: env.CLERK_SECRET_KEY });
     const user = await clerk.users.getUser(row.authorId);
-    
+
     const fullName = user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.username || user.emailAddresses[0]?.emailAddress || 'Anonymous';
-    
+
     authorData = {
       name: fullName,
       avatar: user.imageUrl || NousLogoSvg.src,
@@ -116,7 +129,7 @@ const post = {
   data: {
     title: row.title,
     date: new Date(row.createdAt),
-    excerpt: frontmatter.excerpt || '',
+    excerpt: frontmatter.excerpt || row.excerpt || '',
     category: row.categorie,
     tags: JSON.parse(row.tags || '[]'),
     featured: row.featured === true || row.featured === 1,
@@ -125,26 +138,6 @@ const post = {
   }
 };
 
-// Check if content is JSON format or markdown
-let htmlContent = '';
-let isJsonContent = false;
-try {
-  const trimmedContent = bodyContent.trim();
-  if (trimmedContent.startsWith('{')) {
-    const parsed = JSON.parse(trimmedContent);
-    if (parsed.blocks && Array.isArray(parsed.blocks)) {
-      isJsonContent = true;
-    }
-  }
-} catch (e) {
-  // Not JSON, will use markdown
-}
-
-if (!isJsonContent) {
-  // Render markdown to HTML for backward compatibility
-  htmlContent = await marked.parse(bodyContent);
-}
-
 // Función para calcular tiempo de lectura
 function calculateReadingTime(content: string): number {
   const wordsPerMinute = 200;
@@ -152,7 +145,19 @@ function calculateReadingTime(content: string): number {
   return Math.ceil(words / wordsPerMinute);
 }
 
-const readingTime = post.data.readingTime || calculateReadingTime(post.body);
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function stripLeadingDuplicateTitle(content: string, title: string): string {
+  const titlePattern = escapeRegExp(title.trim());
+  const duplicateTitlePattern = new RegExp(`^\\s{0,3}#{1,6}\\s+${titlePattern}\\s*(?:\\r?\\n)+`, 'i');
+
+  return content.replace(duplicateTitlePattern, '').trimStart();
+}
+
+const articleBodyContent = stripLeadingDuplicateTitle(bodyContent, post.data.title);
+const readingTime = calculateReadingTime(articleBodyContent);
 
 // Formatear fecha
 const formatDate = (date: Date) => {
@@ -164,175 +169,167 @@ const formatDate = (date: Date) => {
 };
 ---
 
-<Layout title={post.data.title} backgroundType="primary" showAurora={false} useContainer={true}>
+<Layout
+  title={`${post.data.title} / NOUS`}
+  description={post.data.excerpt}
+  canonical={`/blog/${post.slug}`}
+  backgroundType="primary"
+  showAurora={false}
+  useContainer={false}
+>
   <a id="top" class="sr-only" aria-hidden="true"></a>
 
-  <header class="mx-auto max-w-5xl px-4 pt-56 sm:pt-44">
-    <!-- Breadcrumbs Navigation -->
-    <nav aria-label="Breadcrumb" class="mb-6">
-      <ol class="flex flex-wrap items-center gap-2 text-sm text-neutral-400">
-        <li class="flex items-center">
-          <a 
-            href="/" 
-            class="inline-flex items-center gap-1 transition-colors hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 rounded"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-            </svg>
-            <span class="hidden sm:inline">Home</span>
-          </a>
-        </li>
-        <li class="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-neutral-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </li>
-        <li class="flex items-center">
-          <a 
-            href="/blog" 
-            class="transition-colors hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 rounded"
-          >
-            Blog
-          </a>
-        </li>
-        <li class="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-neutral-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </li>
-        <li>
-          <span class="text-neutral-200 font-medium line-clamp-1" aria-current="page">
-            {post.data.title.length > 50 ? `${post.data.title.substring(0, 50)}...` : post.data.title}
+  <header class="mx-auto max-w-5xl px-4 pb-12 pt-36 sm:pb-16 sm:pt-44">
+    <article class="relative isolate overflow-hidden rounded-[2rem] border border-outline/15 bg-white/[0.025] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.24)] backdrop-blur sm:p-10 lg:p-12">
+      <div class="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-outline/60 to-transparent" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(220,212,255,0.16),transparent_42%)]" aria-hidden="true"></div>
+
+      <div class="relative z-10">
+        <nav aria-label="Breadcrumb" class="mb-8">
+          <ol class="flex flex-wrap items-center gap-2 text-sm text-neutral-400">
+            <li>
+              <a href="/" class="transition-colors hover:text-outline focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/50 rounded">
+                Home
+              </a>
+            </li>
+            <li aria-hidden="true" class="text-neutral-600">/</li>
+            <li>
+              <a href="/blog" class="transition-colors hover:text-outline focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/50 rounded">
+                Blog
+              </a>
+            </li>
+          </ol>
+        </nav>
+
+        <a
+          href="/blog"
+          class="mb-6 inline-flex min-h-10 items-center gap-2 rounded-full border border-outline/25 bg-white/[0.03] px-4 py-2 text-sm font-medium text-outline transition-colors hover:border-outline/60 hover:bg-outline/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/40"
+        >
+          <span aria-hidden="true">←</span>
+          <span>Back to blog</span>
+        </a>
+
+        <div class="mb-6 flex flex-wrap items-center gap-2 text-sm text-neutral-300">
+          <time datetime={post.data.date.toISOString()}>
+            {formatDate(post.data.date)}
+          </time>
+          <span aria-hidden="true" class="h-1 w-1 rounded-full bg-outline/60"></span>
+          <span>
+            {readingTime} min read
           </span>
-        </li>
-      </ol>
-    </nav>
-    <!-- Back Button -->
-    <nav aria-label="Back to blog" class="mb-6">
-      <a
-        href="/blog"
-        class="inline-flex items-center gap-2 rounded-full border border-neutral-800/80 bg-neutral-900/50 px-4 py-2 text-sm font-medium text-neutral-200 shadow-sm backdrop-blur transition-colors hover:bg-neutral-800/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
-          <path fill-rule="evenodd" d="M15.78 4.22a.75.75 0 0 1 0 1.06L9.06 12l6.72 6.72a.75.75 0 1 1-1.06 1.06l-7.25-7.25a.75.75 0 0 1 0-1.06l7.25-7.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
-        </svg>
-        <span>Back</span>
-      </a>
-    </nav>
-
-    <!-- Metadatos del post -->
-    <div class="mb-8 flex flex-wrap items-center gap-4 text-sm text-neutral-400">
-      <time datetime={post.data.date.toISOString()}>
-        {formatDate(post.data.date)}
-      </time>
-      <span class="h-1 w-1 rounded-full bg-neutral-600"></span>
-      <span class="flex items-center gap-1">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        {readingTime} min of reading
-      </span>
-      {post.data.category && (
-        <>
-          <span class="h-1 w-1 rounded-full bg-neutral-600"></span>
-          <span class="rounded-full bg-accent/10 px-2 py-1 text-xs font-medium text-accent">
-            {post.data.category}
-          </span>
-        </>
-      )}
-    </div>
-
-    <h1 class="mb-6 text-3xl font-semibold tracking-tight text-outline sm:text-4xl lg:text-5xl">
-      {post.data.title}
-    </h1>
-
-    <!-- Excerpt y autor -->
-    <div class="mb-8 space-y-4">
-      <p class="text-lg leading-relaxed text-neutral-300 sm:text-xl">
-        {post.data.excerpt}
-      </p>
-      
-      <div class="flex items-center gap-3 border-t border-neutral-800/50 pt-4">
-        <img
-          src={post.data.author.avatar || NousLogoSvg.src}
-          alt={`Avatar de ${post.data.author.name}`}
-          class="h-10 w-10 rounded-full border-2 border-primary-turquoise/20 object-cover"
-          loading="lazy"
-          decoding="async"
-        />
-        <div>
-          <p class="font-medium text-neutral-200">{post.data.author.name}</p>
-          {post.data.author.role && (
-            <p class="text-sm font-medium text-accent">{post.data.author.role}</p>
+          {post.data.category && (
+            <>
+              <span aria-hidden="true" class="h-1 w-1 rounded-full bg-outline/60"></span>
+              <span class="text-outline">
+                {post.data.category}
+              </span>
+            </>
           )}
-          {post.data.author.bio && (
-            <p class="text-sm text-neutral-400">{post.data.author.bio}</p>
+        </div>
+
+        <h1 class="max-w-4xl bg-gradient-to-r from-gradient-start via-gradient-middle to-gradient-end bg-clip-text text-3xl font-medium leading-[1.08] tracking-normal text-transparent sm:text-4xl lg:text-5xl">
+          {post.data.title}
+        </h1>
+
+        {post.data.excerpt && (
+          <p class="mt-6 max-w-4xl text-base leading-relaxed text-neutral-300 sm:text-justify sm:text-lg">
+            {post.data.excerpt}
+          </p>
+        )}
+
+        <div class="mt-8 flex flex-col gap-5 border-t border-outline/15 pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <div class="flex items-center gap-3">
+            <img
+              src={post.data.author.avatar || NousLogoSvg.src}
+              alt={`Avatar of ${post.data.author.name}`}
+              class="h-11 w-11 rounded-full border-2 border-outline/20 object-cover"
+              loading="lazy"
+              decoding="async"
+            />
+            <div>
+              <p class="font-medium text-neutral-100">{post.data.author.name}</p>
+              {post.data.author.role && (
+                <p class="text-sm font-medium text-outline">{post.data.author.role}</p>
+              )}
+              {post.data.author.bio && (
+                <p class="text-sm text-neutral-400">{post.data.author.bio}</p>
+              )}
+            </div>
+          </div>
+
+          {post.data.tags.length > 0 && (
+            <div class="flex flex-wrap items-center gap-2 sm:self-center sm:justify-end">
+              {post.data.tags.map((tag: string) => (
+                <span class="inline-flex items-center rounded-full border border-white/10 bg-white/[0.035] px-3 py-1 text-xs font-medium text-neutral-300">
+                  #{tag}
+                </span>
+              ))}
+            </div>
           )}
         </div>
       </div>
-    </div>
-
-    <!-- Tags -->
-    {post.data.tags.length > 0 && (
-      <div class="mb-8 flex flex-wrap gap-2">
-        {post.data.tags.map((tag) => (
-          <span class="inline-flex items-center rounded-md bg-neutral-800/50 px-3 py-1 text-sm font-medium text-neutral-300">
-            #{tag}
-          </span>
-        ))}
-      </div>
-    )}
+    </article>
   </header>
 
-  <section
-    aria-labelledby="post-title"
-    class="mx-auto max-w-5xl px-4 pb-16 sm:pb-24"
-  >
-    <h2 id="post-title" class="sr-only">{post.data.title}</h2>
-
-    <article class="prose prose-lg prose-invert max-w-none space-y-6 text-neutral-300">
-      <BlogContentRenderer content={bodyContent}>
-        <div set:html={htmlContent}></div>
-      </BlogContentRenderer>
+  <section aria-label="Article body" class="mx-auto max-w-5xl px-4 pb-16 sm:pb-24">
+    <article class="article-prose rounded-[2rem] border border-outline/10 bg-white/[0.018] p-6 text-neutral-300 backdrop-blur sm:p-10 lg:p-12">
+      <BlogContentRenderer content={articleBodyContent} />
     </article>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-4 pb-24">
+    <div class="rounded-[2rem] border border-outline/15 bg-white/[0.025] p-6 text-center shadow-[0_24px_80px_rgba(0,0,0,0.18)] backdrop-blur sm:p-10">
+      <p class="text-sm font-medium uppercase tracking-[0.18em] text-outline">NOUS field notes</p>
+      <h2 class="mx-auto mt-3 max-w-4xl text-2xl font-medium leading-tight text-white sm:text-3xl">
+        Thinking through the age of abundant intelligence.
+      </h2>
+      <p class="mx-auto mt-4 max-w-4xl text-base leading-relaxed text-neutral-300">
+        Read more essays from NOUS or start a conversation about how these ideas apply inside your organization.
+      </p>
+      <div class="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+        <a href="/blog" class="inline-flex min-h-11 items-center justify-center rounded-full border border-transparent bg-outline px-5 py-2.5 text-sm font-medium text-primary-black transition-colors hover:bg-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/60">
+          Back to blog
+        </a>
+        <a href="/contact" class="inline-flex min-h-11 items-center justify-center rounded-full border border-outline/45 bg-transparent px-5 py-2.5 text-sm font-medium text-outline transition-colors hover:border-outline hover:bg-outline/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/60">
+          Talk to NOUS
+        </a>
+      </div>
+    </div>
   </section>
 
   <!-- Scroll to top floating button -->
   <button
     id="scrollTopBtn"
     type="button"
-    aria-label="Ir arriba"
-    class="fixed bottom-6 right-6 z-40 inline-flex h-11 w-11 items-center justify-center rounded-full border border-neutral-800/80 bg-neutral-900/70 text-neutral-200 shadow-lg backdrop-blur transition-all hover:scale-105 hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-turquoise/60 opacity-0 pointer-events-none"
+    aria-label="Back to top"
+    class="fixed bottom-6 right-6 z-40 inline-flex h-11 w-11 items-center justify-center rounded-full border border-outline/25 bg-primary-black/70 text-outline opacity-0 shadow-lg backdrop-blur transition-all hover:scale-105 hover:border-outline/60 hover:bg-outline/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/60 pointer-events-none"
   >
-  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="#ffffff" d="m11 7.825l-4.9 4.9q-.3.3-.7.288t-.7-.313q-.275-.3-.288-.7t.288-.7l6.6-6.6q.15-.15.325-.212T12 4.425t.375.063t.325.212l6.6 6.6q.275.275.275.688t-.275.712q-.3.3-.712.3t-.713-.3L13 7.825V19q0 .425-.288.713T12 20t-.712-.288T11 19z"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24"><path fill="currentColor" d="m11 7.825l-4.9 4.9q-.3.3-.7.288t-.7-.313q-.275-.3-.288-.7t.288-.7l6.6-6.6q.15-.15.325-.212T12 4.425t.375.063t.325.212l6.6 6.6q.275.275.275.688t-.275.712q-.3.3-.712.3t-.713-.3L13 7.825V19q0 .425-.288.713T12 20t-.712-.288T11 19z"/></svg>
   </button>
 
   <div class="absolute inset-0 pointer-events-none overflow-hidden z-[-1]">
     <div class="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center_10%,black_20%,transparent_70%)] opacity-60">
-        <ShootingStars client:load 
+        <ShootingStars client:only="react"
         minDelay={1000}
         maxDelay={1500}
-        starColor="#1AD6B3"
+        starColor="#DCD4FF"
         starHeight={2}
         starWidth={20}
        />
-        <StarsBackground client:load />
+        <StarsBackground client:only="react" />
     </div>
   </div>
-  <SubscribeToNewsletter />
-  <MainCta/>
-  <ContactCta/>
 </Layout>
 <script is:inline>
-  
+
   (function () {
     'use strict';
-    
+
     let scrollBtn = null;
     let isVisible = false;
     let ticking = false;
     let cleanup = null;
-    
+
     const SCROLL_THRESHOLD = 240;
     const TRANSITION_CLASSES = {
       show: ['opacity-0', 'pointer-events-none'],
@@ -341,33 +338,33 @@ const formatDate = (date: Date) => {
 
     const handleScroll = () => {
       if (ticking || !scrollBtn) return;
-      
+
       ticking = true;
       requestAnimationFrame(() => {
         const shouldShow = window.scrollY > SCROLL_THRESHOLD;
-        
-          
+
+
         if (shouldShow !== isVisible) {
           isVisible = shouldShow;
-          
+
           if (isVisible) {
             scrollBtn.classList.remove(...TRANSITION_CLASSES.show);
           } else {
             scrollBtn.classList.add(...TRANSITION_CLASSES.hide);
           }
         }
-        
+
         ticking = false;
       });
     };
 
     const handleClick = (e) => {
       e.preventDefault();
-      
+
       if ('scrollBehavior' in document.documentElement.style) {
-        window.scrollTo({ 
-          top: 0, 
-          behavior: 'smooth' 
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
         });
       } else {
         window.scrollTo(0, 0);
@@ -375,7 +372,7 @@ const formatDate = (date: Date) => {
     };
     const init = () => {
       if (cleanup) cleanup();
-      
+
         scrollBtn = document.getElementById('scrollTopBtn');
       if (!scrollBtn) {
         console.warn('Scroll button with ID "scrollTopBtn" not found');
@@ -384,15 +381,15 @@ const formatDate = (date: Date) => {
 
       isVisible = false;
       ticking = false;
-      
-      window.addEventListener('scroll', handleScroll, { 
+
+      window.addEventListener('scroll', handleScroll, {
         passive: true,
-        capture: false 
+        capture: false
       });
       scrollBtn.addEventListener('click', handleClick, { passive: false });
-      
+
       handleScroll();
-      
+
       cleanup = () => {
         if (scrollBtn) {
           window.removeEventListener('scroll', handleScroll);
@@ -419,7 +416,7 @@ const formatDate = (date: Date) => {
 
     document.addEventListener('astro:page-load', handlePageLoad);
     document.addEventListener('astro:before-swap', handleBeforeSwap);
-    
+
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', handlePageLoad);
     } else {
@@ -431,95 +428,32 @@ const formatDate = (date: Date) => {
 </script>
 
 <style is:global>
-  article.prose h1 {
-    font-size: 2.25rem;
-    font-weight: 700;
-    color: #e4d9ff;
-    margin-bottom: 1.5rem;
-    line-height: 1.2;
-  }
-
-  article.prose h2 {
-    font-size: 1.875rem;
-    font-weight: 600;
-    color: #f5f5f5;
-    margin-bottom: 1rem;
-    margin-top: 2rem;
-    line-height: 1.3;
-  }
-
-  article.prose h3 {
-    font-size: 1.5rem;
-    font-weight: 500;
-    color: #e5e5e5;
-    margin-bottom: 0.75rem;
-    margin-top: 1.5rem;
-    line-height: 1.4;
-  }
-
-  article.prose p {
-    color: #d4d4d4;
-    line-height: 1.75;
-    margin-bottom: 1rem;
-  }
-
-  article.prose a {
-    color: #1AD6B3;
-    text-decoration: none;
-  }
-
-  article.prose a:hover {
-    text-decoration: underline;
-  }
-
-  article.prose strong {
-    color: #f5f5f5;
-    font-weight: 600;
-  }
-
-  article.prose code {
-    color: #1AD6B3;
-    background-color: rgba(38, 38, 38, 0.5);
-    padding: 0.125rem 0.25rem;
-    border-radius: 0.25rem;
+  article.article-prose code {
+    color: #dcd4ff;
+    background-color: rgba(220, 212, 255, 0.08);
+    border: 1px solid rgba(220, 212, 255, 0.12);
+    padding: 0.125rem 0.3rem;
+    border-radius: 0.35rem;
     font-size: 0.875em;
   }
 
-  article.prose pre {
-    background-color: #171717;
-    border: 1px solid #262626;
-    border-radius: 0.5rem;
+  article.article-prose pre {
+    background-color: rgba(4, 0, 15, 0.82);
+    border: 1px solid rgba(220, 212, 255, 0.14);
+    border-radius: 0.75rem;
     padding: 1rem;
     overflow-x: auto;
   }
 
-  article.prose pre code {
+  article.article-prose pre code {
     background-color: transparent;
+    border: 0;
     padding: 0;
   }
 
-  article.prose ul,
-  article.prose ol {
-    margin-left: 1.5rem;
-    margin-bottom: 1rem;
-  }
-
-  article.prose li {
-    color: #d4d4d4;
-    margin-bottom: 0.5rem;
-  }
-
-  article.prose blockquote {
-    border-left: 4px solid #1AD6B3;
-    padding-left: 1rem;
-    color: #a3a3a3;
-    font-style: italic;
-    margin: 1.5rem 0;
-  }
-
-  article.prose img {
-    border-radius: 0.5rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-    margin: 1.5rem 0;
+  article.article-prose img {
+    border-radius: 0.75rem;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.32);
+    margin: 2rem 0;
   }
 </style>

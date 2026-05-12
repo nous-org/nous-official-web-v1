@@ -1,358 +1,184 @@
 ---
 title: "Privacy Policy"
-description: "Privacy policy for Nous Technologies services and data protection practices"
-effectiveDate: "2025-08-14"
-language: "bilingual"
-lastUpdated: "2025-08-18"
+description: "How NOUS collects, uses, protects, and shares personal information across our website, communications, AI work, and technology services."
+effectiveDate: "May 11, 2026"
+language: "English"
+lastUpdated: "May 11, 2026"
 company:
-  name: "Nous Technologies"
+  name: "NOUS"
   address: "San José, Costa Rica"
-  email: "contact@nous.cr"
-  phone: "+506 6186 5634"
+  email: "privacy@nous.cr"
+  phone: "+506 6186-5634"
 ---
 
-## English Version
+## 1. Overview
 
-### 1. Controlling Language
+NOUS helps organizations design, build, and deploy AI-ready technology systems. This Privacy Policy explains how we collect, use, disclose, retain, and protect personal information when you visit our website, contact us, subscribe to our newsletter, become a client, or work with us on AI, automation, software, infrastructure, training, or consulting projects.
 
-A convenience translation to Spanish follows Section 18. Should any inconsistency arise, the English version prevails.
+This policy is written in English for now. If NOUS later offers a Spanish version, we will make clear which version controls if there is any conflict.
 
-## Information We Collect
+This policy is intended to comply with applicable privacy principles, including Costa Rica's Law No. 8968 on the Protection of the Person regarding the Processing of Personal Data, the EU/UK General Data Protection Regulation when it applies, and other privacy laws that may apply based on where you are located or how we interact with you.
 
-### 2. Personal Information
+## 2. Who is responsible for your information
 
-We collect information you provide directly to us, including:
+NOUS is responsible for the personal information described in this policy unless a separate written agreement says otherwise.
 
-- **Contact Information:** Name, email address, phone number, company name, job title
-- **Account Information:** Username, password, profile preferences
-- **Project Information:** Requirements, specifications, feedback, and communications
-- **Payment Information:** Billing address, payment method details (processed by third-party providers)
-- **Communication Records:** Emails, chat messages, support tickets, and meeting recordings (with consent)
+For privacy questions or requests, contact us at [privacy@nous.cr](mailto:privacy@nous.cr).
 
-### 3. Automatically Collected Information
+## 3. Personal information we collect
 
-When you visit our website or use our services, we automatically collect:
+We collect personal information in the following ways.
 
-- **Technical Information:** IP address, browser type, device information, operating system
-- **Usage Data:** Pages visited, time spent, click patterns, feature usage
-- **Cookies and Tracking:** Session cookies, analytics cookies, preference cookies
-- **Log Data:** Server logs, error reports, performance metrics
+### Information you provide to us
 
-### 4. Information from Third Parties
+- **Contact details:** Name, e-mail address, phone number, organization, role, and preferred contact method.
+- **Inquiry details:** Subject, message, areas of interest, project goals, business context, technical needs, and any files or materials you choose to share.
+- **Newsletter information:** E-mail address and subscription preferences.
+- **Client and project information:** Information shared during discovery, proposals, contracts, workshops, support, training, implementation, and ongoing service work.
+- **Billing and administrative information:** Tax, invoicing, payment, procurement, and contract records when needed for a business relationship.
 
-We may receive information from:
+### Information collected automatically
 
-- **Business Partners:** Referral information, project collaboration data
-- **Service Providers:** Analytics providers, payment processors, cloud services
-- **Public Sources:** Professional profiles, company information, industry data
-- **Social Media:** If you connect social accounts or mention us publicly
+When you use our website or services, we may collect limited technical information, including IP address, browser type, device type, operating system, pages visited, timestamps, referring pages, logs, user agent, and basic security or performance data.
 
-## How We Use Your Information
+As of the effective date above, our website forms may collect technical metadata such as IP address and user agent for security, abuse prevention, and operational reliability. If we enable analytics, advertising cookies, or similar tracking technologies, we will use them in accordance with applicable notice and consent requirements.
 
-### 5. Primary Purposes
+### Information from third parties
 
-We use your personal information to:
+We may receive information from business partners, referrals, public professional profiles, event organizers, software platforms, payment or procurement systems, and service providers that help us operate our business.
 
-- **Provide Services:** Deliver consulting, development, and support services
-- **Project Management:** Coordinate timelines, deliverables, and communications
-- **Account Management:** Maintain your account, process payments, send invoices
-- **Customer Support:** Respond to inquiries, troubleshoot issues, provide assistance
-- **Legal Compliance:** Meet contractual obligations, regulatory requirements, and legal processes
+## 4. AI, automation, and project data
 
-### 6. Secondary Purposes
+Because NOUS works with AI systems, clients may share business information, documents, prompts, datasets, workflows, recordings, transcripts, or other materials that contain personal information.
 
-With appropriate consent or legitimate interest, we may use information for:
+We use this information only to provide, evaluate, secure, improve, and support the agreed work, unless we have another lawful basis or explicit permission.
 
-- **Service Improvement:** Analyze usage patterns, optimize performance, develop new features
-- **Marketing Communications:** Send newsletters, service updates, promotional content
-- **Business Development:** Identify opportunities, conduct market research, improve offerings
-- **Security:** Detect fraud, prevent abuse, protect against security threats
-- **Analytics:** Generate insights, create reports, measure effectiveness
+We do not intentionally use a client's confidential project information or personal information to train public AI models unless the client has explicitly approved that use in writing. When we use third-party AI model providers or AI infrastructure providers, we aim to configure them under business, enterprise, API, or data-processing terms appropriate for the work.
 
-### 7. Legal Basis for Processing (GDPR)
+Clients should avoid sending sensitive personal information, regulated health data, payment card data, secrets, credentials, or highly confidential material unless it is necessary for the project and we have agreed on appropriate safeguards.
 
-Our legal basis for processing personal data includes:
+## 5. How we use personal information
 
-- **Contract Performance:** Processing necessary to fulfill our service agreements
-- **Legitimate Interest:** Business operations, security, improvement of services
-- **Consent:** Marketing communications, optional features, cookies
-- **Legal Obligation:** Compliance with laws, regulations, and legal processes
+We use personal information to:
 
-## Information Sharing and Disclosure
+- Respond to inquiries and establish first contact;
+- Evaluate opportunities, scope work, prepare proposals, and provide services;
+- Build, deploy, maintain, support, and improve technology systems;
+- Run AI discovery, training, automation, integration, and implementation work;
+- Communicate about projects, support, billing, contracts, and operations;
+- Send newsletters, field notes, updates, and other communications you request or consent to receive;
+- Protect the security, integrity, and availability of our website, systems, and services;
+- Detect, prevent, and respond to spam, abuse, fraud, security incidents, and misuse;
+- Comply with legal, accounting, tax, regulatory, dispute-resolution, and contractual obligations;
+- Understand how our website and services are used so we can improve them.
 
-### 8. Service Providers and Partners
+## 6. Legal bases for processing
 
-We share information with trusted third parties who assist in our operations:
+Depending on the context and applicable law, we process personal information based on one or more of the following legal bases:
 
-- **Cloud Infrastructure:** AWS, Google Cloud, Microsoft Azure for hosting and storage
-- **Analytics:** Google Analytics, Mixpanel for website and service analytics
-- **Communication:** Slack, Microsoft Teams, Zoom for project collaboration
-- **Payment Processing:** Stripe, PayPal for secure payment handling
-- **Marketing:** Mailchimp, HubSpot for email campaigns and CRM
+- **Consent:** When you subscribe, ask us to contact you, approve optional communications, or allow optional processing.
+- **Contract or pre-contractual steps:** When processing is needed to evaluate, enter into, perform, or manage a business relationship.
+- **Legitimate interests:** When processing is necessary for responsible business operations, service improvement, security, fraud prevention, client communications, or administration, and those interests are not overridden by your rights.
+- **Legal obligations:** When processing is required for tax, accounting, regulatory, legal, or compliance reasons.
 
-### 9. Business Transfers
+Where Costa Rican law requires informed consent for certain processing, we will request it in a clear, specific, and informed way.
 
-In the event of a merger, acquisition, or sale of assets, personal information may be transferred to the acquiring entity, subject to the same privacy protections.
+## 7. When we share personal information
 
-### 10. Legal Requirements
+We do not sell personal information. We share personal information only when needed for legitimate business, service, legal, or security purposes.
 
-We may disclose information when required by law, including:
+We may share information with:
 
-- **Legal Process:** Court orders, subpoenas, government investigations
-- **Safety Protection:** Preventing harm to individuals or property
-- **Rights Enforcement:** Protecting our legal rights, property, or safety
-- **Regulatory Compliance:** Meeting obligations under applicable laws
+- **Service providers:** Providers that support hosting, databases, e-mail delivery, website operations, analytics if enabled, customer communication, file storage, collaboration, billing, payment, security, and support.
+- **AI and cloud providers:** Model providers, cloud platforms, vector databases, transcription tools, automation platforms, and infrastructure providers used to deliver approved AI or technology work.
+- **Professional advisors:** Lawyers, accountants, auditors, insurers, and other advisors.
+- **Business counterparties:** Clients, implementation partners, vendors, or contractors involved in a project, subject to appropriate confidentiality or contractual controls.
+- **Authorities or legal parties:** When disclosure is required by law, legal process, public authority, court order, or to protect rights, safety, security, or property.
+- **Business transfers:** If NOUS is involved in a merger, acquisition, financing, restructuring, or sale of assets, information may be transferred as part of that transaction, subject to appropriate safeguards.
 
-### 11. Consent-Based Sharing
+## 8. International transfers
 
-With your explicit consent, we may share information for:
+NOUS is based in Costa Rica, but we may use service providers, AI labs, cloud infrastructure, and business tools located in other countries.
 
-- **Case Studies:** Anonymized project examples for marketing purposes
-- **Testimonials:** Client feedback and success stories
-- **Industry Events:** Speaking engagements, conference presentations
-- **Partnership Opportunities:** Collaborative projects with other organizations
+When personal information is transferred internationally, we use appropriate safeguards where required, such as contractual protections, data-processing agreements, standard contractual clauses, access controls, and vendor due diligence.
 
-## Data Security and Protection
+## 9. Cookies and similar technologies
 
-### 12. Security Measures
+Our website may use essential technologies needed to operate the site, submit forms, secure services, remember preferences, and measure performance.
 
-We implement comprehensive security controls:
+If we add analytics, marketing cookies, or similar non-essential tracking technologies, we will provide notice and controls where required by applicable law. You can also manage cookies through your browser settings.
 
-- **Encryption:** Data encrypted in transit (TLS 1.3) and at rest (AES-256)
-- **Access Controls:** Role-based permissions, multi-factor authentication
-- **Network Security:** Firewalls, intrusion detection, secure VPNs
-- **Regular Audits:** Security assessments, penetration testing, compliance reviews
-- **Employee Training:** Security awareness, data handling procedures
+## 10. Data retention
 
-### 13. Data Breach Response
+We keep personal information only as long as reasonably necessary for the purposes described in this policy, unless a longer retention period is required or permitted by law.
 
-In the event of a data breach, we will:
+Typical retention considerations include:
 
-- **Immediate Response:** Contain the breach, assess impact, secure systems
-- **Investigation:** Determine cause, scope, and affected individuals
-- **Notification:** Inform affected parties within 72 hours (GDPR) or as required by law
-- **Remediation:** Implement corrective measures, prevent future incidents
-- **Documentation:** Maintain records for regulatory reporting
+- Contact inquiries are kept long enough to respond, manage follow-up, and maintain business records;
+- Newsletter records are kept while the subscription remains active and for a limited period after unsubscribe when needed for suppression or compliance;
+- Client project records are kept for the term of the relationship and then as needed for support, legal, accounting, tax, security, or dispute purposes;
+- Logs and technical records are kept for operational, security, debugging, and abuse-prevention purposes;
+- Records subject to legal, tax, contractual, or regulatory obligations may be kept longer.
 
-### 14. International Data Transfers
+When information is no longer needed, we delete, anonymize, or restrict it according to reasonable business and legal requirements.
 
-When transferring data outside Costa Rica, we ensure adequate protection through:
+## 11. Security
 
-- **Standard Contractual Clauses (SCCs):** EU-approved data transfer mechanisms
-- **Adequacy Decisions:** Transfers to countries with adequate protection levels
-- **Binding Corporate Rules:** Internal policies for multinational transfers
-- **Certification Programs:** Privacy Shield successors, ISO 27001 compliance
+We use administrative, technical, and organizational safeguards designed to protect personal information against unauthorized access, loss, misuse, alteration, and disclosure.
 
-## Your Privacy Rights
+These safeguards may include access controls, authentication, encryption in transit, secure cloud services, least-privilege permissions, vendor review, internal confidentiality practices, logging, monitoring, and incident response processes.
 
-### 15. Access and Portability Rights
+No website, software system, network, AI provider, or internet transmission can be guaranteed to be completely secure. If we identify a security incident involving personal information, we will assess it and notify affected individuals or authorities when required by applicable law.
 
-You have the right to:
+## 12. Your rights
 
-- **Access:** Request copies of your personal information
-- **Portability:** Receive data in a structured, machine-readable format
-- **Explanation:** Understand how your data is processed and used
-- **Verification:** Confirm the accuracy and completeness of your data
+Depending on where you live and which law applies, you may have rights to:
 
-### 16. Correction and Deletion Rights
+- Confirm whether we process your personal information;
+- Access personal information we hold about you;
+- Correct inaccurate or incomplete information;
+- Request deletion or suppression of information;
+- Object to or restrict certain processing;
+- Withdraw consent where processing is based on consent;
+- Request portability of information where applicable;
+- Opt out of marketing communications;
+- Lodge a complaint with a competent privacy authority.
 
-You may request to:
+For Costa Rica, privacy rights may include access, rectification, cancellation, and opposition rights under Law No. 8968. For the European Economic Area or United Kingdom, rights may include GDPR rights such as access, rectification, erasure, restriction, objection, portability, and withdrawal of consent. For California residents, rights may include the right to know, delete, correct, opt out of sale or sharing, and limit certain sensitive personal information, where applicable.
 
-- **Correct:** Update inaccurate or incomplete information
-- **Delete:** Remove personal information (subject to legal retention requirements)
-- **Restrict:** Limit processing for specific purposes
-- **Object:** Opt-out of certain processing activities
+To exercise a right, e-mail [privacy@nous.cr](mailto:privacy@nous.cr). We may need to verify your identity before completing a request. We will respond within the timeframe required by applicable law.
 
-### 17. Communication Preferences
+## 13. Marketing and newsletter choices
 
-You can control communications by:
+You can unsubscribe from marketing or newsletter e-mails by using the unsubscribe link in the e-mail, if available, or by contacting [privacy@nous.cr](mailto:privacy@nous.cr).
 
-- **Unsubscribing:** Using links in marketing emails
-- **Preference Center:** Managing communication types and frequency
-- **Account Settings:** Updating notification preferences
-- **Direct Request:** Contacting our privacy team
+Service, security, transactional, legal, and administrative messages may still be sent when necessary even if you opt out of marketing.
 
-### 18. Exercising Your Rights
+## 14. Children
 
-To exercise privacy rights:
+Our website and services are intended for organizations and adults. We do not knowingly collect personal information from children under 13, and we do not knowingly target children with our services.
 
-1. **Submit Request:** Email privacy@nous.cr with your request
-2. **Identity Verification:** Provide information to confirm your identity
-3. **Processing Time:** We respond within 30 days (GDPR) or as required by law
-4. **Appeal Process:** Contact supervisory authorities if unsatisfied with our response
+If you believe a child has provided personal information to us, contact [privacy@nous.cr](mailto:privacy@nous.cr) and we will take appropriate steps.
 
----
+## 15. Third-party links and services
 
-## Versión en Español
+Our website, communications, and project materials may link to third-party websites, platforms, or services. Their privacy practices are governed by their own policies, not this Privacy Policy.
 
-*Traducción de cortesía. En caso de conflicto, prevalece la versión en inglés.*
+## 16. Changes to this policy
 
-### 1. Idioma Controlador
+We may update this Privacy Policy as our services, technology, legal obligations, or business practices change.
 
-Esta traducción se proporciona solo para conveniencia. La versión en inglés controla la interpretación legal.
+When we make material changes, we will update the "Last updated" date and, where appropriate, provide additional notice.
 
-## Información que Recopilamos
+## 17. Contact
 
-### 2. Información Personal
+Questions, requests, or concerns about this Privacy Policy should be sent to:
 
-Recopilamos información que nos proporciona directamente:
-
-- **Información de Contacto:** Nombre, correo, teléfono, empresa, cargo
-- **Información de Cuenta:** Usuario, contraseña, preferencias
-- **Información de Proyecto:** Requisitos, especificaciones, comunicaciones
-- **Información de Pago:** Dirección de facturación, métodos de pago
-- **Registros de Comunicación:** Correos, mensajes, tickets de soporte
-
-### 3. Información Recopilada Automáticamente
-
-- **Información Técnica:** Dirección IP, navegador, dispositivo
-- **Datos de Uso:** Páginas visitadas, tiempo de uso, patrones de clic
-- **Cookies:** Cookies de sesión, analíticas, preferencias
-- **Datos de Registro:** Logs del servidor, reportes de errores
-
-### 4. Información de Terceros
-
-Podemos recibir información de socios comerciales, proveedores de servicios y fuentes públicas.
-
-## Cómo Usamos su Información
-
-### 5. Propósitos Principales
-
-- Proporcionar servicios de consultoría y desarrollo
-- Gestionar proyectos y comunicaciones
-- Mantener cuentas y procesar pagos
-- Brindar soporte al cliente
-- Cumplir obligaciones legales
-
-### 6. Propósitos Secundarios
-
-Con consentimiento apropiado:
-
-- Mejorar servicios y desarrollar nuevas funciones
-- Enviar comunicaciones de marketing
-- Realizar investigación de mercado
-- Garantizar seguridad y prevenir fraude
-- Generar análisis e informes
-
-### 7. Base Legal para el Procesamiento
-
-- **Ejecución de Contrato:** Cumplimiento de acuerdos de servicio
-- **Interés Legítimo:** Operaciones comerciales, seguridad
-- **Consentimiento:** Comunicaciones de marketing, funciones opcionales
-- **Obligación Legal:** Cumplimiento de leyes y regulaciones
-
-## Compartir y Divulgación de Información
-
-### 8. Proveedores de Servicios
-
-Compartimos información con terceros de confianza:
-
-- **Infraestructura en la Nube:** AWS, Google Cloud, Microsoft Azure
-- **Análisis:** Google Analytics, Mixpanel
-- **Comunicación:** Slack, Microsoft Teams, Zoom
-- **Procesamiento de Pagos:** Stripe, PayPal
-- **Marketing:** Mailchimp, HubSpot
-
-### 9. Transferencias Comerciales
-
-En caso de fusión o adquisición, la información personal puede transferirse a la entidad adquirente.
-
-### 10. Requisitos Legales
-
-Podemos divulgar información cuando lo requiera la ley, incluyendo órdenes judiciales y investigaciones gubernamentales.
-
-## Seguridad y Protección de Datos
-
-### 11. Medidas de Seguridad
-
-- **Cifrado:** Datos cifrados en tránsito (TLS 1.3) y en reposo (AES-256)
-- **Controles de Acceso:** Permisos basados en roles, autenticación multifactor
-- **Seguridad de Red:** Firewalls, detección de intrusiones
-- **Auditorías Regulares:** Evaluaciones de seguridad, pruebas de penetración
-
-### 12. Respuesta a Violaciones de Datos
-
-En caso de violación:
-
-- Respuesta inmediata para contener la violación
-- Investigación para determinar causa y alcance
-- Notificación a las partes afectadas dentro de 72 horas
-- Implementación de medidas correctivas
-
-### 13. Transferencias Internacionales de Datos
-
-Garantizamos protección adecuada mediante:
-
-- Cláusulas Contractuales Estándar (SCCs)
-- Decisiones de Adecuación
-- Reglas Corporativas Vinculantes
-- Programas de Certificación
-
-## Sus Derechos de Privacidad
-
-### 14. Derechos de Acceso y Portabilidad
-
-Tiene derecho a:
-
-- **Acceder:** Solicitar copias de su información personal
-- **Portabilidad:** Recibir datos en formato estructurado
-- **Explicación:** Entender cómo se procesa su información
-- **Verificación:** Confirmar exactitud de sus datos
-
-### 15. Derechos de Corrección y Eliminación
-
-Puede solicitar:
-
-- **Corregir:** Actualizar información inexacta
-- **Eliminar:** Remover información personal
-- **Restringir:** Limitar procesamiento para propósitos específicos
-- **Objetar:** Optar por no participar en ciertas actividades
-
-### 16. Preferencias de Comunicación
-
-Puede controlar comunicaciones:
-
-- Cancelando suscripción en correos de marketing
-- Gestionando preferencias en su cuenta
-- Contactando nuestro equipo de privacidad
-
-### 17. Ejercer sus Derechos
-
-Para ejercer derechos de privacidad:
-
-1. Envíe solicitud a privacy@nous.cr
-2. Proporcione información para verificar identidad
-3. Respondemos dentro de 30 días
-4. Puede apelar a autoridades supervisoras si no está satisfecho
-
-## Disposiciones Generales
-
-### 18. Retención de Datos
-
-Conservamos información personal solo mientras sea necesario para los propósitos descritos o según lo requiera la ley.
-
-### 19. Menores de Edad
-
-No recopilamos intencionalmente información de menores de 18 años sin consentimiento parental.
-
-### 20. Cambios a esta Política
-
-Actualizaremos esta política según sea necesario. Los cambios materiales se notificarán con 30 días de anticipación.
-
-### 21. Información de Contacto
-
-Para preguntas sobre privacidad:
-
-**Nous Technologies**  
-Oficial de Privacidad  
-San José, Costa Rica  
-Email: privacy@nous.cr  
-Teléfono: +506 2000-0000
-
-### 22. Autoridades Supervisoras
-
-Tiene derecho a presentar quejas ante:
-
-- **Costa Rica:** Agencia de Protección de Datos del Consumidor (PRODHAB)
-- **Unión Europea:** Su autoridad local de protección de datos
-- **Brasil:** Autoridade Nacional de Proteção de Dados (ANPD)
+<div class="legal-contact-lines">
+  <p><strong>NOUS</strong></p>
+  <p>San José, Costa Rica</p>
+  <p>E-mail:</p>
+  <p><a href="mailto:privacy@nous.cr">privacy@nous.cr</a></p>
+  <p>Phone number:</p>
+  <p><a href="tel:+50661865634">+506 6186-5634</a></p>
+</div>

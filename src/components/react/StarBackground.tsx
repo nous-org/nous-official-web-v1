@@ -4,7 +4,6 @@ import React, {
   useState,
   useEffect,
   useRef,
-  type RefObject,
   useCallback,
 } from "react";
 
@@ -107,8 +106,9 @@ export const StarsBackground: React.FC<StarBackgroundProps> = ({
     if (!ctx) return;
 
     let animationFrameId: number;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const render = () => {
+    const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       stars.forEach((star) => {
         ctx.beginPath();
@@ -122,11 +122,18 @@ export const StarsBackground: React.FC<StarBackgroundProps> = ({
             Math.abs(Math.sin((Date.now() * 0.001) / star.twinkleSpeed) * 0.5);
         }
       });
+    };
 
+    const render = () => {
+      draw();
       animationFrameId = requestAnimationFrame(render);
     };
 
-    render();
+    if (reducedMotion) {
+      draw();
+    } else {
+      render();
+    }
 
     return () => {
       cancelAnimationFrame(animationFrameId);

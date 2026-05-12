@@ -1,21 +1,22 @@
-# Robots.txt optimizado para Google Search Console y AI crawlers
-# Permite el acceso completo a todas las páginas públicas
+# robots.txt for NOUS public pages.
 
 User-agent: *
 Allow: /
 
 # ===== SITEMAPS =====
-Sitemap: https://nous.cr/sitemap.xml
+Sitemap: https://nous.cr/sitemap-index.xml
 
-# ===== EXCLUSIONES MÍNIMAS =====
-# Solo bloqueamos áreas administrativas y APIs sensibles
+# ===== MINIMAL EXCLUSIONS =====
+# Only block administrative areas, sensitive APIs, and removed placeholder routes.
+Disallow: /admin
+Disallow: /api/admin/
 Disallow: /api/auth/
 Disallow: /api/private/
 Disallow: /pricing
 Disallow: /products
 
-# ===== RECURSOS PERMITIDOS EXPLÍCITAMENTE =====
-# Aseguramos acceso completo a recursos importantes
+# ===== EXPLICITLY ALLOWED RESOURCES =====
+# Ensure crawlers can access important static resources.
 Allow: /assets/
 Allow: /images/
 Allow: /static/
@@ -33,7 +34,7 @@ Allow: /*.svg
 Allow: /*.webp
 Allow: /*.pdf
 
-# ===== CRAWLERS DE GOOGLE =====
+# ===== GOOGLE CRAWLERS =====
 User-agent: Googlebot
 Allow: /
 Crawl-delay: 1
@@ -47,7 +48,7 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-# ===== OTROS MOTORES DE BÚSQUEDA =====
+# ===== OTHER SEARCH ENGINES =====
 User-agent: Bingbot
 Allow: /
 Crawl-delay: 1
@@ -72,7 +73,7 @@ User-agent: WhatsApp
 Allow: /
 
 # ===== AI/LLM CRAWLERS =====
-# Permitir acceso a los principales crawlers de IA
+# Allow access for major AI crawlers.
 User-agent: GPTBot
 Allow: /
 
@@ -100,9 +101,9 @@ Allow: /
 User-agent: ImagesiftBot
 Allow: /
 
-# ===== CONFIGURACIÓN GENERAL =====
-# Crawl delay conservador para preservar recursos del servidor
+# ===== GENERAL SETTINGS =====
+# Conservative crawl delay to preserve server resources.
 Crawl-delay: 1
 
-# Host canónico (opcional pero recomendado)
+# Canonical host.
 Host: nous.cr

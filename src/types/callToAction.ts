@@ -31,70 +31,49 @@ export interface CallToActionProps {
 
 export const defaultSections: CTASection[] = [
     {
-        title: "Stop guessing. Start shipping.",
+        title: "Do not wait for the AI transformation to happen around you.",
         subtitle: "",
-        description: "Get a clear plan and a site that actually converts—done with you, not to you.",
+        description: "Every organization is asking the same question: where does AI actually create value for us? NOUS helps you answer it, prioritize it, and act on it.",
         style: {
-            background: "bg-accent to-primary-black/40 border border-accent",
-            textColor: "text-primary-blue/70",
+            background: "bg-gradient-to-br from-outline to-gradient-middle border border-outline",
+            textColor: "text-primary-black/75",
             shadowColor: "accent",
             titleColor: "text-primary-blue",
         },
         buttons: [
             {
-                text: "Talk to an advisor",
-                href: "/contact",
+                text: "See our approach",
+                href: "/services",
                 scheduleIcon: false,
                 strokeColor: "",
                 arrowIcon: false,
                 variant: "darkBlue",
                 target: "_self",
-                ariaLabel: "Explore our plans"
-            },
-            {
-                text: "See how we build sites",
-                href: "/portfolio",
-                scheduleIcon: false,
-                strokeColor: "",
-                arrowIcon: false,
-                variant: "secondary",
-                target: "_self",
-                ariaLabel: "See our products"
+                ariaLabel: "See our AI transformation approach"
             }
         ]
     },
     {
-        title: "Your ops, on autopilot.",
+        title: "Turn AI ambition into working systems.",
         subtitle: "",
-        description: "Give your team back hours with AI workflows that reply instantly, reduce errors, and scale with you.",
+        description: "AI does not create value until it is deployed into real workflows. We turn the right opportunities into agents, automations, integrations, and systems your team can use every day.",
         style: {
-            background: "bg-gradient-to-bl from-outline/40 to-primary-black/40 border border-outline",
+            background: "bg-gradient-to-bl from-outline/15 to-white/5 border border-outline/40",
             textColor: "text-neutral-300",
             shadowColor: "primary-purple",
             titleColor: "text-outline",
         },
         buttons: [
             {
-                text: "Turn busywork off",
+                text: "Start with a consultation",
                 href: "/contact",
                 variant: "primary",
                 scheduleIcon: false,
                 strokeColor: "",
                 arrowIcon: false,
                 target: "_self",
-                ariaLabel: "Contact us"
-            },
-            {
-                text: "Explore automation use cases",
-                href: "/services",
-                variant: "primaryPurple",
-                scheduleIcon: false,
-                arrowIcon: false,
-                strokeColor: "",
-                target: "_self",
-                ariaLabel: "See our services"
+                ariaLabel: "Start with an AI consultation"
             }
         ]
     }
 ];
-

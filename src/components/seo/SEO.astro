@@ -20,54 +20,24 @@ const {
   description,
   canonical,
   image = '/images/og-default.jpg',
-  imageAlt = 'Nous Technologies - AI Consulting & Web Development',
+  imageAlt = 'NOUS helps organizations build and deploy practical AI systems',
   type = 'website',
   publishedTime,
   modifiedTime,
-  author = 'Nous Technologies',
+  author = 'NOUS',
   tags = [
-    
-    'AI Consulting',
+    'AI Deployment',
+    'AI Transformation',
     'Artificial Intelligence',
-    'Machine Learning',
     'Generative AI',
     'AI Agents',
-    'RAG',
-    'Chatbots',
-    'Business Automation',
-    'Process Automation',
-    'Workflow Automation',
-    'Custom Software',
-    'Web Development',
-    'Full-Stack Development',
-    'Frontend Development',
-    'API Integration',
-    'Data Engineering',
-    'Analytics',
-    'Technical SEO',
-    'Web Performance',
-
-    
-    'Astro',
-    'Astro Islands',
-    'TailwindCSS',
-    'TypeScript',
-    'React',
-    'Headless CMS',
-
-    
+    'Automation',
+    'AI-Ready Systems',
+    'Intelligence Deployment',
+    'Technology Consulting',
     'Consultoría de IA',
-    'Inteligencia Artificial',
-    'Aprendizaje Automático',
-    'Agentes de IA',
-    'Automatización Empresarial',
-    'Desarrollo Web',
-    'Rendimiento Web',
-    'Posicionamiento SEO',
-    'Integración de APIs',
-
-    
-    'Nous Technologies',
+    'Transformación con IA',
+    'NOUS',
     'Costa Rica',
     'Latin America',
     'Latinoamérica',
@@ -79,38 +49,27 @@ const {
 } = Astro.props;
 
 const siteUrl = 'https://nous.cr';
-const fullCanonical = canonical ? `${siteUrl}${canonical}` : Astro.url.href;
-const fullImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
+const getCanonicalUrl = (value?: string) => {
+  if (!value) return `${siteUrl}${Astro.url.pathname}`;
 
-// Default schema for organization
-const defaultSchema = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Nous Technologies",
-  "url": siteUrl,
-  "logo": `${siteUrl}/images/logo.jpg`,
-  "description": "AI consulting, web development, and business automation services in Latin America",
-  "address": {
-    "@type": "PostalAddress",
-    "addressCountry": "CR",
-    "addressLocality": "San José",
-    "addressRegion": "San José"
-  },
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "+50661865634",
-    "contactType": "customer service",
-    "email": "contacto@nous.cr"
-  },
-  "sameAs": [
-    "https://www.facebook.com/nous506",
-    "https://x.com/nous506",
-    "https://www.instagram.com/nous506",
-    "https://www.linkedin.com/company/nous506"
-  ]
+  if (value.startsWith('http')) {
+    try {
+      const url = new URL(value);
+      if (['localhost', '127.0.0.1', '::1'].includes(url.hostname)) {
+        return `${siteUrl}${url.pathname}`;
+      }
+      return value;
+    } catch {
+      return `${siteUrl}${Astro.url.pathname}`;
+    }
+  }
+
+  return `${siteUrl}${value.startsWith('/') ? value : `/${value}`}`;
 };
 
-const finalSchema = schema || defaultSchema;
+const fullCanonical = getCanonicalUrl(canonical);
+const fullImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
+const finalSchema = schema;
 ---
 
 <!-- Primary Meta Tags -->
@@ -135,7 +94,7 @@ const finalSchema = schema || defaultSchema;
 <meta property="og:description" content={description} />
 <meta property="og:image" content={fullImage} />
 <meta property="og:image:alt" content={imageAlt} />
-<meta property="og:site_name" content="Nous Technologies" />
+<meta property="og:site_name" content="NOUS" />
 <meta property="og:locale" content="en_US" />
 <meta property="og:locale:alternate" content="es_ES" />
 
@@ -151,17 +110,14 @@ const finalSchema = schema || defaultSchema;
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={fullImage} />
 <meta property="twitter:image:alt" content={imageAlt} />
-<meta property="twitter:site" content="@nous_tech" />
-<meta property="twitter:creator" content="@nous_tech" />
+<meta property="twitter:site" content="@nous506" />
+<meta property="twitter:creator" content="@nous506" />
 
 <!-- Additional Meta Tags -->
-<meta name="theme-color" content="#06b6d4" />
-<meta name="msapplication-TileColor" content="#06b6d4" />
+<meta name="theme-color" content="#060114" />
+<meta name="msapplication-TileColor" content="#060114" />
 
 <!-- Structured Data -->
-<script is:inline type="application/ld+json" set:html={JSON.stringify(finalSchema)} />
+{finalSchema && <script is:inline type="application/ld+json" set:html={JSON.stringify(finalSchema)} />}
 
 <!-- Preconnect to external domains -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="preconnect" href="https://www.google-analytics.com" />

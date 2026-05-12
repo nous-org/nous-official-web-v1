@@ -15,36 +15,30 @@ interface Props {
 
 //default button
 const defaultButton: Button = {
-    text: 'Talk to us',
-    href: '/contact-us',
+    text: 'Talk to NOUS',
+    href: '/contact',
     className: '',
     target: '_self',
-    ariaLabel: 'Button'
-};
-
-//default props
-const defaultProps: Props = {
-    button: defaultButton,
-    className: '',
-    ariaLabel: 'Button'
+    ariaLabel: 'Talk to NOUS'
 };
 
 const {
     button = defaultButton,
     className = '',
-    ariaLabel = 'Button'
+    ariaLabel = 'Talk to NOUS'
 } = Astro.props;
 ---
 
 <!-- Desktop version - shows text -->
 <a
     class={[
-        'hidden lg:flex px-8 py-2 rounded-full font-medium text-lg transition-colors duration-300 cursor-pointer items-center',
-        'bg-transparent text-accent border border-outline hover:bg-outline hover:text-primary-blue',
+        'hidden lg:inline-flex min-h-11 px-7 py-2.5 rounded-full font-medium text-sm uppercase tracking-[0.12em] transition-all duration-200 cursor-pointer items-center border focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/60 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-black active:scale-[0.98]',
+        'bg-outline text-primary-black border-transparent shadow-sm shadow-outline/20 hover:bg-hover hover:shadow-outline/30',
         className
     ].join(' ')}
     href={button.href}
     target={button.target}
+    rel={button.target === '_blank' ? 'noopener noreferrer' : undefined}
     aria-label={button.ariaLabel}
 >
     {button.text}
@@ -53,16 +47,16 @@ const {
 <!-- Mobile/Tablet version - shows message icon -->
 <a
     class={[
-        'hidden md:flex lg:hidden px-3 py-3 rounded-full transition-colors duration-300 cursor-pointer items-center justify-center',
-        'bg-transparent text-[#A894FF] border border-[#6E3BFF] hover:bg-[#6E3BFF]/20 hover:text-white',
+        'hidden md:inline-flex lg:hidden min-h-11 px-3 py-3 rounded-full transition-all duration-200 cursor-pointer items-center justify-center border focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/60 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-black active:scale-[0.98]',
+        'bg-outline text-primary-black border-transparent shadow-sm shadow-outline/20 hover:bg-hover hover:shadow-outline/30',
         className
     ].join(' ')}
     href={button.href}
     target={button.target}
-    aria-label="Send message"
+    rel={button.target === '_blank' ? 'noopener noreferrer' : undefined}
+    aria-label={button.ariaLabel || ariaLabel}
 >
     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
     </svg>
 </a>
-

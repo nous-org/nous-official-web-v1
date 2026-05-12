@@ -1,334 +1,293 @@
 ---
 title: "Terms and Conditions"
-
-description: "Terms and conditions for Nous Technologies services and data protection practices"
-effectiveDate: "2025-08-14"
-language: "bilingual"
-lastUpdated: "2025-08-18"
+description: "The terms that govern NOUS website use, proposals, AI transformation work, technology services, deliverables, third-party tools, and client responsibilities."
+effectiveDate: "May 11, 2026"
+language: "English"
+lastUpdated: "May 11, 2026"
 company:
-  name: "Nous Technologies"
+  name: "NOUS"
   address: "San José, Costa Rica"
-  email: "contact@nous.cr"
-  phone: "+506 6186 5634"
----
-## English Version
-
-### 1. Controlling Language
-
-A convenience translation to Spanish follows Section 27. Should any inconsistency arise, the English version prevails.
-
-## Legal Framework
-
-### 2. Acceptance of Terms
-
-By visiting our website, signing a proposal, statement of work ("SOW"), purchase order, or otherwise engaging the services of **Nous Technologies** ("Company," "we," "us," "our"), you ("Client," "you," "your") accept these Terms & Conditions ("Terms"). 
-
-If you disagree, do not use our website or services.
-
-### 3. Mission & Scope of Services
-
-We democratize technology consulting in Latin America, offering:
-
-- Web and software development
-- Artificial-intelligence ("AI") consulting, deployment, and model retraining
-- Business-process automation and optimization
-- Related training, hosting, support, and maintenance
-
-Project-specific scope, timeline, and fees are set out in an SOW signed by both parties.
-
-## Service Terms
-
-### 4. Eligibility
-
-- You must be the age of majority in your jurisdiction and have authority to bind the entity you represent.
-- You warrant that your use of our services complies with all applicable laws, regulations, and third-party rights.
-
-### 5. Proposals, SOWs & Change Requests
-
-- Proposals remain valid for 30 days unless stated otherwise.
-- Work begins after written acceptance and any stipulated upfront payment.
-- Scope, timeline, or budget changes require a mutually signed change order.
-
-### 6. Client Responsibilities
-
-- Provide accurate information, timely feedback, and system access.
-- Secure all licenses, consents, and data-processing permissions we need to perform the services.
-- Maintain your own backup of any content or data you supply.
-
-### 7. Fees, Invoicing & Taxes
-
-- Pricing may be time-and-materials, fixed fee, or subscription as specified in the SOW.
-- Invoices are payable within 15 days unless otherwise stated. Late payments accrue 1.5% interest per month or the maximum allowed by law.
-- Client is responsible for all taxes, duties, and withholding—except taxes on our net income.
-
-## Intellectual Property & Data
-
-### 8. Intellectual Property ("IP") Ownership
-
-- **Pre-existing IP:** Each party retains the IP rights it held before the engagement.
-- **Deliverables:** Upon full payment, Client obtains either:
-  - a. full ownership of bespoke source code, documentation, and datasets expressly labeled "Client-Owned" in the SOW, or
-  - b. a worldwide, perpetual, non-exclusive license to use other deliverables internally.
-- **Reusable Components:** We may reuse generalized know-how, templates, algorithms, or frameworks developed during the project, provided they do not contain Client-Confidential Information.
-- **Third-Party & Open Source Licenses** apply to their respective components.
-
-### 9. Confidentiality
-
-- **"Confidential Information"** means non-public information marked or reasonably considered confidential.
-- Each party must protect the other's Confidential Information with at least reasonable care for five years after disclosure.
-- **Exclusions:** Information that becomes public, is independently developed, or is lawfully obtained without breach.
-- If disclosure is required by law, the disclosing party will give prompt notice (unless legally barred) to allow protective measures.
-
-### 10. Data Protection & Privacy
-
-- We act as "data processor" or "service provider" for personal data under
-the EU GDPR, Brazil LGPD, and Costa Rica's Law 8968. We process personal data
-only on documented instructions contained in the SOW or Data-Processing
-Addendum ("DPA").
-- Standard Contractual Clauses (SCCs) will apply where EU personal data is
-transferred outside the EEA.
-- Client shall not transmit sensitive data (PCI, PHI, children's data, etc.)
-unless the SOW and DPA expressly provide for it.
-- Each party will implement appropriate technical and organizational security
-measures and promptly notify the other of any data breach affecting the
-project.
-
-### 11. AI-Specific Disclaimers & Client Duties
-
-- AI outputs are probabilistic and may contain errors or bias.
-- Client **must** review and validate AI outputs before relying on them for decisions that influence legal rights, safety, or financial outcomes.
-- Unless the SOW states otherwise, we do not warrant model accuracy rates or continuous improvement. Optional retraining and tuning services can be purchased under a separate SOW.
-
-## Service Delivery
-
-### 12. Third-Party Services & APIs
-
-- Our solutions may integrate hosting, cloud, or AI services from third-party vendors.
-- Your use of such services is governed by the vendors' terms, and we are not liable for their functionality, security, or downtime.
-
-### 13. Service Levels & Support (If Purchased)
-
-- Uptime, response, and resolution targets appear in a separate Service-Level Agreement ("SLA").
-- Scheduled maintenance will be announced at least 48 hours in advance where feasible.
-
-### 14. Warranties
-
-We warrant that:
-
-- Services will be provided in a professional manner consistent with industry standards.
-- Custom deliverables will materially conform to written specifications for 30 days after delivery.
-
-**EXCEPT AS EXPRESSLY STATED IN THESE TERMS OR THE SOW, THE SERVICES AND DELIVERABLES ARE PROVIDED "AS IS" WITHOUT ANY OTHER WARRANTIES, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT.**
-
-## Risk & Liability
-
-### 15. Insurance
-
-We maintain the following minimum coverages with insurers rated A- or better:
-
-- Professional / Technology Errors & Omissions: USD 1 million aggregate
-- Cyber liability (including data breach costs): USD 1 million aggregate
-
-Certificates of insurance will be provided on written request and kept current throughout the engagement.
-
-### 16. Limitation of Liability
-
-- Neither party is liable for indirect, incidental, special, consequential, or punitive damages, nor lost profits, revenue, or data, even if advised of the possibility.
-- Each party's aggregate liability arising out of the agreement is limited to the fees paid or payable to Company in the 12 months preceding the claim.
-- Nothing limits liability for fraud, gross negligence, willful misconduct, or amounts that cannot be limited by law.
-
-### 17. Indemnification
-Client will defend, indemnify, and hold Company harmless from any third-party
-claim arising out of (a) Client's content or data, (b) Client's misuse of the
-services, or (c) Client's violation of law or third-party rights. Company will
-promptly notify Client of any claim, allow Client to control the defense and
-settlement (subject to Company's written consent for any settlement affecting
-its rights), and reasonably cooperate at Client's expense.
-
-### 18. Term & Termination
-
-- Term begins on SOW acceptance and continues until the services are
-completed or earlier terminated.
-- Either party may terminate for material breach not cured within 15 days of
-written notice.
-- Upon termination, Client will pay all fees and approved expenses incurred up
-to the effective termination date.
-- Sections 7, 8, 9, 10, 13 – 16, 18, 20 – 27 survive termination.
-
-## Compliance & Disputes
-
-### 19. Force Majeure
-Neither party is liable for delay or failure caused by events beyond its
-reasonable control, including natural disasters, war, civil unrest, pandemic,
-labor disputes, or government actions.
-
-### 20. Export & Sanctions Compliance
-Client will not use, transfer, or permit access to the services in violation of
-Costa Rican, U.S., EU, or UN export-control and sanctions regulations and will
-not allow prohibited end users or uses.
-
-### 21. Dispute-Resolution Escalation
-
-- **Step 1:** The parties' senior executives will meet (virtually or in person) to
-resolve any dispute within 30 days of written notice.
-- **Step 2:** If unresolved, the dispute will be settled by confidential
-arbitration administered by the International Centre for Dispute Resolution
-("ICDR") under its International Arbitration Rules in San José, Costa
-Rica, in English.
-- Judgment on the award may be entered in any court of competent jurisdiction.
-Either party may seek injunctive relief in court to protect IP or
-Confidential Information pending arbitration.
-
-### 22. Governing Law
-These Terms are governed by, and construed in accordance with, the laws of the
-Republic of Costa Rica, without regard to conflict-of-laws principles.
-
-### 23. Modifications to Terms
-We may update these Terms by posting a revised version on our website. Material
-changes take effect 30 days after posting or on Client's next SOW—whichever
-occurs first. Continued use after that date constitutes acceptance.
-
-## General Provisions
-
-### 24. Notices
-Notices must be in writing and sent to the addresses in the SOW by (a)
-courier, (b) certified mail with return receipt, or (c) email with delivery
-confirmation. Notice is effective on receipt.
-
-### 25. Entire Agreement
-These Terms, each SOW, the SLA, the DPA, and any attached schedules constitute
-the entire agreement, superseding all prior oral or written communications.
-
-### 26. Severability
-If any provision is unenforceable, the remaining provisions will remain in
-force, and the invalid provision will be replaced by one that most closely
-reflects the parties' original intent and is enforceable.
-
-### 27. Waiver
-Failure to enforce any right is not a waiver of future enforcement. A waiver is
-effective only if in a signed writing.
-
-### 28. Assignment
-Neither party may assign its rights or obligations without the other party's
-prior written consent, except to an affiliate or successor in a merger, stock
-sale, or asset sale involving substantially all of the assigning party's
-business, provided the assignee agrees in writing to be bound by these Terms.
-
+  email: "legal@nous.cr"
+  phone: "+506 6186-5634"
 ---
 
-## Versión en Español
+## 1. Overview
 
-*Traducción de cortesía. En caso de conflicto, prevalece la versión en inglés.*
+These Terms and Conditions govern your access to the NOUS website and your use of NOUS services, unless a separate written agreement, proposal, statement of work, master services agreement, data processing agreement, service level agreement, or order form says otherwise.
 
-### 1. Idioma Controlador
+NOUS provides AI transformation strategy, intelligence deployment, automation, training, software, integrations, infrastructure, and related technology services. Each project is different. Specific scope, fees, responsibilities, timelines, deliverables, acceptance criteria, and support obligations should be defined in the applicable project document.
 
-Esta traducción se proporciona solo para conveniencia. La versión en inglés controla la interpretación legal.
+If there is a conflict between these Terms and a signed project document, the signed project document controls for that project.
 
-## Marco Legal
+## 2. Acceptance of these Terms
 
-### 2. Aceptación
+By accessing our website, contacting NOUS, signing or approving a proposal, accepting a statement of work, using our services, or otherwise engaging with us, you agree to these Terms.
 
-Al utilizar nuestro sitio o firmar una propuesta, usted ("Cliente") acepta estos Términos y Condiciones ("Términos"). Si no está de acuerdo, no utilice nuestros servicios.
+If you use our services on behalf of an organization, you represent that you have authority to bind that organization. In that case, "you" and "client" refer to that organization.
 
-### 3. Misión y Alcance
+If you do not agree with these Terms, do not use our website or services.
 
-Ofrecemos desarrollo web, consultoría de IA y automatización de procesos en Latinoamérica, conforme al alcance definido en cada "SOW".
+## 3. Definitions
 
-### 4. Elegibilidad
+For these Terms:
 
-- Ser mayor de edad y tener facultad de obligar a la entidad que representa.
-- Cumplir con las leyes aplicables.
+- **Client materials:** Content, data, credentials, documents, systems, workflows, brand assets, instructions, and other materials you provide to NOUS.
+- **Deliverables:** Work product that NOUS agrees to create for you under a project document.
+- **NOUS tools:** Pre-existing code, templates, frameworks, libraries, methods, prompts, automations, documentation structures, know-how, internal processes, and reusable components developed or owned by NOUS.
+- **Project document:** A proposal, statement of work, order form, contract, or other written document that describes a specific engagement.
+- **Services:** Strategy, consulting, development, AI, automation, training, implementation, support, maintenance, infrastructure, integration, and related technology work performed by NOUS.
+- **Third-party services:** Platforms, APIs, AI model providers, cloud services, hosting providers, payment processors, analytics tools, software libraries, and other services not owned or controlled by NOUS.
 
-### 5. Propuestas y Cambios
+## 4. Website use
 
-- Vigencia de 30 días.
-- Inicio tras la aceptación escrita y pago inicial requerido.
-- Cambios mediante orden de cambio firmada.
+You may use the NOUS website for lawful, informational, and business purposes. You agree not to:
 
-### 6. Responsabilidades del Cliente
+- Interfere with the website's security, performance, availability, or integrity;
+- Attempt to access systems, accounts, files, data, or areas you are not authorized to access;
+- Use scraping, automated extraction, or reverse-engineering methods that burden or misuse the website;
+- Upload, submit, or transmit malware, unlawful content, infringing material, or harmful instructions;
+- Misrepresent your identity, affiliation, authority, or intent.
 
-- Suministrar información y acceso oportunamente.
-- Obtener licencias y consentimientos necesarios.
-- Mantener respaldo propio de datos.
+We may restrict, suspend, or block access if we reasonably believe there is misuse, security risk, unlawful activity, or violation of these Terms.
 
-## Términos de Servicio
+## 5. Services and project documents
 
-### 7. Honorarios e Impuestos
+NOUS services may include:
 
-- Modalidad según el SOW.
-- Pago a 15 días; morosidad 1,5% mensual.
-- Impuestos a cargo del Cliente, salvo los de renta de la Compañía.
+- AI transformation strategy and advisory;
+- Intelligence deployment, AI agents, workflow automation, and AI-enabled operations;
+- Custom software, web applications, internal tools, integrations, and API work;
+- Data, infrastructure, knowledge systems, retrieval systems, and AI-ready architecture;
+- Training, documentation, enablement, change management, and adoption support;
+- Maintenance, support, monitoring, optimization, and iteration.
 
-### 8. Propiedad Intelectual
+The project document should define what is included and what is not included. Work outside the agreed scope requires written approval, a change order, or a new project document.
 
-- IP preexistente permanece con su titular.
-- Propiedad o licencia sobre entregables según se especifique en el SOW.
-- Componentes de terceros sujetos a sus licencias.
+## 6. Proposals, approvals, and change requests
 
-### 9. Confidencialidad
+Unless a proposal states otherwise:
 
-Protección durante cinco años; excepciones estándar.
+- Proposals are valid for 30 days from the date issued;
+- Work begins after written approval and any required upfront payment;
+- Timelines depend on timely client feedback, access, decisions, and materials;
+- Changes to scope, assumptions, deadlines, budget, integrations, deliverables, or acceptance criteria must be approved in writing;
+- NOUS may adjust timelines, fees, or delivery plans when client delays, third-party issues, new requirements, or dependency changes affect the work.
 
-### 10. Protección de Datos
+E-mail approval, electronic signature, payment, written confirmation, or continued project participation may be treated as acceptance where legally permitted.
 
-Cumplimiento con GDPR, LGPD y Ley 8968; procesamiento conforme a DPA.
+## 7. Client responsibilities
 
-## Propiedad Intelectual y Datos
+You are responsible for:
 
-### 11. IA y Responsabilidad del Cliente
+- Providing accurate information, requirements, approvals, access, credentials, data, and materials when needed;
+- Ensuring you have the rights, licenses, consents, and permissions needed for anything you provide to NOUS;
+- Reviewing and approving strategy, designs, content, workflows, configurations, outputs, and deliverables;
+- Maintaining backups of your own systems, data, content, and materials;
+- Securing your accounts, devices, credentials, internal approvals, and third-party services;
+- Complying with laws, internal policies, industry obligations, and third-party terms that apply to your organization;
+- Telling NOUS before sharing sensitive data, regulated data, confidential credentials, payment data, health data, children's data, or other high-risk information.
 
-El Cliente debe validar las salidas de IA antes de decisiones críticas.
+NOUS is not responsible for delays, errors, security issues, compliance issues, or additional costs caused by inaccurate information, missing approvals, inaccessible systems, incomplete materials, or client-side decisions.
 
-### 12. Servicios de Terceros
+## 8. Fees, invoices, taxes, and expenses
 
-Rigen los términos de cada proveedor.
+Fees may be fixed, time-and-materials, subscription-based, retainer-based, milestone-based, or otherwise defined in the project document.
 
-### 13. Niveles de Servicio
+Unless the project document says otherwise:
 
-Definidos en SLA separado.
+- Invoices are due upon receipt;
+- Upfront payments, deposits, or milestone payments may be required before work begins or continues;
+- Late payments may pause work, delay delivery, or result in additional charges where allowed by law;
+- You are responsible for applicable taxes, duties, bank fees, payment processor fees, withholding obligations, and third-party costs, except taxes based on NOUS income;
+- Approved third-party subscriptions, infrastructure, APIs, licenses, tools, hosting, model usage, storage, and usage-based costs are your responsibility.
 
-## Entrega de Servicios
+All fees are non-refundable unless the project document or applicable law requires otherwise.
 
-### 14. Garantías
+## 9. AI-specific terms
 
-Prestación profesional y conformidad de 30 días; demás garantías excluidas.
+NOUS works with AI systems, AI model providers, automation platforms, and data-driven workflows. You understand and agree that:
 
-### 15. Seguros
+- AI outputs can be inaccurate, incomplete, biased, unsafe, outdated, or unsuitable for a specific use case;
+- AI systems may produce different outputs from similar inputs;
+- AI outputs must be reviewed, tested, validated, and approved by qualified humans before use in important business, legal, financial, medical, employment, safety, compliance, or customer-impacting decisions;
+- NOUS does not guarantee that AI outputs will be correct, lawful, non-infringing, unbiased, secure, or fit for every context;
+- NOUS does not guarantee a specific model performance level, accuracy rate, cost reduction, revenue result, productivity result, or business outcome unless expressly stated in a signed project document;
+- You remain responsible for how your organization deploys, supervises, uses, and governs AI systems after delivery.
 
-Coberturas mínimas de USD 1 millón para E&O y ciber-riesgos.
+You must not use services or deliverables from NOUS to build, deploy, or operate systems that violate law, third-party rights, model provider rules, platform rules, or agreed safety restrictions.
 
-### 16. Limitación de Responsabilidad
+## 10. Data, privacy, and security
 
-Exclusión de daños indirectos; tope igual a lo pagado en los últimos 12 meses.
+Each party will comply with applicable privacy, data protection, and security obligations. NOUS handles personal information according to the NOUS Privacy Policy and any applicable project document or data processing agreement.
 
-### 17. Indemnización
+You are responsible for ensuring that client materials provided to NOUS may lawfully be shared and processed for the project. If a project requires sensitive, regulated, high-risk, or confidential data, the parties should agree in writing on appropriate safeguards before that data is shared.
 
-El Cliente indemnizará a la Compañía según lo establecido.
+NOUS may use third-party services to provide the services, including cloud infrastructure, AI model providers, automation platforms, e-mail providers, databases, monitoring tools, storage services, and collaboration tools. Where appropriate, NOUS will use reasonable contractual, technical, and organizational safeguards for those services.
 
-## Riesgo y Responsabilidad
+No system, software, network, transmission, or AI provider can be guaranteed to be completely secure.
 
-### 18. Plazo y Terminación
+## 11. Confidentiality
 
-Cura de incumplimiento en 15 días; supervivencia de cláusulas clave.
+Each party may receive non-public business, technical, financial, strategic, operational, client, vendor, product, security, or project information from the other party.
 
-### 19. Fuerza Mayor
+Each party agrees to:
 
-Exoneración por causas fuera de control razonable.
+- Use confidential information only for the purposes of the relationship;
+- Protect confidential information using reasonable care;
+- Share confidential information only with personnel, contractors, advisors, or providers who need it and are bound by appropriate confidentiality duties;
+- Not disclose confidential information to third parties except as allowed by the project document, required by law, or approved in writing.
 
-### 20. Exportaciones
+Confidentiality obligations do not apply to information that is public through no fault of the receiving party, already known without restriction, independently developed without using confidential information, or lawfully received from another source.
 
-Cumplimiento de regulaciones de control de exportaciones y sanciones.
+## 12. Intellectual property
 
-### 21. Resolución de Conflictos
+Each party keeps ownership of its pre-existing intellectual property.
 
-Escalamiento a ejecutivos y luego arbitraje ICDR en San José.
+Unless the project document says otherwise, and subject to full payment:
 
-### 22. Ley Aplicable
+- You own client materials and business-specific deliverables created specifically for you;
+- NOUS owns NOUS tools, reusable components, know-how, generic methods, internal processes, templates, frameworks, non-client-specific improvements, and pre-existing materials;
+- You receive a non-exclusive, worldwide, perpetual license to use any NOUS tools included in a deliverable only as needed to use that deliverable for your internal business purposes;
+- Third-party software, open-source components, models, APIs, fonts, media, services, and libraries remain subject to their own licenses and terms.
 
-Leyes de la República de Costa Rica.
+NOUS may reuse general knowledge, skills, ideas, methods, workflows, patterns, and experience learned during a project, provided we do not disclose your confidential information.
 
-## Cumplimiento y Disputas
+NOUS will not publish your confidential information, private results, private data, or non-public project details as a case study without your permission.
 
-### 23-28. Disposiciones Generales
+## 13. Third-party services
 
-Igual que en la versión en inglés (modificaciones, notificaciones, acuerdo completo, divisibilidad, renuncia, cesión).
+Services and deliverables may depend on third-party services. Third-party services may change pricing, limits, features, policies, models, APIs, availability, security practices, or terms.
+
+NOUS is not responsible for third-party services that we do not control. Your use of third-party services may require separate accounts, contracts, payments, consents, configurations, or compliance obligations.
+
+If a third-party change affects a project or deliverable, NOUS may recommend alternatives, changes, maintenance work, or additional services.
+
+## 14. Delivery, review, and acceptance
+
+You are responsible for reviewing deliverables and providing clear feedback within the review period stated in the project document. If no review period is stated, the review period is 10 business days after delivery.
+
+Deliverables are considered accepted if you approve them in writing, use them in production, fail to provide specific rejection reasons within the review period, or otherwise indicate acceptance through conduct.
+
+Reasonable bug fixes for agreed specifications may be handled during the warranty, support, or review period stated in the project document. New requirements, preference changes, scope changes, or third-party changes are not defects unless the project document says otherwise.
+
+## 15. Support, maintenance, and hosting
+
+Support, maintenance, monitoring, hosting, incident response, service levels, uptime targets, model monitoring, optimization, retraining, or ongoing improvement are included only if stated in a project document.
+
+Unless a project document says otherwise, NOUS is not responsible for:
+
+- Hosting, uptime, monitoring, backups, or incident response after delivery;
+- Third-party outages, usage limits, API changes, model changes, or pricing changes;
+- Client-side changes, unauthorized changes, misconfiguration, credential loss, or internal misuse;
+- Ongoing updates needed because of browser changes, platform changes, security updates, model updates, legal changes, or vendor changes.
+
+## 16. Warranties and disclaimers
+
+NOUS will perform services in a professional and workmanlike manner, using reasonable skill and care.
+
+Except as expressly stated in a signed project document:
+
+- Services and deliverables are provided "as is" and "as available";
+- NOUS disclaims implied warranties of merchantability, fitness for a particular purpose, non-infringement, uninterrupted operation, error-free operation, and perfect security;
+- NOUS does not guarantee business results, revenue increases, cost savings, model accuracy, search rankings, uninterrupted availability, regulatory approval, or suitability for every use case;
+- NOUS does not provide legal, financial, medical, tax, accounting, employment, or regulatory advice unless expressly agreed in writing with appropriately qualified professionals.
+
+Some laws may not allow certain warranty exclusions. In those cases, the exclusions apply to the maximum extent permitted by law.
+
+## 17. Limitation of liability
+
+To the maximum extent permitted by law, NOUS will not be liable for indirect, incidental, special, consequential, exemplary, or punitive damages, including lost profits, lost revenue, lost savings, lost data, business interruption, reputational harm, or loss of goodwill.
+
+To the maximum extent permitted by law, NOUS total aggregate liability for any claim related to the website, services, deliverables, or these Terms will not exceed the fees actually paid to NOUS for the specific project giving rise to the claim during the three months before the event giving rise to liability.
+
+Nothing in these Terms limits liability that cannot legally be limited, including liability for fraud, willful misconduct, or other liability that applicable law does not allow to be limited.
+
+## 18. Indemnification
+
+You agree to defend, indemnify, and hold harmless NOUS from claims, damages, losses, liabilities, costs, and expenses arising from:
+
+- Client materials;
+- Your use or misuse of services or deliverables;
+- Your violation of law, regulation, third-party terms, or third-party rights;
+- Your deployment, supervision, governance, or operation of AI systems after delivery;
+- Your instructions, approvals, data, systems, credentials, or business decisions.
+
+NOUS will promptly notify you of a claim, reasonably cooperate, and allow you to control the defense and settlement, provided that any settlement affecting NOUS rights, obligations, reputation, or admissions requires NOUS prior written approval.
+
+## 19. Termination and suspension
+
+Either party may terminate a project according to the applicable project document.
+
+Unless the project document says otherwise, either party may terminate a project for material breach if the breach is not cured within 15 days after written notice.
+
+NOUS may suspend work or access immediately if:
+
+- Payment is overdue;
+- Required approvals, materials, access, or cooperation are missing;
+- Continuing work would create legal, security, ethical, safety, platform, or third-party policy risk;
+- You misuse services, systems, deliverables, or third-party services;
+- You ask NOUS to process data or build functionality in a way that NOUS reasonably believes is unlawful or unsafe.
+
+Upon termination, you must pay for all work performed, approved expenses, committed third-party costs, and non-cancelable obligations incurred before termination.
+
+## 20. Compliance and acceptable use
+
+You agree to comply with applicable laws, regulations, sanctions, export controls, privacy laws, intellectual property laws, anti-corruption laws, labor laws, consumer protection laws, and platform rules.
+
+You may not use NOUS services or deliverables to:
+
+- Violate law or third-party rights;
+- Build deceptive, harmful, abusive, discriminatory, or unsafe systems;
+- Generate or distribute malware, phishing, spam, or unauthorized surveillance;
+- Circumvent security controls, model safeguards, access controls, or platform restrictions;
+- Make automated decisions that materially affect people without appropriate human review, governance, and legal compliance;
+- Process sensitive or regulated data without appropriate safeguards and written agreement.
+
+## 21. Publicity
+
+NOUS may identify you as a client only if you approve it or if the relationship is already public. NOUS will not publish private case studies, confidential project details, non-public metrics, private screenshots, or confidential materials without your permission.
+
+## 22. Notices
+
+Notices should be sent in writing to the contact details in the applicable project document. Legal notices to NOUS may be sent to [legal@nous.cr](mailto:legal@nous.cr).
+
+Routine project communications may occur through e-mail, video calls, shared documents, messaging platforms, project management tools, or other channels agreed by the parties.
+
+## 23. Governing law and disputes
+
+These Terms are governed by the laws of the Republic of Costa Rica, without regard to conflict-of-law rules.
+
+Before filing a formal claim, the parties will try in good faith to resolve disputes through executive-level discussion. If a dispute is not resolved within 30 days after written notice, either party may bring the dispute before the competent courts of San José, Costa Rica, unless a signed project document requires arbitration or another forum.
+
+Either party may seek urgent injunctive or equitable relief to protect confidential information, intellectual property, security, or systems.
+
+## 24. Changes to these Terms
+
+NOUS may update these Terms from time to time. The updated version will be posted on this page with a new "Last updated" date.
+
+Material changes will not retroactively change a signed project document unless the parties agree in writing. Continued website use or new services after updated Terms are posted means you accept the updated Terms for future use and engagements.
+
+## 25. General provisions
+
+These Terms, together with applicable project documents, form the agreement between the parties for the relevant services.
+
+If any provision is unenforceable, the remaining provisions remain in effect, and the unenforceable provision will be interpreted or replaced to most closely reflect the original intent in an enforceable way.
+
+Failure to enforce a provision is not a waiver. A waiver must be in writing.
+
+You may not assign a project or these Terms without NOUS prior written consent, except as part of a merger, acquisition, corporate reorganization, or sale of substantially all assets, provided the assignee assumes the obligations.
+
+NOUS may use employees, contractors, subcontractors, advisors, and service providers to perform services, provided NOUS remains responsible for its obligations under the applicable project document.
+
+## 26. Contact
+
+Questions, requests, or legal notices about these Terms should be sent to:
+
+<div class="legal-contact-lines">
+  <p><strong>NOUS</strong></p>
+  <p>San José, Costa Rica</p>
+  <p>E-mail:</p>
+  <p><a href="mailto:legal@nous.cr">legal@nous.cr</a></p>
+  <p>Phone number:</p>
+  <p><a href="tel:+50661865634">+506 6186-5634</a></p>
+</div>

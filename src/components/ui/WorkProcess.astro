@@ -1,7 +1,7 @@
 ---
 import ButtonVariant from "./Buttons/ButtonVariant.astro";
 
-// Work Process Component for Nous Technologies
+// Work Process Component for NOUS
 // Showcases our 4-step methodology: Listen → Design → Deliver → Support
 // Built with semantic HTML, accessibility, and responsive design
 
@@ -53,16 +53,16 @@ const PROCESS_STEPS: ProcessStep[] = [
             <h2 id="process-heading" class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
                 Our Work Methodology
             </h2>
-           
+
         </header>
 
         <!-- Process Steps Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-6 relative">
             <!-- Connection Lines (Desktop Only) -->
             <div class="hidden lg:block absolute top-24 left-0 right-0 h-0.5 bg-gradient-to-r from-accent via-primary-purple to-accent opacity-30" aria-hidden="true"></div>
-            
+
             {PROCESS_STEPS.map((step, index) => (
-                <article 
+                <article
                     class="group relative flex flex-col items-center p-4 rounded-xl border border-outline bg-gradient-to-br from-primary-black/80 to-accent/10 backdrop-blur-sm transition-all duration-50"
                     aria-labelledby={`step-${step.step}-title`}
                 >
@@ -100,7 +100,7 @@ const PROCESS_STEPS: ProcessStep[] = [
 
                     <!-- Content -->
                     <header class="mb-4 sm:mb-6">
-                        <h3 
+                        <h3
                             id={`step-${step.step}-title`}
                             class={`text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 transition-colors duration-300
                                 ${step.color === 'accent' ? 'text-accent' : ''}
@@ -116,7 +116,7 @@ const PROCESS_STEPS: ProcessStep[] = [
                     <p class="text-sm sm:text-base lg:text-lg text-neutral-400 leading-relaxed group-hover:text-neutral-300 transition-colors duration-300">
                         {step.description}
                     </p>
-                    
+
                     <!-- Progress Indicator (Mobile) -->
                     {index < PROCESS_STEPS.length - 1 && (
                         <div class="lg:hidden absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-0.5 h-8 bg-gradient-to-b from-accent to-transparent opacity-30" aria-hidden="true"></div>
@@ -136,13 +136,13 @@ const PROCESS_STEPS: ProcessStep[] = [
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
                    <ButtonVariant
-                   text="Contact us" 
-                   variant="primary" 
-                   href="/contact-us" 
-                   scheduleIcon={false} 
-                   strokeColor="#060114" 
-                   arrowIcon={true} 
-                   target="_self" 
+                   text="Contact us"
+                   variant="primary"
+                   href="/contact"
+                   scheduleIcon={false}
+                   strokeColor="#060114"
+                   arrowIcon={true}
+                   target="_self"
                    ariaLabel="Contact us"/>
                 </div>
             </div>

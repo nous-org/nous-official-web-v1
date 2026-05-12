@@ -1,0 +1,56 @@
+---
+import SectionContact from "@/components/ui-main-components/ContactPage.astro";
+import Layout from "@/layouts/Layout.astro";
+import BreadcrumbSchema from "@/components/seo/BreadCrumbs.astro";
+
+export const prerender = false;
+
+const breadcrumbs = [
+    { name: "Home", url: "/" },
+    { name: "Contact", url: "/contact" },
+];
+
+const contactSchema = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    mainEntity: {
+        "@type": "Organization",
+        name: "NOUS",
+        contactPoint: {
+            "@type": "ContactPoint",
+            telephone: "+506-6186-5634",
+            contactType: "customer service",
+            email: "hello@nous.cr",
+            availableLanguage: ["English", "Spanish"],
+        },
+    },
+};
+---
+
+<Layout
+    title="Contact / NOUS"
+    description="Start a conversation with NOUS about AI strategy, automation, agents, training, and AI-ready systems."
+    backgroundType="primary"
+    showAurora={false}
+    useContainer={false}
+    paddingType="zero"
+    canonical="/contact"
+    ogImage="/images/og-default.jpg"
+    tags={[
+        "contact",
+        "consultation",
+        "AI deployment",
+        "AI transformation",
+        "intelligence deployment",
+        "contacto",
+        "consultoría",
+        "consultoría en IA",
+        "contactar",
+        "asesoría técnica",
+    ]}
+    customSchema={contactSchema}
+    includeOrganizationSchema={false}
+>
+    <BreadcrumbSchema items={breadcrumbs} />
+    <SectionContact />
+</Layout>

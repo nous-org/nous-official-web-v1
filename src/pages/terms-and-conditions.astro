@@ -1,174 +1,172 @@
 ---
-import ContentPagesHero from '@/components/ui/ContentPagesHero.astro';
-import Layout from '@/layouts/Layout.astro';
-import type { Button } from "@/types/callToAction";
-import { getCollection } from 'astro:content';
+import ContentPagesHero from "@/components/ui/ContentPagesHero.astro";
+import Layout from "@/layouts/Layout.astro";
+import { getCollection, render } from "astro:content";
 
-const entries = await getCollection('termsandconditions');
-const termsEntry = entries.find((e: any) => e.slug === 'termsandconditions') ?? entries[0];
+const entries = await getCollection("termsandconditions");
+const termsEntry =
+  entries.find((entry: any) => entry.slug === "termsandconditions") ?? entries[0];
 
 if (!termsEntry) {
-  throw new Error('No entries found in termsandconditions collection');
+  throw new Error("No entries found in termsandconditions collection");
 }
 
-const { Content } = await termsEntry.render();
+const { Content } = await render(termsEntry);
 const { data } = termsEntry;
-interface Hero {
-    title: string;
-    subtitle: string;
-    text: string;
-    buttons: Button[];
-}
-const HERO: Hero = {
-    title: data.title,
-    subtitle: data.description,
-    text: "",
-    buttons: [
-        {
-            text: "Home",
-            variant: "primary",
-            href: "/",
-            scheduleIcon: false,
-            strokeColor: "#060114",
-            arrowIcon: true,
-            target: "_self",
-            ariaLabel: "Home",
-        },
-        {
-            text: "See services",
-            variant: "primaryPurple",
-            href: "/services",
-            scheduleIcon: false,
-            strokeColor: "#060114",
-            arrowIcon: false,
-            target: "_self",
-            ariaLabel: "Services",
-        },
-    ],
-};
-const { title, subtitle, text, buttons } = HERO;
+
+const language = data.language || "English";
 ---
-<Layout title={data.title} backgroundType="primary" showAurora={false} useContainer={true}>
-    <ContentPagesHero title={title} subtitle={subtitle} text={text} buttons={buttons} />
-  <!-- Metadata del documento -->
-  <div class="mb-8 p-4 rounded-lg border-l-4 border-primary-turquoise mt-64">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-primary-turquoise">
-      <div>
-        <strong>Effective Date:</strong> {data.effectiveDate}
+
+<Layout
+  title="Terms and Conditions / NOUS"
+  description={data.description}
+  canonical="/terms-and-conditions"
+  backgroundType="primary"
+  showAurora={false}
+  useContainer={false}
+  includeOrganizationSchema={false}
+>
+  <ContentPagesHero
+    title={data.title}
+    subtitle={data.description}
+  />
+
+  <section class="mx-auto max-w-5xl px-4 pb-24">
+    <dl class="grid gap-3 rounded-2xl border border-outline/15 bg-white/[0.025] p-4 text-sm text-neutral-300 backdrop-blur sm:grid-cols-2 lg:grid-cols-4">
+      <div class="rounded-xl border border-white/5 bg-white/[0.02] p-4">
+        <dt class="text-xs font-medium uppercase tracking-[0.16em] text-outline">Effective date</dt>
+        <dd class="mt-2 text-white">{data.effectiveDate}</dd>
       </div>
-      <div>
-        <strong>Last Updated:</strong> {data.lastUpdated}
+      <div class="rounded-xl border border-white/5 bg-white/[0.02] p-4">
+        <dt class="text-xs font-medium uppercase tracking-[0.16em] text-outline">Last updated</dt>
+        <dd class="mt-2 text-white">{data.lastUpdated}</dd>
       </div>
-      <div>
-        <strong>Language:</strong> {data.language}
+      <div class="rounded-xl border border-white/5 bg-white/[0.02] p-4">
+        <dt class="text-xs font-medium uppercase tracking-[0.16em] text-outline">Language</dt>
+        <dd class="mt-2 text-white">{language}</dd>
       </div>
-      <div>
-        <strong>Company:</strong> {data.company.name}
+      <div class="rounded-xl border border-white/5 bg-white/[0.02] p-4">
+        <dt class="text-xs font-medium uppercase tracking-[0.16em] text-outline">Company</dt>
+        <dd class="mt-2 text-white">{data.company.name}</dd>
       </div>
+    </dl>
+
+    <article class="legal-prose mt-8 rounded-[2rem] border border-outline/15 bg-white/[0.025] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.24)] backdrop-blur sm:p-10 lg:p-12">
+      <Content />
+    </article>
+
+    <div class="mt-12 flex justify-center">
+      <a
+        href="#main-content"
+        class="inline-flex min-h-11 items-center justify-center rounded-full border border-outline/25 bg-white/[0.03] px-5 py-2.5 text-sm font-medium text-outline transition-colors hover:border-outline/60 hover:bg-outline/10 focus:outline-none focus:ring-2 focus:ring-outline/40"
+        aria-label="Back to top"
+      >
+        Back to top
+      </a>
     </div>
-  </div>
-
-  <!-- Título accesible -->
-  <h1 class="sr-only">{data.title}</h1>
-  
-  <article class="legal-prose prose prose-gray prose-xl max-w-none
-    prose-headings:text-gray-900 prose-headings:font-semibold
-    prose-a:text-primary-turquoise hover:prose-a:text-primary-turquoise/80
-    prose-a:no-underline prose-a:hover:underline
-    prose-hr:border-gray-200 prose-hr:my-12">
-    <Content />
-  </article>
-
-  <!-- Información de contacto desde el frontmatter -->
-  <div class="mt-12 rounded-lg">
-    <h3 class="text-lg font-semibold text-neutral-200 mb-4">Contact Information</h3>
-    <div class="space-y-2 text-neutral-400">
-      <p><strong>Company:</strong> {data.company.name}</p>
-      <p><strong>Address:</strong> {data.company.address}</p>
-      <p><strong>Email:</strong> <a href="#" class="text-primary-turquoise email-link hover:underline" data-email={data.company.email}>{data.company.email}</a></p>
-      <p><strong>Phone:</strong> <a href={`tel:${data.company.phone}`} class="text-primary-turquoise hover:underline">{data.company.phone}</a></p>
-    </div>
-  </div>
-
-  <div class="mt-16 text-center mb-24">
-    <button 
-      onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
-      class="inline-flex items-center px-6 py-3 bg-primary-turquoise text-primary-blue font-medium rounded-lg
-        hover:bg-primary-turquoise/90 transition-colors duration-200 focus:outline-none 
-        focus:ring-2 focus:ring-primary-turquoise/50 focus:ring-offset-2"
-      aria-label="Back to top"
-    >
-      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
-      </svg>
-      Back to Top
-    </button>
-  </div>
+  </section>
 </Layout>
 
 <style is:inline>
-  /* Minimal, page-scoped refinements. Tailwind Typography handles most styles. */
+  article.legal-prose {
+    color: rgba(229, 229, 229, 0.86);
+  }
+
   article.legal-prose h2 {
-    margin-top: 2.5rem;
-    font-size: 2rem;
+    margin-top: 3rem;
     margin-bottom: 1rem;
-    padding-bottom: 0.25rem;
-    border-bottom: 1px solid rgba(148, 163, 184, 0.25); /* slate-400/25 */
+    border-bottom: 1px solid rgba(220, 212, 255, 0.18);
+    padding-bottom: 0.75rem;
+    color: #ffffff;
+    font-size: clamp(1.75rem, 2.3vw, 2.4rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: 0;
+  }
+
+  article.legal-prose h2:first-child {
+    margin-top: 0;
   }
 
   article.legal-prose h3 {
     margin-top: 2rem;
-    font-size: 1.5rem;
     margin-bottom: 0.75rem;
+    color: #dcd4ff;
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.25;
   }
 
-  article.legal-prose p, article.legal-prose li {
+  article.legal-prose p,
+  article.legal-prose li {
+    color: rgba(229, 229, 229, 0.78);
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  article.legal-prose p {
     margin-bottom: 1rem;
-    color: rgba(211, 211, 211, 0.774);
+  }
+
+  @media (min-width: 768px) {
+    article.legal-prose p {
+      text-align: justify;
+      text-justify: inter-word;
+    }
+  }
+
+  article.legal-prose ul {
+    list-style: disc outside;
+    margin: 1rem 0 1.5rem;
+    padding-left: 1.5rem;
+  }
+
+  article.legal-prose ol {
+    list-style: decimal outside;
+    margin: 1rem 0 1.5rem;
+    padding-left: 1.5rem;
+  }
+
+  article.legal-prose li {
+    margin-bottom: 0.65rem;
+    padding-left: 0.25rem;
+    text-align: left;
+  }
+
+  article.legal-prose li::marker {
+    color: #dcd4ff;
+  }
+
+  article.legal-prose .legal-contact-lines p {
+    margin-bottom: 0.65rem;
+    text-align: left;
+  }
+
+  article.legal-prose strong {
+    color: #ffffff;
+    font-weight: 500;
+  }
+
+  article.legal-prose a {
+    color: #dcd4ff;
+    text-decoration: none;
+    transition: color 180ms ease;
+  }
+
+  article.legal-prose a:hover {
+    color: #ffffff;
+    text-decoration: underline;
   }
 
   article.legal-prose hr {
     border: none;
     height: 1px;
-
-    background: linear-gradient(90deg, rgba(26,214,179,0.2), rgba(132,88,255,0.2));
-    margin: 2rem 0;
-  }
-
-  /* Keep scope tight to avoid leaking styles */
-  @media (max-width: 768px) {
-    article.legal-prose h2 { margin-top: 2rem; }
-    article.legal-prose h3 { margin-top: 1.5rem; }
+    background: linear-gradient(
+      90deg,
+      rgba(220, 212, 255, 0),
+      rgba(220, 212, 255, 0.25),
+      rgba(220, 212, 255, 0)
+    );
+    margin: 2.5rem 0;
   }
 </style>
-
-
-<script is:inline>
-  // Script para manejar los emails correctamente
-  function initializeEmails() {
-      const emailLinks = document.querySelectorAll('.email-link');
-      
-      emailLinks.forEach(link => {
-          const email = link.getAttribute('data-email');
-          if (email) {
-              // Configurar el href correcto
-              link.href = `mailto:${email}`;
-              
-              // Asegurar que el texto se muestre correctamente
-              if (link.textContent !== email) {
-                  link.textContent = email;
-              }
-          }
-      });
-  }
-  
-  // Ejecutar cuando el DOM esté listo
-  if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initializeEmails);
-  } else {
-      initializeEmails();
-  }
-  
-  // Ejecutar en cada cambio de página
-  document.addEventListener('astro:page-load', initializeEmails);
-  </script>

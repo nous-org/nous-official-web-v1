@@ -1,6 +1,7 @@
 import type { APIContext } from 'astro';
 import { createDbClient } from '@/lib/db';
-import { requireClerk } from '@/lib/auth';
+import { authErrorResponse, requireClerk } from '@/lib/auth';
+import { getRuntimeEnv } from '@/lib/runtime-env';
 
 function json(data: unknown, init: number | ResponseInit = 200) {
   const initObj = typeof init === 'number' ? { status: init } : init;
@@ -10,11 +11,12 @@ function json(data: unknown, init: number | ResponseInit = 200) {
   });
 }
 
-export async function GET({ request, locals }: APIContext) {
+export async function GET({ request }: APIContext) {
   try {
-    await requireClerk(request, locals.runtime.env as { CLERK_SECRET_KEY: string });
+    const env = getRuntimeEnv();
+    await requireClerk(request, env);
 
-    const db = createDbClient(locals.runtime.env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
+    const db = createDbClient(env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
     
     // Get all posts (both drafts and published)
     const result = await db.execute(
@@ -32,6 +34,10 @@ export async function GET({ request, locals }: APIContext) {
     return json(posts);
 
   } catch (error) {
+    if ((error as { name?: string })?.name === 'AuthError') {
+      return authErrorResponse(error);
+    }
+
     console.error('Error listing blog posts:', error);
     
     return json({

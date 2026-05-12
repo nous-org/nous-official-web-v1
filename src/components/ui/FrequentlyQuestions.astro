@@ -38,15 +38,15 @@ const FAQ_CATEGORIES: FAQCategory[] = [
     },
     {
         title: "Services & Solutions",
-        description: "Learn about our AI automation, web development, and consulting services",
+        description: "Learn about our AI deployment, automation, systems, and consulting services",
         questions: [
             {
                 question: "What types of AI automation services do you offer?",
                 answer: "We provide comprehensive AI automation solutions including AI chatbot integration, email automation, lead generation systems, content creation tools, analytics dashboards, and 24/7 support. Our solutions are designed to boost your business efficiency and streamline operations."
             },
             {
-                question: "What makes your web development services different?",
-                answer: "Our custom web development focuses on modern frameworks like Astro, React, and cutting-edge technologies. We deliver responsive designs, SEO optimization, performance optimization, content management systems, and ongoing maintenance. Every project is tailored to your unique business needs."
+                question: "Do you also build software and systems beyond AI?",
+                answer: "Yes. NOUS is AI-first, but deployment often requires the broader work of a technology company: integrations, internal tools, data flows, applications, automation, infrastructure, and the systems around AI."
             },
             {
                 question: "What does technology consulting include?",
@@ -68,7 +68,7 @@ const FAQ_CATEGORIES: FAQCategory[] = [
             },
             {
                 question: "Do you provide ongoing support and maintenance?",
-                answer: "Absolutely! All our services include ongoing support. We offer 24/7 support for AI automation, ongoing maintenance for web development projects, and continuous consulting relationships. Our goal is to ensure long-term success."
+                answer: "Yes. We support deployed systems, improve workflows over time, and help teams adopt the tools we build with confidence."
             },
             {
                 question: "Can you integrate with existing systems?",
@@ -80,7 +80,7 @@ const FAQ_CATEGORIES: FAQCategory[] = [
             }
         ]
     },
-    
+
 ];
 
 
@@ -91,22 +91,22 @@ const allFAQs: FAQItem[] = FAQ_CATEGORIES.flatMap(category => category.questions
 <FAQSchema faqs={allFAQs} />
 
 <section class="py-16 sm:py-20 md:py-24 lg:py-32" aria-labelledby="faq-heading">
-    
+
     <div class="">
         <header class="text-center mb-12 sm:mb-16 lg:mb-20 appear-subtle">
             <h2 id="faq-heading" class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
                 Frequently Asked Questions
             </h2>
             <p class="text-base sm:text-lg lg:text-xl text-neutral-400 max-w-3xl mx-auto leading-relaxed">
-                Find answers to common questions about our AI automation, web development, and consulting services.
+                Find answers to common questions about our AI deployment, automation, systems, and consulting services.
             </p>
         </header>
 
-        
+
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12">
             {FAQ_CATEGORIES.map((category) => (
                 <article class="space-y-6 sm:space-y-8">
-                    
+
                     <header class="border-b border-neutral-800 pb-4 sm:pb-6">
                         <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold  text-white mb-2 sm:mb-3 appear-left">
                             {category.title}
@@ -116,23 +116,23 @@ const allFAQs: FAQItem[] = FAQ_CATEGORIES.flatMap(category => category.questions
                         </p>
                     </header>
 
-                    
+
                     <div class="space-y-4 sm:space-y-6" role="list">
                         {category.questions.map((faq) => (
-                            <details 
-                                class="group bg-neutral-900/50 border border-neutral-800 rounded-md sm:rounded-xl overflow-hidden transition-all duration-300 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 appear-subtle" 
+                            <details
+                                class="group bg-neutral-900/50 border border-neutral-800 rounded-md sm:rounded-xl overflow-hidden transition-all duration-300 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 appear-subtle"
                                 role="listitem"
                             >
                                 <summary class="flex items-center justify-between p-4 sm:p-6 cursor-pointer focus:outline-none ">
                                     <h4 class="text-base sm:text-lg font-semibold text-white pr-4 leading-relaxed group-hover:text-accent transition-colors duration-200">
                                         {faq.question}
                                     </h4>
-                                    
+
                                     <div class="flex-shrink-0 ml-4">
-                                        <svg 
-                                            class="w-5 h-5 sm:w-6 sm:h-6 text-neutral-400 transition-all duration-300 group-hover:text-accent group-open:rotate-45 group-open:text-accent" 
-                                            fill="none" 
-                                            stroke="currentColor" 
+                                        <svg
+                                            class="w-5 h-5 sm:w-6 sm:h-6 text-neutral-400 transition-all duration-300 group-hover:text-accent group-open:rotate-45 group-open:text-accent"
+                                            fill="none"
+                                            stroke="currentColor"
                                             viewBox="0 0 24 24"
                                             aria-hidden="true"
                                         >
@@ -140,8 +140,8 @@ const allFAQs: FAQItem[] = FAQ_CATEGORIES.flatMap(category => category.questions
                                         </svg>
                                     </div>
                                 </summary>
-                                
-                                
+
+
                                 <div class="px-4 sm:px-6 pb-4 sm:pb-6 pt-0">
                                     <div class="border-t border-neutral-800 pt-4 sm:pt-6">
                                         <p class="text-sm sm:text-base text-neutral-300 leading-relaxed">
@@ -156,7 +156,7 @@ const allFAQs: FAQItem[] = FAQ_CATEGORIES.flatMap(category => category.questions
             ))}
         </div>
 
-        
+
         <footer class="text-center mt-16 sm:mt-20 lg:mt-24 appear-subtle">
             <div class="bg-gradient-to-br from-primary-black/50 to-accent/10 border border-accent/30 rounded-lg sm:rounded-xl p-6 sm:p-8 lg:p-10">
                 <h3 class="text-3xl sm:text-4xl lg:text-4xl font-bold text-white mb-3 sm:mb-4">
@@ -167,34 +167,34 @@ const allFAQs: FAQItem[] = FAQ_CATEGORIES.flatMap(category => category.questions
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
                 <ButtonVariant
-                 text="Contact us" 
-                 variant="primary" 
-                 href="/contact-us" 
-                 scheduleIcon={false} 
-                 strokeColor="#060114" 
-                 arrowIcon={true} 
-                 target="_self" 
-                 ariaLabel="Contact us" />   
-               
+                 text="Contact us"
+                 variant="primary"
+                 href="/contact"
+                 scheduleIcon={false}
+                 strokeColor="#060114"
+                 arrowIcon={true}
+                 target="_self"
+                 ariaLabel="Contact us" />
+
             </div>
         </footer>
     </div>
 </section>
 
 <style>
-    
+
     details[open] summary ~ * {
         animation: slideDown 0.5s ease-out;
     }
-    
+
     details summary {
         list-style: none;
     }
-    
+
     details summary::-webkit-details-marker {
         display: none;
     }
-    
+
     @keyframes slideDown {
         from {
             opacity: 0;
@@ -205,12 +205,12 @@ const allFAQs: FAQItem[] = FAQ_CATEGORIES.flatMap(category => category.questions
             transform: translateY(0);
         }
     }
-    
-    
+
+
     details:hover {
         transform: translateY(-2px);
     }
-    
+
     details summary:focus-visible {
         outline: 2px solid #1AD6B3;
         outline-offset: 2px;
@@ -218,38 +218,38 @@ const allFAQs: FAQItem[] = FAQ_CATEGORIES.flatMap(category => category.questions
 </style>
 
 <script>
-    
+
     document.addEventListener('DOMContentLoaded', () => {
         const details = document.querySelectorAll('details');
-        
+
         details.forEach((detail) => {
             const summary = detail.querySelector('summary');
-            
+
             if (summary) {
-                
+
                 summary.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
                         detail.open = !detail.open;
-                        
-                        
+
+
                         if (detail.open) {
                             setTimeout(() => {
-                                detail.scrollIntoView({ 
-                                    behavior: 'smooth', 
-                                    block: 'nearest' 
+                                detail.scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'nearest'
                                 });
                             }, 100);
                         }
                     }
                 });
-                
-                
-                summary.addEventListener('click', (e) => {
+
+
+                summary.addEventListener('click', () => {
                     const isCurrentlyOpen = detail.open;
-                    
+
                     if (!isCurrentlyOpen) {
-                        
+
                         const parentArticle = detail.closest('article');
                         if (parentArticle) {
                             const siblingDetails = parentArticle.querySelectorAll('details[open]');
@@ -259,18 +259,18 @@ const allFAQs: FAQItem[] = FAQ_CATEGORIES.flatMap(category => category.questions
                                 }
                             });
                         }
-                        
-                        
+
+
                         setTimeout(() => {
-                            detail.scrollIntoView({ 
-                                behavior: 'smooth', 
-                                block: 'nearest' 
+                            detail.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'nearest'
                             });
                         }, 100);
                     }
                 });
             }
         });
-        
+
     });
 </script>

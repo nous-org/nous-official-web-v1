@@ -3,7 +3,6 @@ import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import cloudflare from '@astrojs/cloudflare';
-import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   site: 'https://nous.cr',
@@ -14,7 +13,7 @@ export default defineConfig({
   }),
   vite: {
     server: {
-      allowedHosts: ['localhost', '127.0.0.1', '0.0.0.0', 'localhost:4321', 'yql0yn-ip-152-231-141-243.tunnelmole.net', 'yql0yn-ip-152-231-141-243.tunnelmole.net:4321'],
+      allowedHosts: ['localhost', '127.0.0.1', '0.0.0.0'],
     },
     plugins: [tailwindcss()],
     resolve: {
@@ -30,14 +29,23 @@ export default defineConfig({
       priority: 0.7,
       lastmod: new Date(),
       entryLimit: 10000,
+      filter: (page) => {
+        const { pathname } = new URL(page);
+        const normalized = pathname.replace(/\/$/, '') || '/';
+        const excluded = new Set([
+          '/404',
+          '/about-us',
+          '/admin',
+          '/contact-us',
+          '/pricing',
+          '/products',
+        ]);
+
+        return !excluded.has(normalized) && !normalized.startsWith('/api');
+      },
       customPages: [
-        'https://nous.cr',
-        'https://nous.cr/about',
-        'https://nous.cr/services',
-        'https://nous.cr/blog',
-        'https://nous.cr/contact',
+        'https://nous.cr/blog/building-a-more-intelligent-world',
       ],
     }),
   ],
 });
-

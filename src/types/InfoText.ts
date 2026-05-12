@@ -5,50 +5,46 @@ export interface InfoText{
 
 export const DEFAULT_INFO_TEXT: InfoText[] = [
     {
-        title: "AI-powered automation for business.",
-        description: "Streamline workflows, cut manual work, and scale outcomes fast.",
+        title: "Find where intelligence creates leverage.",
+        description: "We map your workflows, pain points, and goals to identify where AI can save time, improve decisions, reduce errors, or create new customer value.",
     },
     {
-        title: "ROI first, not hype.",
-        description: "We pinpoint where AI creates real business value—clear wins before you invest big.",
+        title: "Build workflows that deploy intelligence.",
+        description: "We design AI-powered workflows for intake, support, reporting, document processing, CRM updates, scheduling, internal requests, and other repetitive operations.",
     },
     {
-        title: "Speed to impact.",
-        description: "Quick pilots that ship in shorter timelines, prove results, and de-risk the path to scale.",
+        title: "Deploy AI agents with clear boundaries.",
+        description: "We create agents that assist teams, answer questions, execute tasks, and escalate when human judgment is needed.",
     },
     {
-        title: "Safety & trust built-in.",
-        description: "Privacy-safe by design, human-in-the-loop, audit trails, and compliance from day one.",
+        title: "Prepare the technical foundation.",
+        description: "We connect tools, clean up processes, structure information, and build the infrastructure AI needs to work reliably.",
     },
     {
-        title: "Future-proof by default.",
-        description: "Best models today, easy to swap tomorrow—no vendor lock-in, no dead ends.",
+        title: "Train teams to adopt AI responsibly.",
+        description: "We help people understand what AI can do, where it fails, how to use it safely, and how to make it part of daily work.",
     },
 ]
 
 export const DEFAULT_INFO_TEXT_2: InfoText[] = [
     {
-        title: 'Modern web development with purpose.',
-        description: "We craft accessible, conversion-focused experiences aligned to your goals and users—not just pages.",
+        title: 'Software that gives AI a place to work.',
+        description: "Internal tools, dashboards, portals, and workflow apps that turn intelligence into useful actions for teams, customers, and operations.",
     },
     {
-        title: 'Tailor-made solutions.',
-        description: "From startup sites to enterprise platforms, we adapt to your industry, audience, and KPIs—with design systems that scale.",
+        title: 'Data and integrations that create context.',
+        description: "We connect CRMs, databases, documents, analytics, payments, messaging, and APIs so AI can understand the business and act inside the right systems.",
     },
     {
-        title: 'AI-ready when it adds value.',
-        description: "Integrate assistants, smart search, bots, and automated flows where they move the needle—measurable outcomes, no hype.",
+        title: 'Digital experiences built for adoption.',
+        description: "Websites, product interfaces, client portals, and customer journeys that communicate clearly, capture demand, and connect with the technology behind the business.",
     },
     {
-        title: 'End-to-end: UX/UI to backend.',
-        description: "UX research, UI design, Astro & React frontends, APIs, databases, and cloud infrastructure—one accountable team.",
+        title: 'Operations designed before automation.',
+        description: "We map how work actually moves, remove friction, and build automations that improve the system instead of covering up broken processes.",
     },
     {
-        title: 'Built for speed, SEO, and accessibility.',
-        description: "Core Web Vitals, semantic HTML, WCAG 2.2 AA, and modern CDN/caching—pages open fast, are indexable, rank better on Google, and are inclusive by default.",
-    },
-    {
-        title: 'Built to evolve.',
-        description: "Reusable components and a stable codebase mean new pages and features go live in days, not quarters.",
+        title: 'Architecture ready for the next model.',
+        description: "Maintainable code, clean interfaces, and flexible infrastructure keep your organization ready as AI platforms, teams, and priorities change.",
     },
 ]

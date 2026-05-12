@@ -2,7 +2,12 @@
 import  { DEFAULT_INFO_TEXT, type InfoText } from '@/types/InfoText';
 import ColorDivider from './ColorDivider.astro';
 
-const { infoText = DEFAULT_INFO_TEXT, colorDivider = 'primary-purple' } = Astro.props;
+const {
+    infoText = DEFAULT_INFO_TEXT,
+    colorDivider = 'primary-purple',
+    justifyDescription = false,
+    descriptionMaxWidthClass = 'max-w-lg',
+} = Astro.props;
  
 ---
 
@@ -10,7 +15,7 @@ const { infoText = DEFAULT_INFO_TEXT, colorDivider = 'primary-purple' } = Astro.
     {infoText.map((item: InfoText) => (
         <div>  
             <h2 class="text-xl mb-4">{item.title}</h2>
-            <p class="text-regular font-normal text-neutral-400 max-w-lg">{item.description}</p>
+            <p class={`text-regular font-normal text-neutral-400 ${descriptionMaxWidthClass} text-left ${justifyDescription ? 'md:text-justify' : ''}`}>{item.description}</p>
             <ColorDivider colorDivider={colorDivider}/>
         </div>
     ))}

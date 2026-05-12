@@ -3,9 +3,9 @@ import type { ServiceCard } from '@/types/serviceCards';
 import ItServiceLogo from '@/components/icons/ITLogo.svg';
 import WebDevelopmentLogo from '@/components/icons/WebDevelopmentLogo.svg';
 import AILogo from '@/components/icons/AILogo.svg';
-import ItServiceImage from '@/assets/serviceCards/ITConsulting.png';
-import WebDevelopmentImage from '@/assets/serviceCards/WebDevelopment.png';
-import AIAutomationImage from '@/assets/serviceCards/IaAtutomation.png';
+import ItServiceImage from '@/assets/serviceCards/ITConsulting.webp';
+import WebDevelopmentImage from '@/assets/serviceCards/WebDevelopment.webp';
+import AIAutomationImage from '@/assets/serviceCards/IaAtutomation.webp';
 
 export interface Props {
     serviceCards?: ServiceCard[];
@@ -24,7 +24,7 @@ const DEFAULT_SERVICES: ServiceCard[] = [
                 text: 'Schedule',
                 icon: true,
                 variant: 'secondaryTurquoise',
-                href: '/contact-us?service=it-consulting',
+                href: '/contact?service=it-consulting',
                 target: '_self',
                 ariaLabel: 'Schedule Technology Ad consultation'
             },
@@ -39,8 +39,8 @@ const DEFAULT_SERVICES: ServiceCard[] = [
         ]
     },
     {
-        title: 'Modern Web Development',
-        description: "Combining best practices in responsive design, optimized speed, and cutting-edge technologies like React, Astro, and Tailwind CSS. We create personalized, scalable, and user-centric digital experiences.",
+        title: 'AI-Ready Systems',
+        description: "We build the custom technology around AI: internal tools, integrations, data flows, automations, and interfaces that make intelligence useful in daily work.",
         img: WebDevelopmentLogo.src,
         bgImage: WebDevelopmentImage.src,
         buttons: [
@@ -48,9 +48,9 @@ const DEFAULT_SERVICES: ServiceCard[] = [
                 text: 'Schedule',
                 icon: true,
                 variant: 'secondaryTurquoise',
-                href: '/contact-us?service=web-development',
+                href: '/contact?service=ai-ready-systems',
                 target: '_self',
-                ariaLabel: 'Schedule web development consultation'
+                ariaLabel: 'Schedule AI-ready systems consultation'
             },
             {
                 text: 'View Portfolio',
@@ -58,7 +58,7 @@ const DEFAULT_SERVICES: ServiceCard[] = [
                 variant: 'secondary',
                 href: '/portfolio',
                 target: '_self',
-                ariaLabel: 'View our web development portfolio'
+                ariaLabel: 'View our portfolio'
             }
         ]
     },
@@ -72,7 +72,7 @@ const DEFAULT_SERVICES: ServiceCard[] = [
                 text: 'Schedule',
                 variant: 'secondaryTurquoise',
                 icon: true,
-                href: '/contact-us?service=ai-automation',
+                href: '/contact?service=ai-automation',
                 target: '_self',
                 ariaLabel: 'Schedule AI automation consultation'
             },

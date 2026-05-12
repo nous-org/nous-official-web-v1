@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { dark } from '@clerk/themes'
 import {
   ClerkProvider,
+  ClerkLoaded,
+  ClerkLoading,
   SignedIn,
   SignedOut,
   SignInButton,
@@ -19,7 +21,6 @@ import Highlight from '@tiptap/extension-highlight';
 import HorizontalRule from '@tiptap/extension-horizontal-rule';
 import TextAlign from '@tiptap/extension-text-align';
 
-// Menús v3: se importan como extensiones
 import BubbleMenu from '@tiptap/extension-bubble-menu';
 
 import DOMPurify from 'dompurify';
@@ -42,8 +43,8 @@ function ToolbarButton({
       className={
         'rounded-md border px-2 py-1 text-xs transition-colors hover:cursor-pointer ' +
         (active
-          ? 'border-primary-turquoise/60 bg-primary-turquoise/15 text-primary-turquoise'
-          : 'border-neutral-800 bg-neutral-900/40 text-neutral-200 hover:border-primary-turquoise/40 hover:bg-neutral-900/60')
+          ? 'border-outline/60 bg-outline/15 text-outline'
+          : 'border-white/10 bg-white/[0.035] text-neutral-200 hover:border-outline/40 hover:bg-outline/10')
       }
       title={label}
       aria-label={label}
@@ -67,16 +68,14 @@ function AdminApp() {
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
   const [authorName, setAuthorName] = useState('NOUS');
-  const [authorBio, setAuthorBio] = useState('Experts in web development and AI solutions');
+  const [authorBio, setAuthorBio] = useState('AI deployment and technology systems.');
   const [featured, setFeatured] = useState(false);
-  const [category, setCategory] = useState<'AI' | 'Web Development' | 'Business' | 'Technology' | 'Tutorial'>('AI');
-  const [draft, setDraft] = useState(false);
+  const [category, setCategory] = useState<'AI' | 'AI Deployment' | 'Business' | 'Technology' | 'Tutorial'>('AI');
+  const [, setDraft] = useState(false);
 
-  // Refs para los menús (v3 requiere elementos DOM)
   const bubbleMenuRef = useRef<HTMLDivElement | null>(null);
   const [menusReady, setMenusReady] = useState(false);
 
-  // Marca los menús como listos cuando los refs existen
   useEffect(() => {
     if (bubbleMenuRef.current) {
       setMenusReady(true);
@@ -91,7 +90,7 @@ function AdminApp() {
           heading: { levels: [1, 2, 3] },
         }),
         Placeholder.configure({
-          placeholder: 'Escribe / para comandos… (H1, enlaces, separadores, etc.)',
+          placeholder: 'Start writing... Use the toolbar for headings, links, dividers, and formatting.',
         }),
         Link.configure({
           autolink: true,
@@ -104,19 +103,17 @@ function AdminApp() {
         HorizontalRule,
         TextAlign.configure({ types: ['heading', 'paragraph'] }),
 
-        // Menú burbuja v3
         BubbleMenu.configure({
           element: bubbleMenuRef.current!,
         }),
       ],
-      content: '<p>Empieza a escribir…</p>',
+      content: '<p>Start writing...</p>',
       editorProps: {
         attributes: {
           class: 'min-h-[240px] outline-none max-w-none',
         },
       },
     },
-    // Dependencias: recrea el editor cuando los menús estén listos
     [menusReady],
   );
 
@@ -157,8 +154,8 @@ function AdminApp() {
   function setLink() {
     if (!editor) return;
     const previousUrl = editor.getAttributes('link').href as string | undefined;
-    const url = window.prompt('URL del enlace', previousUrl ?? '');
-    if (url === null) return; // cancelado
+    const url = window.prompt('Link URL', previousUrl ?? '');
+    if (url === null) return;
     if (url === '') {
       editor.chain().focus().unsetLink().run();
       return;
@@ -215,11 +212,11 @@ function AdminApp() {
     setTags([]);
     setTagInput('');
     setAuthorName('NOUS');
-    setAuthorBio('Experts in web development and AI solutions');
+    setAuthorBio('AI deployment and technology systems.');
     setFeatured(false);
     setCategory('AI');
     setDraft(false);
-    editor?.commands.setContent('<p>Empieza a escribir…</p>');
+    editor?.commands.setContent('<p>Start writing...</p>');
   }
 
   async function save(publish = false) {
@@ -227,23 +224,23 @@ function AdminApp() {
 
     // Validation
     if (!title.trim()) {
-      alert('El título es requerido');
+      alert('Title is required');
       return;
     }
     if (!slug.trim()) {
-      alert('El slug es requerido');
+      alert('Slug is required');
       return;
     }
     if (!description.trim()) {
-      alert('La descripción es requerida');
+      alert('Description is required');
       return;
     }
     if (!excerpt.trim()) {
-      alert('El excerpt es requerido');
+      alert('Excerpt is required');
       return;
     }
     if (excerpt.length > 200) {
-      alert('El excerpt debe tener máximo 200 caracteres');
+      alert('Excerpt must be 200 characters or fewer');
       return;
     }
 
@@ -280,10 +277,10 @@ function AdminApp() {
     if (res.ok || res.status === 204) {
       clearForm();
       await loadPosts();
-      alert(publish ? 'Post publicado' : 'Borrador guardado');
+      alert(publish ? 'Post published' : 'Draft saved');
     } else {
       const error = await res.text();
-      alert('Error guardando: ' + error);
+      alert('Error saving: ' + error);
     }
   }
 
@@ -310,7 +307,7 @@ function AdminApp() {
   async function loadBlogPostBySlug(s: string) {
     const res = await authFetch(`/api/admin/blog-post/${encodeURIComponent(s)}`);
     if (!res.ok) {
-      alert('Post no encontrado');
+      alert('Post not found');
       return;
     }
     const data: { frontmatter: any; content: string } = await res.json();
@@ -322,7 +319,7 @@ function AdminApp() {
     setExcerpt(data.frontmatter.excerpt || '');
     setTags(data.frontmatter.tags || []);
     setAuthorName(data.frontmatter.author?.name || 'NOUS');
-    setAuthorBio(data.frontmatter.author?.bio || 'Experts in web development and AI solutions');
+    setAuthorBio(data.frontmatter.author?.bio || 'AI deployment and technology systems.');
     setFeatured(data.frontmatter.featured || false);
     setCategory(data.frontmatter.category || 'AI');
     setDraft(data.frontmatter.draft || false);
@@ -364,55 +361,57 @@ function AdminApp() {
       }),
     });
     if (res.ok) {
-      alert('Borrador actualizado');
+      alert('Draft updated');
       await loadPosts();
     } else {
       const err = await res.text();
-      alert('Error actualizando borrador: ' + err);
+      alert('Error updating draft: ' + err);
     }
   }
 
   async function deleteDraftBySlug(s: string) {
-    if (!confirm('¿Eliminar este borrador? Esta acción no se puede deshacer.')) return;
+    if (!confirm('Delete this draft? This action cannot be undone.')) return;
     const res = await authFetch(`/api/admin/drafts/${encodeURIComponent(s)}`, { method: 'DELETE' });
     if (res.status === 204) {
-      // si el borrador eliminado es el que está en el formulario, limpia
       if (slug === s) {
         setTitle('');
         setSlug('');
         editor?.commands.setContent('<p></p>');
       }
       await loadPosts();
-      alert('Borrador eliminado');
+      alert('Draft deleted');
     } else {
-      alert('No se pudo eliminar el borrador');
+      alert('Could not delete draft');
     }
   }
 
   async function deletePostBySlug(s: string) {
-    if (!confirm('¿Eliminar este post publicado? Esta acción no se puede deshacer.')) return;
+    if (!confirm('Delete this published post? This action cannot be undone.')) return;
     const res = await authFetch(`/api/admin/posts/${encodeURIComponent(s)}`, { method: 'DELETE' });
     if (res.status === 204) {
       await loadPosts();
-      alert('Post eliminado');
+      alert('Post deleted');
     } else {
-      alert('No se pudo eliminar el post');
+      alert('Could not delete post');
     }
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-6 pt-12">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight text-neutral-100">Panel de Admin</h1>
-        <div className="rounded-md border border-neutral-800 bg-neutral-900/40 p-1 transition-colors hover:border-primary-turquoise/40">
+    <div className="mx-auto max-w-none">
+      <div className="mb-6 flex items-center justify-between gap-4">
+        <div>
+          <p className="text-xs font-medium uppercase tracking-[0.18em] text-outline">Signed in</p>
+          <h2 className="mt-2 text-xl font-medium tracking-normal text-neutral-100">Admin panel</h2>
+        </div>
+        <div className="rounded-full border border-outline/20 bg-white/[0.035] p-1 transition-colors hover:border-outline/45">
           <UserButton />
         </div>
       </div>
 
-      <section className="mb-8 rounded-xl border border-neutral-800 bg-neutral-900/30 p-4 shadow-sm shadow-primary-turquoise/10">
+      <section className="mb-8 rounded-[1.5rem] border border-white/10 bg-white/[0.025] p-4 shadow-[0_24px_80px_rgba(0,0,0,0.18)] sm:p-5">
         <div className="grid gap-3">
           <input
-            placeholder="Título"
+            placeholder="Title"
             value={title}
             onChange={(e) => {
               setTitle(e.target.value);
@@ -426,56 +425,54 @@ function AdminApp() {
                 );
               }
             }}
-            className="w-full rounded-md border border-neutral-800 bg-neutral-900/50 px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-primary-turquoise/70 focus:ring-2 focus:ring-primary-turquoise/40"
+            className="w-full rounded-lg border border-white/10 bg-white/[0.035] px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-outline/70 focus:ring-2 focus:ring-outline/35"
           />
           <input
-            placeholder="slug-ejemplo"
+            placeholder="example-slug"
             value={slug}
             onChange={(e) => setSlug(e.target.value)}
-            className="w-full rounded-md border border-neutral-800 bg-neutral-900/50 px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-primary-turquoise/70 focus:ring-2 focus:ring-primary-turquoise/40"
+            className="w-full rounded-lg border border-white/10 bg-white/[0.035] px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-outline/70 focus:ring-2 focus:ring-outline/35"
           />
 
-          {/* Blog Metadata Fields */}
           <textarea
-            placeholder="Descripción del post (SEO)"
+            placeholder="Post description (SEO)"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={2}
-            className="w-full rounded-md border border-neutral-800 bg-neutral-900/50 px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-primary-turquoise/70 focus:ring-2 focus:ring-primary-turquoise/40 resize-none"
+            className="w-full resize-none rounded-lg border border-white/10 bg-white/[0.035] px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-outline/70 focus:ring-2 focus:ring-outline/35"
           />
 
           <div className="relative">
             <textarea
-              placeholder="Excerpt (máximo 200 caracteres)"
+              placeholder="Excerpt (maximum 200 characters)"
               value={excerpt}
               onChange={(e) => setExcerpt(e.target.value)}
               rows={2}
               maxLength={200}
-              className="w-full rounded-md border border-neutral-800 bg-neutral-900/50 px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-primary-turquoise/70 focus:ring-2 focus:ring-primary-turquoise/40 resize-none"
+              className="w-full resize-none rounded-lg border border-white/10 bg-white/[0.035] px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-outline/70 focus:ring-2 focus:ring-outline/35"
             />
             <div className="absolute bottom-2 right-2 text-xs text-neutral-500">
               {excerpt.length}/200
             </div>
           </div>
 
-          {/* Tags Input */}
           <div className="space-y-2">
             <div className="flex gap-2">
               <input
-                placeholder="Agregar tag (máximo 5)"
+                placeholder="Add tag (maximum 5)"
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
+                onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
                 disabled={tags.length >= 5}
-                className="flex-1 rounded-md border border-neutral-800 bg-neutral-900/50 px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-primary-turquoise/70 focus:ring-2 focus:ring-primary-turquoise/40 disabled:opacity-50"
+                className="flex-1 rounded-lg border border-white/10 bg-white/[0.035] px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-outline/70 focus:ring-2 focus:ring-outline/35 disabled:opacity-50"
               />
               <button
                 type="button"
                 onClick={addTag}
                 disabled={tags.length >= 5 || !tagInput.trim()}
-                className="rounded-md border border-primary-turquoise/60 bg-primary-turquoise/15 px-3 py-2 text-xs text-primary-turquoise transition-colors hover:bg-primary-turquoise/25 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="rounded-full border border-outline/45 bg-outline/10 px-4 py-2 text-xs font-medium text-outline transition-colors hover:bg-outline/15 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                Agregar
+                Add
               </button>
             </div>
             {tags.length > 0 && (
@@ -483,7 +480,7 @@ function AdminApp() {
                 {tags.map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex items-center gap-1 rounded-full bg-primary-turquoise/20 px-2 py-1 text-xs text-primary-turquoise"
+                    className="inline-flex items-center gap-1 rounded-full border border-outline/20 bg-outline/10 px-2 py-1 text-xs text-outline"
                   >
                     {tag}
                     <button
@@ -499,31 +496,29 @@ function AdminApp() {
             )}
           </div>
 
-          {/* Author Fields */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid gap-3 sm:grid-cols-2">
             <input
-              placeholder="Nombre del autor"
+              placeholder="Author name"
               value={authorName}
               onChange={(e) => setAuthorName(e.target.value)}
-              className="w-full rounded-md border border-neutral-800 bg-neutral-900/50 px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-primary-turquoise/70 focus:ring-2 focus:ring-primary-turquoise/40"
+              className="w-full rounded-lg border border-white/10 bg-white/[0.035] px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-outline/70 focus:ring-2 focus:ring-outline/35"
             />
             <input
-              placeholder="Bio del autor"
+              placeholder="Author bio"
               value={authorBio}
               onChange={(e) => setAuthorBio(e.target.value)}
-              className="w-full rounded-md border border-neutral-800 bg-neutral-900/50 px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-primary-turquoise/70 focus:ring-2 focus:ring-primary-turquoise/40"
+              className="w-full rounded-lg border border-white/10 bg-white/[0.035] px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-outline/70 focus:ring-2 focus:ring-outline/35"
             />
           </div>
 
-          {/* Category and Options */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid gap-3 sm:grid-cols-2">
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value as any)}
-              className="w-full rounded-md border border-neutral-800 bg-neutral-900/50 px-3 py-2 text-neutral-100 outline-none ring-0 transition-colors focus:border-primary-turquoise/70 focus:ring-2 focus:ring-primary-turquoise/40"
+              className="w-full rounded-lg border border-white/10 bg-white/[0.035] px-3 py-2 text-neutral-100 outline-none ring-0 transition-colors focus:border-outline/70 focus:ring-2 focus:ring-outline/35"
             >
               <option value="AI">AI</option>
-              <option value="Web Development">Web Development</option>
+              <option value="AI Deployment">AI Deployment</option>
               <option value="Business">Business</option>
               <option value="Technology">Technology</option>
               <option value="Tutorial">Tutorial</option>
@@ -534,46 +529,43 @@ function AdminApp() {
                   type="checkbox"
                   checked={featured}
                   onChange={(e) => setFeatured(e.target.checked)}
-                  className="rounded border-neutral-800 bg-neutral-900/50 text-primary-turquoise focus:ring-primary-turquoise/40"
+                  className="rounded border-white/10 bg-white/[0.035] text-outline focus:ring-outline/40"
                 />
-                Destacado
+                Featured
               </label>
             </div>
           </div>
 
-          {/* Toolbar superior */}
           {editor && (
-            <div className="flex flex-wrap gap-2 rounded-md border border-neutral-800 bg-neutral-900/40 p-2">
-              {/* Inline */}
+            <div className="flex flex-wrap gap-2 rounded-lg border border-white/10 bg-white/[0.025] p-2">
               <ToolbarButton
-                label="Negrita"
+                label="Bold"
                 active={editor.isActive('bold')}
                 onClick={() => editor.chain().focus().toggleBold().run()}
               />
               <ToolbarButton
-                label="Itálica"
+                label="Italic"
                 active={editor.isActive('italic')}
                 onClick={() => editor.chain().focus().toggleItalic().run()}
               />
               <ToolbarButton
-                label="Subrayado"
+                label="Underline"
                 active={editor.isActive('underline')}
                 onClick={() => editor.chain().focus().toggleUnderline().run()}
               />
               <ToolbarButton
-                label="Código"
+                label="Code"
                 active={editor.isActive('code')}
                 onClick={() => editor.chain().focus().toggleCode().run()}
               />
               <ToolbarButton
-                label="Resaltado"
+                label="Highlight"
                 active={editor.isActive('highlight')}
                 onClick={() => editor.chain().focus().toggleHighlight().run()}
               />
-              <ToolbarButton label="Enlace" onClick={setLink} />
+              <ToolbarButton label="Link" onClick={setLink} />
 
-              {/* Bloques */}
-              <div className="mx-2 h-6 w-px self-center bg-neutral-800" />
+              <div className="mx-2 h-6 w-px self-center bg-white/10" />
               <ToolbarButton
                 label="H1"
                 active={editor.isActive('heading', { level: 1 })}
@@ -590,39 +582,35 @@ function AdminApp() {
                 onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
               />
               <ToolbarButton
-                label="Separador"
+                label="Divider"
                 onClick={() => editor.chain().focus().setHorizontalRule().run()}
               />
 
-              {/* Alineación */}
-              <div className="mx-2 h-6 w-px self-center bg-neutral-800" />
+              <div className="mx-2 h-6 w-px self-center bg-white/10" />
               <ToolbarButton
-                label="Izq"
+                label="Left"
                 active={editor.isActive({ textAlign: 'left' })}
                 onClick={() => editor.chain().focus().setTextAlign('left').run()}
               />
               <ToolbarButton
-                label="Centro"
+                label="Center"
                 active={editor.isActive({ textAlign: 'center' })}
                 onClick={() => editor.chain().focus().setTextAlign('center').run()}
               />
               <ToolbarButton
-                label="Der"
+                label="Right"
                 active={editor.isActive({ textAlign: 'right' })}
                 onClick={() => editor.chain().focus().setTextAlign('right').run()}
               />
             </div>
           )}
 
-          {/* Área del editor */}
-          <div className="rounded-lg border border-neutral-800 bg-neutral-900/40 p-3 focus-within:ring-2 focus-within:ring-primary-turquoise/40">
-            {/* Editor */}
+          <div className="rounded-xl border border-white/10 bg-white/[0.025] p-3 focus-within:ring-2 focus-within:ring-outline/35">
             <EditorContent editor={editor} className="tiptap-content min-h-[280px] text-neutral-100" />
 
-            {/* Menú burbuja (v3: elemento DOM) */}
             <div
               ref={bubbleMenuRef}
-              className="flex gap-1 rounded-md border border-neutral-800 bg-neutral-900/90 p-1 shadow-md"
+              className="flex gap-1 rounded-lg border border-white/10 bg-primary-blue/95 p-1 shadow-md"
             >
               <ToolbarButton
                 label="B"
@@ -641,40 +629,37 @@ function AdminApp() {
               />
               <ToolbarButton label="Link" onClick={setLink} />
             </div>
-
-            {/* Menú flotante eliminado */}
           </div>
 
           <div className="mt-2 flex flex-wrap gap-3">
             <button
               onClick={() => save(false)}
-              className="inline-flex items-center justify-center rounded-md border border-primary-turquoise/40 bg-transparent px-4 py-2 text-sm font-medium text-primary-turquoise transition-colors hover:border-primary-turquoise hover:bg-primary-turquoise/10 focus:outline-none focus:ring-2 focus:ring-primary-turquoise/40 hover:cursor-pointer"
+              className="inline-flex items-center justify-center rounded-full border border-outline/35 bg-transparent px-4 py-2 text-sm font-medium text-outline transition-colors hover:border-outline/70 hover:bg-outline/10 focus:outline-none focus:ring-2 focus:ring-outline/40 hover:cursor-pointer"
             >
-              Guardar borrador
+              Save draft
             </button>
             <button
               onClick={() => save(true)}
-              className="inline-flex items-center justify-center rounded-md bg-primary-turquoise px-4 py-2 text-sm font-semibold text-neutral-950 shadow-sm shadow-primary-turquoise/20 transition-colors hover:bg-primary-turquoise/90 focus:outline-none focus:ring-2 focus:ring-neutral-100/20 hover:cursor-pointer"
+              className="inline-flex items-center justify-center rounded-full bg-outline px-4 py-2 text-sm font-medium text-primary-black transition-colors hover:bg-hover focus:outline-none focus:ring-2 focus:ring-outline/40 hover:cursor-pointer"
             >
-              Publicar
+              Publish
             </button>
-            {/* Acciones sobre el borrador cargado (por slug actual) */}
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => slug && updateDraftBySlug(slug)}
-                className="inline-flex items-center justify-center rounded-md border border-neutral-700 bg-neutral-800/40 px-3 py-2 text-xs font-medium text-neutral-200 transition-colors hover:border-primary-turquoise/40 hover:bg-neutral-800/60 focus:outline-none focus:ring-2 focus:ring-primary-turquoise/30 hover:cursor-pointer"
-                title="Actualizar borrador actual"
-                aria-label="Actualizar borrador actual"
+                className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-medium text-neutral-200 transition-colors hover:border-outline/40 hover:bg-outline/10 focus:outline-none focus:ring-2 focus:ring-outline/30 hover:cursor-pointer"
+                title="Update current draft"
+                aria-label="Update current draft"
               >
-                Actualizar borrador
+                Update draft
               </button>
               <button
                 onClick={() => slug && deleteDraftBySlug(slug)}
-                className="inline-flex items-center justify-center rounded-md border border-red-500/40 bg-red-500/10 px-3 py-2 text-xs text-red-300 transition-colors hover:border-red-400 hover:bg-red-500/20 focus:outline-none focus:ring-2 focus:ring-red-400/30 hover:cursor-pointer"
-                title="Eliminar borrador actual"
-                aria-label="Eliminar borrador actual"
+                className="inline-flex items-center justify-center rounded-full border border-red-500/35 bg-red-500/10 px-3 py-2 text-xs text-red-300 transition-colors hover:border-red-400 hover:bg-red-500/20 focus:outline-none focus:ring-2 focus:ring-red-400/30 hover:cursor-pointer"
+                title="Delete current draft"
+                aria-label="Delete current draft"
               >
-                Eliminar borrador
+                Delete draft
               </button>
             </div>
           </div>
@@ -682,12 +667,12 @@ function AdminApp() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold text-neutral-100">Entradas</h2>
+        <h2 className="text-lg font-medium text-neutral-100">Posts</h2>
         <ul className="space-y-2">
           {posts.map((p: any) => (
             <li
               key={p.id}
-              className="flex items-center justify-between gap-3 rounded-lg border border-neutral-800 bg-neutral-900/30 px-4 py-3 text-neutral-200 transition-colors hover:border-primary-turquoise/30 hover:bg-neutral-900/40"
+              className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/[0.025] px-4 py-3 text-neutral-200 transition-colors hover:border-outline/30 hover:bg-outline/10"
             >
               <div className="min-w-0">
                 <strong className="text-neutral-100">{p.title}</strong>
@@ -701,44 +686,44 @@ function AdminApp() {
                       : 'inline-flex items-center gap-1 rounded-full border border-amber-500/40 bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-300'
                   }
                 >
-                  {p.published_at ? 'Publicado' : 'Borrador'}
+                  {p.published_at ? 'Published' : 'Draft'}
                 </span>
                 {!p.published_at && (
                   <>
                     <button
                       onClick={() => loadBlogPostBySlug(p.slug)}
-                      className="inline-flex items-center justify-center rounded-md border border-neutral-700 bg-neutral-800/40 px-2.5 py-1.5 text-xs text-neutral-200 transition-colors hover:border-primary-turquoise/40 hover:bg-neutral-800/60 focus:outline-none focus:ring-2 focus:ring-primary-turquoise/30 hover:cursor-pointer"
-                      title="Editar borrador"
-                      aria-label="Editar borrador"
+                      className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.035] px-2.5 py-1.5 text-xs text-neutral-200 transition-colors hover:border-outline/40 hover:bg-outline/10 focus:outline-none focus:ring-2 focus:ring-outline/30 hover:cursor-pointer"
+                      title="Edit draft"
+                      aria-label="Edit draft"
                     >
-                      Editar
+                      Edit
                     </button>
                     <button
                       onClick={() => updateDraftBySlug(p.slug)}
-                      className="inline-flex items-center justify-center rounded-md border border-neutral-700 bg-neutral-800/40 px-2.5 py-1.5 text-xs text-neutral-200 transition-colors hover:border-primary-turquoise/40 hover:bg-neutral-800/60 focus:outline-none focus:ring-2 focus:ring-primary-turquoise/30 hover:cursor-pointer"
-                      title="Actualizar borrador"
-                      aria-label="Actualizar borrador"
+                      className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.035] px-2.5 py-1.5 text-xs text-neutral-200 transition-colors hover:border-outline/40 hover:bg-outline/10 focus:outline-none focus:ring-2 focus:ring-outline/30 hover:cursor-pointer"
+                      title="Update draft"
+                      aria-label="Update draft"
                     >
-                      Actualizar
+                      Update
                     </button>
                     <button
                       onClick={() => deleteDraftBySlug(p.slug)}
-                      className="inline-flex items-center justify-center rounded-md border border-red-500/40 bg-red-500/10 px-2.5 py-1.5 text-xs text-red-300 transition-colors hover:border-red-400 hover:bg-red-500/20 focus:outline-none focus:ring-2 focus:ring-red-400/30 hover:cursor-pointer"
-                      title="Eliminar borrador"
-                      aria-label="Eliminar borrador"
+                      className="inline-flex items-center justify-center rounded-full border border-red-500/35 bg-red-500/10 px-2.5 py-1.5 text-xs text-red-300 transition-colors hover:border-red-400 hover:bg-red-500/20 focus:outline-none focus:ring-2 focus:ring-red-400/30 hover:cursor-pointer"
+                      title="Delete draft"
+                      aria-label="Delete draft"
                     >
-                      Eliminar
+                      Delete
                     </button>
                   </>
                 )}
                 {p.published_at && (
                   <button
                     onClick={() => deletePostBySlug(p.slug)}
-                    className="inline-flex items-center justify-center rounded-md border border-red-500/40 bg-red-500/10 px-2.5 py-1.5 text-xs text-red-300 transition-colors hover:border-red-400 hover:bg-red-500/20 focus:outline-none focus:ring-2 focus:ring-red-400/30 hover:cursor-pointer"
-                    title="Eliminar post publicado"
-                    aria-label="Eliminar post publicado"
+                    className="inline-flex items-center justify-center rounded-full border border-red-500/35 bg-red-500/10 px-2.5 py-1.5 text-xs text-red-300 transition-colors hover:border-red-400 hover:bg-red-500/20 focus:outline-none focus:ring-2 focus:ring-red-400/30 hover:cursor-pointer"
+                    title="Delete published post"
+                    aria-label="Delete published post"
                   >
-                    Eliminar
+                    Delete
                   </button>
                 )}
               </div>
@@ -753,21 +738,43 @@ function AdminApp() {
 export function AdminEntrypoint({ publishableKey }: Props) {
   return (
     <ClerkProvider publishableKey={publishableKey} appearance={{ theme: dark }}>
-      <SignedIn>
-        <AdminApp />
-      </SignedIn >
-      <SignedOut>
-        <div className="grid min-h-screen place-items-center">
-          <SignInButton mode="modal" >
-            <button
-              type="button"
-              className="inline-flex items-center justify-center rounded-md border border-primary-turquoise px-4 py-2 text-sm font-medium text-primary-turquoise transition-colors hover:border-primary-turquoise/90 hover:bg-primary-turquoise/10 focus:outline-none focus:ring-2 focus:ring-primary-turquoise/40 cursor-pointer"
-            >
-              Iniciar sesión
-            </button>
-          </SignInButton>
+      <ClerkLoading>
+        <div className="grid min-h-[420px] place-items-center rounded-[1.5rem] border border-white/10 bg-white/[0.025] p-6 text-center">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-outline">Secure session</p>
+            <h2 className="mt-3 text-2xl font-medium text-white">Loading admin workspace</h2>
+            <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-neutral-400">
+              We are preparing the NOUS authentication layer.
+            </p>
+          </div>
         </div>
-      </SignedOut>
+      </ClerkLoading>
+      <ClerkLoaded>
+        <SignedIn>
+          <AdminApp />
+        </SignedIn>
+        <SignedOut>
+          <div className="grid min-h-[420px] place-items-center rounded-[1.5rem] border border-white/10 bg-white/[0.025] p-6 text-center">
+            <div>
+              <p className="text-xs font-medium uppercase tracking-[0.18em] text-outline">Authorized access</p>
+              <h2 className="mt-3 text-2xl font-medium text-white">Sign in to continue</h2>
+              <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-neutral-400">
+                Use your authorized NOUS account to access the admin workspace.
+              </p>
+              <div className="mt-6">
+                <SignInButton mode="modal">
+                  <button
+                    type="button"
+                    className="inline-flex min-h-11 items-center justify-center rounded-full border border-transparent bg-outline px-5 py-2.5 text-sm font-medium text-primary-black transition-colors hover:bg-hover focus:outline-none focus:ring-2 focus:ring-outline/40 cursor-pointer"
+                  >
+                    Sign in
+                  </button>
+                </SignInButton>
+              </div>
+            </div>
+          </div>
+        </SignedOut>
+      </ClerkLoaded>
     </ClerkProvider>
   );
 }

@@ -1,8 +1,8 @@
-import type { APIContext, MiddlewareHandler } from 'astro';
+import type { MiddlewareHandler } from 'astro';
 
 export const onRequest: MiddlewareHandler = async (context, next) => {
   try {
-    // Block access to products and pricing pages
+    // Keep deprecated placeholder routes unavailable even if a stale file reappears.
     const pathname = context.url.pathname;
     if (pathname === '/products' || pathname === '/pricing' || 
         pathname === '/products/' || pathname === '/pricing/') {
@@ -12,25 +12,26 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
       });
     }
 
-    // Add security headers
     const response = await next();
     
-    // Add security headers to all responses
+    // Add baseline security headers to all responses.
     const newResponse = new Response(response.body, response);
     newResponse.headers.set('X-Content-Type-Options', 'nosniff');
     newResponse.headers.set('X-Frame-Options', 'DENY');
-    newResponse.headers.set('X-XSS-Protection', '1; mode=block');
+    newResponse.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+    newResponse.headers.set('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
+
+    if (import.meta.env.PROD) {
+      newResponse.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+    }
     
     return newResponse;
   } catch (error) {
-    console.error('Error in middleware:', error);
-    
-    // Return a proper error response
-    const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+    console.error('Middleware error:', error instanceof Error ? error.message : 'Unknown error');
     return new Response(
       JSON.stringify({
         error: 'Internal Server Error',
-        message: errorMessage,
+        message: 'An unexpected error occurred.',
       }),
       {
         status: 500,

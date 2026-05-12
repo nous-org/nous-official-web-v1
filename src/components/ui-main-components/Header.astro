@@ -6,37 +6,34 @@ import type { NavLink } from '@/components/ui/NavegationLinks.astro';
 
 const headerNavLinks: NavLink[] = [
     { href: '/', label: 'Home', ariaLabel: 'Go to home page' },
-    { href: '/about-us', label: 'About Us', ariaLabel: 'Learn more about Nous Technologies' },
-    // { href: '/products', label: 'Products', ariaLabel: 'Explore our AI products' },
-    { href: '/services', label: 'Services', ariaLabel: 'Discover our automation services' },
-    // { href: '/pricing', label: 'Pricing', ariaLabel: 'View pricing plans' },
-    { href: '/blog', label: 'Blog', ariaLabel: 'Get in touch with us' },
-    // { href: '/contact', label: 'Contact us', ariaLabel: 'Get in touch with us' }
+    { href: '/services', label: 'Services', ariaLabel: 'Explore NOUS AI and technology services' },
+    { href: '/about', label: 'About', ariaLabel: 'Learn about NOUS' },
+    { href: '/blog', label: 'Blog', ariaLabel: 'Read the Nous blog' },
 ];
 ---
 
-<header 
+<header
     id="main-header"
-    class="fixed top-8 left-4 right-4 z-50 flex h-20 items-center justify-between rounded-full bg-[#060114]/20 px-6 py-2 backdrop-blur-lg shadow-[0_0_10px_0_rgba(0,0,0,0.1)] shadow-indigo-500/20 transition-all duration-300 ease-out lg:px-6 "
+    class="fixed top-8 left-4 right-4 z-50 flex h-20 items-center justify-between rounded-full border border-white/10 bg-[#060114]/35 px-6 py-2 backdrop-blur-xl shadow-[0_24px_80px_-56px_rgba(220,212,255,0.55)] transition-all duration-300 ease-out lg:px-6 "
     role="banner"
 >
-    <div class="flex-shrink-0" aria-label="Nous Technologies Logo" transition:persist="true">
-        <a href="/" aria-label="Nous Technologies Logo"><NousLogo /></a>
+    <div class="flex-shrink-0" aria-label="NOUS logo" transition:persist="true">
+        <a href="/" data-astro-reload aria-label="NOUS logo"><NousLogo /></a>
     </div>
-    
+
     <div class="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 transform md:flex">
-        <NavLinks 
+        <NavLinks
             links={headerNavLinks}
             variant="horizontal"
             spacing="sm"
             className="items-center"
         />
     </div>
-    
+
     <div class="flex flex-shrink-0 items-center">
         <HeaderButton />
-        
-        <button 
+
+        <button
             id="mobile-menu-btn"
             class="ml-2 p-2 text-white transition-colors duration-300 hover:text-gray-300 md:hidden"
             aria-label="Open mobile menu"
@@ -49,16 +46,19 @@ const headerNavLinks: NavLink[] = [
     </div>
 </header>
 
-<div 
+<div
     id="mobile-menu-overlay"
     class="fixed inset-0 z-[39] bg-black/50 opacity-0 backdrop-blur-sm transition-opacity duration-300 pointer-events-none md:hidden"
     aria-hidden="true"
 ></div>
 
-<nav 
-    id="mobile-menu" 
+<nav
+    id="mobile-menu"
     class="fixed bottom-0 left-0 right-0 z-40 h-[50dvh] w-full translate-y-full rounded-t-3xl border-t border-outline bg-[#060114]/90 pb-[env(safe-area-inset-bottom,1rem)] backdrop-blur-lg shadow-lg transition-transform duration-300 md:hidden"
     aria-label="Mobile navigation"
+    aria-hidden="true"
+    inert
+    hidden
 >
     <div class="relative h-full w-full px-6 pt-8">
         <div class="absolute top-3 left-1/2 h-1 w-12 -translate-x-1/2 rounded-full bg-white/20"></div>
@@ -66,32 +66,30 @@ const headerNavLinks: NavLink[] = [
         <ul class="mt-6 flex flex-col items-center gap-6">
             {headerNavLinks.map((link) => (
                 <li>
-                    <a 
-                        href={link.href} 
-                        class="rounded-lg px-4 py-2 text-lg font-medium text-white transition-all duration-300 hover:bg-white/10 hover:text-[#A894FF]"
+                    <a
+                        href={link.href}
+                        data-astro-reload={link.href === '/' ? true : undefined}
+                        class="rounded-lg px-4 py-2 text-lg font-medium uppercase tracking-[0.12em] text-white transition-all duration-300 hover:bg-white/10 hover:text-outline"
                         aria-label={link.ariaLabel || link.label}
                     >
-                        {link.label}
+                        {link.label.toUpperCase()}
                     </a>
                 </li>
             ))}
             <li>
-                <a 
-                    href="/contact-us" 
-                    class="rounded-lg px-4 py-2 text-lg font-medium text-white transition-all duration-300 hover:bg-white/10 hover:text-[#A894FF]"
+                <a
+                    href="/contact"
+                    class="rounded-lg px-4 py-2 text-lg font-medium uppercase tracking-[0.12em] text-white transition-all duration-300 hover:bg-white/10 hover:text-outline"
                     aria-label="Get in touch with us"
                 >
-                    Contact us
+                    TALK TO NOUS
                 </a>
-            </li>
-            <li class="mt-4">
-                <HeaderButton />
             </li>
         </ul>
 
-        <button 
+        <button
             id="close-menu-btn"
-            class="absolute top-4 right-4 p-2 text-white transition-colors duration-300 hover:text-[#A894FF]"
+            class="absolute top-4 right-4 p-2 text-white transition-colors duration-300 hover:text-outline"
             aria-label="Close menu"
         >
             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -102,10 +100,15 @@ const headerNavLinks: NavLink[] = [
 </nav>
 
 <script>
-    
+
     function initializeMobileMenu() {
+        const existingCleanup = (window as any).__nousMobileMenuCleanup;
+        if (typeof existingCleanup === 'function') {
+            existingCleanup();
+        }
+
         let isMenuOpen = false;
-        
+
         const elements = {
             header: document.getElementById('main-header'),
             mobileMenu: document.getElementById('mobile-menu'),
@@ -113,35 +116,56 @@ const headerNavLinks: NavLink[] = [
             closeMenuBtn: document.getElementById('close-menu-btn'),
             overlay: document.getElementById('mobile-menu-overlay')
         } as const;
-    
-        
+
+
         if (!elements.mobileMenu || !elements.mobileMenuBtn) {
             console.warn('Mobile menu elements not found');
             return;
         }
-    
+
+        const setMenuAccessible = (show: boolean) => {
+            if (!elements.mobileMenu) return;
+
+            if (show) {
+                elements.mobileMenu.hidden = false;
+                elements.mobileMenu.removeAttribute('inert');
+                elements.mobileMenu.setAttribute('aria-hidden', 'false');
+            } else {
+                elements.mobileMenu.setAttribute('aria-hidden', 'true');
+                elements.mobileMenu.setAttribute('inert', '');
+            }
+        };
+
         const toggleMenu = (show: boolean) => {
             if (!elements.mobileMenu || !elements.overlay) return;
-    
+
             isMenuOpen = show;
-            
-            elements.mobileMenu.classList.toggle('translate-y-full', !show);
-            elements.overlay?.classList.toggle('opacity-0', !show);
-            elements.overlay?.classList.toggle('pointer-events-none', !show);
+            setMenuAccessible(show);
+
+            requestAnimationFrame(() => {
+                elements.mobileMenu?.classList.toggle('translate-y-full', !show);
+                elements.overlay?.classList.toggle('opacity-0', !show);
+                elements.overlay?.classList.toggle('pointer-events-none', !show);
+            });
             elements.mobileMenuBtn?.setAttribute('aria-expanded', show.toString());
             document.body.classList.toggle('overflow-hidden', show);
-            
+
             // Focus management
             if (show) {
                 setTimeout(() => elements.closeMenuBtn?.focus(), 300);
             } else {
                 elements.mobileMenuBtn?.focus();
+                setTimeout(() => {
+                    if (!isMenuOpen && elements.mobileMenu) {
+                        elements.mobileMenu.hidden = true;
+                    }
+                }, 320);
             }
         };
-    
+
         const handleClick = (e: Event) => {
             const target = e.target as HTMLElement;
-            
+
             if (target.closest('#mobile-menu-btn')) {
                 e.preventDefault();
                 toggleMenu(true);
@@ -152,13 +176,13 @@ const headerNavLinks: NavLink[] = [
                 toggleMenu(false);
             }
         };
-    
+
         const handleKeydown = (e: KeyboardEvent) => {
             if (e.key === 'Escape' && isMenuOpen) {
                 toggleMenu(false);
             }
         };
-    
+
         let resizeTimeout: number;
         const handleResize = () => {
             clearTimeout(resizeTimeout);
@@ -168,43 +192,33 @@ const headerNavLinks: NavLink[] = [
                 }
             }, 100);
         };
-    
-        document.removeEventListener('click', handleClick);
-        document.removeEventListener('keydown', handleKeydown);
-        window.removeEventListener('resize', handleResize);
-    
+
         document.addEventListener('click', handleClick);
         document.addEventListener('keydown', handleKeydown);
         window.addEventListener('resize', handleResize);
-    
-        return () => {
+
+        setMenuAccessible(false);
+        elements.mobileMenu.hidden = true;
+
+        const cleanup = () => {
             document.removeEventListener('click', handleClick);
             document.removeEventListener('keydown', handleKeydown);
             window.removeEventListener('resize', handleResize);
-            
+
             if (isMenuOpen) {
                 toggleMenu(false);
             }
         };
+
+        (window as any).__nousMobileMenuCleanup = cleanup;
+        return cleanup;
     }
-    
+
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initializeMobileMenu);
     } else {
         initializeMobileMenu();
     }
-    
+
     document.addEventListener('astro:page-load', initializeMobileMenu);
-    
-    let cleanup: (() => void) | undefined;
-    document.addEventListener('astro:before-preparation', () => {
-        if (cleanup) {
-            cleanup();
-            cleanup = undefined;
-        }
-    });
-    
-    document.addEventListener('astro:page-load', () => {
-        cleanup = initializeMobileMenu();
-    });
 </script>

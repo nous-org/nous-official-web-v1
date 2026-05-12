@@ -2,7 +2,6 @@
 import Header from '@/components/ui-main-components/Header.astro';
 import Footer from '@/components/ui-main-components/Footer.astro';
 import { AuroraBackground } from '@/components/react/AuroraBackground.tsx';
-import { ClientRouter } from 'astro:transitions';
 import SEOBase from '@/components/seo/SEO.astro';
 import OrganizationSchema from '@/components/seo/OrganizationSchema.astro';
 import '@/styles/global.css'
@@ -35,7 +34,7 @@ interface Props {
 }
 
 const { 
-  title = 'Nous Technologies: AI & Automation',
+  title = 'NOUS / AI Deployment Company',
   showAurora = true,
   useContainer = false,
   backgroundType = 'aurora',
@@ -44,14 +43,14 @@ const {
   paddingType = 'normal',
   
   // SEO
-  description = 'Leading AI consulting and web development company in Latin America. We democratize technology through innovative solutions, automation, and digital transformation.',
-  canonical = Astro.url?.href,
+  description = 'NOUS helps organizations in Costa Rica and Latin America build, deploy, and adopt AI systems that turn intelligence into practical work.',
+  canonical = Astro.url?.pathname,
   ogImage = '/images/og-default.jpg',
-  ogImageAlt = 'NOUS: AI & Automation',
+  ogImageAlt = 'NOUS helps organizations build and deploy practical AI systems',
   type = 'website',
   publishedTime,
   modifiedTime,
-  author = 'Nous Technologies',
+  author = 'NOUS',
   tags = [],
   noindex = false,
   nofollow = false,
@@ -108,7 +107,7 @@ const mainClasses = useContainer
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="MyWebSite" />
+    <meta name="apple-mobile-web-app-title" content="NOUS" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="generator" content={Astro.generator} />
     
@@ -132,19 +131,21 @@ const mainClasses = useContainer
     <!-- Organization Schema (solo en páginas principales) -->
     {includeOrganizationSchema && <OrganizationSchema />}
     
-    <!-- Performance: Preload critical fonts -->
-    <link rel="preload" href="/fonts/TikTokSans.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/ArchivoBlack-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     
-    <!-- Astro Transitions -->
-    <ClientRouter/>
   </head>
 
   <body class={`${getBgClass()} relative ${getOverflowClass()}`}>
     {showAurora && <AuroraBackground client:load/>}
   
+    <a href="#main-content" class="sr-only fixed left-4 top-4 z-[100] rounded-full bg-outline px-4 py-2 text-sm font-medium text-primary-black focus:not-sr-only focus:outline-none focus:ring-2 focus:ring-outline/60 focus:ring-offset-2 focus:ring-offset-primary-black">
+      Skip to main content
+    </a>
     <Header />
-    <main class={`${getPaddingClass()} ${mainClasses}`}>
+    <main id="main-content" class={`${getPaddingClass()} ${mainClasses}`}>
       <slot />
     </main>
     <Footer />
@@ -152,33 +153,16 @@ const mainClasses = useContainer
 </html>
 
 <style>
-  @font-face {
-    font-family: 'TikTokSans';
-    src: url('/fonts/TikTokSans.woff2') format('woff2');
-    font-weight: swap;
-    font-style: normal;
-    font-display: swap;
-  }
-  
-  @font-face{
-    font-family: 'ArchivoBlack-Regular';
-    src: url('/fonts/ArchivoBlack-Regular.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-  }
-
   html,
   body {
     margin: 0;
     width: 100%;
     height: 100%;
-    font-family: 'TikTokSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif, 'ArchivoBlack-Regular';
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     color-scheme: dark;
   }
 
   * {
-    font-family: 'TikTokSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif, 'ArchivoBlack-Regular';
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   }
 </style>
-

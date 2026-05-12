@@ -1,6 +1,7 @@
 ---
 import ButtonVariant from '@/components/ui/Buttons/ButtonVariant.astro';
 import NousLogo from '@/assets/NousLogo.svg';
+import HeroNousLogo from '@/components/ui/HeroNousLogo.astro';
 
 interface HeroButton {
     text?: string;
@@ -25,18 +26,18 @@ interface Props {
 const {
     buttons = [
         {
-            text: 'Book a 15-min intro call',
+            text: 'Find your AI opportunity',
             variant: 'primary',
-            href: '/contact-us',
+            href: '/contact',
             target: '_self',
-            ariaLabel: 'Contact us for consultation'
+            ariaLabel: 'Find your AI opportunity'
         },
         {
-            text: 'Request a demo',
+            text: 'Explore what we do',
             variant: 'primaryPurple',
-            href: '/contact-us',
+            href: '/contact',
             target: '_self',
-            ariaLabel: 'Request a product demonstration'
+            ariaLabel: 'Explore what NOUS does'
         }
     ],
     img = NousLogo,
@@ -55,41 +56,47 @@ const imgSrc = typeof img === 'string' ? img : img.src;
 ---
 
 
-<section 
-    class={`relative z-10 pt-40 mb-72 px-4 sm:px-6 lg:px-8 ${className} animate-blurred-fade-in`}
+<section
+    class={`relative z-10 pt-44 md:pt-48 mb-64 px-4 sm:px-6 lg:px-8 ${className} animate-blurred-fade-in`}
     aria-labelledby="hero-cta-heading"
     role="banner"
 
 >
-    <div class="max-w-5xl mx-auto">
-        <div class="flex flex-col items-center text-center space-y-6 sm:space-y-8 md:space-y-12">
-          
+    <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col items-center text-center gap-10 md:gap-12">
+
             <figure class="flex-shrink-0">
-                <img 
-                    src={imgSrc}
-                    alt="Nous Technologies - AI & Automation Solutions Logo"
-                    class={`w-auto h-16 sm:h-20 md:h-32 lg:h-40 xl:h-52 object-contain ${imgClassName}`}
-                    transition:name="hero-image"
-                    loading="eager"
-                    decoding="async"
-                />
+                {isMainHero ? (
+                    <HeroNousLogo
+                        className={`w-auto h-16 sm:h-20 md:h-32 lg:h-40 xl:h-52 object-contain ${imgClassName}`}
+                    />
+                ) : (
+                    <img
+                        src={imgSrc}
+                        alt="NOUS AI deployment logo"
+                        class={`w-auto h-16 sm:h-20 md:h-32 lg:h-40 xl:h-52 object-contain ${imgClassName}`}
+                        transition:name="hero-image"
+                        loading="eager"
+                        decoding="async"
+                    />
+                )}
             </figure>
-            
-            <div class="space-y-4">
-                <HeadingTag 
+
+            <div class="flex flex-col items-center gap-10 md:gap-12">
+                <HeadingTag
                     id="hero-cta-heading"
                     class={titleClassName || 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold font-archivo-black text-white leading-tight tracking-tight'}
                 >
                     <slot name="title">{title}</slot>
                 </HeadingTag>
-                
+
                 {subtitle && (
                     <p class={subtitleClassName || 'text-base sm:text-lg md:text-xl lg:text-2xl text-neutral-400 leading-relaxed max-w-2xl mx-auto'}>
                         {subtitle}
                     </p>
                 )}
             </div>
-            
+
             {buttons.length > 0 && (
                 <nav aria-label="Hero call-to-action buttons">
                     <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">

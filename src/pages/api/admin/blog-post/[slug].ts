@@ -1,6 +1,7 @@
 import type { APIContext } from 'astro';
 import { createDbClient } from '@/lib/db';
-import { requireClerk } from '@/lib/auth';
+import { authErrorResponse, requireClerk } from '@/lib/auth';
+import { getRuntimeEnv } from '@/lib/runtime-env';
 
 function json(data: unknown, init: number | ResponseInit = 200) {
   const initObj = typeof init === 'number' ? { status: init } : init;
@@ -10,9 +11,10 @@ function json(data: unknown, init: number | ResponseInit = 200) {
   });
 }
 
-export async function GET({ params, request, locals }: APIContext) {
+export async function GET({ params, request }: APIContext) {
   try {
-    await requireClerk(request, locals.runtime.env as { CLERK_SECRET_KEY: string });
+    const env = getRuntimeEnv();
+    await requireClerk(request, env);
 
     const { slug } = params;
     
@@ -23,7 +25,7 @@ export async function GET({ params, request, locals }: APIContext) {
       }, 400);
     }
 
-    const db = createDbClient(locals.runtime.env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
+    const db = createDbClient(env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
     
     const result = await db.execute(
       'SELECT slug, title, content FROM posts WHERE slug = ?',
@@ -105,6 +107,10 @@ export async function GET({ params, request, locals }: APIContext) {
     });
 
   } catch (error) {
+    if ((error as { name?: string })?.name === 'AuthError') {
+      return authErrorResponse(error);
+    }
+
     console.error('Error loading blog post:', error);
     
     return json({
