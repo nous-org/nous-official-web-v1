@@ -5,6 +5,7 @@ import Layout from '@/layouts/Layout.astro';
 import { ShootingStars } from '@/components/react/ShootingStars';
 import { StarsBackground } from '@/components/react/StarBackground';
 import NousLogoSvg from '@/assets/NousLogo.svg';
+import FounderRoberto from '@/assets/founders/rpu.webp';
 import BlogContentRenderer from '@/components/ui/BlogContentRenderer.astro';
 import { createClerkClient } from '@clerk/backend';
 import { getRuntimeEnv } from '@/lib/runtime-env';
@@ -96,9 +97,14 @@ function getAuthorRole(name: string): string {
   return '';
 }
 
+function getAuthorAvatar(name: string, avatar?: string): string {
+  if (name.toLowerCase().includes('roberto')) return FounderRoberto.src;
+  return avatar || NousLogoSvg.src;
+}
+
 let authorData = {
   name: row.author?.name || 'NOUS',
-  avatar: row.author?.avatar || NousLogoSvg.src,
+  avatar: getAuthorAvatar(row.author?.name || 'NOUS', row.author?.avatar),
   bio: row.author?.bio || 'Field notes from the age of abundant intelligence.',
   role: row.author?.role || '',
 };
@@ -113,7 +119,7 @@ if (row.authorId && row.authorId !== 'admin') {
 
     authorData = {
       name: fullName,
-      avatar: user.imageUrl || NousLogoSvg.src,
+      avatar: getAuthorAvatar(fullName, user.imageUrl),
       bio: user.publicMetadata?.bio as string || '',
       role: getAuthorRole(fullName)
     };

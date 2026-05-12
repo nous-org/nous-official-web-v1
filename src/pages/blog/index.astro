@@ -7,6 +7,7 @@ import { StarsBackground } from '@/components/react/StarBackground';
 import Layout from '@/layouts/Layout.astro';
 import BlogCard from '@/components/ui/BlogCard.astro';
 import NousLogoSvg from '@/assets/NousLogo.svg';
+import FounderRoberto from '@/assets/founders/rpu.webp';
 import ContentPagesHero from '@/components/ui/ContentPagesHero.astro';
 import { getRuntimeEnv } from '@/lib/runtime-env';
 import { staticBlogRows } from '@/lib/blog-fallbacks';
@@ -43,6 +44,11 @@ function getAuthorRole(name: string): string {
   return '';
 }
 
+function getAuthorAvatar(name: string, avatar?: string): string {
+  if (name.toLowerCase().includes('roberto')) return FounderRoberto.src;
+  return avatar || NousLogoSvg.src;
+}
+
 // Default author data
 const defaultAuthor = {
   name: 'NOUS',
@@ -75,7 +81,7 @@ if (authorIds.length > 0) {
           id: authorId,
           data: {
             name: fullName,
-            avatar: user.imageUrl || NousLogoSvg.src,
+            avatar: getAuthorAvatar(fullName, user.imageUrl),
             bio: (user.publicMetadata?.bio as string) || '',
             role: getAuthorRole(fullName)
           }
@@ -119,7 +125,7 @@ const posts = rows.map((row: any) => {
 
   // Get author data from Clerk or use default
   const authorData = row.author
-    ? { avatar: NousLogoSvg.src, ...row.author }
+    ? { ...row.author, avatar: getAuthorAvatar(row.author.name, row.author.avatar) }
     : row.authorId && row.authorId !== 'admin'
       ? authorsMap.get(row.authorId) || defaultAuthor
       : defaultAuthor;
