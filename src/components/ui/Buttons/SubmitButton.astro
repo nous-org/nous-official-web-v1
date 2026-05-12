@@ -9,6 +9,7 @@ interface Props {
   icon?: boolean;
   width?: string;
   disabled?: boolean;
+  loadingText?: string;
 }
 
 const {
@@ -19,6 +20,7 @@ const {
   icon = false,
   width = "auto",
   disabled = false,
+  loadingText = "Sending…",
 } = Astro.props;
 
 const widthClass = width === "full" ? "md:w-full" : width === "fit" ? "md:w-fit" : "";
@@ -41,7 +43,7 @@ const variants = {
   <span data-label class="group-[.is-loading]:hidden">{text}</span>
 
   {/* Loading label hidden by default; visible when is-loading is set */}
-  <span data-loading class="hidden group-[.is-loading]:inline">Sending…</span>
+  <span data-loading class="hidden group-[.is-loading]:inline">{loadingText}</span>
 
   {icon && (
     <span class="group-hover:translate-x-0.5 transition-transform duration-300">

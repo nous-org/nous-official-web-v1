@@ -27,6 +27,7 @@ export interface CTASection {
 export interface CallToActionProps {
     sections?: CTASection[];
     className?: string;
+    locale?: "en" | "es";
 }
 
 export const defaultSections: CTASection[] = [
@@ -73,6 +74,55 @@ export const defaultSections: CTASection[] = [
                 arrowIcon: false,
                 target: "_self",
                 ariaLabel: "Start with an AI consultation"
+            }
+        ]
+    }
+];
+
+export const defaultSectionsEs: CTASection[] = [
+    {
+        title: "No esperes a que la transformación con IA ocurra alrededor de tu organización.",
+        subtitle: "",
+        description: "Todas las organizaciones se están haciendo la misma pregunta: ¿dónde crea valor real la IA para nosotros? NOUS te ayuda a responderla, priorizarla y actuar.",
+        style: {
+            background: "bg-gradient-to-br from-outline to-gradient-middle border border-outline",
+            textColor: "text-primary-black/75",
+            shadowColor: "accent",
+            titleColor: "text-primary-blue",
+        },
+        buttons: [
+            {
+                text: "Ver nuestro enfoque",
+                href: "/services",
+                scheduleIcon: false,
+                strokeColor: "",
+                arrowIcon: false,
+                variant: "darkBlue",
+                target: "_self",
+                ariaLabel: "Ver el enfoque de transformación con IA de NOUS"
+            }
+        ]
+    },
+    {
+        title: "Convierte la ambición con IA en sistemas que funcionan.",
+        subtitle: "",
+        description: "La IA no crea valor hasta que se despliega en flujos de trabajo reales. Convertimos las oportunidades correctas en agentes, automatizaciones, integraciones y sistemas que tu equipo puede usar todos los días.",
+        style: {
+            background: "bg-gradient-to-bl from-outline/15 to-white/5 border border-outline/40",
+            textColor: "text-neutral-300",
+            shadowColor: "primary-purple",
+            titleColor: "text-outline",
+        },
+        buttons: [
+            {
+                text: "Empezar con una consulta",
+                href: "/contact",
+                variant: "primary",
+                scheduleIcon: false,
+                strokeColor: "",
+                arrowIcon: false,
+                target: "_self",
+                ariaLabel: "Empezar con una consulta de IA"
             }
         ]
     }

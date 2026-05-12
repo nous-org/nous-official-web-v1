@@ -2,7 +2,25 @@
 import { CardDemo } from "@/components/react/InfoCard.tsx";
 import InfoText from "@/components/ui/InfoText.astro";
 //import ButtonVariant from "@/components/ui/Buttons/ButtonVariant.astro";
-import { DEFAULT_INFO_TEXT_2 } from "@/types/InfoText";
+import { DEFAULT_INFO_TEXT_2, DEFAULT_INFO_TEXT_2_ES } from "@/types/InfoText";
+import { normalizeLocale, type Locale } from "@/lib/i18n";
+
+interface Props {
+    locale?: Locale;
+}
+
+const { locale = "en" } = Astro.props as Props;
+const currentLocale = normalizeLocale(locale);
+const isEs = currentLocale === "es";
+const systemsCopy = isEs
+    ? {
+        title: "Sistemas listos para IA para toda la organización.",
+        description: "La IA no transforma una compañía si flota por encima de ella. Necesita software, datos, integraciones, interfaces y operaciones diseñadas para que la inteligencia se mueva por el negocio.",
+    }
+    : {
+        title: "AI-Ready Systems for the whole organization.",
+        description: "AI does not transform a company by floating above it. It needs software, data, integrations, interfaces, and operations designed so intelligence can move through the business.",
+    };
 ---
 
 <section class="max-w-7xl mx-auto px-4 container z-10 pt-64 pb-52">
@@ -10,22 +28,23 @@ import { DEFAULT_INFO_TEXT_2 } from "@/types/InfoText";
         <div class="flex flex-col md:mx-0 md:self-center appear-left"
         
         >
-            <CardDemo client:only="react" justifyDescription={true} />
+            <CardDemo client:only="react" justifyDescription={true} locale={currentLocale} />
             
         </div>
 
         <div class="mt-16 sm:mt-0 md:mt-0 md:self-center">
-            <InfoText justifyDescription={true} descriptionMaxWidthClass="max-w-xl" />
+            <InfoText justifyDescription={true} descriptionMaxWidthClass="max-w-xl" locale={currentLocale} />
         </div>
     </article>
 
     <article class="flex flex-col md:grid md:grid-cols-2 gap-4 md:gap-8 mt-40 md:items-center">
         <div class="order-2 md:order-1 mt-16 md:mt-0 md:self-center" >
             <InfoText
-                infoText={DEFAULT_INFO_TEXT_2}
+                infoText={isEs ? DEFAULT_INFO_TEXT_2_ES : DEFAULT_INFO_TEXT_2}
                 colorDivider="primary-purple"
                 justifyDescription={true}
                 descriptionMaxWidthClass="max-w-xl"
+                locale={currentLocale}
             />
         </div>
 
@@ -36,8 +55,8 @@ import { DEFAULT_INFO_TEXT_2 } from "@/types/InfoText";
                 client:only="react"
                 iconSet="secondary"
                 borderColor="border-outline"
-                title="AI-Ready Systems for the whole organization."
-                description="AI does not transform a company by floating above it. It needs software, data, integrations, interfaces, and operations designed so intelligence can move through the business."
+                title={systemsCopy.title}
+                description={systemsCopy.description}
                 justifyDescription={true}
             />
           

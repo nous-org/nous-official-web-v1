@@ -1,6 +1,15 @@
 ---
 import ColorDivider from "@/components/ui/ColorDivider.astro"
 import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
+import { commonCopy, localizePath, normalizeLocale, type Locale } from "@/lib/i18n";
+
+interface Props {
+    locale?: Locale;
+}
+
+const { locale = "en" } = Astro.props as Props;
+const currentLocale = normalizeLocale(locale);
+const copy = commonCopy[currentLocale];
 ---
 
 <footer class="relative bg-gradient-to-t from-primary-black to-primary-blue">
@@ -15,22 +24,22 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
             <section class="col-span-1 flex flex-col gap-4 sm:col-span-2 lg:col-span-1">
                 <header class="flex flex-col gap-4">
                     <h2 class="text-2xl font-medium tracking-normal text-white">NOUS</h2>
-                    <p class="text-sm leading-relaxed text-neutral-300">Building a more intelligent world.</p>
+                    <p class="text-sm leading-relaxed text-neutral-300">{copy.footer.tagline}</p>
                 </header>
                 <div class="flex w-full flex-col gap-4">
                     <ButtonVariant
-                        text="Talk to NOUS"
+                        text={copy.footer.talk}
                         variant="primary"
-                        href="/contact"
+                        href={localizePath("/contact", currentLocale)}
                         rounded="full"
                         strokeColor="#060114"
                         justify="center"
                         className="!w-full"
                     />
                     <ButtonVariant
-                        text="Explore services"
+                        text={copy.footer.services}
                         variant="primaryPurple"
-                        href="/services"
+                        href={localizePath("/services", currentLocale)}
                         rounded="full"
                         strokeColor="#DCD4FF"
                         justify="center"
@@ -42,7 +51,7 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
             <!-- Contact Section -->
             <section class="col-span-1 flex flex-col gap-4 lg:justify-self-end">
                 <header>
-                    <h3 class="text-xl sm:text-2xl font-medium text-outline">Contact</h3>
+                    <h3 class="text-xl sm:text-2xl font-medium text-outline">{copy.footer.contactHeading}</h3>
                 </header>
                 <address class="flex flex-col gap-4 not-italic">
                     <ul class="space-y-4 text-neutral-300">
@@ -56,7 +65,7 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
                             </a>
                         </li>
                     </ul>
-                    <p class="text-xs leading-relaxed text-neutral-300">Hermes will start the conversation, gather initial context, and route it to the right person at NOUS.</p>
+                    <p class="text-xs leading-relaxed text-neutral-300">{copy.footer.contactText}</p>
                     <div>
                         <a href="https://wa.me/50661865634" target="_blank" rel="noopener noreferrer" class="text-outline hover:text-hover transition-colors duration-200 font-medium">
                             (+506) 6186-5634
@@ -68,13 +77,22 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
             <!-- Newsletter Section -->
             <section class="col-span-1 flex flex-col gap-4">
                 <header>
-                    <h3 class="text-xl sm:text-2xl font-medium text-outline">Newsletter</h3>
+                    <h3 class="text-xl sm:text-2xl font-medium text-outline">{copy.footer.newsletterHeading}</h3>
                 </header>
 
                 <!-- Newsletter Form -->
-                <form id="footer-newsletter-form" method="POST" action="/api/subscribe" class="flex flex-col gap-4">
+                <form
+                    id="footer-newsletter-form"
+                    method="POST"
+                    action="/api/subscribe"
+                    class="flex flex-col gap-4"
+                    data-error-missing={copy.footer.newsletterMissing}
+                    data-success={copy.footer.newsletterSuccess}
+                    data-error-fallback={copy.footer.newsletterFallbackError}
+                    data-error-network={copy.footer.newsletterNetworkError}
+                >
                     <div class="flex flex-col gap-4">
-                        <label for="footer-email-address" class="sr-only">E-mail address</label>
+                        <label for="footer-email-address" class="sr-only">{copy.footer.newsletterLabel}</label>
                         <input
                             id="footer-email-address"
                             type="email"
@@ -84,11 +102,12 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
                             class="min-h-11 w-full rounded-full border border-neutral-700 bg-white/[0.03] px-5 py-2.5 text-sm text-neutral-200 placeholder-neutral-500 backdrop-blur transition-colors hover:border-outline/70 focus:border-outline focus:outline-none focus:ring-2 focus:ring-outline/20"
                         />
                         <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+                        <input type="hidden" name="locale" value={currentLocale} />
                         <button
                             type="submit"
                             class="min-h-11 w-full rounded-full border border-transparent bg-outline px-5 py-2.5 text-sm font-medium text-primary-black transition-all duration-200 hover:bg-hover hover:shadow-sm hover:shadow-outline/20 focus:outline-none focus:ring-2 focus:ring-outline/50 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
                         >
-                            Subscribe
+                            {copy.footer.newsletterButton}
                         </button>
                     </div>
 
@@ -98,7 +117,7 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            <span id="footer-error-message">Please enter a valid e-mail address</span>
+                            <span id="footer-error-message">{copy.footer.newsletterInvalid}</span>
                         </div>
                     </div>
 
@@ -107,7 +126,7 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                             </svg>
-                            <span id="footer-success-text">Successfully subscribed!</span>
+                            <span id="footer-success-text">{copy.footer.newsletterSuccess}</span>
                         </div>
                     </div>
 
@@ -117,37 +136,37 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                 <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
-                            <span>Subscribing...</span>
+                            <span>{copy.footer.newsletterLoading}</span>
                         </div>
                     </div>
                 </form>
 
                 <div class="space-y-3">
-                    <p class="text-neutral-400 text-xs leading-relaxed">Field notes on the era of abundant intelligence: how intelligence on tap will reshape decisions, tools, infrastructure, and the organizations ready to use it.</p>
-                    <p class="text-neutral-400 text-xs leading-relaxed">By subscribing you agree to our <a href="/privacy-policy" class="text-neutral-400 text-xs leading-relaxed hover:text-outline transition-colors">Privacy Policy</a>.</p>
+                    <p class="text-neutral-400 text-xs leading-relaxed">{copy.footer.newsletterDescription}</p>
+                    <p class="text-neutral-400 text-xs leading-relaxed">{copy.footer.newsletterConsentPrefix} <a href={localizePath("/privacy-policy", currentLocale)} class="text-neutral-400 text-xs leading-relaxed hover:text-outline transition-colors">{copy.footer.privacy}</a>.</p>
                 </div>
             </section>
 
             <!-- Products Section -->
             <section class="col-span-1 flex flex-col gap-4">
                 <header>
-                    <h3 class="text-xl sm:text-2xl font-medium text-outline">Services</h3>
+                    <h3 class="text-xl sm:text-2xl font-medium text-outline">{copy.footer.servicesHeading}</h3>
                 </header>
                 <nav>
                     <ul class="space-y-4 text-neutral-300">
                         <li>
-                            <a href="/services#services" class="hover:text-outline transition-colors duration-200 text-sm">
-                                AI Transformation Strategy
+                            <a href={localizePath("/services#services", currentLocale)} class="hover:text-outline transition-colors duration-200 text-sm">
+                                {copy.serviceLabels.strategy}
                             </a>
                         </li>
                         <li>
-                            <a href="/services#services" class="hover:text-outline transition-colors duration-200 text-sm">
-                                Intelligence Deployment
+                            <a href={localizePath("/services#services", currentLocale)} class="hover:text-outline transition-colors duration-200 text-sm">
+                                {copy.serviceLabels.deployment}
                             </a>
                         </li>
                         <li>
-                            <a href="/services#services" class="hover:text-outline transition-colors duration-200 text-sm">
-                                AI-Ready Systems
+                            <a href={localizePath("/services#services", currentLocale)} class="hover:text-outline transition-colors duration-200 text-sm">
+                                {copy.serviceLabels.systems}
                             </a>
                         </li>
                     </ul>
@@ -157,16 +176,16 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
             <!-- Company Navigation Section -->
             <section class="col-span-1 flex flex-col gap-4">
                 <header>
-                    <h3 class="text-xl sm:text-2xl font-medium text-outline">Company</h3>
+                    <h3 class="text-xl sm:text-2xl font-medium text-outline">{copy.footer.companyHeading}</h3>
                 </header>
                 <nav>
                     <ul class="space-y-4 text-neutral-300">
-                        <li><a href="/" class="hover:text-outline transition-colors duration-200 text-sm">Home</a></li>
-                        <li><a href="/services" class="hover:text-outline transition-colors duration-200 text-sm">Services</a></li>
-                        <li><a href="/portfolio" class="hover:text-outline transition-colors duration-200 text-sm">Portfolio</a></li>
-                        <li><a href="/about" class="hover:text-outline transition-colors duration-200 text-sm">About</a></li>
-                        <li><a href="/blog" class="hover:text-outline transition-colors duration-200 text-sm">Blog</a></li>
-                        <li><a href="/contact" class="hover:text-outline transition-colors duration-200 text-sm">Talk to NOUS</a></li>
+                        <li><a href={localizePath("/", currentLocale)} class="hover:text-outline transition-colors duration-200 text-sm">{copy.nav.home}</a></li>
+                        <li><a href={localizePath("/services", currentLocale)} class="hover:text-outline transition-colors duration-200 text-sm">{copy.nav.services}</a></li>
+                        <li><a href={localizePath("/portfolio", currentLocale)} class="hover:text-outline transition-colors duration-200 text-sm">{currentLocale === "es" ? "Portafolio" : "Portfolio"}</a></li>
+                        <li><a href={localizePath("/about", currentLocale)} class="hover:text-outline transition-colors duration-200 text-sm">{copy.nav.about}</a></li>
+                        <li><a href={localizePath("/blog", currentLocale)} class="hover:text-outline transition-colors duration-200 text-sm">{copy.nav.blog}</a></li>
+                        <li><a href={localizePath("/contact", currentLocale)} class="hover:text-outline transition-colors duration-200 text-sm">{copy.footer.talk}</a></li>
                     </ul>
                 </nav>
             </section>
@@ -176,14 +195,14 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
         <div class="border-t border-neutral-800 mt-12 pt-8">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-8">
                 <p class="text-neutral-400 font-light text-sm">
-                    NOUS 2026. All rights reserved.
+                    {copy.footer.rights}
                 </p>
                 <nav class="flex flex-col sm:flex-row gap-2 sm:gap-6">
-                    <a href="/privacy-policy" class="text-neutral-400 hover:text-outline transition-colors duration-200 text-sm">
-                        Privacy Policy
+                    <a href={localizePath("/privacy-policy", currentLocale)} class="text-neutral-400 hover:text-outline transition-colors duration-200 text-sm">
+                        {copy.footer.privacy}
                     </a>
-                    <a href="/terms-and-conditions" class="text-neutral-400 hover:text-outline transition-colors duration-200 text-sm">
-                        Terms and Conditions
+                    <a href={localizePath("/terms-and-conditions", currentLocale)} class="text-neutral-400 hover:text-outline transition-colors duration-200 text-sm">
+                        {copy.footer.terms}
                     </a>
 
                 </nav>
@@ -270,7 +289,7 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
 
             const email = emailInput?.value?.trim();
             if (!email) {
-                showError('Please enter your e-mail address');
+                showError(form.dataset.errorMissing || 'Please enter your e-mail address');
                 busy = false;
                 return;
             }
@@ -282,6 +301,7 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
                 const formData = new FormData();
                 formData.append('email', email);
                 formData.append('website', form.querySelector('[name="website"]')?.value || '');
+                formData.append('locale', form.querySelector('[name="locale"]')?.value || 'en');
 
                 const response = await fetch('/api/subscribe', {
                     method: 'POST',
@@ -291,14 +311,14 @@ import ButtonVariant from "../ui/Buttons/ButtonVariant.astro"
                 const data = await response.json();
 
                 if (response.ok) {
-                    showSuccess(data.message || 'Successfully subscribed!');
+                    showSuccess(data.message || form.dataset.success || 'Successfully subscribed!');
                     form.reset();
                 } else {
-                    showError(data.message || 'Something went wrong. Please try again.');
+                    showError(data.message || form.dataset.errorFallback || 'Something went wrong. Please try again.');
                 }
             } catch (error) {
                 console.error('Newsletter submission error');
-                showError('Network error. Please check your connection and try again.');
+                showError(form.dataset.errorNetwork || 'Network error. Please check your connection and try again.');
             } finally {
                 busy = false;
                 if (submitButton) submitButton.disabled = false;

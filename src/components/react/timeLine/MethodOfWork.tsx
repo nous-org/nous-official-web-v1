@@ -1,9 +1,11 @@
 
 import { Globe } from "./Globe";
+import type { Locale } from "@/lib/i18n";
 
 interface MethodOfWorkProps {
     title?: string;
     subtitle?: string;
+    locale?: Locale;
     description?: string;
 
    // Card content interfaces
@@ -31,25 +33,38 @@ interface MethodOfWorkProps {
 
 
 export const MethodOfWork = ({ 
+    locale = "en",
     title = "", 
-    subtitle = "We do not start with tools. We start with the organization: goals, workflows, constraints, people, and the moments where AI can create the most leverage.",
+    subtitle,
     automationCard = {
-        title: "Understand the organization.",
+        title: locale === "es" ? "Entender la organización." : "Understand the organization.",
         subtitle: "",
-        description: "We learn how your business works, where time is lost, where decisions slow down, and where customers or teams feel friction."
+        description: locale === "es"
+            ? "Aprendemos cómo funciona el negocio, dónde se pierde tiempo, dónde se frenan las decisiones y dónde clientes o equipos sienten fricción."
+            : "We learn how your business works, where time is lost, where decisions slow down, and where customers or teams feel friction."
     },
     consultingCard = {
-        title: "Choose the first useful deployment.",
+        title: locale === "es" ? "Elegir el primer despliegue útil." : "Choose the first useful deployment.",
         subtitle: "",
-        description: "We turn ambition into a practical sequence: the first workflow to improve, the systems it needs, the risks to manage, and the metrics that prove value."
+        description: locale === "es"
+            ? "Convertimos la ambición en una secuencia práctica: el primer flujo a mejorar, los sistemas que necesita, los riesgos a gestionar y las métricas que prueban valor."
+            : "We turn ambition into a practical sequence: the first workflow to improve, the systems it needs, the risks to manage, and the metrics that prove value."
     },
     webDevCard = {
-        title: "Build, deploy, train, and improve.",
+        title: locale === "es" ? "Construir, desplegar, entrenar y mejorar." : "Build, deploy, train, and improve.",
         subtitle: "",
-        description: "We ship the working system, connect it to the tools people already use, train the team around it, and keep improving it with real operational feedback."
+        description: locale === "es"
+            ? "Lanzamos el sistema funcional, lo conectamos con las herramientas que las personas ya usan, entrenamos al equipo y lo seguimos mejorando con feedback operacional real."
+            : "We ship the working system, connect it to the tools people already use, train the team around it, and keep improving it with real operational feedback."
     },
     className = "",
 }: MethodOfWorkProps) => {
+  const finalSubtitle =
+    subtitle ||
+    (locale === "es"
+      ? "No empezamos con herramientas. Empezamos con la organización: objetivos, flujos de trabajo, restricciones, personas y los momentos donde la IA puede crear más ventaja."
+      : "We do not start with tools. We start with the organization: goals, workflows, constraints, people, and the moments where AI can create the most leverage.");
+
   return (
     <div className={className}>
         {title && (
@@ -58,7 +73,7 @@ export const MethodOfWork = ({
         </h2>
         )}
         <h3 className="text-lg font-medium md:text-xl mb-4 text-neutral-300 max-w-4xl">
-          {subtitle}
+          {finalSubtitle}
         </h3>
 
       <div className="grid gap-4 

@@ -6,8 +6,8 @@ import BreadcrumbSchema from "@/components/seo/BreadCrumbs.astro";
 export const prerender = false;
 
 const breadcrumbs = [
-    { name: "Home", url: "/" },
-    { name: "Contact", url: "/contact" },
+    { name: "Inicio", url: "/es/" },
+    { name: "Contacto", url: "/es/contact" },
 ];
 
 const contactSchema = {
@@ -28,29 +28,28 @@ const contactSchema = {
 ---
 
 <Layout
-    title="Contact / NOUS"
-    description="Start a conversation with NOUS about AI strategy, automation, agents, training, and AI-ready systems."
+    title="Contacto / NOUS"
+    description="Inicia una conversación con NOUS sobre estrategia de IA, automatización, agentes, capacitación y sistemas listos para IA."
     backgroundType="primary"
     showAurora={false}
     useContainer={false}
     paddingType="zero"
-    canonical="/contact"
+    canonical="/es/contact"
     ogImage="/images/og-default.jpg"
     tags={[
-        "contact",
-        "consultation",
-        "AI deployment",
-        "AI transformation",
-        "intelligence deployment",
         "contacto",
+        "consulta",
+        "despliegue de IA",
+        "transformación con IA",
+        "despliegue de inteligencia",
         "consultoría",
         "consultoría en IA",
-        "contactar",
         "asesoría técnica",
     ]}
     customSchema={contactSchema}
     includeOrganizationSchema={false}
+    locale="es"
 >
     <BreadcrumbSchema items={breadcrumbs} />
-    <SectionContact locale="en" />
+    <SectionContact locale="es" />
 </Layout>

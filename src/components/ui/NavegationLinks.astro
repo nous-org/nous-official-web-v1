@@ -12,6 +12,7 @@ interface Props {
     variant?: 'horizontal' | 'vertical';
     spacing?: 'sm' | 'md' | 'lg';
     className?: string;
+    ariaLabel?: string;
 }
 
 // Default navigation links
@@ -50,7 +51,8 @@ const {
     links = defaultLinks,
     variant = 'horizontal',
     spacing = 'md',
-    className = ''
+    className = '',
+    ariaLabel = 'Main navigation'
 } = Astro.props;
 
 // Dynamic classes based on props
@@ -62,7 +64,7 @@ const containerClasses = [
 ].filter(Boolean).join(' ');
 ---
 
-<nav role="navigation" aria-label="Main navigation">
+<nav role="navigation" aria-label={ariaLabel}>
     <ul class={containerClasses}>
         {links.map((link) => (
             <li>

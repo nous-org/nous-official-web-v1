@@ -1,0 +1,149 @@
+---
+export const prerender = false;
+
+import { AdminEntrypoint } from "@/components/react/AdminEntrypoint";
+import Layout from "@/layouts/Layout.astro";
+import ContentPagesHero from "@/components/ui/ContentPagesHero.astro";
+import { getRuntimeEnv } from "@/lib/runtime-env";
+
+const { CLERK_PUBLISHABLE_KEY } = getRuntimeEnv();
+const clerkPublishableKey = CLERK_PUBLISHABLE_KEY ?? "";
+
+const now = new Date().toISOString();
+---
+
+<Layout
+  title="Administración / NOUS"
+  description="Workspace interno de administración de NOUS para flujos autorizados de contenido y publicación."
+  backgroundType="primary"
+  useContainer={false}
+  showAurora={false}
+  paddingType="zero"
+  canonical="/es/admin"
+  ogImage="/images/og-admin.jpg"
+  tags={["admin", "administration", "dashboard", "internal", "publishing", "NOUS"]}
+  includeOrganizationSchema={false}
+  noindex={true}
+  nofollow={true}
+  locale="es"
+>
+  <ContentPagesHero
+    title="Administración"
+    subtitle="Workspace interno de publicación."
+    text="Inicia sesión con una cuenta autorizada de NOUS para administrar notas de campo, borradores y contenido publicado."
+  />
+
+  <section class="mx-auto max-w-6xl px-4 pb-28" aria-labelledby="admin-workspace-heading">
+    <div class="grid gap-6 lg:grid-cols-[1fr_22rem]">
+      <main class="min-w-0">
+        <article
+          class="relative isolate overflow-hidden rounded-[2rem] border border-outline/15 bg-white/[0.025] p-4 shadow-[0_24px_80px_rgba(0,0,0,0.22)] backdrop-blur sm:p-6"
+          aria-labelledby="admin-workspace-heading"
+        >
+          <div class="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-outline/60 to-transparent" aria-hidden="true"></div>
+          <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(220,212,255,0.12),transparent_38%)]" aria-hidden="true"></div>
+
+          <div class="relative z-10">
+            <div class="mb-5 flex flex-col gap-2 border-b border-outline/10 pb-5 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p class="text-xs font-medium uppercase tracking-[0.18em] text-outline">Workspace</p>
+                <h2 id="admin-workspace-heading" class="mt-2 text-2xl font-medium leading-tight text-white sm:text-3xl">
+                  Gestión de contenido
+                </h2>
+              </div>
+              <p class="max-w-md text-left text-sm leading-relaxed text-neutral-400 md:text-right">
+                Las personas autorizadas pueden crear, editar, publicar y eliminar contenido de NOUS desde este workspace.
+              </p>
+            </div>
+
+            {clerkPublishableKey ? (
+              <AdminEntrypoint client:only="react" publishableKey={clerkPublishableKey} locale="es">
+                <div
+                  slot="fallback"
+                  class="grid min-h-[420px] place-items-center rounded-[1.5rem] border border-white/10 bg-white/[0.025] p-6 text-center"
+                >
+                  <div>
+                    <p class="text-xs font-medium uppercase tracking-[0.18em] text-outline">Sesión segura</p>
+                    <h2 class="mt-3 text-2xl font-medium text-white">Cargando workspace de administración</h2>
+                    <p class="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-neutral-400">
+                      Estamos preparando la capa de autenticación de NOUS.
+                    </p>
+                  </div>
+                </div>
+              </AdminEntrypoint>
+            ) : (
+              <div class="grid min-h-[420px] place-items-center rounded-[1.5rem] border border-white/10 bg-white/[0.025] p-6 text-center">
+                <div>
+                  <p class="text-xs font-medium uppercase tracking-[0.18em] text-outline">Configuración requerida</p>
+                  <h2 class="mt-3 text-2xl font-medium text-white">La autenticación de administración no está configurada</h2>
+                  <p class="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-neutral-400">
+                    Agrega la llave publicable de Clerk en el entorno de ejecución antes de usar el workspace de administración de NOUS.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        </article>
+      </main>
+
+      <aside class="space-y-4">
+        <section class="rounded-[1.5rem] border border-outline/15 bg-white/[0.025] p-5 backdrop-blur">
+          <p class="text-xs font-medium uppercase tracking-[0.18em] text-outline">Acceso interno</p>
+          <h2 class="mt-3 text-xl font-medium text-white">Área restringida</h2>
+          <p class="mt-3 text-left text-sm leading-relaxed text-neutral-400 md:text-justify">
+            Este workspace es solo para miembros autorizados del equipo NOUS. No compartas credenciales, enlaces de sesión, borradores o acceso administrativo con nadie fuera de la organización.
+          </p>
+        </section>
+
+        <section class="rounded-[1.5rem] border border-outline/15 bg-white/[0.025] p-5 backdrop-blur" aria-labelledby="system-status">
+          <h2 id="system-status" class="text-xl font-medium text-white">Estado del sistema</h2>
+          <dl class="mt-5 space-y-3 text-sm">
+            <div class="flex items-center justify-between gap-4 border-b border-white/5 pb-3">
+              <dt class="text-neutral-400">Modo:</dt>
+              <dd class="font-medium text-neutral-200">Producción</dd>
+            </div>
+            <div class="flex items-center justify-between gap-4 border-b border-white/5 pb-3">
+              <dt class="text-neutral-400">Versión:</dt>
+              <dd class="font-medium text-neutral-200">2.0</dd>
+            </div>
+            <div class="flex items-center justify-between gap-4 border-b border-white/5 pb-3">
+              <dt class="text-neutral-400">Llave de Clerk:</dt>
+              <dd class={CLERK_PUBLISHABLE_KEY ? "text-outline" : "text-red-300"}>
+                {CLERK_PUBLISHABLE_KEY ? "Configurada" : "Faltante"}
+              </dd>
+            </div>
+            <div class="grid gap-1">
+              <dt class="text-neutral-400">Hora UTC:</dt>
+              <dd class="break-all font-mono text-xs text-neutral-300">{now}</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section class="rounded-[1.5rem] border border-outline/15 bg-white/[0.025] p-5 backdrop-blur">
+          <p class="text-xs font-medium uppercase tracking-[0.18em] text-outline">Soporte</p>
+          <h2 class="mt-3 text-xl font-medium text-white">¿Necesitas ayuda?</h2>
+          <p class="mt-3 text-left text-sm leading-relaxed text-neutral-400 md:text-justify">
+            Para acceso administrativo, problemas de publicación, comportamiento del editor o preguntas de cuenta, contacta al equipo de NOUS responsable de mantener este workspace.
+          </p>
+          <div class="mt-5 grid gap-3">
+            <a
+              href="mailto:support@nous.cr"
+              class="inline-flex min-h-11 items-center justify-center rounded-full border border-transparent bg-outline px-5 py-2.5 text-sm font-medium text-primary-black transition-colors hover:bg-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/60"
+              aria-label="Contactar soporte de NOUS por e-mail"
+            >
+              Contactar soporte
+            </a>
+            <a
+              href="/es/"
+              data-astro-reload
+              class="inline-flex min-h-11 items-center justify-center rounded-full border border-outline/35 bg-transparent px-5 py-2.5 text-sm font-medium text-outline transition-colors hover:border-outline/70 hover:bg-outline/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/50"
+              aria-label="Volver al sitio público de NOUS"
+            >
+              Volver al sitio
+            </a>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </section>
+</Layout>

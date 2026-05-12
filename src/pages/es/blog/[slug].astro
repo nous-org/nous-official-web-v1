@@ -1,14 +1,11 @@
 ---
 export const prerender = false;
-import { createDbClient } from '@/lib/db';
 import Layout from '@/layouts/Layout.astro';
 import { ShootingStars } from '@/components/react/ShootingStars';
 import { StarsBackground } from '@/components/react/StarBackground';
 import NousLogoSvg from '@/assets/NousLogo.svg';
 import FounderRoberto from '@/assets/founders/rpu.webp';
 import BlogContentRenderer from '@/components/ui/BlogContentRenderer.astro';
-import { createClerkClient } from '@clerk/backend';
-import { getRuntimeEnv } from '@/lib/runtime-env';
 import { getStaticBlogRow } from '@/lib/blog-fallbacks';
 import { getBlogAuthorRole, getOriginalLanguageLabel, normalizeOriginalLanguage } from '@/lib/blog-metadata';
 
@@ -18,25 +15,7 @@ if (!slug) {
   return new Response('Not found', { status: 404 });
 }
 
-const env = getRuntimeEnv();
-let row: any | undefined;
-
-if (!env.TURSO_DATABASE_URL) {
-  row = getStaticBlogRow(slug);
-} else {
-  try {
-    const db = createDbClient(env as { TURSO_DATABASE_URL: string; TURSO_AUTH_TOKEN?: string });
-    const result = await db.execute(
-      "SELECT id, slug, title, content, categorie, tags, authorId, createdAt, updatedAt, featured FROM posts WHERE slug = ? AND status = 'PUBLISHED'",
-      [slug]
-    );
-
-    row = (result.rows[0] as any | undefined) || getStaticBlogRow(slug);
-  } catch (error) {
-    console.error('Error loading blog article:', error instanceof Error ? error.message : 'Unknown error');
-    row = getStaticBlogRow(slug);
-  }
-}
+const row = getStaticBlogRow(slug, 'es');
 
 if (!row) {
   return new Response('Not found', { status: 404 });
@@ -97,28 +76,9 @@ function getAuthorAvatar(name: string, avatar?: string): string {
 let authorData = {
   name: row.author?.name || 'NOUS',
   avatar: getAuthorAvatar(row.author?.name || 'NOUS', row.author?.avatar),
-  bio: row.author?.bio || 'Field notes from the age of abundant intelligence.',
+  bio: row.author?.bio || 'Notas de campo sobre la era de la inteligencia abundante.',
   role: getBlogAuthorRole(row.author?.name || 'NOUS', row.author?.role || ''),
 };
-
-if (row.authorId && row.authorId !== 'admin') {
-  try {
-    if (!env.CLERK_SECRET_KEY) throw new Error('Missing Clerk secret key');
-    const clerk = createClerkClient({ secretKey: env.CLERK_SECRET_KEY });
-    const user = await clerk.users.getUser(row.authorId);
-
-    const fullName = user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.username || user.emailAddresses[0]?.emailAddress || 'Anonymous';
-
-    authorData = {
-      name: fullName,
-      avatar: getAuthorAvatar(fullName, user.imageUrl),
-      bio: user.publicMetadata?.bio as string || '',
-      role: getBlogAuthorRole(fullName)
-    };
-  } catch (error) {
-    console.error('Error fetching author from Clerk:', error);
-  }
-}
 
 // Create post object
 const post = {
@@ -131,12 +91,12 @@ const post = {
     category: row.categorie,
     originalLanguage: normalizeOriginalLanguage(frontmatter.originalLanguage || row.originalLanguage),
     tags: JSON.parse(row.tags || '[]'),
-    featured: row.featured === true || row.featured === 1,
+    featured: Boolean(row.featured),
     author: authorData,
     draft: false
   }
 };
-const originalLanguageLabel = getOriginalLanguageLabel(post.data.originalLanguage, 'en');
+const originalLanguageLabel = getOriginalLanguageLabel(post.data.originalLanguage, 'es');
 
 // Función para calcular tiempo de lectura
 function calculateReadingTime(content: string): number {
@@ -161,7 +121,7 @@ const readingTime = calculateReadingTime(articleBodyContent);
 
 // Formatear fecha
 const formatDate = (date: Date) => {
-  return new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat('es-CR', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
@@ -172,10 +132,11 @@ const formatDate = (date: Date) => {
 <Layout
   title={`${post.data.title} / NOUS`}
   description={post.data.excerpt}
-  canonical={`/blog/${post.slug}`}
+  canonical={`/es/blog/${post.slug}`}
   backgroundType="primary"
   showAurora={false}
   useContainer={false}
+  locale="es"
 >
   <a id="top" class="sr-only" aria-hidden="true"></a>
 
@@ -188,13 +149,13 @@ const formatDate = (date: Date) => {
         <nav aria-label="Breadcrumb" class="mb-8">
           <ol class="flex flex-wrap items-center gap-2 text-sm text-neutral-400">
             <li>
-              <a href="/" class="transition-colors hover:text-outline focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/50 rounded">
-                Home
+              <a href="/es/" class="transition-colors hover:text-outline focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/50 rounded">
+                Inicio
               </a>
             </li>
             <li aria-hidden="true" class="text-neutral-600">/</li>
             <li>
-              <a href="/blog" class="transition-colors hover:text-outline focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/50 rounded">
+              <a href="/es/blog" class="transition-colors hover:text-outline focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/50 rounded">
                 Blog
               </a>
             </li>
@@ -202,11 +163,11 @@ const formatDate = (date: Date) => {
         </nav>
 
         <a
-          href="/blog"
+          href="/es/blog"
           class="mb-6 inline-flex min-h-10 items-center gap-2 rounded-full border border-outline/25 bg-white/[0.03] px-4 py-2 text-sm font-medium text-outline transition-colors hover:border-outline/60 hover:bg-outline/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/40"
         >
           <span aria-hidden="true">←</span>
-          <span>Back to blog</span>
+          <span>Volver al blog</span>
         </a>
 
         <div class="mb-6 flex flex-wrap items-center gap-2 text-sm text-neutral-300">
@@ -219,7 +180,7 @@ const formatDate = (date: Date) => {
           </span>
           <span aria-hidden="true" class="h-1 w-1 rounded-full bg-outline/60"></span>
           <span>
-            {readingTime} min read
+            {readingTime} min de lectura
           </span>
           {post.data.category && (
             <>
@@ -245,7 +206,7 @@ const formatDate = (date: Date) => {
           <div class="flex items-center gap-3">
             <img
               src={post.data.author.avatar || NousLogoSvg.src}
-              alt={`Avatar of ${post.data.author.name}`}
+              alt={`Avatar de ${post.data.author.name}`}
               class="h-11 w-11 rounded-full border-2 border-outline/20 object-cover"
               loading="lazy"
               decoding="async"
@@ -283,19 +244,19 @@ const formatDate = (date: Date) => {
 
   <section class="mx-auto max-w-5xl px-4 pb-24">
     <div class="rounded-[2rem] border border-outline/15 bg-white/[0.025] p-6 text-center shadow-[0_24px_80px_rgba(0,0,0,0.18)] backdrop-blur sm:p-10">
-      <p class="text-sm font-medium uppercase tracking-[0.18em] text-outline">NOUS field notes</p>
+      <p class="text-sm font-medium uppercase tracking-[0.18em] text-outline">Notas de campo de NOUS</p>
       <h2 class="mx-auto mt-3 max-w-4xl text-2xl font-medium leading-tight text-white sm:text-3xl">
-        Thinking through the age of abundant intelligence.
+        Pensando la era de la inteligencia abundante.
       </h2>
       <p class="mx-auto mt-4 max-w-4xl text-base leading-relaxed text-neutral-300">
-        Read more essays from NOUS or start a conversation about how these ideas apply inside your organization.
+        Lee más ensayos de NOUS o inicia una conversación sobre cómo estas ideas se aplican dentro de tu organización.
       </p>
       <div class="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
-        <a href="/blog" class="inline-flex min-h-11 items-center justify-center rounded-full border border-transparent bg-outline px-5 py-2.5 text-sm font-medium text-primary-black transition-colors hover:bg-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/60">
-          Back to blog
+        <a href="/es/blog" class="inline-flex min-h-11 items-center justify-center rounded-full border border-transparent bg-outline px-5 py-2.5 text-sm font-medium text-primary-black transition-colors hover:bg-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/60">
+          Volver al blog
         </a>
-        <a href="/contact" class="inline-flex min-h-11 items-center justify-center rounded-full border border-outline/45 bg-transparent px-5 py-2.5 text-sm font-medium text-outline transition-colors hover:border-outline hover:bg-outline/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/60">
-          Talk to NOUS
+        <a href="/es/contact" class="inline-flex min-h-11 items-center justify-center rounded-full border border-outline/45 bg-transparent px-5 py-2.5 text-sm font-medium text-outline transition-colors hover:border-outline hover:bg-outline/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/60">
+          Habla con NOUS
         </a>
       </div>
     </div>
@@ -305,7 +266,7 @@ const formatDate = (date: Date) => {
   <button
     id="scrollTopBtn"
     type="button"
-    aria-label="Back to top"
+    aria-label="Volver arriba"
     class="fixed bottom-6 right-6 z-40 inline-flex h-11 w-11 items-center justify-center rounded-full border border-outline/25 bg-primary-black/70 text-outline opacity-0 shadow-lg backdrop-blur transition-all hover:scale-105 hover:border-outline/60 hover:bg-outline/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/60 pointer-events-none"
   >
   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24"><path fill="currentColor" d="m11 7.825l-4.9 4.9q-.3.3-.7.288t-.7-.313q-.275-.3-.288-.7t.288-.7l6.6-6.6q.15-.15.325-.212T12 4.425t.375.063t.325.212l6.6 6.6q.275.275.275.688t-.275.712q-.3.3-.712.3t-.713-.3L13 7.825V19q0 .425-.288.713T12 20t-.712-.288T11 19z"/></svg>

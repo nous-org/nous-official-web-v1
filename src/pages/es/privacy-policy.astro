@@ -5,7 +5,7 @@ import { getCollection, render } from "astro:content";
 
 const entries = await getCollection("privacypolicy");
 const privacyEntry =
-  entries.find((entry: any) => entry.id === "privacypolicy") ?? entries[0];
+  entries.find((entry: any) => entry.id === "privacypolicy-es") ?? entries[0];
 
 if (!privacyEntry) {
   throw new Error("No entries found in privacypolicy collection");
@@ -18,13 +18,14 @@ const language = data.language || "English";
 ---
 
 <Layout
-  title="Privacy Policy / NOUS"
+  title="Política de Privacidad / NOUS"
   description={data.description}
-  canonical="/privacy-policy"
+  canonical="/es/privacy-policy"
   backgroundType="primary"
   showAurora={false}
   useContainer={false}
   includeOrganizationSchema={false}
+  locale="es"
 >
   <ContentPagesHero
     title={data.title}
@@ -34,19 +35,19 @@ const language = data.language || "English";
   <section class="mx-auto max-w-5xl px-4 pb-24">
     <dl class="grid gap-3 rounded-2xl border border-outline/15 bg-white/[0.025] p-4 text-sm text-neutral-300 backdrop-blur sm:grid-cols-2 lg:grid-cols-4">
       <div class="rounded-xl border border-white/5 bg-white/[0.02] p-4">
-        <dt class="text-xs font-medium uppercase tracking-[0.16em] text-outline">Effective date</dt>
+        <dt class="text-xs font-medium uppercase tracking-[0.16em] text-outline">Fecha de vigencia</dt>
         <dd class="mt-2 text-white">{data.effectiveDate}</dd>
       </div>
       <div class="rounded-xl border border-white/5 bg-white/[0.02] p-4">
-        <dt class="text-xs font-medium uppercase tracking-[0.16em] text-outline">Last updated</dt>
+        <dt class="text-xs font-medium uppercase tracking-[0.16em] text-outline">Última actualización</dt>
         <dd class="mt-2 text-white">{data.lastUpdated}</dd>
       </div>
       <div class="rounded-xl border border-white/5 bg-white/[0.02] p-4">
-        <dt class="text-xs font-medium uppercase tracking-[0.16em] text-outline">Language</dt>
+        <dt class="text-xs font-medium uppercase tracking-[0.16em] text-outline">Idioma</dt>
         <dd class="mt-2 text-white">{language}</dd>
       </div>
       <div class="rounded-xl border border-white/5 bg-white/[0.02] p-4">
-        <dt class="text-xs font-medium uppercase tracking-[0.16em] text-outline">Company</dt>
+        <dt class="text-xs font-medium uppercase tracking-[0.16em] text-outline">Compañía</dt>
         <dd class="mt-2 text-white">{data.company.name}</dd>
       </div>
     </dl>
@@ -59,9 +60,9 @@ const language = data.language || "English";
       <a
         href="#main-content"
         class="inline-flex min-h-11 items-center justify-center rounded-full border border-outline/25 bg-white/[0.03] px-5 py-2.5 text-sm font-medium text-outline transition-colors hover:border-outline/60 hover:bg-outline/10 focus:outline-none focus:ring-2 focus:ring-outline/40"
-        aria-label="Back to top"
+        aria-label="Volver arriba"
       >
-        Back to top
+        Volver arriba
       </a>
     </div>
   </section>

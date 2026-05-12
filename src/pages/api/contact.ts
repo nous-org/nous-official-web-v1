@@ -13,16 +13,49 @@ const contactSchema = z.object({
   preferredContact: z.enum(['email', 'whatsapp'], {
     error: 'Please select a valid preferred contact method'
   }),
-  interests: z.array(z.string()).optional().default([])
+  interests: z.array(z.string()).optional().default([]),
+  locale: z.enum(['en', 'es']).optional().default('en')
 });
 
+function inferLocale(request: Request, formData?: FormData): 'en' | 'es' {
+  if (formData?.get('locale') === 'es') return 'es';
+  const referer = request.headers.get('referer') || '';
+  try {
+    return new URL(referer).pathname.startsWith('/es') ? 'es' : 'en';
+  } catch {
+    return 'en';
+  }
+}
+
+const responseCopy = {
+  en: {
+    unavailable: 'Contact service is temporarily unavailable. Please e-mail hello@nous.cr directly.',
+    rateLimited: 'Too many messages were submitted. Please try again shortly.',
+    emailLimited: 'Too many messages were submitted from this e-mail address. Please try again later.',
+    sendError: 'There was an error sending your message. Please try again or contact us directly.',
+    success: 'Thank you for your message. Hermes will establish first contact shortly.',
+    checkForm: 'Please check your form data',
+    processingError: 'There was an error processing your request. Please try again later.',
+  },
+  es: {
+    unavailable: 'El servicio de contacto no está disponible temporalmente. Por favor escribe directamente a hello@nous.cr.',
+    rateLimited: 'Se enviaron demasiados mensajes. Inténtalo de nuevo en unos minutos.',
+    emailLimited: 'Se enviaron demasiados mensajes desde esta dirección de e-mail. Inténtalo de nuevo más tarde.',
+    sendError: 'Hubo un error enviando tu mensaje. Inténtalo de nuevo o contáctanos directamente.',
+    success: 'Gracias por tu mensaje. Hermes establecerá el primer contacto pronto.',
+    checkForm: 'Revisa la información del formulario',
+    processingError: 'Hubo un error procesando tu solicitud. Inténtalo de nuevo más tarde.',
+  },
+} as const;
+
 export const POST: APIRoute = async ({ request }) => {
+  let locale = inferLocale(request);
   try {
     const { RESEND_API_KEY, CONTACT_RECIPIENT_EMAIL } = getRuntimeEnv();
     if (!RESEND_API_KEY) {
       return new Response(JSON.stringify({
         success: false,
-        message: 'Contact service is temporarily unavailable. Please e-mail hello@nous.cr directly.'
+        message: responseCopy[locale].unavailable
       }), {
         status: 503,
         headers: { 'Content-Type': 'application/json' }
@@ -34,7 +67,7 @@ export const POST: APIRoute = async ({ request }) => {
     if (ipLimit.limited) {
       return new Response(JSON.stringify({
         success: false,
-        message: 'Too many messages were submitted. Please try again shortly.'
+        message: responseCopy[locale].rateLimited
       }), {
         status: 429,
         headers: {
@@ -48,6 +81,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Read form data.
     const formData = await request.formData();
+    locale = inferLocale(request, formData);
     if (isHoneypotFilled(formData)) {
       return new Response(JSON.stringify({ success: true }), {
         status: 200,
@@ -62,12 +96,14 @@ export const POST: APIRoute = async ({ request }) => {
       message: formData.get('message') as string,
       phone: formData.get('phone') as string,
       preferredContact: formData.get('preferredContact') as string,
-      interests: formData.getAll('interests') as string[]
+      interests: formData.getAll('interests') as string[],
+      locale: formData.get('locale') as string || locale
     };
 
     // Validate with Zod before using any submitted values.
     const validatedData = contactSchema.parse(rawData);
     const { name, email, subject, message, phone, preferredContact, interests } = validatedData;
+    locale = validatedData.locale;
     const safeName = escapeHtml(name);
     const safeEmail = escapeHtml(email);
     const safeSubject = escapeHtml(subject);
@@ -79,7 +115,7 @@ export const POST: APIRoute = async ({ request }) => {
     if (emailLimit.limited) {
       return new Response(JSON.stringify({
         success: false,
-        message: 'Too many messages were submitted from this e-mail address. Please try again later.'
+        message: responseCopy[locale].emailLimited
       }), {
         status: 429,
         headers: {
@@ -261,7 +297,7 @@ export const POST: APIRoute = async ({ request }) => {
 
       return new Response(JSON.stringify({
         success: false,
-        message: 'There was an error sending your message. Please try again or contact us directly.'
+        message: responseCopy[locale].sendError
       }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' }
@@ -270,7 +306,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     return new Response(JSON.stringify({
       success: true,
-      message: 'Thank you for your message. Hermes will establish first contact shortly.'
+      message: responseCopy[locale].success
     }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
@@ -282,7 +318,7 @@ export const POST: APIRoute = async ({ request }) => {
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify({
         success: false,
-        message: 'Please check your form data',
+        message: responseCopy[locale].checkForm,
         errors: error.issues
       }), {
         status: 400,
@@ -292,7 +328,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     return new Response(JSON.stringify({
       success: false,
-      message: 'There was an error processing your request. Please try again later.'
+      message: responseCopy[locale].processingError
     }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }

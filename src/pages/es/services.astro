@@ -1,0 +1,389 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import ContentPagesHero from "@/components/ui/ContentPagesHero.astro";
+import ServiceSchema from "@/components/seo/ServicesSchema.astro";
+import BreadcrumbSchema from "@/components/seo/BreadCrumbs.astro";
+import FAQSchema from "@/components/seo/FaqSchema.astro";
+
+const breadcrumbs = [
+  { name: "Inicio", url: "/es/" },
+  { name: "Servicios", url: "/es/services" },
+];
+
+const hero = {
+  title: "Despliegue de IA para organizaciones reales.",
+  subtitle: "NOUS ayuda a equipos a construir alrededor de la inteligencia artificial.",
+  text: "Trabajamos con líderes, operadores y equipos técnicos para convertir capacidades de IA en sistemas de producción que las personas pueden usar todos los días.",
+};
+
+const services = [
+  {
+    eyebrow: "01",
+    title: "Estrategia de Transformación con IA",
+    description:
+      "Ayudamos a las organizaciones a decidir dónde pertenece la inteligencia, qué debe construirse primero y cómo la IA debe cambiar la forma en que ocurre el trabajo.",
+    points: [
+      "Diagnóstico de oportunidades y hojas de ruta ejecutivas.",
+      "Selección de flujos prioritarios.",
+      "Planificación de gobernanza, riesgo y adopción.",
+    ],
+  },
+  {
+    eyebrow: "02",
+    title: "Despliegue de Inteligencia",
+    description:
+      "Diseñamos y desplegamos agentes, copilotos, automatizaciones y sistemas de apoyo a decisiones que conectan modelos de IA con tareas, herramientas, datos y procesos reales.",
+    points: [
+      "Agentes para servicio al cliente y operaciones.",
+      "Automatización de flujos y diseño de traspasos.",
+      "Controles human-in-the-loop y evaluaciones.",
+    ],
+  },
+  {
+    eyebrow: "03",
+    title: "Sistemas Listos para IA",
+    description:
+      "La IA rara vez funciona sola. Construimos el software, las integraciones, las herramientas internas, los productos web y las bases técnicas necesarias para que la inteligencia sea útil.",
+    points: [
+      "Software a la medida y plataformas internas.",
+      "Integraciones de datos, APIs, CRMs y flujos de trabajo.",
+      "Modernización de sistemas alrededor de la IA.",
+    ],
+  },
+  {
+    eyebrow: "04",
+    title: "Capacitación y Adopción",
+    description:
+      "El despliegue solo importa cuando los equipos confían en el sistema y lo usan. Ayudamos a las personas a entenderlo, adoptar nuevos flujos y mejorar desde el uso real.",
+    points: [
+      "Capacitación de equipos y manuales operativos.",
+      "Gestión del cambio y acompañamiento de lanzamiento.",
+      "Medición, iteración y mejora continua.",
+    ],
+  },
+];
+
+const deploymentSteps = [
+  {
+    title: "Diagnosticar el trabajo",
+    text: "Empezamos con la organización como es: objetivos, cuellos de botella, sistemas, permisos, datos, puntos de contacto con clientes y los flujos donde mejor inteligencia podría crear ventaja.",
+  },
+  {
+    title: "Elegir los flujos prioritarios",
+    text: "Reducimos el campo a los casos de uso que son valiosos, factibles, medibles y lo suficientemente cercanos a la operación real como para importar.",
+  },
+  {
+    title: "Diseñar alrededor del sistema",
+    text: "Mapeamos cómo la IA debe conectarse con personas, datos, herramientas, aprobaciones, controles y procesos existentes antes de tratar cualquier cosa como producción.",
+  },
+  {
+    title: "Construir, probar y desplegar",
+    text: "Lanzamos sistemas funcionales, los probamos contra escenarios reales, afinamos la experiencia y los desplegamos en el entorno donde ocurre el trabajo.",
+  },
+  {
+    title: "Entrenar, medir, mejorar",
+    text: "Ayudamos a los equipos a adoptar el nuevo flujo, observamos su desempeño y seguimos mejorando el sistema conforme evolucionan modelos, herramientas y necesidades.",
+  },
+];
+
+const opportunities = [
+  {
+    title: "Operaciones con clientes",
+    text: "Agentes de primer contacto, flujos de soporte, calificación de leads, triaje de servicio y sistemas de seguimiento que se sienten claros en vez de robóticos.",
+  },
+  {
+    title: "Productividad interna",
+    text: "Asistentes de conocimiento, flujos documentales, apoyo de investigación, reportes, preparación de reuniones y automatización operacional para equipos con demasiado trabajo manual repetido.",
+  },
+  {
+    title: "Sistemas comerciales",
+    text: "Habilitación de ventas, inteligencia en CRM, flujos de propuestas, apoyo de campañas, operaciones de pipeline y sistemas de decisión para equipos de ingresos.",
+  },
+  {
+    title: "Modernización técnica",
+    text: "Aplicaciones web, portales internos, integraciones, bases de datos, APIs e infraestructura que preparan a la organización para desplegar IA.",
+  },
+  {
+    title: "Apoyo a decisiones",
+    text: "Sistemas que ayudan a los equipos a razonar sobre datos, políticas, contexto de cliente, restricciones operativas y decisiones complejas con más consistencia.",
+  },
+  {
+    title: "Capacitación y gobernanza",
+    text: "Alfabetización práctica en IA, guías de uso, ciclos de revisión, permisos, criterios de evaluación y planes de despliegue para una adopción responsable.",
+  },
+];
+
+const principles = [
+  {
+    title: "Despliegue antes que demos",
+    text: "Un prototipo es útil solo si apunta hacia un sistema en el que las personas realmente pueden confiar.",
+  },
+  {
+    title: "Las personas siguen en el ciclo",
+    text: "Los mejores sistemas de IA aumentan criterio, velocidad y consistencia sin esconder la responsabilidad.",
+  },
+  {
+    title: "La tecnología se elige por el trabajo",
+    text: "Trabajamos entre modelos, herramientas y patrones de software en vez de forzar cada problema dentro de una sola tecnología.",
+  },
+  {
+    title: "Los controles son parte del producto",
+    text: "Permisos, límites de datos, evaluaciones, traspasos y rutas de escalamiento se diseñan desde el inicio.",
+  },
+  {
+    title: "El sistema debe mejorar",
+    text: "El despliegue de IA no es una instalación única. Es una capacidad operativa que mejora con uso y retroalimentación.",
+  },
+];
+
+const faqs = [
+  {
+    question: "¿Necesitamos un caso de uso claro antes de hablar con NOUS?",
+    answer:
+      "No. Muchas organizaciones empiezan con una sensación amplia de que algo debería funcionar mejor. Ayudamos a identificar las oportunidades con mayor impacto y decidir qué vale la pena construir primero.",
+  },
+  {
+    question: "¿Solo construyen sistemas de IA?",
+    answer:
+      "No. La IA está en el centro de nuestro trabajo, pero el despliegue suele requerir software, integraciones, infraestructura, sitios web, herramientas internas, flujos de datos y capacitación. NOUS se encarga de la tecnología alrededor para que la inteligencia realmente funcione.",
+  },
+  {
+    question: "¿NOUS puede trabajar con nuestro equipo o proveedores actuales?",
+    answer:
+      "Sí. Podemos trabajar con liderazgo, operadores, equipos técnicos internos, agencias, proveedores de software y socios tecnológicos existentes. El objetivo es hacer el despliegue práctico dentro de la organización que ya tienes.",
+  },
+  {
+    question: "¿Cómo se ve un despliegue exitoso?",
+    answer:
+      "Un despliegue exitoso se usa en el trabajo diario, se conecta con herramientas y datos reales, respeta los controles correctos y crea un resultado que la organización puede observar, medir y mejorar.",
+  },
+  {
+    question: "¿Cómo eligen qué proyecto de IA desplegar primero?",
+    answer:
+      "Buscamos la intersección entre valor, factibilidad, adopción y claridad operativa. El mejor primer despliegue suele ser lo suficientemente específico para lanzarse, importante para importar y medible para aprender.",
+  },
+  {
+    question: "¿NOUS puede trabajar con nuestras herramientas y sistemas actuales?",
+    answer:
+      "Sí. La mayoría de despliegues necesita conectarse con las herramientas que la organización ya usa, incluyendo CRMs, e-mail, WhatsApp, bases de datos internas, documentos, sitios web, APIs y flujos operativos.",
+  },
+  {
+    question: "¿Con cuáles modelos o proveedores de IA trabajan?",
+    answer:
+      "Nos mantenemos flexibles por modelo. El proveedor correcto depende del caso de uso, requisitos de datos, perfil de costo, latencia, confiabilidad y nivel de razonamiento o capacidad multimodal que necesita el flujo.",
+  },
+  {
+    question: "¿Qué pasa después del primer despliegue?",
+    answer:
+      "Medimos cómo se desempeña el sistema, lo mejoramos desde el uso real, entrenamos al equipo e identificamos los siguientes flujos donde la inteligencia puede crear ventaja. El objetivo es construir una capacidad operativa, no una demo única.",
+  },
+];
+---
+
+<Layout
+  title="Servicios / NOUS"
+  description="NOUS ayuda a organizaciones en Costa Rica y América Latina a desplegar IA en flujos reales mediante estrategia, agentes, automatización, sistemas listos para IA, capacitación y adopción."
+  backgroundType="primary"
+  useContainer={false}
+  showAurora={false}
+  paddingType="zero"
+  canonical="/es/services"
+  ogImage="/images/og-default.jpg"
+  tags={[
+    "despliegue de IA",
+    "transformación con IA",
+    "despliegue de inteligencia",
+    "consultoría en IA",
+    "agentes de IA",
+    "automatización de negocios",
+    "sistemas listos para IA",
+    "empresa de IA en Costa Rica",
+    "empresa de IA en América Latina",
+    "consultoría tecnológica",
+    "desarrollo de software",
+    "automatización de flujos",
+    "adopción de IA",
+  ]}
+  includeOrganizationSchema={false}
+  locale="es"
+>
+  <BreadcrumbSchema items={breadcrumbs} />
+  <FAQSchema faqs={faqs} />
+
+  <ServiceSchema
+    serviceName="Estrategia de Transformación con IA"
+    description="Diagnóstico de oportunidades de IA, hojas de ruta de despliegue, priorización de flujos, planificación de gobernanza y estrategia de adopción para organizaciones en Costa Rica y América Latina."
+    category="Estrategia de IA"
+    provider="NOUS"
+  />
+  <ServiceSchema
+    serviceName="Despliegue de Inteligencia"
+    description="Diseño, construcción, prueba y despliegue de agentes de IA, copilotos, automatizaciones y sistemas de apoyo a decisiones conectados con flujos reales del negocio."
+    category="Despliegue de IA"
+    provider="NOUS"
+  />
+  <ServiceSchema
+    serviceName="Sistemas Listos para IA"
+    description="Software, integraciones, productos web, herramientas internas, APIs, flujos de datos e infraestructura técnica necesaria para desplegar IA de forma confiable."
+    category="Servicios Tecnológicos"
+    provider="NOUS"
+  />
+  <ServiceSchema
+    serviceName="Capacitación y Adopción"
+    description="Capacitación de equipos, manuales operativos, apoyo de lanzamiento, guías de gobernanza y mejora continua para adopción de IA."
+    category="Adopción de IA"
+    provider="NOUS"
+  />
+
+  <ContentPagesHero title={hero.title} subtitle={hero.subtitle} text={hero.text} />
+
+  <section id="services" class="mx-auto max-w-6xl px-4 pb-20 sm:pb-24" aria-labelledby="services-heading">
+    <div class="grid gap-6 lg:grid-cols-2 lg:items-end lg:gap-4">
+      <div>
+        <p class="text-sm font-medium uppercase tracking-[0.2em] text-outline">Qué hacemos</p>
+        <h2 id="services-heading" class="mt-4 max-w-3xl text-3xl font-medium leading-tight text-white sm:text-5xl">
+          Construimos los sistemas que hacen útil la IA.
+        </h2>
+      </div>
+      <p class="max-w-3xl text-left text-base leading-relaxed text-neutral-300 md:text-justify sm:text-lg lg:max-w-none">
+        La próxima ola de transformación no la ganarán las organizaciones que simplemente prueben más herramientas de IA. La ganarán los equipos que rediseñen flujos importantes alrededor de la inteligencia, conecten modelos con los sistemas que ya usan y conviertan esa capacidad en trabajo diario confiable.
+      </p>
+    </div>
+
+    <div class="mt-8 grid items-start gap-4 md:grid-cols-2">
+      {services.map((service) => (
+        <article class="group relative overflow-hidden rounded-[1.5rem] border border-outline/15 bg-white/[0.025] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.18)] backdrop-blur transition-colors duration-200 hover:border-outline/35 hover:bg-outline/[0.055] sm:p-8">
+          <div class="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-outline/50 to-transparent" aria-hidden="true" />
+          <div class="flex items-start justify-between gap-6">
+            <h3 class="text-2xl font-medium leading-tight text-white sm:text-3xl">{service.title}</h3>
+            <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-outline/20 bg-outline/10 text-xs font-medium text-outline">
+              {service.eyebrow}
+            </span>
+          </div>
+          <p class="mt-5 text-left text-sm leading-relaxed text-neutral-300 md:text-justify sm:text-base">
+            {service.description}
+          </p>
+          <ul class="mt-6 space-y-3">
+            {service.points.map((point) => (
+              <li class="flex gap-3 text-sm leading-relaxed text-neutral-400">
+                <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-outline" aria-hidden="true"></span>
+                <span>{point}</span>
+              </li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-20 sm:py-24" aria-labelledby="deployment-heading">
+    <div class="grid gap-6 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+      <article class="rounded-[2rem] border border-outline/15 bg-[radial-gradient(circle_at_50%_0%,rgba(220,212,255,0.14),transparent_42%),rgba(255,255,255,0.025)] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.2)] backdrop-blur sm:p-10">
+        <p class="text-sm font-medium uppercase tracking-[0.2em] text-outline">Modelo de despliegue</p>
+        <h2 id="deployment-heading" class="mt-4 text-3xl font-medium leading-tight text-white sm:text-5xl">
+          De ambición con IA a trabajo en producción.
+        </h2>
+        <p class="mt-5 text-left text-base leading-relaxed text-neutral-300 md:text-justify sm:text-lg">
+          Empezamos desde la realidad operativa de la organización, no desde un catálogo genérico de IA. El trabajo es entender dónde la inteligencia puede crear ventaja medible y luego diseñar y desplegar el sistema alrededor para que las personas puedan confiar en él, usarlo y mejorarlo.
+        </p>
+      </article>
+
+      <ol class="grid gap-3">
+        {deploymentSteps.map((step, index) => (
+          <li class="grid gap-4 rounded-[1.25rem] border border-white/10 bg-white/[0.025] p-5 backdrop-blur sm:grid-cols-[3.5rem_1fr] sm:items-start">
+            <span class="flex h-11 w-11 items-center justify-center rounded-full border border-outline/25 bg-outline/10 text-sm font-medium text-outline">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <div>
+              <h3 class="text-lg font-medium text-white">{step.title}</h3>
+              <p class="mt-2 text-left text-sm leading-relaxed text-neutral-400 md:text-justify sm:text-base">{step.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-20 sm:py-24" aria-labelledby="opportunities-heading">
+    <header class="max-w-4xl">
+      <p class="text-sm font-medium uppercase tracking-[0.2em] text-outline">Dónde ayudamos</p>
+      <h2 id="opportunities-heading" class="mt-4 text-3xl font-medium leading-tight text-white sm:text-5xl">
+        Desplegamos inteligencia donde ocurre el trabajo.
+      </h2>
+      <p class="mt-5 text-left text-base leading-relaxed text-neutral-300 md:text-justify sm:text-lg">
+        NOUS puede empezar con un flujo enfocado o acompañar una transformación más amplia entre equipos. El hilo común es el despliegue práctico: sistemas conectados con trabajo real, no experimentos aislados.
+      </p>
+    </header>
+
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {opportunities.map((item) => (
+        <article class="rounded-[1.25rem] border border-outline/15 bg-white/[0.025] p-5 backdrop-blur transition-colors duration-200 hover:border-outline/35 hover:bg-outline/[0.05]">
+          <h3 class="text-lg font-medium text-white">{item.title}</h3>
+          <p class="mt-3 text-left text-sm leading-relaxed text-neutral-400 md:text-justify">{item.text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-20 sm:py-24" aria-labelledby="principles-heading">
+    <div class="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+      <div>
+        <p class="text-sm font-medium uppercase tracking-[0.2em] text-outline">Cómo pensamos</p>
+        <h2 id="principles-heading" class="mt-4 text-3xl font-medium leading-tight text-white sm:text-5xl">
+          El despliegue es una disciplina operativa.
+        </h2>
+      </div>
+      <div class="grid gap-3">
+        {principles.map((principle) => (
+          <article class="grid gap-3 rounded-[1.25rem] border border-white/10 bg-white/[0.025] p-5 backdrop-blur sm:grid-cols-[0.7fr_1fr]">
+            <h3 class="text-lg font-medium text-white">{principle.title}</h3>
+            <p class="text-left text-sm leading-relaxed text-neutral-400 md:text-justify sm:text-base">{principle.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-20 sm:py-24" aria-labelledby="faq-heading">
+    <header class="max-w-4xl">
+      <p class="text-sm font-medium uppercase tracking-[0.2em] text-outline">Preguntas</p>
+      <h2 id="faq-heading" class="mt-4 text-3xl font-medium leading-tight text-white sm:text-5xl">
+        Antes de construir, buscamos claridad.
+      </h2>
+    </header>
+    <div class="mt-8 grid items-start gap-4 md:grid-cols-2">
+      {faqs.map((faq) => (
+        <details class="group rounded-[1.25rem] border border-outline/15 bg-white/[0.025] p-5 backdrop-blur transition-colors duration-200 open:border-outline/35 open:bg-outline/[0.05]">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-lg font-medium text-white">
+            {faq.question}
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-outline/25 text-outline transition-transform group-open:rotate-45" aria-hidden="true">
+              +
+            </span>
+          </summary>
+          <p class="mt-4 text-left text-sm leading-relaxed text-neutral-400 md:text-justify sm:text-base">{faq.answer}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 pb-28 pt-10 sm:pb-36" aria-labelledby="services-cta-heading">
+    <article class="grid gap-8 rounded-[2rem] border border-outline/15 bg-[radial-gradient(circle_at_20%_0%,rgba(220,212,255,0.16),transparent_36%),rgba(255,255,255,0.025)] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.22)] backdrop-blur sm:p-10 lg:grid-cols-[1fr_auto] lg:items-center">
+      <div>
+        <p class="text-sm font-medium uppercase tracking-[0.2em] text-outline">Empieza con un flujo</p>
+        <h2 id="services-cta-heading" class="mt-4 max-w-3xl text-3xl font-medium leading-tight text-white sm:text-5xl">
+          Encuentra la oportunidad de IA que vale la pena desplegar primero.
+        </h2>
+        <p class="mt-5 max-w-3xl text-left text-base leading-relaxed text-neutral-300 md:text-justify sm:text-lg">
+          Trae el problema, el proceso o la ambición. Te ayudaremos a convertirlo en un camino práctico: qué construir, qué conectar, qué medir y cómo hacerlo útil para el equipo.
+        </p>
+      </div>
+      <a
+        href="/es/contact"
+        class="inline-flex min-h-12 items-center justify-center rounded-full border border-transparent bg-outline px-6 py-3 text-sm font-medium uppercase tracking-[0.12em] text-primary-black transition-colors hover:bg-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/60"
+        aria-label="Hablar con NOUS sobre despliegue de IA"
+      >
+        Habla con NOUS
+      </a>
+    </article>
+  </section>
+</Layout>

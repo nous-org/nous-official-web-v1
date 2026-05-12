@@ -1,29 +1,56 @@
 ---
 import HeroCta from '@/components/ui/HeroCta.astro';
+import { localizePath, normalizeLocale, type Locale } from '@/lib/i18n';
 
+interface Props {
+    locale?: Locale;
+}
+
+const { locale = "en" } = Astro.props as Props;
+const currentLocale = normalizeLocale(locale);
+
+const copy = currentLocale === "es"
+    ? {
+        primary: "Encuentra tu oportunidad con IA",
+        secondary: "Explorar lo que hacemos",
+        primaryAria: "Encuentra tu oportunidad con IA",
+        secondaryAria: "Explorar lo que hace NOUS",
+        subtitle: "Ayudamos a las organizaciones a convertir la IA en ventaja real: estrategia, agentes, automatización, capacitación y sistemas para desplegar inteligencia en el trabajo.",
+        titleLineOne: "La IA es la próxima transformación.",
+        titleLineTwo: "NOUS te ayuda a liderarla.",
+    }
+    : {
+        primary: "Find your AI opportunity",
+        secondary: "Explore what we do",
+        primaryAria: "Find your AI opportunity",
+        secondaryAria: "Explore what NOUS does",
+        subtitle: "We help organizations turn AI into real advantage: strategy, agents, automation, training, and the systems to deploy intelligence at work.",
+        titleLineOne: "AI is the next transformation.",
+        titleLineTwo: "NOUS helps you lead it.",
+    };
 ---
 
 <HeroCta 
 buttons={[{
-    text: 'Find your AI opportunity',
+    text: copy.primary,
     variant: 'primary',
-    href: '/contact',
+    href: localizePath('/contact', currentLocale),
     target: '_self',
-    ariaLabel: 'Find your AI opportunity'
+    ariaLabel: copy.primaryAria
 }, {
-        text: 'Explore what we do',
+        text: copy.secondary,
         variant: 'primaryPurple',
-        href: '/services',
+        href: localizePath('/services', currentLocale),
         target: '_self',
-        ariaLabel: 'Explore what NOUS does'
+        ariaLabel: copy.secondaryAria
     }]}
     isMainHero={true}
     titleClassName='text-3xl sm:text-4xl md:text-5xl xl:text-6xl 2xl:text-7xl max-w-7xl font-medium leading-[1.05] tracking-normal text-neutral-100 text-center'
-    subtitle='We help organizations turn AI into real advantage: strategy, agents, automation, training, and the systems to deploy intelligence at work.'
+    subtitle={copy.subtitle}
     subtitleClassName='lg:text-xl md:text-lg text-sm text-center text-neutral-300/90 leading-relaxed max-w-4xl mx-auto'
     >
     <span slot="title">
-          <span class="block md:whitespace-nowrap bg-gradient-to-r from-gradient-start via-gradient-middle to-gradient-end bg-clip-text text-transparent">AI is the next transformation.</span>
-          <span class="block md:whitespace-nowrap bg-gradient-to-r from-gradient-start via-gradient-middle to-gradient-end bg-clip-text text-transparent">NOUS helps you lead it.</span>
+          <span class="block md:whitespace-nowrap bg-gradient-to-r from-gradient-start via-gradient-middle to-gradient-end bg-clip-text text-transparent">{copy.titleLineOne}</span>
+          <span class="block md:whitespace-nowrap bg-gradient-to-r from-gradient-start via-gradient-middle to-gradient-end bg-clip-text text-transparent">{copy.titleLineTwo}</span>
     </span>
 </HeroCta>

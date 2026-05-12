@@ -137,9 +137,9 @@ export const DEFAULT_FOUNDERS: FounderCard[] = [
     },
     {
         name: "Jeffrey Quirós Acuña",
-        position: "Head of Growth",
+        position: "Head of Marketing",
         image: FounderJeffrey.src,
-        description: `<span class="font-semibold text-outline">Finds the loops that make growth repeatable.</span> Jeffrey focuses on the experiments, channels, funnels, and conversion paths that help NOUS grow faster with discipline. He turns market interest into measurable traction, sharper acquisition, and clearer signals about what is working.`,
+        description: `<span class="font-semibold text-outline">Turns the NOUS vision into market clarity.</span> Jeffrey shapes the marketing engine that makes the AI transformation story easier to understand, trust, and act on: positioning, content, campaigns, audience insight, and demand that connects the right organizations with the right conversation.`,
         socialLinks: [
             {
                 icon: LinkedInIcon.src,

@@ -2,15 +2,38 @@
 import Layout from "@/layouts/Layout.astro";
 import NotFoundIcon from "@/components/icons/404.astro";
 import ButtonVariant from "@/components/ui/Buttons/ButtonVariant.astro";
+import { getLocaleFromPath, localizePath } from "@/lib/i18n";
+
+const currentLocale = getLocaleFromPath(Astro.url.pathname);
+const copy = currentLocale === "es"
+    ? {
+        title: "Página no encontrada / NOUS",
+        description: "La página que buscas no existe.",
+        heading: "Esta ruta no existe.",
+        text: "La página que buscas no está disponible. Vuelve al inicio, explora lo que hace NOUS o inicia una conversación si necesitas ayuda encontrando el camino correcto.",
+        home: "Ir al inicio",
+        services: "Explorar servicios",
+        talk: "Habla con NOUS",
+    }
+    : {
+        title: "Page Not Found / NOUS",
+        description: "The page you are looking for could not be found.",
+        heading: "This route does not exist.",
+        text: "The page you are looking for is not available. Return home, explore what NOUS does, or start a conversation if you need a hand finding the right path.",
+        home: "Go home",
+        services: "Explore services",
+        talk: "Talk to NOUS",
+    };
 ---
 
 <Layout
-    title="Page Not Found / NOUS"
-    description="The page you are looking for could not be found."
+    title={copy.title}
+    description={copy.description}
     backgroundType="primary"
     showAurora={false}
     useContainer={false}
     paddingType="zero"
+    locale={currentLocale}
 >
     <section
         class="relative isolate flex min-h-screen items-center overflow-hidden px-4 pb-20 pt-36 sm:pt-44"
@@ -26,44 +49,44 @@ import ButtonVariant from "@/components/ui/Buttons/ButtonVariant.astro";
                     id="not-found-heading"
                     class="mt-5 text-5xl font-medium leading-[1.02] tracking-normal text-white sm:text-6xl lg:text-7xl"
                 >
-                    This route does not exist.
+                    {copy.heading}
                 </h1>
                 <p class="mt-6 text-lg leading-relaxed text-neutral-300 sm:text-xl">
-                    The page you are looking for is not available. Return home, explore what NOUS does, or start a conversation if you need a hand finding the right path.
+                    {copy.text}
                 </p>
 
                 <div class="mt-8 flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
                     <ButtonVariant
-                        text="Go home"
+                        text={copy.home}
                         variant="primary"
-                        href="/"
+                        href={localizePath("/", currentLocale)}
                         scheduleIcon={false}
                         strokeColor="#060114"
                         arrowIcon={false}
                         target="_self"
-                        ariaLabel="Go home"
+                        ariaLabel={copy.home}
                         className="w-full sm:w-auto"
                     />
                     <ButtonVariant
-                        text="Explore services"
+                        text={copy.services}
                         variant="primaryPurple"
-                        href="/services"
+                        href={localizePath("/services", currentLocale)}
                         scheduleIcon={false}
                         strokeColor="#DCD4FF"
                         arrowIcon={false}
                         target="_self"
-                        ariaLabel="Explore services"
+                        ariaLabel={copy.services}
                         className="w-full sm:w-auto"
                     />
                     <ButtonVariant
-                        text="Talk to NOUS"
+                        text={copy.talk}
                         variant="secondary"
-                        href="/contact"
+                        href={localizePath("/contact", currentLocale)}
                         scheduleIcon={false}
                         strokeColor="#DCD4FF"
                         arrowIcon={false}
                         target="_self"
-                        ariaLabel="Talk to NOUS"
+                        ariaLabel={copy.talk}
                         className="w-full sm:w-auto"
                     />
                 </div>

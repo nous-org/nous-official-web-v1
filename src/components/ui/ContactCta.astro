@@ -1,17 +1,22 @@
 ---
-import { type CallToActionProps, defaultSections } from '@/types/callToAction';
+import { type CallToActionProps, defaultSections, defaultSectionsEs } from '@/types/callToAction';
 import ButtonVariant from '@/components/ui/Buttons/ButtonVariant.astro';
+import { localizePath, normalizeLocale, type Locale } from '@/lib/i18n';
 
 
 const { 
-    sections = defaultSections, 
+    sections,
     className = "w-full mt-12 mb-32",
+    locale = "en",
 } = Astro.props as CallToActionProps;
+
+const currentLocale = normalizeLocale(locale as Locale);
+const finalSections = sections ?? (currentLocale === "es" ? defaultSectionsEs : defaultSections);
 ---
 
     <div class={`grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full relative appear-subtle ${className}`} >
         
-        {sections?.map((section, index) => (
+        {finalSections?.map((section, index) => (
             <article class={`flex h-full flex-col gap-4 ${section.style.background} ${section.style.textColor} p-4 md:p-8 md:py-10 rounded-xl relative overflow-hidden shadow-[0_24px_80px_-48px_rgba(220,212,255,0.55)]`}  >
                 <div class="space-y-2">
                     <h2 id={`cta-section-${index}`} class={`text-[1.7rem] md:text-[2.125rem] font-medium leading-tight tracking-normal ${section.style.titleColor}`}>
@@ -30,7 +35,7 @@ const {
                             text={button.text}
                             variant={button.variant}
                             arrowIcon={button.arrowIcon}
-                            href={button.href}
+                            href={localizePath(button.href, currentLocale)}
                             target={button.target}
                             ariaLabel={button.ariaLabel}
                         />

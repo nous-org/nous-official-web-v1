@@ -1,15 +1,32 @@
 ---
 import ContactCta from '@/components/ui/ContactCta.astro';
 import {ServiceTabs} from '@/components/react/ServiceTabs';
+import { normalizeLocale, type Locale } from '@/lib/i18n';
+
+interface Props {
+    locale?: Locale;
+}
+
+const { locale = "en" } = Astro.props as Props;
+const currentLocale = normalizeLocale(locale);
+const copy = currentLocale === "es"
+    ? {
+        title: "El socio de transformación con IA para organizaciones ambiciosas",
+        description: "La inteligencia se está convirtiendo en una nueva utilidad. NOUS ayuda a las organizaciones a decidir dónde usarla, construir los sistemas que la despliegan y hacerla parte del trabajo diario.",
+    }
+    : {
+        title: "The AI transformation partner for ambitious organizations",
+        description: "Intelligence is becoming a new utility. NOUS helps organizations decide where to use it, build the systems that deploy it, and make it part of daily work.",
+    };
 ---
 
 <section class="max-w-7xl mt-32 mx-auto px-4 container z-10 appear-subtle">
-    <h2 class="text-4xl font-medium tracking-normal text-white mb-4">The AI transformation partner for ambitious organizations</h2>
-    <p class="text-xl font-normal text-neutral-400 md:mb-12 mb-8">Intelligence is becoming a new utility. NOUS helps organizations decide where to use it, build the systems that deploy it, and make it part of daily work.</p>
+    <h2 class="text-4xl font-medium tracking-normal text-white mb-4">{copy.title}</h2>
+    <p class="text-xl font-normal text-neutral-400 md:mb-12 mb-8">{copy.description}</p>
     <div >
-         <ServiceTabs client:only="react"/>
+         <ServiceTabs client:only="react" locale={currentLocale}/>
     </div>
     <div>
-        <ContactCta />
+        <ContactCta locale={currentLocale} />
     </div>
 </section>

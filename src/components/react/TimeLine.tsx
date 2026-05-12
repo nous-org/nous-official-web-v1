@@ -6,13 +6,28 @@ import {
 } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
 import { ButtonVariant } from "@/components/react/Buttons/ButtonVariant";
+import { localizePath, type Locale } from "@/lib/i18n";
 
 interface TimelineEntry {
   title: string;
   content: React.ReactNode;
 }
 
-export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
+export const Timeline = ({ data, locale = "en" }: { data: TimelineEntry[]; locale?: Locale }) => {
+  const isEs = locale === "es";
+  const copy = isEs
+    ? {
+        title: "NOUS está construido para la transformación con IA.",
+        description: "Ayudamos a equipos a pasar de la ambición con IA a sistemas funcionales: decisiones más claras, flujos más rápidos, mejores experiencias para clientes y menos trabajo manual cada semana.",
+        button: "Conocer al equipo",
+        aria: "Conocer al equipo",
+      }
+    : {
+        title: "NOUS is built for the AI transformation.",
+        description: "We help teams move from AI ambition to working systems: clearer decisions, faster workflows, better customer experiences, and less manual work every week.",
+        button: "Meet the team",
+        aria: "Meet the team",
+      };
   const ref = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
@@ -39,18 +54,18 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
     >
       <div className="max-w-7xl mx-auto py-20 md:px-3 px-4">
         <h2 className="text-4xl font-medium md:text-4xl mb-4 text-black dark:text-white appear-subtle">
-          NOUS is built for the AI transformation.
+          {copy.title}
         </h2>
         <p className="text-neutral-700 dark:text-neutral-300 text-md md:text-lg appear-subtle">
-        We help teams move from AI ambition to working systems: clearer decisions, faster workflows, better customer experiences, and less manual work every week.
+        {copy.description}
         </p>
         <div className="mt-6 md:w-[40%]">
           <ButtonVariant
-            text="Meet the team"
-            href="/about"
+            text={copy.button}
+            href={localizePath("/about#team", locale)}
             variant="primary"
             target="_self"
-            ariaLabel="Meet the team"
+            ariaLabel={copy.aria}
           />
         </div>
       </div>

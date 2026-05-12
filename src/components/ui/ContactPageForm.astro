@@ -1,28 +1,78 @@
 ---
 import Inputs from "@/components/ui/Inputs.astro";
 import SubmitButton from "@/components/ui/Buttons/SubmitButton.astro";
+import { normalizeLocale, type Locale } from "@/lib/i18n";
 
-const chips = [
-  {
-    id: "ai-strategy",
-    label: "AI strategy",
-    value: "ai-strategy",
-  },
-  { id: "automation-agents", label: "Automation & agents", value: "automation-agents" },
-  { id: "systems-integrations", label: "Systems & integrations", value: "systems-integrations" },
-  { id: "training-adoption", label: "Training & adoption", value: "training-adoption" },
-  { id: "not-sure", label: "Not sure yet", value: "not-sure" },
-];
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = "en" } = Astro.props as Props;
+const currentLocale = normalizeLocale(locale);
+const isEs = currentLocale === "es";
+const copy = isEs
+  ? {
+      eyebrow: "Empieza aquí",
+      title: "Cuéntanos qué estás explorando.",
+      intro: "Hermes establecerá el primer contacto, hará algunas preguntas iniciales y nos ayudará a entender qué conversación debe ocurrir después.",
+      success: "Gracias. Recibimos tu mensaje. Hermes establecerá el primer contacto pronto.",
+      error: "Algo salió mal. Inténtalo de nuevo o contáctanos directamente en hello@nous.cr.",
+      exploring: "¿Qué estás explorando?",
+      name: "Nombre",
+      email: "E-mail",
+      phone: "Número de teléfono",
+      preferred: "Método de contacto preferido",
+      subject: "Asunto",
+      message: "Mensaje",
+      subjectPlaceholder: "IA para atención al cliente",
+      messagePlaceholder: "Cuéntanos qué está intentando mejorar, automatizar, entender o construir tu organización.",
+      send: "Enviar mensaje",
+      sending: "Enviando…",
+      unexpected: "Error inesperado",
+      chips: [
+        { id: "ai-strategy", label: "Estrategia de IA", value: "ai-strategy" },
+        { id: "automation-agents", label: "Automatización y agentes", value: "automation-agents" },
+        { id: "systems-integrations", label: "Sistemas e integraciones", value: "systems-integrations" },
+        { id: "training-adoption", label: "Capacitación y adopción", value: "training-adoption" },
+        { id: "not-sure", label: "Todavía no estoy seguro", value: "not-sure" },
+      ],
+    }
+  : {
+      eyebrow: "Start here",
+      title: "Tell us what you are exploring.",
+      intro: "Hermes will establish first contact, ask a few initial questions, and help us understand which conversation should happen next.",
+      success: "Thanks. We received your message. Hermes will establish first contact shortly.",
+      error: "Something went wrong. Please try again or contact us directly at hello@nous.cr.",
+      exploring: "What are you exploring?",
+      name: "Name",
+      email: "E-mail",
+      phone: "Phone number",
+      preferred: "Preferred contact method",
+      subject: "Subject",
+      message: "Message",
+      subjectPlaceholder: "AI for customer support",
+      messagePlaceholder: "Tell us what your organization is trying to improve, automate, understand, or build.",
+      send: "Send message",
+      sending: "Sending…",
+      unexpected: "Unexpected error",
+      chips: [
+        { id: "ai-strategy", label: "AI strategy", value: "ai-strategy" },
+        { id: "automation-agents", label: "Automation & agents", value: "automation-agents" },
+        { id: "systems-integrations", label: "Systems & integrations", value: "systems-integrations" },
+        { id: "training-adoption", label: "Training & adoption", value: "training-adoption" },
+        { id: "not-sure", label: "Not sure yet", value: "not-sure" },
+      ],
+    };
 ---
 
 <div class="w-full">
   <header class="mb-8">
-    <p class="text-sm font-medium uppercase tracking-[0.2em] text-outline">Start here</p>
+    <p class="text-sm font-medium uppercase tracking-[0.2em] text-outline">{copy.eyebrow}</p>
     <h2 class="mt-3 text-3xl font-medium leading-tight text-white sm:text-4xl">
-      Tell us what you are exploring.
+      {copy.title}
     </h2>
     <p class="mt-4 max-w-2xl text-sm leading-relaxed text-neutral-300 sm:text-base">
-      Hermes will establish first contact, ask a few initial questions, and help us understand which conversation should happen next.
+      {copy.intro}
     </p>
   </header>
 
@@ -32,7 +82,7 @@ const chips = [
     class="mb-5 hidden rounded-lg border border-outline/40 bg-outline/10 p-4 text-outline"
   >
     <p class="text-sm font-medium leading-relaxed">
-      Thanks. We received your message. Hermes will establish first contact shortly.
+      {copy.success}
     </p>
   </div>
 
@@ -41,7 +91,7 @@ const chips = [
     class="mb-5 hidden rounded-lg border border-red-400/60 bg-red-500/10 p-4 text-red-200"
   >
     <p class="text-sm font-medium leading-relaxed" id="error-text">
-      Something went wrong. Please try again or contact us directly at hello@nous.cr.
+      {copy.error}
     </p>
   </div>
 
@@ -50,15 +100,17 @@ const chips = [
     class="flex flex-col gap-5"
     method="POST"
     action="/api/contact"
+    data-unexpected-error={copy.unexpected}
   >
     <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+    <input type="hidden" name="locale" value={currentLocale} />
     <div class="flex flex-col gap-3">
       <span id="interests-label" class="block text-base font-medium text-gray-200 sm:text-lg">
-        What are you exploring?
+        {copy.exploring}
       </span>
       <div class="grid grid-cols-1 gap-2 sm:grid-cols-2" role="group" aria-labelledby="interests-label">
         {
-          chips.map((chip) => (
+          copy.chips.map((chip) => (
             <div class:list={["min-w-0", chip.value === "not-sure" && "sm:col-span-2 sm:mx-auto sm:w-[calc(50%-0.25rem)]"]}>
               <input
                 type="checkbox"
@@ -80,11 +132,11 @@ const chips = [
     </div>
 
     <div class="grid gap-5 sm:grid-cols-2">
-      <Inputs id="Name" type="text" placeholder="Roberto Pereira Ugalde" name="name" />
-      <Inputs id="E-mail" type="email" placeholder="roberto@nous.cr" name="email" />
-      <Inputs id="Phone number" type="tel" placeholder="+50661865634" name="phone" required={false} />
+      <Inputs id={copy.name} type="text" placeholder="Roberto Pereira Ugalde" name="name" />
+      <Inputs id={copy.email} type="email" placeholder="roberto@nous.cr" name="email" />
+      <Inputs id={copy.phone} type="tel" placeholder="+50661865634" name="phone" required={false} />
       <Inputs
-        id="Preferred contact method"
+        id={copy.preferred}
         type="radio"
         name="preferredContact"
         placeholder="Preferred Contact Method"
@@ -94,14 +146,15 @@ const chips = [
         ]}
       />
     </div>
-    <Inputs id="Subject" type="text" placeholder="AI for customer support" name="subject" />
-    <Inputs id="Message" type="textarea" placeholder="Tell us what your organization is trying to improve, automate, understand, or build." name="message" />
+    <Inputs id={copy.subject} type="text" placeholder={copy.subjectPlaceholder} name="subject" />
+    <Inputs id={copy.message} type="textarea" placeholder={copy.messagePlaceholder} name="message" />
 
     <div class="flex justify-start">
       <SubmitButton
         id="submit-button"
         type="submit"
-        text="Send message"
+        text={copy.send}
+        loadingText={copy.sending}
         icon={false}
         variant="primary"
         className="w-full sm:w-auto"
@@ -167,7 +220,7 @@ const chips = [
         showOK();
         form.reset();
       } catch (err) {
-        showErr(err instanceof Error ? err.message : "Unexpected error");
+        showErr(err instanceof Error ? err.message : form.dataset.unexpectedError || "Unexpected error");
       } finally {
         setBtnLoading(false);
         busy = false;

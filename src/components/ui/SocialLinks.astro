@@ -12,6 +12,7 @@ interface SocialLink {
 
 interface Props {
     links?: SocialLink[];
+    locale?: "en" | "es";
 }
 
 const DEFAULT_LINKS: SocialLink[] = [
@@ -42,13 +43,14 @@ const DEFAULT_LINKS: SocialLink[] = [
     },
 ];
 
-const { links = DEFAULT_LINKS } = Astro.props;
+const { links = DEFAULT_LINKS, locale = "en" } = Astro.props;
+const ariaPrefix = locale === "es" ? "Visitar NOUS en" : "Visit NOUS on";
 
 ---
 
 <div class="flex gap-6">
     {links.map((link) => (
-        <a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={`Visit NOUS on ${link.name}`} class="flex w-12 h-12 items-center justify-center rounded-full border border-outline/20 text-outline transition-all duration-300 hover:border-outline/55 hover:bg-outline/10 md:hover:scale-[1.06] md:delay-[100ms]">
+        <a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={`${ariaPrefix} ${link.name}`} class="flex w-12 h-12 items-center justify-center rounded-full border border-outline/20 text-outline transition-all duration-300 hover:border-outline/55 hover:bg-outline/10 md:hover:scale-[1.06] md:delay-[100ms]">
             <img src={link.icon } alt="" aria-hidden="true" />
         </a>
     ))}

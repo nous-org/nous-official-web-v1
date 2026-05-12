@@ -1,19 +1,61 @@
 ---
 import FoundersCard from "@/components/ui/FoundersCard.astro";
 import { DEFAULT_FOUNDERS } from "@/types/founderCards";
+import { normalizeLocale, type Locale } from "@/lib/i18n";
 
+interface Props {
+    locale?: Locale;
+}
+
+const { locale = "en" } = Astro.props as Props;
+const currentLocale = normalizeLocale(locale);
 const hiddenTeamMembers = new Set(["Ana Kwok-Ching", "Pablo Molina Camareno"]);
-const visibleFounders = DEFAULT_FOUNDERS.filter((founder) => !hiddenTeamMembers.has(founder.name));
+const founderTranslations: Record<string, { position: string; description: string }> = {
+    "Roberto Pereira Ugalde": {
+        position: "Chief Executive Officer (CEO) & Founder",
+        description: `<span class="font-semibold text-outline">Piensa con rigor sobre el futuro y cómo llegar ahí.</span> Roberto está enfocado en la misión detrás de NOUS: usar IA y tecnología para ayudar a construir un mundo mejor. Define el punto de vista, afina la narrativa y mantiene el trabajo anclado en lo que realmente debería cambiar para personas y organizaciones.`,
+    },
+    "Alessandro Díaz González": {
+        position: "Chief Technology Officer (CTO) & Co-Founder",
+        description: `<span class="font-semibold text-outline">Convierte la ambición con IA en sistemas confiables.</span> Alessandro lidera el camino técnico desde prototipo hasta producción: agentes, integraciones, automatizaciones, infraestructura y software capaz de sostener flujos de trabajo reales sin convertirse en experimentos frágiles.`,
+    },
+    "Andrey Martínez Zambrana": {
+        position: "Chief Product Officer (CPO) & Co-Founder",
+        description: `<span class="font-semibold text-outline">Hace que la inteligencia sea usable.</span> Andrey convierte estrategia y sistemas en experiencias de producto que las personas pueden entender, confiar y adoptar: flujos más claros, mejores interfaces y el criterio de producto que hace que nuevas capacidades se sientan naturales.`,
+    },
+    "Jeffrey Quirós Acuña": {
+        position: "Head of Marketing",
+        description: `<span class="font-semibold text-outline">Convierte la visión de NOUS en claridad para el mercado.</span> Jeffrey construye el motor de marketing que hace que la historia de transformación con IA sea más fácil de entender, confiar y accionar: posicionamiento, contenido, campañas, lectura de audiencia y demanda que conecta a las organizaciones correctas con la conversación correcta.`,
+    },
+};
+const visibleFounders = DEFAULT_FOUNDERS
+    .filter((founder) => !hiddenTeamMembers.has(founder.name))
+    .map((founder) => currentLocale === "es" && founderTranslations[founder.name]
+        ? { ...founder, ...founderTranslations[founder.name] }
+        : founder
+    );
+
+const copy = currentLocale === "es"
+    ? {
+        eyebrow: "El equipo",
+        title: "Construido por operadores cerca de la estrategia, los sistemas y la experiencia.",
+        description: "NOUS reúne criterio de negocio, ingeniería, producto y marketing. El trabajo es práctico por diseño: nos mantenemos lo suficientemente cerca para entender la organización, tomar las decisiones difíciles y convertir la oportunidad con IA en algo que las personas realmente pueden usar.",
+    }
+    : {
+        eyebrow: "The team",
+        title: "Built by operators who stay close to strategy, systems, and experience.",
+        description: "NOUS brings together business, engineering, product, and marketing judgment. The work is hands-on by design: we stay close enough to understand the organization, make the hard decisions, and turn the AI opportunity into something people can actually use.",
+    };
 ---
 
-<section class="mx-auto max-w-5xl px-4 pb-16 sm:pb-24" aria-labelledby="founders-heading">
+<section id="team" class="mx-auto max-w-5xl px-4 pb-16 sm:pb-24 scroll-mt-28" aria-labelledby="founders-heading">
     <div class="max-w-5xl appear-subtle">
-        <p class="text-sm font-medium uppercase tracking-[0.18em] text-outline">The team</p>
+        <p class="text-sm font-medium uppercase tracking-[0.18em] text-outline">{copy.eyebrow}</p>
         <h2 id="founders-heading" class="mt-3 text-2xl font-medium leading-tight text-white sm:text-3xl">
-            Built by operators who stay close to strategy, systems, and experience.
+            {copy.title}
         </h2>
         <p class="mt-5 text-base leading-relaxed text-neutral-300 sm:text-lg">
-            NOUS brings together business, engineering, product, growth, and marketing judgment. The work is hands-on by design: we stay close enough to understand the organization, make the hard decisions, and turn the AI opportunity into something people can actually use.
+            {copy.description}
         </p>
     </div>
     <div>

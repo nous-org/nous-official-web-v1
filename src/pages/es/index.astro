@@ -1,0 +1,39 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Hero from "@/components/ui-main-components/Hero.astro";
+import FeaturedServices from "@/components/ui-main-components/FeaturedServices.astro";
+import FeaturedProducts from "@/components/ui-main-components/FeaturedProducts.astro";
+import Contact from "@/components/ui-main-components/Contact.astro";
+import NousOffer from "@/components/ui-main-components/NousOffer.astro";
+---
+
+<Layout
+	title="Inicio / NOUS"
+	description="NOUS ayuda a organizaciones en Costa Rica y América Latina a construir, desplegar y adoptar sistemas de IA que convierten la inteligencia en trabajo práctico."
+	backgroundType="aurora"
+	showAurora={true}
+	useContainer={false}
+	paddingType="zero"
+	canonical="/es/"
+	ogImage="/images/og-homepage.jpg"
+	ogImageAlt="NOUS ayuda a organizaciones a construir y desplegar inteligencia con estrategia de IA, agentes, automatización y ejecución tecnológica práctica"
+	tags={[
+		"despliegue de IA",
+		"transformación con IA",
+		"despliegue de inteligencia",
+		"sistemas listos para IA",
+		"América Latina",
+		"Costa Rica",
+		"consultoría en IA",
+		"automatización de procesos",
+		"NOUS",
+	]}
+	includeOrganizationSchema={true}
+	locale="es"
+>
+	<Hero locale="es" />
+	<NousOffer locale="es" />
+	<FeaturedServices locale="es" />
+	<FeaturedProducts locale="es" />
+	<Contact locale="es" />
+</Layout>

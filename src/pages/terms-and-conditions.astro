@@ -5,7 +5,7 @@ import { getCollection, render } from "astro:content";
 
 const entries = await getCollection("termsandconditions");
 const termsEntry =
-  entries.find((entry: any) => entry.slug === "termsandconditions") ?? entries[0];
+  entries.find((entry: any) => entry.id === "termsandconditions") ?? entries[0];
 
 if (!termsEntry) {
   throw new Error("No entries found in termsandconditions collection");

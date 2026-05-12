@@ -1,0 +1,68 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import ContentPagesHero from '@/components/ui/ContentPagesHero.astro';
+import AboutBento from '@/components/ui/AboutBento.astro';
+import FoundersSection from '@/components/ui/FoundersSection.astro';
+import BreadcrumbSchema from '@/components/seo/BreadCrumbs.astro';
+
+const breadcrumbs = [
+  { name: 'Inicio', url: '/es/' },
+  { name: 'Nosotros', url: '/es/about' }
+];
+---
+
+<Layout
+  title="Nosotros / NOUS"
+  description="NOUS es una compañía de transformación con IA que ayuda a organizaciones a construir, desplegar y adoptar inteligencia en el trabajo real."
+  backgroundType="primary"
+  useContainer={false}
+  showAurora={false}
+  paddingType="zero"
+  canonical="/es/about"
+  ogImage="/images/og-default.jpg"
+  tags={[
+    'NOUS',
+    'transformación con IA',
+    'despliegue de inteligencia',
+    'sistemas listos para IA',
+    'agencia de IA',
+    'compañía tecnológica',
+    'empresa de IA en Costa Rica',
+    'automatización de negocios',
+    'estrategia de IA',
+    'adopción de IA'
+  ]}
+  includeOrganizationSchema={false}
+  locale="es"
+>
+  <BreadcrumbSchema items={breadcrumbs} />
+
+  <ContentPagesHero
+    title="Sobre NOUS"
+    subtitle="Convertimos la IA en capacidad real de trabajo."
+    text="NOUS conecta estrategia, sistemas y adopción: encontramos las oportunidades correctas, construimos lo que el trabajo requiere y ayudamos a los equipos a usarlo con confianza."
+  />
+
+  <AboutBento locale="es" />
+  <FoundersSection locale="es" />
+
+  <section class="mx-auto max-w-5xl px-4 pb-24">
+    <article class="rounded-[2rem] border border-outline/15 bg-white/[0.025] p-6 text-center shadow-[0_24px_80px_rgba(0,0,0,0.18)] backdrop-blur sm:p-10">
+      <p class="text-sm font-medium uppercase tracking-[0.18em] text-outline">Trabaja con NOUS</p>
+      <h2 class="mx-auto mt-3 max-w-4xl text-2xl font-medium leading-tight text-white sm:text-3xl">
+        Construye la próxima versión de tu organización alrededor de la IA.
+      </h2>
+      <p class="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-neutral-300 sm:text-lg">
+        Empieza con una conversación enfocada sobre dónde la inteligencia puede crear ventaja, qué debe construirse alrededor de ella y cómo tu equipo puede adoptarla con claridad.
+      </p>
+      <div class="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+        <a href="/es/contact" class="inline-flex min-h-11 items-center justify-center rounded-full border border-transparent bg-outline px-5 py-2.5 text-sm font-medium text-primary-black transition-colors hover:bg-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/60">
+          Habla con NOUS
+        </a>
+        <a href="/es/services" class="inline-flex min-h-11 items-center justify-center rounded-full border border-outline/45 bg-transparent px-5 py-2.5 text-sm font-medium text-outline transition-colors hover:border-outline hover:bg-outline/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/60">
+          Explorar servicios
+        </a>
+      </div>
+    </article>
+  </section>
+</Layout>

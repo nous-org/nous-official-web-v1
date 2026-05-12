@@ -1,15 +1,33 @@
 ---
 import SocialLinks from "@/components/ui/SocialLinks.astro";
 import NousLogo from '@/assets/NousLogo.svg'
+import { normalizeLocale, type Locale } from "@/lib/i18n";
 
+interface Props {
+    locale?: Locale;
+}
+
+const { locale = "en" } = Astro.props as Props;
+const currentLocale = normalizeLocale(locale);
+const copy = currentLocale === "es"
+    ? {
+        headline: "La transformación con IA ya está ocurriendo.",
+        description: "La mayoría de organizaciones sabe que la IA importa. Lo difícil es decidir dónde crea ventaja real, qué debe cambiar alrededor de ella y cómo ayudar a los equipos a adoptarla con claridad. Ahí entra NOUS.",
+        social: "¿Prefieres redes sociales? Escríbenos:",
+    }
+    : {
+        headline: "The AI transformation is already happening.",
+        description: "Most organizations know AI matters. The hard part is deciding where it creates real leverage, what needs to change around it, and how to help teams adopt it with clarity. That is where NOUS comes in.",
+        social: "Prefer social? Say hi:",
+    };
 ---
     <div>
 
         <img class="pb-12 w-auto" src={NousLogo.src} alt="Nous Logo" />
-        <p class="text-lg sm:text-xl md:text-2xl font-normal text-outline mb-6">The AI transformation is already happening.</p>
-        <p class="text-base sm:text-lg md:text-xl font-normal leading-relaxed text-neutral-300 mb-10 md:mb-16">Most organizations know AI matters. The hard part is deciding where it creates real leverage, what needs to change around it, and how to help teams adopt it with clarity. That is where NOUS comes in.</p>
+        <p class="text-lg sm:text-xl md:text-2xl font-normal text-outline mb-6">{copy.headline}</p>
+        <p class="text-base sm:text-lg md:text-xl font-normal leading-relaxed text-neutral-300 mb-10 md:mb-16">{copy.description}</p>
         
         
-        <p class="text-base sm:text-lg md:text-xl font-normal text-neutral-300 mb-6">Prefer social? Say hi:</p>
-        <SocialLinks/>
+        <p class="text-base sm:text-lg md:text-xl font-normal text-neutral-300 mb-6">{copy.social}</p>
+        <SocialLinks locale={currentLocale} />
     </div>

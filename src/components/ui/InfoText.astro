@@ -1,18 +1,23 @@
 ---
-import  { DEFAULT_INFO_TEXT, type InfoText } from '@/types/InfoText';
+import  { DEFAULT_INFO_TEXT, DEFAULT_INFO_TEXT_ES, type InfoText } from '@/types/InfoText';
 import ColorDivider from './ColorDivider.astro';
+import { normalizeLocale, type Locale } from '@/lib/i18n';
 
 const {
-    infoText = DEFAULT_INFO_TEXT,
+    infoText,
     colorDivider = 'primary-purple',
     justifyDescription = false,
     descriptionMaxWidthClass = 'max-w-lg',
+    locale = 'en',
 } = Astro.props;
+
+const currentLocale = normalizeLocale(locale as Locale);
+const finalInfoText = infoText ?? (currentLocale === 'es' ? DEFAULT_INFO_TEXT_ES : DEFAULT_INFO_TEXT);
  
 ---
 
 <section class="appear-subtle">
-    {infoText.map((item: InfoText) => (
+    {finalInfoText.map((item: InfoText) => (
         <div>  
             <h2 class="text-xl mb-4">{item.title}</h2>
             <p class={`text-regular font-normal text-neutral-400 ${descriptionMaxWidthClass} text-left ${justifyDescription ? 'md:text-justify' : ''}`}>{item.description}</p>

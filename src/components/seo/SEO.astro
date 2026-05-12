@@ -1,4 +1,6 @@
 ---
+import { localeMeta, normalizeLocale, type Locale } from "@/lib/i18n";
+
 export interface Props {
   title: string;
   description: string;
@@ -13,6 +15,7 @@ export interface Props {
   schema?: any;
   noindex?: boolean;
   nofollow?: boolean;
+  locale?: Locale;
 }
 
 const {
@@ -46,7 +49,11 @@ const {
   schema,
   noindex = false,
   nofollow = false,
+  locale = 'en',
 } = Astro.props;
+
+const currentLocale = normalizeLocale(locale);
+const metaLocale = localeMeta[currentLocale];
 
 const siteUrl = 'https://nous.cr';
 const getCanonicalUrl = (value?: string) => {
@@ -95,8 +102,8 @@ const finalSchema = schema;
 <meta property="og:image" content={fullImage} />
 <meta property="og:image:alt" content={imageAlt} />
 <meta property="og:site_name" content="NOUS" />
-<meta property="og:locale" content="en_US" />
-<meta property="og:locale:alternate" content="es_ES" />
+<meta property="og:locale" content={metaLocale.ogLocale} />
+<meta property="og:locale:alternate" content={metaLocale.alternateOgLocale} />
 
 {publishedTime && <meta property="article:published_time" content={publishedTime} />}
 {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}

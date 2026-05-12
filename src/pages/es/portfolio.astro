@@ -1,0 +1,66 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import ButtonVariant from "@/components/ui/Buttons/ButtonVariant.astro";
+---
+
+<Layout
+  title="Portafolio / NOUS"
+  description="El portafolio de NOUS está actualmente en construcción."
+  backgroundType="primary"
+  useContainer={false}
+  showAurora={false}
+  paddingType="zero"
+  canonical="/es/portfolio"
+  locale="es"
+>
+  <section
+    class="relative isolate flex min-h-screen items-center overflow-hidden px-4 pb-20 pt-36 sm:pt-44"
+    aria-labelledby="portfolio-heading"
+  >
+    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(220,212,255,0.16),transparent_34%),radial-gradient(circle_at_82%_58%,rgba(191,177,255,0.1),transparent_30%)]" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute inset-x-0 top-32 h-px bg-gradient-to-r from-transparent via-outline/25 to-transparent" aria-hidden="true"></div>
+
+    <div class="relative z-10 mx-auto w-full max-w-4xl">
+      <div class="mx-auto text-center">
+        <p class="text-sm font-medium uppercase tracking-[0.22em] text-outline">Portafolio</p>
+        <h1
+          id="portfolio-heading"
+          class="mt-5 text-5xl font-medium leading-[1.02] tracking-normal text-white sm:text-6xl lg:text-7xl"
+        >
+          Trabajo en progreso.
+        </h1>
+        <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-neutral-300 sm:text-xl">
+          Estamos construyendo un portafolio más claro con casos reales, resultados concretos y los sistemas detrás del trabajo. Por ahora, esta página está en construcción.
+        </p>
+        <p class="mt-4 text-sm font-medium uppercase tracking-[0.18em] text-outline">
+          Casos de estudio próximamente.
+        </p>
+
+        <div class="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+          <ButtonVariant
+            text="Explorar servicios"
+            variant="primary"
+            href="/es/services"
+            scheduleIcon={false}
+            strokeColor="#060114"
+            arrowIcon={false}
+            target="_self"
+            ariaLabel="Explorar servicios"
+            className="w-full sm:w-auto"
+          />
+          <ButtonVariant
+            text="Habla con NOUS"
+            variant="primaryPurple"
+            href="/es/contact"
+            scheduleIcon={false}
+            strokeColor="#DCD4FF"
+            arrowIcon={false}
+            target="_self"
+            ariaLabel="Habla con NOUS"
+            className="w-full sm:w-auto"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

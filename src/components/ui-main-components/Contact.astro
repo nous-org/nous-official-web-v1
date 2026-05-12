@@ -1,19 +1,27 @@
 ---
 import InfoTextContact from "@/components/ui/InfoTextContact.astro";
 import ContactForm from "@/components/ui/ContactForm.astro";
+import { normalizeLocale, type Locale } from "@/lib/i18n";
 
 export const prerender = false;
+
+interface Props {
+    locale?: Locale;
+}
+
+const { locale = "en" } = Astro.props as Props;
+const currentLocale = normalizeLocale(locale);
 ---
 
 <section class="max-w-7xl mx-auto px-4 container z-10 pb-44 appear-subtle" >
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-24 mt-40 w-auto">
         <div>
             <article>
-                <InfoTextContact />
+                <InfoTextContact locale={currentLocale} />
             </article>
         </div>
         <div id="form">
-            <ContactForm />
+            <ContactForm locale={currentLocale} />
         </div>
     </div>
 </section>

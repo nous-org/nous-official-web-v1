@@ -25,7 +25,7 @@ import BubbleMenu from '@tiptap/extension-bubble-menu';
 
 import DOMPurify from 'dompurify';
 
-type Props = { publishableKey: string };
+type Props = { publishableKey: string; locale?: 'en' | 'es' };
 
 function ToolbarButton({
   onClick,
@@ -54,7 +54,95 @@ function ToolbarButton({
   );
 }
 
-function AdminApp() {
+function AdminApp({ locale = 'en' }: { locale?: 'en' | 'es' }) {
+  const isEs = locale === 'es';
+  const copy = isEs
+    ? {
+        signedIn: 'Sesión iniciada',
+        panel: 'Panel de administración',
+        title: 'Título',
+        slug: 'ejemplo-slug',
+        description: 'Descripción del artículo (SEO)',
+        excerpt: 'Resumen (máximo 200 caracteres)',
+        tag: 'Agregar etiqueta (máximo 5)',
+        add: 'Agregar',
+        authorName: 'Nombre del autor',
+        authorBio: 'Biografía del autor',
+        featured: 'Destacado',
+        saveDraft: 'Guardar borrador',
+        publish: 'Publicar',
+        updateDraft: 'Actualizar borrador',
+        deleteDraft: 'Eliminar borrador',
+        posts: 'Artículos',
+        published: 'Publicado',
+        draft: 'Borrador',
+        edit: 'Editar',
+        update: 'Actualizar',
+        delete: 'Eliminar',
+        startWriting: 'Empieza a escribir...',
+        placeholder: 'Empieza a escribir... Usa la barra para títulos, enlaces, divisores y formato.',
+        requiredTitle: 'El título es obligatorio',
+        requiredSlug: 'El slug es obligatorio',
+        requiredDescription: 'La descripción es obligatoria',
+        requiredExcerpt: 'El resumen es obligatorio',
+        excerptLimit: 'El resumen debe tener 200 caracteres o menos',
+        draftSaved: 'Borrador guardado',
+        postPublished: 'Artículo publicado',
+        errorSaving: 'Error al guardar: ',
+        postNotFound: 'Artículo no encontrado',
+        draftUpdated: 'Borrador actualizado',
+        errorUpdating: 'Error al actualizar borrador: ',
+        confirmDraftDelete: '¿Eliminar este borrador? Esta acción no se puede deshacer.',
+        draftDeleted: 'Borrador eliminado',
+        draftDeleteError: 'No se pudo eliminar el borrador',
+        confirmPostDelete: '¿Eliminar este artículo publicado? Esta acción no se puede deshacer.',
+        postDeleted: 'Artículo eliminado',
+        postDeleteError: 'No se pudo eliminar el artículo',
+        linkUrl: 'URL del enlace',
+      }
+    : {
+        signedIn: 'Signed in',
+        panel: 'Admin panel',
+        title: 'Title',
+        slug: 'example-slug',
+        description: 'Post description (SEO)',
+        excerpt: 'Excerpt (maximum 200 characters)',
+        tag: 'Add tag (maximum 5)',
+        add: 'Add',
+        authorName: 'Author name',
+        authorBio: 'Author bio',
+        featured: 'Featured',
+        saveDraft: 'Save draft',
+        publish: 'Publish',
+        updateDraft: 'Update draft',
+        deleteDraft: 'Delete draft',
+        posts: 'Posts',
+        published: 'Published',
+        draft: 'Draft',
+        edit: 'Edit',
+        update: 'Update',
+        delete: 'Delete',
+        startWriting: 'Start writing...',
+        placeholder: 'Start writing... Use the toolbar for headings, links, dividers, and formatting.',
+        requiredTitle: 'Title is required',
+        requiredSlug: 'Slug is required',
+        requiredDescription: 'Description is required',
+        requiredExcerpt: 'Excerpt is required',
+        excerptLimit: 'Excerpt must be 200 characters or fewer',
+        draftSaved: 'Draft saved',
+        postPublished: 'Post published',
+        errorSaving: 'Error saving: ',
+        postNotFound: 'Post not found',
+        draftUpdated: 'Draft updated',
+        errorUpdating: 'Error updating draft: ',
+        confirmDraftDelete: 'Delete this draft? This action cannot be undone.',
+        draftDeleted: 'Draft deleted',
+        draftDeleteError: 'Could not delete draft',
+        confirmPostDelete: 'Delete this published post? This action cannot be undone.',
+        postDeleted: 'Post deleted',
+        postDeleteError: 'Could not delete post',
+        linkUrl: 'Link URL',
+      };
   const { getToken } = useAuth();
   const [posts, setPosts] = useState<
     Array<{ id: number; slug: string; title: string; published_at: string | null; updated_at: string }>
@@ -90,7 +178,7 @@ function AdminApp() {
           heading: { levels: [1, 2, 3] },
         }),
         Placeholder.configure({
-          placeholder: 'Start writing... Use the toolbar for headings, links, dividers, and formatting.',
+          placeholder: copy.placeholder,
         }),
         Link.configure({
           autolink: true,
@@ -107,7 +195,7 @@ function AdminApp() {
           element: bubbleMenuRef.current!,
         }),
       ],
-      content: '<p>Start writing...</p>',
+      content: `<p>${copy.startWriting}</p>`,
       editorProps: {
         attributes: {
           class: 'min-h-[240px] outline-none max-w-none',
@@ -154,7 +242,7 @@ function AdminApp() {
   function setLink() {
     if (!editor) return;
     const previousUrl = editor.getAttributes('link').href as string | undefined;
-    const url = window.prompt('Link URL', previousUrl ?? '');
+    const url = window.prompt(copy.linkUrl, previousUrl ?? '');
     if (url === null) return;
     if (url === '') {
       editor.chain().focus().unsetLink().run();
@@ -216,7 +304,7 @@ function AdminApp() {
     setFeatured(false);
     setCategory('AI');
     setDraft(false);
-    editor?.commands.setContent('<p>Start writing...</p>');
+      editor?.commands.setContent(`<p>${copy.startWriting}</p>`);
   }
 
   async function save(publish = false) {
@@ -224,23 +312,23 @@ function AdminApp() {
 
     // Validation
     if (!title.trim()) {
-      alert('Title is required');
+      alert(copy.requiredTitle);
       return;
     }
     if (!slug.trim()) {
-      alert('Slug is required');
+      alert(copy.requiredSlug);
       return;
     }
     if (!description.trim()) {
-      alert('Description is required');
+      alert(copy.requiredDescription);
       return;
     }
     if (!excerpt.trim()) {
-      alert('Excerpt is required');
+      alert(copy.requiredExcerpt);
       return;
     }
     if (excerpt.length > 200) {
-      alert('Excerpt must be 200 characters or fewer');
+      alert(copy.excerptLimit);
       return;
     }
 
@@ -277,10 +365,10 @@ function AdminApp() {
     if (res.ok || res.status === 204) {
       clearForm();
       await loadPosts();
-      alert(publish ? 'Post published' : 'Draft saved');
+      alert(publish ? copy.postPublished : copy.draftSaved);
     } else {
       const error = await res.text();
-      alert('Error saving: ' + error);
+      alert(copy.errorSaving + error);
     }
   }
 
@@ -307,7 +395,7 @@ function AdminApp() {
   async function loadBlogPostBySlug(s: string) {
     const res = await authFetch(`/api/admin/blog-post/${encodeURIComponent(s)}`);
     if (!res.ok) {
-      alert('Post not found');
+      alert(copy.postNotFound);
       return;
     }
     const data: { frontmatter: any; content: string } = await res.json();
@@ -361,16 +449,16 @@ function AdminApp() {
       }),
     });
     if (res.ok) {
-      alert('Draft updated');
+      alert(copy.draftUpdated);
       await loadPosts();
     } else {
       const err = await res.text();
-      alert('Error updating draft: ' + err);
+      alert(copy.errorUpdating + err);
     }
   }
 
   async function deleteDraftBySlug(s: string) {
-    if (!confirm('Delete this draft? This action cannot be undone.')) return;
+    if (!confirm(copy.confirmDraftDelete)) return;
     const res = await authFetch(`/api/admin/drafts/${encodeURIComponent(s)}`, { method: 'DELETE' });
     if (res.status === 204) {
       if (slug === s) {
@@ -379,20 +467,20 @@ function AdminApp() {
         editor?.commands.setContent('<p></p>');
       }
       await loadPosts();
-      alert('Draft deleted');
+      alert(copy.draftDeleted);
     } else {
-      alert('Could not delete draft');
+      alert(copy.draftDeleteError);
     }
   }
 
   async function deletePostBySlug(s: string) {
-    if (!confirm('Delete this published post? This action cannot be undone.')) return;
+    if (!confirm(copy.confirmPostDelete)) return;
     const res = await authFetch(`/api/admin/posts/${encodeURIComponent(s)}`, { method: 'DELETE' });
     if (res.status === 204) {
       await loadPosts();
-      alert('Post deleted');
+      alert(copy.postDeleted);
     } else {
-      alert('Could not delete post');
+      alert(copy.postDeleteError);
     }
   }
 
@@ -400,8 +488,8 @@ function AdminApp() {
     <div className="mx-auto max-w-none">
       <div className="mb-6 flex items-center justify-between gap-4">
         <div>
-          <p className="text-xs font-medium uppercase tracking-[0.18em] text-outline">Signed in</p>
-          <h2 className="mt-2 text-xl font-medium tracking-normal text-neutral-100">Admin panel</h2>
+          <p className="text-xs font-medium uppercase tracking-[0.18em] text-outline">{copy.signedIn}</p>
+          <h2 className="mt-2 text-xl font-medium tracking-normal text-neutral-100">{copy.panel}</h2>
         </div>
         <div className="rounded-full border border-outline/20 bg-white/[0.035] p-1 transition-colors hover:border-outline/45">
           <UserButton />
@@ -411,7 +499,7 @@ function AdminApp() {
       <section className="mb-8 rounded-[1.5rem] border border-white/10 bg-white/[0.025] p-4 shadow-[0_24px_80px_rgba(0,0,0,0.18)] sm:p-5">
         <div className="grid gap-3">
           <input
-            placeholder="Title"
+            placeholder={copy.title}
             value={title}
             onChange={(e) => {
               setTitle(e.target.value);
@@ -428,14 +516,14 @@ function AdminApp() {
             className="w-full rounded-lg border border-white/10 bg-white/[0.035] px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-outline/70 focus:ring-2 focus:ring-outline/35"
           />
           <input
-            placeholder="example-slug"
+            placeholder={copy.slug}
             value={slug}
             onChange={(e) => setSlug(e.target.value)}
             className="w-full rounded-lg border border-white/10 bg-white/[0.035] px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-outline/70 focus:ring-2 focus:ring-outline/35"
           />
 
           <textarea
-            placeholder="Post description (SEO)"
+              placeholder={copy.description}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={2}
@@ -444,7 +532,7 @@ function AdminApp() {
 
           <div className="relative">
             <textarea
-              placeholder="Excerpt (maximum 200 characters)"
+              placeholder={copy.excerpt}
               value={excerpt}
               onChange={(e) => setExcerpt(e.target.value)}
               rows={2}
@@ -459,7 +547,7 @@ function AdminApp() {
           <div className="space-y-2">
             <div className="flex gap-2">
               <input
-                placeholder="Add tag (maximum 5)"
+                placeholder={copy.tag}
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
@@ -472,7 +560,7 @@ function AdminApp() {
                 disabled={tags.length >= 5 || !tagInput.trim()}
                 className="rounded-full border border-outline/45 bg-outline/10 px-4 py-2 text-xs font-medium text-outline transition-colors hover:bg-outline/15 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                Add
+                {copy.add}
               </button>
             </div>
             {tags.length > 0 && (
@@ -498,13 +586,13 @@ function AdminApp() {
 
           <div className="grid gap-3 sm:grid-cols-2">
             <input
-              placeholder="Author name"
+              placeholder={copy.authorName}
               value={authorName}
               onChange={(e) => setAuthorName(e.target.value)}
               className="w-full rounded-lg border border-white/10 bg-white/[0.035] px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-outline/70 focus:ring-2 focus:ring-outline/35"
             />
             <input
-              placeholder="Author bio"
+              placeholder={copy.authorBio}
               value={authorBio}
               onChange={(e) => setAuthorBio(e.target.value)}
               className="w-full rounded-lg border border-white/10 bg-white/[0.035] px-3 py-2 text-neutral-100 placeholder-neutral-500 outline-none ring-0 transition-colors focus:border-outline/70 focus:ring-2 focus:ring-outline/35"
@@ -531,7 +619,7 @@ function AdminApp() {
                   onChange={(e) => setFeatured(e.target.checked)}
                   className="rounded border-white/10 bg-white/[0.035] text-outline focus:ring-outline/40"
                 />
-                Featured
+                {copy.featured}
               </label>
             </div>
           </div>
@@ -636,30 +724,30 @@ function AdminApp() {
               onClick={() => save(false)}
               className="inline-flex items-center justify-center rounded-full border border-outline/35 bg-transparent px-4 py-2 text-sm font-medium text-outline transition-colors hover:border-outline/70 hover:bg-outline/10 focus:outline-none focus:ring-2 focus:ring-outline/40 hover:cursor-pointer"
             >
-              Save draft
+              {copy.saveDraft}
             </button>
             <button
               onClick={() => save(true)}
               className="inline-flex items-center justify-center rounded-full bg-outline px-4 py-2 text-sm font-medium text-primary-black transition-colors hover:bg-hover focus:outline-none focus:ring-2 focus:ring-outline/40 hover:cursor-pointer"
             >
-              Publish
+              {copy.publish}
             </button>
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => slug && updateDraftBySlug(slug)}
                 className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-medium text-neutral-200 transition-colors hover:border-outline/40 hover:bg-outline/10 focus:outline-none focus:ring-2 focus:ring-outline/30 hover:cursor-pointer"
-                title="Update current draft"
-                aria-label="Update current draft"
+                title={copy.updateDraft}
+                aria-label={copy.updateDraft}
               >
-                Update draft
+                {copy.updateDraft}
               </button>
               <button
                 onClick={() => slug && deleteDraftBySlug(slug)}
                 className="inline-flex items-center justify-center rounded-full border border-red-500/35 bg-red-500/10 px-3 py-2 text-xs text-red-300 transition-colors hover:border-red-400 hover:bg-red-500/20 focus:outline-none focus:ring-2 focus:ring-red-400/30 hover:cursor-pointer"
-                title="Delete current draft"
-                aria-label="Delete current draft"
+                title={copy.deleteDraft}
+                aria-label={copy.deleteDraft}
               >
-                Delete draft
+                {copy.deleteDraft}
               </button>
             </div>
           </div>
@@ -667,7 +755,7 @@ function AdminApp() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-lg font-medium text-neutral-100">Posts</h2>
+        <h2 className="text-lg font-medium text-neutral-100">{copy.posts}</h2>
         <ul className="space-y-2">
           {posts.map((p: any) => (
             <li
@@ -686,33 +774,33 @@ function AdminApp() {
                       : 'inline-flex items-center gap-1 rounded-full border border-amber-500/40 bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-300'
                   }
                 >
-                  {p.published_at ? 'Published' : 'Draft'}
+                  {p.published_at ? copy.published : copy.draft}
                 </span>
                 {!p.published_at && (
                   <>
                     <button
                       onClick={() => loadBlogPostBySlug(p.slug)}
                       className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.035] px-2.5 py-1.5 text-xs text-neutral-200 transition-colors hover:border-outline/40 hover:bg-outline/10 focus:outline-none focus:ring-2 focus:ring-outline/30 hover:cursor-pointer"
-                      title="Edit draft"
-                      aria-label="Edit draft"
+                      title={copy.edit}
+                      aria-label={copy.edit}
                     >
-                      Edit
+                      {copy.edit}
                     </button>
                     <button
                       onClick={() => updateDraftBySlug(p.slug)}
                       className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.035] px-2.5 py-1.5 text-xs text-neutral-200 transition-colors hover:border-outline/40 hover:bg-outline/10 focus:outline-none focus:ring-2 focus:ring-outline/30 hover:cursor-pointer"
-                      title="Update draft"
-                      aria-label="Update draft"
+                      title={copy.updateDraft}
+                      aria-label={copy.updateDraft}
                     >
-                      Update
+                      {copy.update}
                     </button>
                     <button
                       onClick={() => deleteDraftBySlug(p.slug)}
                       className="inline-flex items-center justify-center rounded-full border border-red-500/35 bg-red-500/10 px-2.5 py-1.5 text-xs text-red-300 transition-colors hover:border-red-400 hover:bg-red-500/20 focus:outline-none focus:ring-2 focus:ring-red-400/30 hover:cursor-pointer"
-                      title="Delete draft"
-                      aria-label="Delete draft"
+                      title={copy.deleteDraft}
+                      aria-label={copy.deleteDraft}
                     >
-                      Delete
+                      {copy.delete}
                     </button>
                   </>
                 )}
@@ -720,10 +808,10 @@ function AdminApp() {
                   <button
                     onClick={() => deletePostBySlug(p.slug)}
                     className="inline-flex items-center justify-center rounded-full border border-red-500/35 bg-red-500/10 px-2.5 py-1.5 text-xs text-red-300 transition-colors hover:border-red-400 hover:bg-red-500/20 focus:outline-none focus:ring-2 focus:ring-red-400/30 hover:cursor-pointer"
-                    title="Delete published post"
-                    aria-label="Delete published post"
+                    title={copy.delete}
+                    aria-label={copy.delete}
                   >
-                    Delete
+                    {copy.delete}
                   </button>
                 )}
               </div>
@@ -735,31 +823,51 @@ function AdminApp() {
   );
 }
 
-export function AdminEntrypoint({ publishableKey }: Props) {
+export function AdminEntrypoint({ publishableKey, locale = 'en' }: Props) {
+  const isEs = locale === 'es';
+  const shellCopy = isEs
+    ? {
+        secure: 'Sesión segura',
+        loading: 'Cargando workspace de administración',
+        preparing: 'Estamos preparando la capa de autenticación de NOUS.',
+        authorized: 'Acceso autorizado',
+        signInTitle: 'Inicia sesión para continuar',
+        signInText: 'Usa tu cuenta autorizada de NOUS para acceder al workspace de administración.',
+        signIn: 'Iniciar sesión',
+      }
+    : {
+        secure: 'Secure session',
+        loading: 'Loading admin workspace',
+        preparing: 'We are preparing the NOUS authentication layer.',
+        authorized: 'Authorized access',
+        signInTitle: 'Sign in to continue',
+        signInText: 'Use your authorized NOUS account to access the admin workspace.',
+        signIn: 'Sign in',
+      };
   return (
     <ClerkProvider publishableKey={publishableKey} appearance={{ theme: dark }}>
       <ClerkLoading>
         <div className="grid min-h-[420px] place-items-center rounded-[1.5rem] border border-white/10 bg-white/[0.025] p-6 text-center">
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-outline">Secure session</p>
-            <h2 className="mt-3 text-2xl font-medium text-white">Loading admin workspace</h2>
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-outline">{shellCopy.secure}</p>
+            <h2 className="mt-3 text-2xl font-medium text-white">{shellCopy.loading}</h2>
             <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-neutral-400">
-              We are preparing the NOUS authentication layer.
+              {shellCopy.preparing}
             </p>
           </div>
         </div>
       </ClerkLoading>
       <ClerkLoaded>
         <SignedIn>
-          <AdminApp />
+          <AdminApp locale={locale} />
         </SignedIn>
         <SignedOut>
           <div className="grid min-h-[420px] place-items-center rounded-[1.5rem] border border-white/10 bg-white/[0.025] p-6 text-center">
             <div>
-              <p className="text-xs font-medium uppercase tracking-[0.18em] text-outline">Authorized access</p>
-              <h2 className="mt-3 text-2xl font-medium text-white">Sign in to continue</h2>
+              <p className="text-xs font-medium uppercase tracking-[0.18em] text-outline">{shellCopy.authorized}</p>
+              <h2 className="mt-3 text-2xl font-medium text-white">{shellCopy.signInTitle}</h2>
               <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-neutral-400">
-                Use your authorized NOUS account to access the admin workspace.
+                {shellCopy.signInText}
               </p>
               <div className="mt-6">
                 <SignInButton mode="modal">
@@ -767,7 +875,7 @@ export function AdminEntrypoint({ publishableKey }: Props) {
                     type="button"
                     className="inline-flex min-h-11 items-center justify-center rounded-full border border-transparent bg-outline px-5 py-2.5 text-sm font-medium text-primary-black transition-colors hover:bg-hover focus:outline-none focus:ring-2 focus:ring-outline/40 cursor-pointer"
                   >
-                    Sign in
+                    {shellCopy.signIn}
                   </button>
                 </SignInButton>
               </div>

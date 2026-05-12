@@ -1,0 +1,103 @@
+---
+export const prerender = false;
+import { ShootingStars } from '@/components/react/ShootingStars';
+import { StarsBackground } from '@/components/react/StarBackground';
+import Layout from '@/layouts/Layout.astro';
+import BlogCard from '@/components/ui/BlogCard.astro';
+import ContentPagesHero from '@/components/ui/ContentPagesHero.astro';
+import { staticBlogRowsEs } from '@/lib/blog-fallbacks';
+import FounderRoberto from '@/assets/founders/rpu.webp';
+import { getBlogAuthorRole, normalizeOriginalLanguage } from '@/lib/blog-metadata';
+
+const posts = staticBlogRowsEs.map((row: any) => ({
+  slug: row.slug,
+  body: row.content,
+  data: {
+    title: row.title,
+    date: new Date(row.createdAt),
+    excerpt: row.excerpt || '',
+    category: row.categorie,
+    originalLanguage: normalizeOriginalLanguage(row.originalLanguage),
+    tags: JSON.parse(row.tags || '[]'),
+    featured: row.featured === true || row.featured === 1,
+    author: {
+      ...row.author,
+      avatar: FounderRoberto.src,
+      role: getBlogAuthorRole(row.author.name, row.author.role || ''),
+    },
+    draft: false,
+  }
+}));
+
+const featuredPosts = posts.filter(post => post.data.featured);
+const regularPosts = posts.filter(post => !post.data.featured);
+const listingPosts = featuredPosts.length > 0 ? regularPosts : posts;
+---
+
+  <Layout
+    title="Blog / NOUS"
+    description="Notas de campo de NOUS sobre transformación con IA, inteligencia abundante, automatización, sistemas y las decisiones tecnológicas que están moldeando organizaciones."
+    canonical="/es/blog"
+    backgroundType="primary"
+    showAurora={false}
+    useContainer={false}
+    locale="es"
+  >
+       <ContentPagesHero
+         title="Blog"
+         subtitle="Notas de campo sobre la era de la inteligencia abundante."
+         text="Ensayos, observaciones y pensamiento práctico de NOUS sobre transformación con IA, despliegue, sistemas y el trabajo de construir un mundo más inteligente."
+       />
+
+       <section class="mx-auto max-w-7xl px-4 pb-24">
+         {featuredPosts.length > 0 && (
+           <section class="mb-16" aria-labelledby="featured-posts-heading">
+             <div class="mb-8 flex items-end justify-between gap-4 border-b border-outline/15 pb-4">
+               <div>
+                 <p class="text-xs font-medium uppercase tracking-[0.18em] text-outline">Pensamiento seleccionado</p>
+                 <h2 id="featured-posts-heading" class="mt-2 text-2xl font-medium tracking-normal text-white sm:text-3xl">
+                   Artículos destacados
+                 </h2>
+               </div>
+             </div>
+             <div class="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-2">
+               {featuredPosts.map((post) => (
+                 <BlogCard post={post} featured={true} locale="es" />
+               ))}
+             </div>
+           </section>
+         )}
+
+         {listingPosts.length > 0 && (
+           <section aria-labelledby="latest-posts-heading">
+             <div class="mb-8 flex items-end justify-between gap-4 border-b border-outline/15 pb-4">
+               <div>
+                 <p class="text-xs font-medium uppercase tracking-[0.18em] text-outline">Todas las notas</p>
+                 <h2 id="latest-posts-heading" class="mt-2 text-2xl font-medium tracking-normal text-white sm:text-3xl">
+                   Artículos recientes
+                 </h2>
+               </div>
+             </div>
+             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
+               {listingPosts.map((post) => (
+                 <BlogCard post={post} featured={false} locale="es" />
+               ))}
+             </div>
+           </section>
+         )}
+       </section>
+
+         <div class="absolute inset-0 pointer-events-none overflow-hidden z-[-1]">
+          <div class="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center_10%,black_20%,transparent_70%)] opacity-60">
+              <ShootingStars client:only="react"
+              minDelay={1000}
+              maxDelay={1500}
+              starColor="#DCD4FF"
+              starHeight={2}
+              starWidth={20}
+             />
+              <StarsBackground client:only="react" />
+          </div>
+        </div>
+
+</Layout>

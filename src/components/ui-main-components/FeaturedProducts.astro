@@ -1,7 +1,15 @@
 ---
 import {TimeLineNous} from '@/components/react/TimeLineNous';
+import { normalizeLocale, type Locale } from '@/lib/i18n';
+
+interface Props {
+    locale?: Locale;
+}
+
+const { locale = "en" } = Astro.props as Props;
+const currentLocale = normalizeLocale(locale);
 ---
 
 <section class="featured-products">
-    <TimeLineNous client:only="react"/>
+    <TimeLineNous client:only="react" locale={currentLocale}/>
 </section>

@@ -11,6 +11,7 @@ import FounderRoberto from '@/assets/founders/rpu.webp';
 import ContentPagesHero from '@/components/ui/ContentPagesHero.astro';
 import { getRuntimeEnv } from '@/lib/runtime-env';
 import { staticBlogRows } from '@/lib/blog-fallbacks';
+import { getBlogAuthorRole, normalizeOriginalLanguage } from '@/lib/blog-metadata';
 
 const env = getRuntimeEnv();
 let rows: any[] = [];
@@ -33,15 +34,6 @@ if (env.TURSO_DATABASE_URL) {
 
 if (rows.length === 0) {
   rows = staticBlogRows;
-}
-
-// Helper function to get role based on name
-function getAuthorRole(name: string): string {
-  const lowerName = name.toLowerCase();
-  if (lowerName.includes('alessandro')) return 'Chief Technology Officer (CTO)';
-  if (lowerName.includes('roberto')) return 'Chief Executive Officer (CEO)';
-  if (lowerName.includes('andrey')) return 'Chief Product Officer (CPO)';
-  return '';
 }
 
 function getAuthorAvatar(name: string, avatar?: string): string {
@@ -83,7 +75,7 @@ if (authorIds.length > 0) {
             name: fullName,
             avatar: getAuthorAvatar(fullName, user.imageUrl),
             bio: (user.publicMetadata?.bio as string) || '',
-            role: getAuthorRole(fullName)
+            role: getBlogAuthorRole(fullName)
           }
         };
       } catch {
@@ -125,7 +117,11 @@ const posts = rows.map((row: any) => {
 
   // Get author data from Clerk or use default
   const authorData = row.author
-    ? { ...row.author, avatar: getAuthorAvatar(row.author.name, row.author.avatar) }
+    ? {
+        ...row.author,
+        avatar: getAuthorAvatar(row.author.name, row.author.avatar),
+        role: getBlogAuthorRole(row.author.name, row.author.role || ''),
+      }
     : row.authorId && row.authorId !== 'admin'
       ? authorsMap.get(row.authorId) || defaultAuthor
       : defaultAuthor;
@@ -138,6 +134,7 @@ const posts = rows.map((row: any) => {
       date: new Date(row.createdAt),
       excerpt: frontmatter.excerpt || row.excerpt || '',
       category: row.categorie,
+      originalLanguage: normalizeOriginalLanguage(frontmatter.originalLanguage || row.originalLanguage),
       tags: JSON.parse(row.tags || '[]'),
       featured: row.featured === true || row.featured === 1,
       author: authorData,
@@ -179,7 +176,7 @@ const listingPosts = featuredPosts.length > 0 ? regularPosts : posts;
              </div>
              <div class="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-2">
                {featuredPosts.map((post) => (
-                 <BlogCard post={post} featured={true} />
+                 <BlogCard post={post} featured={true} locale="en" />
                ))}
              </div>
            </section>
@@ -197,7 +194,7 @@ const listingPosts = featuredPosts.length > 0 ? regularPosts : posts;
              </div>
              <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
                {listingPosts.map((post) => (
-                 <BlogCard post={post} featured={false} />
+                 <BlogCard post={post} featured={false} locale="en" />
                ))}
              </div>
            </section>

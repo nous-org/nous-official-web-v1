@@ -6,6 +6,7 @@ export type StaticBlogRow = {
   excerpt: string;
   categorie: string;
   tags: string;
+  originalLanguage?: 'en' | 'es';
   authorId: string;
   author: {
     name: string;
@@ -88,6 +89,76 @@ If intelligence is the master key, then our responsibility is to put it into mor
 Non est ad astra mollis e terris via.
 `.trim();
 
+const buildingIntelligentWorldContentEs = `
+### El amanecer de la inteligencia abundante
+
+Estamos al borde de una actualización civilizatoria: la inteligencia está por volverse abundante. Durante la mayor parte de la historia humana, el progreso estuvo limitado por una restricción brutal: el costo de pensar con claridad. La experiencia era escasa, la atención era limitada y el mejor criterio solo estaba disponible para unos pocos. Pero cuando la inteligencia artificial empuja el costo de la cognición hacia cero, esa restricción empieza a romperse.
+
+Cuando cada persona, aula, clínica, pequeña empresa e institución pública pueda acceder a razonamiento de alta calidad bajo demanda, no solo trabajaremos más rápido. Descubriremos más rápido, decidiremos mejor y acortaremos el camino hacia las soluciones. Así llega un futuro más próspero: no deseándolo con más fuerza, sino multiplicando la capacidad del mundo para entender, planear, inventar y actuar con sabiduría. Estamos temprano, pero la dirección es clara.
+
+### Por qué la inteligencia ha sido escasa
+
+La inteligencia, en el fondo, no es trivia. Es calidad de decisión: la capacidad de aplicar conocimiento y habilidad para elegir bien, especialmente bajo incertidumbre. Es la diferencia entre reaccionar y dirigir; entre adivinar y diagnosticar; entre movimiento y progreso. Cuando una persona, un equipo o una sociedad tiene más inteligencia disponible, no solo sabe más. Asigna mejor sus recursos, evita errores previsibles, detecta antes efectos de segundo orden y convierte esfuerzo en resultados con menos desperdicio.
+
+Durante la mayor parte de la historia, una de las formas más importantes de escasez no ha sido material: ha sido el acceso a inteligencia, esa capacidad que convierte complejidad en dirección. La inteligencia humana es preciosa, pero está limitada por tiempo, atención y años de capacitación. Por eso suele ser costosa y estar distribuida de forma desigual.
+
+En la práctica, esa escasez aparece donde más se siente: una familia frente a una preocupación médica y descubriendo que la mejor orientación viene con un costo que no puede absorber; un padre viendo a su hijo luchar en la escuela y sabiendo que el tutor correcto, paciente, atento y verdaderamente individualizado, puede estar fuera de alcance; una pequeña empresa tomando decisiones de alto riesgo sola, sin el consejo que las organizaciones grandes dan por sentado.
+
+Formar a un profesional capaz toma años. Desarrollar criterio toma tiempo. Entender contexto requiere atención. Y como la atención experta es finita, el acceso al pensamiento de alta calidad ha sido racionado: los mejores tutores, médicos, analistas y asesores tienden a concentrarse donde el dinero y las instituciones pueden pagarlos. Esa es la restricción que ha gobernado en silencio el progreso humano. La abundancia es la forma de romperla.
+
+### Lo que desbloquea la abundancia
+
+La inteligencia artificial cambia la economía. Cuando la inteligencia puede producirse y entregarse a escala, la restricción se mueve. Podremos entregar unidades adicionales de inteligencia a un costo marginal cercano a cero, y así se vuelve posible la abundancia. Los economistas tienen un nombre para una tensión recurrente en la historia del progreso: la paradoja de Jevons.
+
+Cuando una tecnología hace más eficiente el uso de un recurso, cada uso consume menos y el costo por uso cae; pero ese menor costo suele expandir tanto la demanda que el consumo total aumenta. Jevons observó esto con el carbón: la eficiencia no redujo su papel. Lo expandió al hacer que el trabajo impulsado por carbón fuera lo suficientemente barato para extenderse.
+
+Vimos el mismo arco en la computación: cuando el costo bajó y el acceso se amplió, lo que antes era exclusivo de grandes empresas se volvió ordinario, y la demanda explotó porque aparecieron nuevos casos de uso. La inteligencia está entrando en esa misma curva. Al caer el costo del razonamiento, empieza a colapsar el precio de acceso a criterio de alta calidad. Proyectos que nunca empezaron empezarán. Experimentos que nunca se corrieron se correrán. Trabajo que antes no cerraba empezará a cerrar.
+
+La inteligencia deja de estar racionada y empieza a desplegarse ampliamente. En vez de preguntar quién puede pagar experiencia, la pregunta será cuántas buenas decisiones podemos habilitar por persona, por día. Podemos poner más pensamiento donde siempre hizo falta: en aulas que necesitan apoyo individualizado, pequeñas empresas sin suficiente equipo, instituciones públicas bajo presión y comunidades navegando decisiones complejas.
+
+Ese es el desbloqueo: no reemplazar humanos, sino multiplicar la capacidad humana y comprimir el tiempo entre problema, insight y acción.
+
+Necesitamos más inteligencia en el mundo, no como un lujo, sino como una base. No algún día para unos pocos, sino pronto para la mayoría, a un costo que ya no limite el acceso. Ahí es donde importa la inteligencia artificial: a diferencia de la atención humana, puede escalar. Si la inteligencia se vuelve abundante y de bajo costo, puede hacer que lo que antes era raro se sienta ordinario, para que la claridad reemplace la confusión, la confianza reemplace la ansiedad y las soluciones lleguen antes de que los problemas se acumulen.
+
+En una era de inteligencia abundante, tomar mejores decisiones deja de ser un privilegio. Se vuelve parte del tejido público.
+
+En el futuro cercano, el mundo empezará a sentirse menos como un laberinto. Se abrirá como un paisaje al amanecer: navegable y lleno de posibilidades para la mayoría. Imagina investigación e invención con muchas más mentes en la sala, no solo en laboratorios de élite, sino en cada lugar donde exista curiosidad. Millones de científicos, ingenieros, clínicos, educadores y constructores con apoyo analítico constante, capaces de explorar más ideas, correr más experimentos, detectar más patrones y compartir avances más rápido.
+
+Categorías enteras de trabajo que antes tomaban años de prueba y error empezarán a comprimirse. Descubrimientos antes demasiado difíciles, costosos o lentos entrarán en el terreno de lo posible. Nuevos antibióticos y antivirales llegarán antes de que los brotes sean globales. La detección temprana y el tratamiento personalizado empujarán el cáncer, la diabetes y las enfermedades neurodegenerativas hacia el retroceso. La energía limpia y el almacenamiento escalarán más rápido que la demanda, y la adaptación climática se volverá ingeniería en vez de desesperanza.
+
+Los avances en materiales reducirán desperdicio y desbloquearán manufactura más limpia. Los sistemas alimentarios serán más resilientes y las cadenas de suministro menos frágiles. Eso ocurre cuando pensar se vuelve escalable: la frontera deja de estar limitada por cuántos expertos podemos reunir y empieza a estar determinada por cuánta inteligencia podemos aplicar. Más inteligencia significa iteración más rápida, y la iteración más rápida es la forma en que el progreso se compone.
+
+Pero el impacto no quedará reservado para la frontera. Aparecerá en la vida cotidiana, primero en silencio y luego en todas partes. Un estudiante con preguntas no tendrá que esperar al profesor perfecto. Un padre planeando el futuro tendrá más claridad y mejores opciones. Un trabajador tendrá herramientas que eliminen tareas repetitivas y amplifiquen las significativas. Un creador podrá construir, escribir, diseñar y lanzar a un nivel que antes requería un equipo.
+
+Aparecerá en las fricciones diarias que drenan vidas: formularios, contratos y burocracia; entender derechos y opciones; traducir entre idiomas y sistemas; interpretar un reporte médico, un documento de préstamo, una política escolar o una notificación legal; planear una mudanza, un cambio de carrera, un horario de cuido o un presupuesto familiar sin andar a ciegas. Para la mayoría de personas, el enemigo no es falta de ambición. Es el costo de la claridad.
+
+La inteligencia convierte recursos en resultados, y buenas intenciones en sistemas que funcionan. Es el ingrediente que hace repetible el progreso. Cuando la inteligencia se vuelve ampliamente disponible, los problemas que parecen inmóviles empiezan a ceder y la vida cotidiana se vuelve menos intimidante. El progreso deja de ser escaso. Se vuelve algo que podemos producir de forma confiable.
+
+### Hacerlo real
+
+Fundamos NOUS porque creemos que la inteligencia abundante ya no es una idea lejana. Está al alcance y lo va a reconfigurar todo. La pregunta real es si llegará de forma desigual, concentrada donde siempre ha estado, o si ayudamos a distribuirla hacia los lugares donde más se necesita. Nuestra misión: construir un mundo más inteligente. Sostenemos una convicción simple: la inteligencia es el desbloqueo fundacional. Si existe una palanca capaz de expandir todo lo demás, es la inteligencia.
+
+Hay una frase que captura hacia dónde vamos. Sam Altman escribió que una inteligencia tan barata que no valga la pena medir está al alcance. Si eso es cierto, entonces no estamos recibiendo solo mejores herramientas. Estamos ganando una nueva clase de capacidad, una que puede extenderse tan ampliamente como la electricidad y cambiar la línea base de lo que la mayoría de personas puede hacer. Significa que la inteligencia deja de ser algo que esperas, pagas caro o debes viajar para acceder.
+
+Se convierte en algo que puedes alcanzar en el momento en que lo necesitas, con la estabilidad que transforma presión en claridad. Cuando la inteligencia se vuelve así de abundante, eleva el piso para todos. Convierte más partes de la vida en algo resoluble. Le da a más personas la capacidad de aprender más rápido, decidir mejor, construir antes y recuperar tiempo de las cargas que se lo roban en silencio.
+
+Ese es el futuro que nos comprometemos a hacer práctico: inteligencia que llega no como novedad, sino como una fuerza confiable de progreso en vidas reales.
+
+Costa Rica no debería ver este futuro llegar desde la orilla. Tenemos el talento para construir, la determinación para aprender rápido y la ventaja de un país pequeño: distancias más cortas entre decisiones y resultados. Si la inteligencia se está volviendo abundante, nuestra responsabilidad es hacerla real aquí también, en nuestras escuelas, clínicas, empresas, instituciones públicas y en la vida diaria de las personas. Podemos convertirnos en un punto de referencia para la región.
+
+En NOUS seguimos varias líneas de investigación en las industrias que más importan en Costa Rica y la región, haciéndonos una pregunta práctica: ¿dónde puede la inteligencia abundante producir el mayor salto en resultados? Desde ahí haremos lo que este momento exige. Crearemos herramientas que funcionen, enseñaremos a las personas a usarlas bien y mediremos el progreso que desbloquean.
+
+Eso es lo que NOUS existe para hacer. Estamos aquí para ayudar a construir los rieles por los que correrá el futuro. Ese futuro se vuelve real mediante infraestructura segura y confiable; herramientas que encajan con el trabajo real, para que la inteligencia se traduzca en mejores decisiones dentro de flujos reales; y educación que ayuda a personas y organizaciones a aprender a pensar con estas herramientas, para que los beneficios se distribuyan en vez de concentrarse.
+
+Investigamos y construimos en paralelo porque este momento premia la velocidad, pero también exige rigor. Nuestro objetivo es simple y enorme al mismo tiempo: elevar la línea base de lo que personas, compañías e instituciones en Costa Rica y la región pueden hacer, y demostrar que un país pequeño puede ayudar a moldear un futuro definido por inteligencia abundante.
+
+Si la inteligencia es la llave maestra, nuestra responsabilidad es ponerla en más manos, en más lugares, con estándares que ganen confianza. La era que viene no está definida por escasez. Está definida por inteligencia disponible bajo demanda y el progreso compuesto que puede liberar. Construir un mundo más inteligente significa que más problemas ceden, más personas se elevan y más vida se dedica a lo que importa. Estamos aquí para ayudar a hacerlo real.
+
+---
+
+Non est ad astra mollis e terris via.
+`.trim();
+
 export const staticBlogRows: StaticBlogRow[] = [
   {
     id: 1,
@@ -98,11 +169,12 @@ export const staticBlogRows: StaticBlogRow[] = [
       "A year-end thesis on why abundant, low-cost intelligence may be humanity's greatest unlock and the progress it can unleash.",
     categorie: 'AI',
     tags: JSON.stringify(['Artificial intelligence', 'Jevons paradox', 'Decision-making', 'Costa Rica', 'NOUS']),
+    originalLanguage: 'en',
     authorId: 'admin',
     author: {
       name: 'Roberto Pereira Ugalde',
       bio: '',
-      role: 'Chief Executive Officer (CEO)',
+      role: 'Chief Executive Officer (CEO) & Founder',
     },
     createdAt: '2025-12-31T12:00:00-06:00',
     updatedAt: '2025-12-31T12:00:00-06:00',
@@ -110,6 +182,30 @@ export const staticBlogRows: StaticBlogRow[] = [
   },
 ];
 
-export function getStaticBlogRow(slug: string) {
-  return staticBlogRows.find((post) => post.slug === slug);
+export const staticBlogRowsEs: StaticBlogRow[] = [
+  {
+    id: 1,
+    slug: 'building-a-more-intelligent-world',
+    title: 'Construyendo un mundo más inteligente',
+    content: buildingIntelligentWorldContentEs,
+    excerpt:
+      'Una tesis de cierre de año sobre por qué la inteligencia abundante y de bajo costo puede ser el mayor desbloqueo de la humanidad y el progreso que puede liberar.',
+    categorie: 'IA',
+    tags: JSON.stringify(['Inteligencia artificial', 'Paradoja de Jevons', 'Toma de decisiones', 'Costa Rica', 'NOUS']),
+    originalLanguage: 'en',
+    authorId: 'admin',
+    author: {
+      name: 'Roberto Pereira Ugalde',
+      bio: '',
+      role: 'Chief Executive Officer (CEO) & Founder',
+    },
+    createdAt: '2025-12-31T12:00:00-06:00',
+    updatedAt: '2025-12-31T12:00:00-06:00',
+    featured: true,
+  },
+];
+
+export function getStaticBlogRow(slug: string, locale: 'en' | 'es' = 'en') {
+  const rows = locale === 'es' ? staticBlogRowsEs : staticBlogRows;
+  return rows.find((post) => post.slug === slug);
 }

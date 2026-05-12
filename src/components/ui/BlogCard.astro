@@ -1,5 +1,7 @@
 ---
 import NousLogoSvg from '@/assets/NousLogo.svg';
+import { localizePath, normalizeLocale, type Locale } from '@/lib/i18n';
+import { getOriginalLanguageLabel, normalizeOriginalLanguage, type OriginalLanguage } from '@/lib/blog-metadata';
 
 interface BlogPost {
   slug: string;
@@ -9,6 +11,7 @@ interface BlogPost {
     date: Date;
     excerpt: string;
     category?: string;
+    originalLanguage?: OriginalLanguage;
     tags: string[];
     featured: boolean;
     author: {
@@ -25,10 +28,27 @@ interface BlogPost {
 interface Props {
   post: BlogPost;
   featured?: boolean;
+  locale?: Locale;
 }
 
-const { post, featured = false } = Astro.props;
+const { post, featured = false, locale = 'en' } = Astro.props;
+const currentLocale = normalizeLocale(locale);
 const { data, slug } = post;
+const copy = currentLocale === 'es'
+  ? {
+      featured: 'Destacado',
+      readAria: 'Leer artículo:',
+      min: 'min',
+      dateLocale: 'es-CR',
+      avatarAlt: 'Avatar de',
+    }
+  : {
+      featured: 'Featured',
+      readAria: 'Read article:',
+      min: 'min',
+      dateLocale: 'en-US',
+      avatarAlt: 'Avatar of',
+    };
 
 
 function calculateReadingTime(content: string): number {
@@ -39,10 +59,12 @@ function calculateReadingTime(content: string): number {
 
 
 const readingTime = data.readingTime || calculateReadingTime(post.body);
+const originalLanguage = normalizeOriginalLanguage(data.originalLanguage);
+const originalLanguageLabel = getOriginalLanguageLabel(originalLanguage, currentLocale);
 
 
 const formatDate = (date: Date) => {
-  return new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat(copy.dateLocale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
@@ -69,29 +91,32 @@ const displayTags = data.tags.slice(0, 2);
         <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
-        Featured
+        {copy.featured}
       </span>
     </div>
   )}
 
   <!-- Link overlay para toda la card -->
   <a
-    href={`/blog/${slug}`}
-    aria-label={`Leer artículo: ${data.title}`}
+    href={localizePath(`/blog/${slug}`, currentLocale)}
+    aria-label={`${copy.readAria} ${data.title}`}
     class="absolute inset-0 rounded-xl focus:outline-none z-10"
   />
 
   <!-- Card Content -->
   <div class="relative p-6 sm:p-8">
     <!-- Header con fecha y categoría -->
-    <header class="mb-4 flex items-center justify-between gap-3">
-      <div class="flex items-center gap-3">
+    <header class="mb-4 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex flex-wrap items-center gap-2 sm:gap-3">
         <time
           datetime={data.date.toISOString()}
           class="text-xs font-medium text-outline/80 sm:text-sm"
         >
           {formatDate(data.date)}
         </time>
+        <span class="rounded-full border border-white/10 bg-white/[0.035] px-2 py-1 text-xs font-medium text-neutral-300">
+          {originalLanguageLabel}
+        </span>
         {data.category && (
           <span class="rounded-full border border-outline/20 bg-outline/10 px-2 py-1 text-xs font-medium text-outline">
             {data.category}
@@ -104,7 +129,7 @@ const displayTags = data.tags.slice(0, 2);
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <span>{readingTime} min</span>
+        <span>{readingTime} {copy.min}</span>
       </div>
     </header>
 
@@ -145,7 +170,7 @@ const displayTags = data.tags.slice(0, 2);
         <div class="relative">
           <img
             src={data.author.avatar || NousLogoSvg.src}
-            alt={`Avatar de ${data.author.name}`}
+            alt={`${copy.avatarAlt} ${data.author.name}`}
             class="h-8 w-8 rounded-full border-2 border-outline/20 object-cover sm:h-10 sm:w-10"
             loading="lazy"
             decoding="async"

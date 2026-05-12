@@ -6,6 +6,7 @@ import { motion } from "motion/react";
 import { useAnimate } from "motion/react";
 import { stagger } from "motion";
 import { cn } from "@/lib/utils";
+import type { Locale } from "@/lib/i18n";
 
 
 interface IconConfig {
@@ -22,6 +23,7 @@ interface CardDemoProps {
   icons?: IconConfig[];
   iconSet?: "default" | "secondary";
   justifyDescription?: boolean;
+  locale?: Locale;
 }
 
 
@@ -43,12 +45,22 @@ function useReducedMotion(): boolean {
 export function CardDemo({
   borderColor = "border-outline",
   accentColor = "outline",
-  title = "Bring leading AI models into real work.",
-  description = `The intelligence layer is advancing fast. NOUS helps organizations choose the right models, connect them to tools and data, and deploy them where work happens.`,
+  title,
+  description,
   icons,
   iconSet = "default",
-  justifyDescription = false
+  justifyDescription = false,
+  locale = "en"
 }: CardDemoProps) {
+  const defaultCopy = locale === "es"
+    ? {
+        title: "Lleva los modelos líderes de IA al trabajo real.",
+        description: "La capa de inteligencia avanza rápido. NOUS ayuda a las organizaciones a elegir los modelos correctos, conectarlos con herramientas y datos, y desplegarlos donde ocurre el trabajo.",
+      }
+    : {
+        title: "Bring leading AI models into real work.",
+        description: "The intelligence layer is advancing fast. NOUS helps organizations choose the right models, connect them to tools and data, and deploy them where work happens.",
+      };
 
   const selectedIcons = useMemo<IconConfig[]>(
     () =>
@@ -62,8 +74,8 @@ export function CardDemo({
       <CardSkeletonContainer accentColor={accentColor}>
         <Skeleton icons={selectedIcons} accentColor={accentColor} />
       </CardSkeletonContainer>
-      <CardTitle>{title}</CardTitle>
-      <CardDescription className={justifyDescription ? "text-left md:text-justify" : ""}>{description}</CardDescription>
+      <CardTitle>{title ?? defaultCopy.title}</CardTitle>
+      <CardDescription className={justifyDescription ? "text-left md:text-justify" : ""}>{description ?? defaultCopy.description}</CardDescription>
     </Card>
   );
 }

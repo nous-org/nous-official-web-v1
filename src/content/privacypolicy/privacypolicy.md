@@ -15,7 +15,7 @@ company:
 
 NOUS helps organizations design, build, and deploy AI-ready technology systems. This Privacy Policy explains how we collect, use, disclose, retain, and protect personal information when you visit our website, contact us, subscribe to our newsletter, become a client, or work with us on AI, automation, software, infrastructure, training, or consulting projects.
 
-This policy is written in English for now. If NOUS later offers a Spanish version, we will make clear which version controls if there is any conflict.
+This policy is available in English and Spanish. If there is any conflict between versions, the English version controls unless a signed agreement or applicable law requires otherwise.
 
 This policy is intended to comply with applicable privacy principles, including Costa Rica's Law No. 8968 on the Protection of the Person regarding the Processing of Personal Data, the EU/UK General Data Protection Regulation when it applies, and other privacy laws that may apply based on where you are located or how we interact with you.
 

@@ -4,6 +4,7 @@ import Footer from '@/components/ui-main-components/Footer.astro';
 import { AuroraBackground } from '@/components/react/AuroraBackground.tsx';
 import SEOBase from '@/components/seo/SEO.astro';
 import OrganizationSchema from '@/components/seo/OrganizationSchema.astro';
+import { alternateLocalePath, commonCopy, normalizeLocale, SITE_URL, type Locale } from '@/lib/i18n';
 import '@/styles/global.css'
 
 interface Props {
@@ -31,6 +32,7 @@ interface Props {
   // Schema Props
   customSchema?: any;
   includeOrganizationSchema?: boolean;
+  locale?: Locale;
 }
 
 const { 
@@ -58,7 +60,13 @@ const {
   // Schema
   customSchema,
   includeOrganizationSchema = true,
+  locale = 'en',
 } = Astro.props;
+
+const currentLocale = normalizeLocale(locale);
+const copy = commonCopy[currentLocale];
+const englishPath = alternateLocalePath(Astro.url.pathname, 'en');
+const spanishPath = alternateLocalePath(Astro.url.pathname, 'es');
 
 const getBgClass = () => {
   switch (backgroundType) {
@@ -98,7 +106,7 @@ const mainClasses = useContainer
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={currentLocale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -126,7 +134,12 @@ const mainClasses = useContainer
       schema={customSchema}
       noindex={noindex}
       nofollow={nofollow}
+      locale={currentLocale}
     />
+
+    <link rel="alternate" hreflang="en" href={`${SITE_URL}${englishPath}`} />
+    <link rel="alternate" hreflang="es-CR" href={`${SITE_URL}${spanishPath}`} />
+    <link rel="alternate" hreflang="x-default" href={`${SITE_URL}${englishPath}`} />
     
     <!-- Organization Schema (solo en páginas principales) -->
     {includeOrganizationSchema && <OrganizationSchema />}
@@ -142,13 +155,13 @@ const mainClasses = useContainer
     {showAurora && <AuroraBackground client:load/>}
   
     <a href="#main-content" class="sr-only fixed left-4 top-4 z-[100] rounded-full bg-outline px-4 py-2 text-sm font-medium text-primary-black focus:not-sr-only focus:outline-none focus:ring-2 focus:ring-outline/60 focus:ring-offset-2 focus:ring-offset-primary-black">
-      Skip to main content
+      {copy.skipLink}
     </a>
-    <Header />
+    <Header locale={currentLocale} currentPath={Astro.url.pathname} />
     <main id="main-content" class={`${getPaddingClass()} ${mainClasses}`}>
       <slot />
     </main>
-    <Footer />
+    <Footer locale={currentLocale} />
   </body>
 </html>
 

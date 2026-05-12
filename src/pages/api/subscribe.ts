@@ -9,16 +9,53 @@ const subscriptionSchema = z.object({
     .min(5, 'E-mail must be at least 5 characters')
     .max(254, 'E-mail must be less than 254 characters')
     .toLowerCase()
-    .trim()
+    .trim(),
+  locale: z.enum(['en', 'es']).optional().default('en')
 });
 
+function inferLocale(request: Request, value?: string | null): 'en' | 'es' {
+  if (value === 'es') return 'es';
+  const referer = request.headers.get('referer') || '';
+  try {
+    return new URL(referer).pathname.startsWith('/es') ? 'es' : 'en';
+  } catch {
+    return 'en';
+  }
+}
+
+const responseCopy = {
+  en: {
+    unavailable: 'Newsletter service is temporarily unavailable. Please try again later.',
+    limited: 'Too many subscription attempts. Please try again shortly.',
+    invalid: 'Please enter a valid e-mail address',
+    disposable: 'Please use a permanent e-mail address',
+    duplicate: 'This e-mail is already subscribed to our newsletter',
+    success: 'Thank you for subscribing. You will receive field notes from NOUS.',
+    checkFormat: 'Please check your e-mail format',
+    badRequest: 'Invalid request format. Please try again.',
+    processing: 'There was an error processing your subscription. Please try again later.',
+  },
+  es: {
+    unavailable: 'El servicio de newsletter no está disponible temporalmente. Inténtalo de nuevo más tarde.',
+    limited: 'Demasiados intentos de suscripción. Inténtalo de nuevo en unos minutos.',
+    invalid: 'Ingresa una dirección de e-mail válida',
+    disposable: 'Usa una dirección de e-mail permanente',
+    duplicate: 'Este e-mail ya está suscrito al newsletter',
+    success: 'Gracias por suscribirte. Recibirás notas de campo de NOUS.',
+    checkFormat: 'Revisa el formato de tu e-mail',
+    badRequest: 'Formato de solicitud inválido. Inténtalo de nuevo.',
+    processing: 'Hubo un error procesando tu suscripción. Inténtalo de nuevo más tarde.',
+  },
+} as const;
+
 export const POST: APIRoute = async ({ request }) => {
+  let locale = inferLocale(request);
   try {
     const { TURSO_NEWSLETTER_URL, TURSO_NEWSLETTER_TOKEN } = getRuntimeEnv();
     if (!TURSO_NEWSLETTER_URL || !TURSO_NEWSLETTER_TOKEN) {
       return new Response(JSON.stringify({
         success: false,
-        message: 'Newsletter service is temporarily unavailable. Please try again later.'
+        message: responseCopy[locale].unavailable
       }), {
         status: 503,
         headers: { 'Content-Type': 'application/json' }
@@ -30,7 +67,7 @@ export const POST: APIRoute = async ({ request }) => {
     if (ipLimit.limited) {
       return new Response(JSON.stringify({
         success: false,
-        message: 'Too many subscription attempts. Please try again shortly.'
+        message: responseCopy[locale].limited
       }), {
         status: 429,
         headers: {
@@ -58,8 +95,10 @@ export const POST: APIRoute = async ({ request }) => {
         });
       }
       rawData = {
-        email: params.get('email') || ''
+        email: params.get('email') || '',
+        locale: params.get('locale') || locale
       };
+      locale = inferLocale(request, rawData.locale);
     } else {
       const formData = await request.formData();
       if (isHoneypotFilled(formData)) {
@@ -69,13 +108,16 @@ export const POST: APIRoute = async ({ request }) => {
         });
       }
       rawData = {
-        email: formData.get('email') as string
+        email: formData.get('email') as string,
+        locale: formData.get('locale') as string || locale
       };
+      locale = inferLocale(request, rawData.locale);
     }
 
     // Validate with Zod before storing the submitted e-mail.
     const validatedData = subscriptionSchema.parse(rawData);
     const { email } = validatedData;
+    locale = validatedData.locale;
 
     // Additional format validation for broad browser/client compatibility.
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
@@ -83,7 +125,7 @@ export const POST: APIRoute = async ({ request }) => {
     if (!emailRegex.test(email)) {
       return new Response(JSON.stringify({
         success: false,
-        message: 'Please enter a valid e-mail address'
+        message: responseCopy[locale].invalid
       }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
@@ -100,7 +142,7 @@ export const POST: APIRoute = async ({ request }) => {
     if (disposableDomains.includes(emailDomain)) {
       return new Response(JSON.stringify({
         success: false,
-        message: 'Please use a permanent e-mail address'
+        message: responseCopy[locale].disposable
       }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
@@ -122,7 +164,7 @@ export const POST: APIRoute = async ({ request }) => {
         await transaction.rollback();
         return new Response(JSON.stringify({
           success: false,
-          message: 'This e-mail is already subscribed to our newsletter'
+          message: responseCopy[locale].duplicate
         }), {
           status: 409,
           headers: { 'Content-Type': 'application/json' }
@@ -139,7 +181,7 @@ export const POST: APIRoute = async ({ request }) => {
 
       return new Response(JSON.stringify({
         success: true,
-        message: 'Thank you for subscribing. You will receive field notes from NOUS.'
+        message: responseCopy[locale].success
       }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' }
@@ -159,7 +201,7 @@ export const POST: APIRoute = async ({ request }) => {
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify({
         success: false,
-        message: 'Please check your e-mail format',
+        message: responseCopy[locale].checkFormat,
         errors: error.issues
       }), {
         status: 400,
@@ -171,7 +213,7 @@ export const POST: APIRoute = async ({ request }) => {
       if (error.message.includes('UNIQUE constraint failed')) {
         return new Response(JSON.stringify({
           success: false,
-          message: 'This e-mail is already subscribed to our newsletter'
+          message: responseCopy[locale].duplicate
         }), {
           status: 409,
           headers: { 'Content-Type': 'application/json' }
@@ -181,7 +223,7 @@ export const POST: APIRoute = async ({ request }) => {
       if (error.message.includes('no such table')) {
         return new Response(JSON.stringify({
           success: false,
-          message: 'Service temporarily unavailable. Please try again later.'
+          message: responseCopy[locale].unavailable
         }), {
           status: 503,
           headers: { 'Content-Type': 'application/json' }
@@ -191,7 +233,7 @@ export const POST: APIRoute = async ({ request }) => {
       if (error.message.includes('Content-Type')) {
         return new Response(JSON.stringify({
           success: false,
-          message: 'Invalid request format. Please try again.'
+          message: responseCopy[locale].badRequest
         }), {
           status: 400,
           headers: { 'Content-Type': 'application/json' }
@@ -201,7 +243,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     return new Response(JSON.stringify({
       success: false,
-      message: 'There was an error processing your subscription. Please try again later.'
+      message: responseCopy[locale].processing
     }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }

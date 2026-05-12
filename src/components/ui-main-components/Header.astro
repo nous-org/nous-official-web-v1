@@ -3,12 +3,32 @@ import NousLogo from '@/components/icons/NousLogo.astro';
 import NavLinks from '@/components/ui/NavegationLinks.astro';
 import HeaderButton from '@/components/ui/Buttons/HeaderButton.astro';
 import type { NavLink } from '@/components/ui/NavegationLinks.astro';
+import { alternateLocalePath, commonCopy, localizePath, normalizeLocale, type Locale } from '@/lib/i18n';
 
+interface Props {
+    locale?: Locale;
+    currentPath?: string;
+}
+
+const {
+    locale = 'en',
+    currentPath = Astro.url.pathname,
+} = Astro.props as Props;
+
+const currentLocale = normalizeLocale(locale);
+const copy = commonCopy[currentLocale];
+const targetLocale: Locale = currentLocale === 'en' ? 'es' : 'en';
+const languageHref = alternateLocalePath(currentPath, targetLocale);
+const languageLabel = targetLocale === 'es' ? 'ES' : 'EN';
+const languageTooltip =
+    targetLocale === 'es'
+        ? 'Haz clic para cambiar el idioma del sitio a español.'
+        : "Click to change the site's language to English.";
 const headerNavLinks: NavLink[] = [
-    { href: '/', label: 'Home', ariaLabel: 'Go to home page' },
-    { href: '/services', label: 'Services', ariaLabel: 'Explore NOUS AI and technology services' },
-    { href: '/about', label: 'About', ariaLabel: 'Learn about NOUS' },
-    { href: '/blog', label: 'Blog', ariaLabel: 'Read the Nous blog' },
+    { href: localizePath('/', currentLocale), label: copy.nav.home, ariaLabel: copy.navAria.home },
+    { href: localizePath('/services', currentLocale), label: copy.nav.services, ariaLabel: copy.navAria.services },
+    { href: localizePath('/about', currentLocale), label: copy.nav.about, ariaLabel: copy.navAria.about },
+    { href: localizePath('/blog', currentLocale), label: copy.nav.blog, ariaLabel: copy.navAria.blog },
 ];
 ---
 
@@ -17,8 +37,8 @@ const headerNavLinks: NavLink[] = [
     class="fixed top-8 left-4 right-4 z-50 flex h-20 items-center justify-between rounded-full border border-white/10 bg-[#060114]/35 px-6 py-2 backdrop-blur-xl shadow-[0_24px_80px_-56px_rgba(220,212,255,0.55)] transition-all duration-300 ease-out lg:px-6 "
     role="banner"
 >
-    <div class="flex-shrink-0" aria-label="NOUS logo" transition:persist="true">
-        <a href="/" data-astro-reload aria-label="NOUS logo"><NousLogo /></a>
+    <div class="flex-shrink-0" aria-label={copy.navAria.logo} transition:persist="true">
+        <a href={localizePath('/', currentLocale)} data-astro-reload aria-label={copy.navAria.logo}><NousLogo /></a>
     </div>
 
     <div class="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 transform md:flex">
@@ -27,16 +47,37 @@ const headerNavLinks: NavLink[] = [
             variant="horizontal"
             spacing="sm"
             className="items-center"
+            ariaLabel={copy.navAria.main}
         />
     </div>
 
-    <div class="flex flex-shrink-0 items-center">
-        <HeaderButton />
+    <div class="flex flex-shrink-0 items-center gap-2">
+        <a
+            href={languageHref}
+            data-astro-reload
+            class="group/language relative hidden min-h-11 items-center justify-center rounded-full border border-outline/35 bg-white/[0.035] px-4 text-xs font-medium uppercase tracking-[0.14em] text-outline transition-all duration-200 hover:border-outline/70 hover:bg-outline/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/50 md:inline-flex"
+            aria-label={copy.alternateLanguageAria}
+        >
+            {languageLabel}
+            <span class="pointer-events-none absolute left-1/2 top-full z-50 mt-3 w-max max-w-[calc(100vw-2rem)] -translate-x-1/2 translate-y-2 whitespace-nowrap rounded-2xl border border-outline/25 bg-[#090316]/95 px-4 py-3 text-center text-[0.72rem] font-normal normal-case leading-relaxed tracking-normal text-neutral-100 opacity-0 shadow-[0_20px_70px_-24px_rgba(220,212,255,0.8)] backdrop-blur-xl transition-all duration-200 group-hover/language:translate-y-0 group-hover/language:opacity-100 group-focus-visible/language:translate-y-0 group-focus-visible/language:opacity-100">
+                <span aria-hidden="true" class="absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 border-l border-t border-outline/25 bg-[#090316]"></span>
+                <span class="relative">{languageTooltip}</span>
+            </span>
+        </a>
+        <HeaderButton
+            button={{
+                text: copy.nav.talk,
+                href: localizePath('/contact', currentLocale),
+                target: '_self',
+                ariaLabel: copy.navAria.talk,
+            }}
+            ariaLabel={copy.navAria.talk}
+        />
 
         <button
             id="mobile-menu-btn"
             class="ml-2 p-2 text-white transition-colors duration-300 hover:text-gray-300 md:hidden"
-            aria-label="Open mobile menu"
+            aria-label={copy.navAria.open}
             aria-expanded="false"
         >
             <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -55,7 +96,7 @@ const headerNavLinks: NavLink[] = [
 <nav
     id="mobile-menu"
     class="fixed bottom-0 left-0 right-0 z-40 h-[50dvh] w-full translate-y-full rounded-t-3xl border-t border-outline bg-[#060114]/90 pb-[env(safe-area-inset-bottom,1rem)] backdrop-blur-lg shadow-lg transition-transform duration-300 md:hidden"
-    aria-label="Mobile navigation"
+    aria-label={copy.navAria.mobile}
     aria-hidden="true"
     inert
     hidden
@@ -63,7 +104,7 @@ const headerNavLinks: NavLink[] = [
     <div class="relative h-full w-full px-6 pt-8">
         <div class="absolute top-3 left-1/2 h-1 w-12 -translate-x-1/2 rounded-full bg-white/20"></div>
 
-        <ul class="mt-6 flex flex-col items-center gap-6">
+        <ul class="mt-6 flex flex-col items-center gap-5">
             {headerNavLinks.map((link) => (
                 <li>
                     <a
@@ -78,19 +119,38 @@ const headerNavLinks: NavLink[] = [
             ))}
             <li>
                 <a
-                    href="/contact"
+                    href={localizePath('/contact', currentLocale)}
                     class="rounded-lg px-4 py-2 text-lg font-medium uppercase tracking-[0.12em] text-white transition-all duration-300 hover:bg-white/10 hover:text-outline"
-                    aria-label="Get in touch with us"
+                    aria-label={copy.navAria.talk}
                 >
-                    TALK TO NOUS
+                    {copy.nav.talk.toUpperCase()}
                 </a>
             </li>
         </ul>
 
+        <div class="mt-6 flex justify-center border-t border-white/10 pt-5">
+            <a
+                href={languageHref}
+                data-astro-reload
+                class="group/language-mobile relative inline-flex min-h-10 items-center gap-3 rounded-full border border-white/10 bg-white/[0.03] px-4 text-sm font-medium text-neutral-300 transition-all duration-200 hover:border-outline/50 hover:bg-outline/10 hover:text-outline focus:outline-none focus-visible:ring-2 focus-visible:ring-outline/50"
+                aria-label={copy.alternateLanguageAria}
+            >
+                <span class="text-xs uppercase tracking-[0.18em] text-neutral-500">
+                    {currentLocale === "es" ? "Idioma" : "Language"}
+                </span>
+                <span aria-hidden="true" class="h-4 w-px bg-white/15"></span>
+                <span class="uppercase tracking-[0.16em] text-outline">{languageLabel}</span>
+                <span class="pointer-events-none absolute bottom-full left-1/2 z-50 mb-3 w-max max-w-[calc(100vw-2rem)] -translate-x-1/2 translate-y-2 whitespace-nowrap rounded-2xl border border-outline/25 bg-[#090316]/95 px-4 py-3 text-center text-[0.72rem] font-normal normal-case leading-relaxed tracking-normal text-neutral-100 opacity-0 shadow-[0_20px_70px_-24px_rgba(220,212,255,0.8)] backdrop-blur-xl transition-all duration-200 group-hover/language-mobile:translate-y-0 group-hover/language-mobile:opacity-100 group-focus-visible/language-mobile:translate-y-0 group-focus-visible/language-mobile:opacity-100">
+                    <span aria-hidden="true" class="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 border-b border-r border-outline/25 bg-[#090316]"></span>
+                    <span class="relative">{languageTooltip}</span>
+                </span>
+            </a>
+        </div>
+
         <button
             id="close-menu-btn"
             class="absolute top-4 right-4 p-2 text-white transition-colors duration-300 hover:text-outline"
-            aria-label="Close menu"
+            aria-label={copy.navAria.close}
         >
             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
