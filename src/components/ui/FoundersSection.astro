@@ -1,5 +1,9 @@
 ---
 import FoundersCard from "@/components/ui/FoundersCard.astro";
+import { DEFAULT_FOUNDERS } from "@/types/founderCards";
+
+const hiddenTeamMembers = new Set(["Ana Kwok-Ching", "Pablo Molina Camareno"]);
+const visibleFounders = DEFAULT_FOUNDERS.filter((founder) => !hiddenTeamMembers.has(founder.name));
 ---
 
 <section class="mx-auto max-w-5xl px-4 pb-16 sm:pb-24" aria-labelledby="founders-heading">
@@ -13,6 +17,6 @@ import FoundersCard from "@/components/ui/FoundersCard.astro";
         </p>
     </div>
     <div>
-        <FoundersCard />
+        <FoundersCard founders={visibleFounders} />
     </div>
 </section>
