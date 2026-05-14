@@ -260,7 +260,7 @@ export const POST: APIRoute = async ({ request }) => {
                       <h2 style="margin: 0 0 18px 0; color: #FFFFFF; font-size: 18px; line-height: 1.3; font-weight: 600; letter-spacing: 0;">Contact Details</h2>
 
                       <p style="margin: 0 0 24px 0; color: #DED9EE; font-size: 16px; line-height: 1.7; text-align: justify; text-justify: inter-word;">
-                        <strong style="color: #FFFFFF;">Hello.</strong><br><br>
+                        Hello.<br><br>
                         My name is <strong style="color: #FFFFFF;">${safeName}</strong> and you can reach me at <a href="mailto:${safeEmail}" style="color: #DCD4FF; text-decoration: none;">${safeEmail}</a>${safePhone ? ` or by phone at <strong style="color: #FFFFFF;">${safePhone}</strong>` : ''}.<br><br>
                         ${preferredContact ? `My preferred contact method is <em style="color: #FFFFFF;">${safePreferredContact}</em>.<br><br>` : ''}
                         I'm interested in <em style="color: #FFFFFF;">${safeInterestsText}</em> and the subject of my message is <em style="color: #FFFFFF;">&quot;${safeSubject}&quot;</em>.<br><br>
@@ -275,7 +275,7 @@ export const POST: APIRoute = async ({ request }) => {
                         </tr>
                       </table>
 
-                      <p style="margin: 0; color: #DED9EE; font-size: 16px; line-height: 1.7;">I look forward to hearing from you!<br>Best regards,<br><strong style="color: #FFFFFF;">${safeName}</strong></p>
+                      <p style="margin: 0; color: #DED9EE; font-size: 16px; line-height: 1.7;">I look forward to hearing from you!<br><br>Best regards,<br><strong style="color: #FFFFFF;">${safeName}</strong></p>
                     </td>
                   </tr>
 
@@ -406,7 +406,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Send e-mails.
     const companyEmailResult = await resend.emails.send({
-      from: 'Contact Form <noreply@nous.cr>',
+      from: 'NOUS <noreply@nous.cr>',
       to: [CONTACT_RECIPIENT_EMAIL || 'hello@nous.cr'],
       subject: 'New Contact Form Submission',
       html: companyEmailHtml,
