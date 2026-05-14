@@ -153,6 +153,27 @@ test('contact confirmation e-mail uses approved customer-facing copy and brandin
   assert.equal(clientTemplate.includes('#9EE7FF'), false);
 });
 
+test('internal contact notification e-mail uses approved subject and styling', async () => {
+  const contactApi = await readText('src/pages/api/contact.ts');
+  const companyTemplate = contactApi.slice(
+    contactApi.indexOf('const companyEmailHtml'),
+    contactApi.indexOf('const clientEmailHtml')
+  );
+
+  assert.match(contactApi, /subject:\s*'New Contact Form Submission'/);
+  assert.equal(contactApi.includes('subject: `New Contact:'), false);
+  assert.equal(contactApi.includes('safeSubjectLine'), false);
+  assert.match(companyTemplate, /<title>New Contact Form Submission<\/title>/);
+  assert.match(companyTemplate, />New Contact Form Submission<\/h1>/);
+  assert.match(companyTemplate, /https:\/\/nous\.cr\/images\/nous-email-logo\.png/);
+  assert.match(companyTemplate, /Building a more intelligent world\./);
+  assert.match(companyTemplate, /Contact Details/);
+  assert.match(companyTemplate, /white-space: pre-wrap/);
+  assert.match(companyTemplate, /I look forward to hearing from you!<br>Best regards,<br><strong style="color: #FFFFFF;">\$\{safeName\}<\/strong>/);
+  assert.match(companyTemplate, /Submitted on/);
+  assert.equal(companyTemplate.includes('New Contact Form Submission - NOUS'), false);
+});
+
 test('retired and legacy redirect pages do not exist as source routes', () => {
   for (const route of [
     'src/pages/about-us.astro',
