@@ -122,6 +122,21 @@ test('contact forms keep required fields and visible validation paths', async ()
   assert.match(contactApi, /dryRun:\s*true/);
 });
 
+test('contact confirmation e-mail uses approved customer-facing copy and branding', async () => {
+  const contactApi = await readText('src/pages/api/contact.ts');
+
+  assert.match(contactApi, /subject:\s*'Thank you for contacting NOUS!'/);
+  assert.match(contactApi, /<title>Thank you for contacting us!<\/title>/);
+  assert.match(contactApi, />Thank you for contacting us!<\/h1>/);
+  assert.match(contactApi, /https:\/\/nous\.cr\/favicon-96x96\.png/);
+  assert.match(contactApi, /customer service and support agent/);
+  assert.match(contactApi, /It seems like your preferred contact method is/);
+  assert.match(contactApi, /turn AI from isolated experiments into a working layer/);
+  assert.match(contactApi, /Best regards,<br><strong style="color: #FFFFFF;">NOUS<\/strong>/);
+  assert.equal(contactApi.includes('Thank You for Contacting Us!'), false);
+  assert.equal(contactApi.includes('The NOUS Team'), false);
+});
+
 test('retired and legacy redirect pages do not exist as source routes', () => {
   for (const route of [
     'src/pages/about-us.astro',
