@@ -228,6 +228,7 @@ export const POST: APIRoute = async ({ request }) => {
     };
 
     const formattedPreferredContact = formatPreferredContact(preferredContact);
+    const safePreferredContact = escapeHtml(formattedPreferredContact);
 
     const companyEmailHtml = `
       <!DOCTYPE html>
@@ -291,58 +292,96 @@ export const POST: APIRoute = async ({ request }) => {
 
     const clientEmailHtml = `
       <!DOCTYPE html>
-      <html>
+      <html lang="en">
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Thank you for contacting NOUS</title>
+          <title>Thank you for contacting us!</title>
         </head>
-        <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 1000px; margin: 0 auto; padding: 20px;">
-          <div style="background: linear-gradient(135deg, #060114 0%, #04000F 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
-            <h1 style="color: white; margin: 0; font-size: 24px;">Thank You for Contacting Us!</h1>
-            <p style="color: white; margin: 10px 0 0 0; opacity: 0.9;">NOUS</p>
+        <body style="margin: 0; padding: 0; background: #04000F; color: #F7F3FF; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;">
+          <div style="display: none; max-height: 0; overflow: hidden; opacity: 0; color: transparent;">
+            We received your message. Hermes will establish first contact shortly.
           </div>
 
-          <div style="background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px;">
-            <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-              <p style="font-size: 16px; margin-top: 0;">Hi ${safeName},</p>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: #04000F; margin: 0; padding: 32px 16px;">
+            <tr>
+              <td align="center">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 680px; border-collapse: separate; border-spacing: 0; overflow: hidden; background: #070116; border: 1px solid #342C50; border-radius: 8px;">
+                  <tr>
+                    <td style="padding: 28px 28px 18px 28px; background: #060114; background: linear-gradient(135deg, #060114 0%, #100528 56%, #201048 100%); border-bottom: 1px solid #342C50;">
+                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td style="vertical-align: middle;">
+                            <img src="https://nous.cr/favicon-96x96.png" width="42" height="42" alt="NOUS" style="display: block; width: 42px; height: 42px; border-radius: 8px; border: 1px solid #5B4E80;">
+                          </td>
+                          <td style="vertical-align: middle; padding-left: 14px;">
+                            <p style="margin: 0; color: #DCD4FF; font-size: 12px; font-weight: 700; letter-spacing: 0; text-transform: uppercase;">NOUS</p>
+                            <p style="margin: 3px 0 0 0; color: #BEB7D8; font-size: 13px;">AI transformation, guided from first contact.</p>
+                          </td>
+                        </tr>
+                      </table>
 
-              <p style="font-size: 16px; margin: 20px 0;">
-                Thank you for reaching out to <strong>NOUS</strong>.<br><br>
-                We've received your message about <em>"${safeSubject}"</em>. Hermes, our customer service agent, will help establish first contact and ask a few initial questions before we move forward.
-                ${preferredContact ? `Your preferred contact method is <strong>${formattedPreferredContact}</strong>.` : 'We have your e-mail as the main contact method.'}<br><br>
-                <strong>What happens next?</strong><br>
-                • This confirmation lets you know the message arrived<br>
-                • Hermes will help clarify the first details<br>
-                • We'll use that context to define the most useful next step
-              </p>
+                      <h1 style="margin: 34px 0 0 0; color: #FFFFFF; font-size: 32px; line-height: 1.12; font-weight: 600; letter-spacing: 0;">Thank you for contacting us!</h1>
+                    </td>
+                  </tr>
 
-              <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #060114;">
-                <h3 style="color: #060114; margin-top: 0; font-size: 18px;">Your Contact Information</h3>
-                <p style="margin: 10px 0;">E-mail: <a href="mailto:${safeEmail}" style="color:#060114; text-decoration:none;">${safeEmail}</a></p>
-                ${safePhone ? `<p style="margin: 10px 0;">Phone: <strong>${safePhone}</strong></p>` : ''}
-              </div>
+                  <tr>
+                    <td style="padding: 34px 28px 30px 28px;">
+                      <p style="margin: 0 0 20px 0; color: #F7F3FF; font-size: 17px; line-height: 1.65;">Hi ${safeName},</p>
 
-              <p style="font-size: 16px;">In the meantime, feel free to explore our services and learn more about how we help organizations with AI transformation, intelligence deployment, and AI-ready systems.</p>
+                      <p style="margin: 0 0 18px 0; color: #DED9EE; font-size: 16px; line-height: 1.7;">Thank you for reaching out to <strong style="color: #FFFFFF;">NOUS</strong>.</p>
 
-              <div style="text-align: center; margin: 30px 0;">
-                <a href="https://nous.cr/services" target="_blank" style="background: #060114; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">Explore Our Services</a>
-              </div>
+                      <p style="margin: 0 0 26px 0; color: #DED9EE; font-size: 16px; line-height: 1.7;">
+                        We've received your message about <strong style="color: #FFFFFF;">${safeSubject}</strong>. Hermes, our customer service and support agent, will help establish first contact and ask a few initial questions before we move forward. It seems like your preferred contact method is <strong style="color: #FFFFFF;">${safePreferredContact}</strong>.
+                      </p>
 
-              <p style="font-size: 16px;">Best regards,<br>
-              <strong>The NOUS Team</strong></p>
+                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 0 0 26px 0; background: #120A2A; border: 1px solid #332A50; border-radius: 8px;">
+                        <tr>
+                          <td style="padding: 22px;">
+                            <h2 style="margin: 0 0 16px 0; color: #FFFFFF; font-size: 18px; line-height: 1.3; font-weight: 600; letter-spacing: 0;">What happens next?</h2>
+                            <p style="margin: 0 0 10px 0; color: #D8D3EA; font-size: 15px; line-height: 1.55;">- This confirmation lets you know the message arrived.</p>
+                            <p style="margin: 0 0 10px 0; color: #D8D3EA; font-size: 15px; line-height: 1.55;">- Hermes will help clarify the first details.</p>
+                            <p style="margin: 0; color: #D8D3EA; font-size: 15px; line-height: 1.55;">- We'll use that context to define the most useful next step.</p>
+                          </td>
+                        </tr>
+                      </table>
 
-              <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; text-align: center;">
-                <p style="color: #666; font-size: 14px; margin: 5px 0;">
-                  <strong>NOUS</strong><br>
-                  AI Transformation | Intelligence Deployment | AI-Ready Systems
-                </p>
-                <p style="color: #666; font-size: 12px; margin: 10px 0 0 0;">
-                  This is an automated confirmation.
-                </p>
-              </div>
-            </div>
-          </div>
+                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 0 0 26px 0; border-left: 3px solid #9EE7FF; background: #0B051D; border-radius: 8px;">
+                        <tr>
+                          <td style="padding: 22px;">
+                            <h2 style="margin: 0 0 14px 0; color: #FFFFFF; font-size: 18px; line-height: 1.3; font-weight: 600; letter-spacing: 0;">Your Contact Information</h2>
+                            <p style="margin: 0 0 9px 0; color: #D8D3EA; font-size: 15px; line-height: 1.55;">- E-mail: <a href="mailto:${safeEmail}" style="color: #9EE7FF; text-decoration: none;">${safeEmail}</a></p>
+                            <p style="margin: 0; color: #D8D3EA; font-size: 15px; line-height: 1.55;">- Phone number: <strong style="color: #FFFFFF;">${safePhone}</strong></p>
+                          </td>
+                        </tr>
+                      </table>
+
+                      <p style="margin: 0 0 24px 0; color: #DED9EE; font-size: 16px; line-height: 1.7;">
+                        In the meantime, feel free to explore our services and learn more about how we help organizations turn AI from isolated experiments into a working layer for better decisions, faster operations, smarter customer support, and systems that compound institutional knowledge.
+                      </p>
+
+                      <table role="presentation" cellspacing="0" cellpadding="0" style="margin: 0 0 30px 0;">
+                        <tr>
+                          <td style="background: #DCD4FF; border-radius: 8px;">
+                            <a href="https://nous.cr/services" target="_blank" style="display: inline-block; padding: 13px 18px; color: #060114; font-size: 14px; font-weight: 700; line-height: 1; text-decoration: none;">Explore NOUS services</a>
+                          </td>
+                        </tr>
+                      </table>
+
+                      <p style="margin: 0; color: #DED9EE; font-size: 16px; line-height: 1.7;">Best regards,<br><strong style="color: #FFFFFF;">NOUS</strong></p>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td style="padding: 20px 28px 26px 28px; border-top: 1px solid #2B2343; background: #04000F;">
+                      <p style="margin: 0 0 8px 0; color: #BEB7D8; font-size: 13px; line-height: 1.5;">AI transformation | Intelligence deployment | AI-ready systems</p>
+                      <p style="margin: 0; color: #8F87A8; font-size: 12px; line-height: 1.5;">This is an automated confirmation from noreply@nous.cr.</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
         </body>
       </html>
     `;
@@ -359,7 +398,7 @@ export const POST: APIRoute = async ({ request }) => {
     const clientEmailResult = await resend.emails.send({
       from: 'NOUS <noreply@nous.cr>',
       to: [email],
-      subject: 'Thank you for contacting NOUS',
+      subject: 'Thank you for contacting NOUS!',
       html: clientEmailHtml
     });
 
