@@ -34,10 +34,10 @@ export const CHATBOT_QUICK_PROMPTS = {
     "How do I contact the team?",
   ],
   es: [
-    "Que hace NOUS?",
-    "Ayudame a encontrar una oportunidad con IA",
-    "Resume esta pagina",
-    "Como contacto al equipo?",
+    "¿Qué hace NOUS?",
+    "Ayúdame a encontrar una oportunidad con IA para mi organización",
+    "Resume esta página",
+    "¿Cómo contacto al equipo?",
   ],
 } as const;
 
