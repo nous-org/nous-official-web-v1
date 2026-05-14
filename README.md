@@ -132,8 +132,55 @@ Required runtime integrations:
 | `CLERK_PUBLISHABLE_KEY` | Clerk frontend configuration | Environment-specific |
 | `CLERK_SECRET_KEY` | Clerk backend verification | Yes |
 | `CLERK_ADMIN_USER_IDS` or equivalent policy | Admin authorization allowlist | Yes |
+| `OPENAI_API_KEY` | Server-side OpenAI Responses API access for the website assistant | Yes |
+| `OPENAI_MODEL` | Model used by the website assistant | No |
+| `OPENAI_CHATBOT_ENABLED` | Enables the public chatbot widget and API route when set to `true` | No |
+| `OPENAI_CHATBOT_STORE_RESPONSES` | Uses stored Responses state and `previous_response_id` when set to `true` | No |
+| `OPENAI_VECTOR_STORE_ID` | Optional OpenAI vector store for file-search-backed retrieval | No |
 
 Admin APIs fail closed when Clerk or admin authorization config is missing.
+
+## Website AI Assistant
+
+The site includes a native NOUS chatbot widget powered by the OpenAI Responses API.
+
+Configuration:
+
+```bash
+OPENAI_API_KEY="sk-..."
+OPENAI_MODEL="your-model-id"
+OPENAI_CHATBOT_ENABLED=true
+OPENAI_CHATBOT_STORE_RESPONSES=true
+```
+
+The browser never calls OpenAI directly. The React widget posts to `POST /api/chatbot`, which validates the payload, applies the existing in-memory rate limiter, adds bounded public page/site context, and streams assistant text back as SSE events.
+
+Conversation state:
+
+- With `OPENAI_CHATBOT_STORE_RESPONSES=true`, the client keeps only the latest `previousResponseId` in `sessionStorage` and sends it on the next turn.
+- With storage disabled, the client sends a short bounded visible history instead.
+- The browser session clears automatically after 30 minutes of inactivity, when the tab/browser session ends, or when the visitor uses the reset control.
+- Raw prompts and assistant responses are not logged by default.
+
+Customization:
+
+- Prompt rules live in `src/lib/chatbot/prompt.ts`.
+- Public site context and quick prompts live in `src/lib/chatbot/site-context.ts`.
+- The widget UI lives in `src/components/react/chatbot/ChatbotWidget.tsx`.
+
+Local test flow:
+
+```bash
+pnpm dev
+```
+
+Set the OpenAI variables in your local environment, open `http://localhost:4321`, and use the floating assistant button. For review without a live key, leave `OPENAI_CHATBOT_ENABLED=false` or unset.
+
+Production notes:
+
+- Configure `OPENAI_API_KEY` as a Cloudflare secret, not in `wrangler.toml`.
+- Replace the in-memory limiter with Redis, Upstash, Cloudflare KV/Durable Objects, or provider-native rate limiting before high-traffic launch.
+- Consider `OPENAI_VECTOR_STORE_ID` when a curated public content corpus exists.
 
 ## Validation
 

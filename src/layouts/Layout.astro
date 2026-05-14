@@ -2,10 +2,12 @@
 import Header from '@/components/ui-main-components/Header.astro';
 import Footer from '@/components/ui-main-components/Footer.astro';
 import { AuroraBackground } from '@/components/react/AuroraBackground.tsx';
+import ChatbotWidget from '@/components/react/chatbot/ChatbotWidget.tsx';
 import SEOBase from '@/components/seo/SEO.astro';
 import OrganizationSchema from '@/components/seo/OrganizationSchema.astro';
 import WebSiteSchema from '@/components/seo/WebSiteSchema.astro';
 import { alternateLocalePath, commonCopy, normalizeLocale, SITE_URL, type Locale } from '@/lib/i18n';
+import { getChatbotRuntimeEnv } from '@/lib/chatbot/env';
 import '@/styles/global.css'
 
 interface Props {
@@ -70,6 +72,11 @@ const currentLocale = normalizeLocale(locale);
 const copy = commonCopy[currentLocale];
 const englishPath = alternateLocalePath(Astro.url.pathname, 'en');
 const spanishPath = alternateLocalePath(Astro.url.pathname, 'es');
+const runtimeEnv = getChatbotRuntimeEnv();
+const chatbotEnabled = runtimeEnv.OPENAI_CHATBOT_ENABLED === 'true'
+  && !Astro.url.pathname.startsWith('/admin')
+  && !Astro.url.pathname.startsWith('/es/admin');
+const chatbotStoresResponses = runtimeEnv.OPENAI_CHATBOT_STORE_RESPONSES === 'true';
 
 const getBgClass = () => {
   switch (backgroundType) {
@@ -175,6 +182,13 @@ const mainClasses = useContainer
       <slot />
     </main>
     <Footer locale={currentLocale} />
+    {chatbotEnabled && (
+      <ChatbotWidget
+        client:idle
+        locale={currentLocale}
+        storeResponses={chatbotStoresResponses}
+      />
+    )}
   </body>
 </html>
 
