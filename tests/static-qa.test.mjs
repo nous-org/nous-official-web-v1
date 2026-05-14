@@ -143,12 +143,13 @@ test('contact confirmation e-mail uses approved customer-facing copy and brandin
   assert.match(clientTemplate, /NOUS contact:/);
   assert.match(clientTemplate, /hello@nous\.cr/);
   assert.match(clientTemplate, /\+506 6186-5634/);
+  assert.match(clientTemplate, /background: linear-gradient\(135deg, #FFFFFF 0%, #F5F1FF 46%, #DCD4FF 100%\)/);
   assert.match(clientTemplate, /Best regards,<br><strong style="color: #FFFFFF;">NOUS<\/strong>/);
   assert.equal(clientTemplate.includes('Thank You for Contacting Us!'), false);
   assert.equal(clientTemplate.includes('The NOUS Team'), false);
   assert.equal(clientTemplate.includes('AI transformation, guided from first contact.'), false);
+  assert.equal(clientTemplate.includes('This is an automated confirmation from noreply@nous.cr.'), false);
   assert.equal(clientTemplate.includes('#9EE7FF'), false);
-  assert.equal(clientTemplate.includes('linear-gradient'), false);
 });
 
 test('retired and legacy redirect pages do not exist as source routes', () => {
