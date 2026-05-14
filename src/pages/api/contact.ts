@@ -159,7 +159,6 @@ export const POST: APIRoute = async ({ request }) => {
     const safeSubject = escapeHtml(subject);
     const safeMessage = escapeHtml(message);
     const safePhone = phone ? escapeHtml(phone) : '';
-    const safeSubjectLine = subject.replace(/[\r\n]+/g, ' ').trim();
 
     const emailLimit = checkRateLimit(`contact:email:${email.toLowerCase()}`, 3, 10 * 60_000);
     if (emailLimit.limited) {
@@ -232,60 +231,70 @@ export const POST: APIRoute = async ({ request }) => {
 
     const companyEmailHtml = `
       <!DOCTYPE html>
-      <html>
+      <html lang="en">
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>New Contact Form Submission - NOUS</title>
+          <title>New Contact Form Submission</title>
         </head>
-        <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 1000px; margin: 0 auto; padding: 20px;">
-          <div style="background: linear-gradient(135deg, #060114 0%, #04000F 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
-            <h1 style="color: white; margin: 0; font-size: 24px;">New Contact Form Submission</h1>
-            <p style="color: white; margin: 10px 0 0 0; opacity: 0.9;">NOUS</p>
+        <body style="margin: 0; padding: 0; background: #F3F0FF; color: #F7F3FF; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;">
+          <div style="display: none; max-height: 0; overflow: hidden; opacity: 0; color: transparent;">
+            New contact form submission from ${safeName}.
           </div>
 
-          <div style="background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px;">
-            <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-              <h2 style="color: #060114; margin-top: 0; font-size: 20px;">Contact Details</h2>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: #F3F0FF; background: linear-gradient(135deg, #FFFFFF 0%, #F5F1FF 46%, #DCD4FF 100%); margin: 0; padding: 40px 16px 48px 16px;">
+            <tr>
+              <td align="center">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 640px; border-collapse: separate; border-spacing: 0; overflow: hidden; background: #070116; border: 1px solid #2A2341; border-radius: 8px;">
+                  <tr>
+                    <td style="padding: 34px 28px 24px 28px; background: #060114; border-bottom: 1px solid #2A2341; text-align: center;">
+                      <img src="https://nous.cr/images/nous-email-logo.png" width="176" height="176" alt="NOUS" style="display: block; width: 176px; height: 176px; margin: 0 auto 16px auto; border: 0;">
+                      <p style="margin: 0; color: #FFFFFF; font-size: 13px; font-weight: 700; letter-spacing: 0; text-transform: uppercase;">NOUS</p>
+                      <p style="margin: 5px 0 0 0; color: #BEB7D8; font-size: 14px; line-height: 1.5;">Building a more intelligent world.</p>
+                      <h1 style="margin: 28px 0 0 0; color: #FFFFFF; font-size: 30px; line-height: 1.15; font-weight: 600; letter-spacing: 0;">New Contact Form Submission</h1>
+                    </td>
+                  </tr>
 
-              <div style="font-family: Arial, Helvetica, sans-serif; line-height: 1.6; color:#333;">
-                <p>
-                  <strong>Hello.</strong><br><br>
-                  My name is <strong>${safeName}</strong> and you can reach me at
-                  <a href="mailto:${safeEmail}" style="color:#060114; text-decoration:none;">
-                    ${safeEmail}
-                  </a>${safePhone ? ` or by phone at <strong>${safePhone}</strong>` : ''}.<br><br>
-                  ${preferredContact ? `My preferred contact method is <em>${formattedPreferredContact}</em>.<br><br>` : ''}
-                  I'm interested in <em>${safeInterestsText}</em> and the subject of my message is
-                  <strong>"${safeSubject}"</strong>.<br><br>
-                  Here's what I'd like to share:
-                </p>
+                  <tr>
+                    <td style="padding: 32px 28px 28px 28px;">
+                      <h2 style="margin: 0 0 18px 0; color: #FFFFFF; font-size: 18px; line-height: 1.3; font-weight: 600; letter-spacing: 0;">Contact Details</h2>
 
-                <div style="background:#f8f9fa; padding:15px; border-radius:5px; border-left:4px solid #060114; margin:15px 0;">
-                  <p style="margin:0; white-space:pre-wrap;">${safeMessage}</p>
-                </div>
+                      <p style="margin: 0 0 24px 0; color: #DED9EE; font-size: 16px; line-height: 1.7; text-align: justify; text-justify: inter-word;">
+                        <strong style="color: #FFFFFF;">Hello.</strong><br><br>
+                        My name is <strong style="color: #FFFFFF;">${safeName}</strong> and you can reach me at <a href="mailto:${safeEmail}" style="color: #DCD4FF; text-decoration: none;">${safeEmail}</a>${safePhone ? ` or by phone at <strong style="color: #FFFFFF;">${safePhone}</strong>` : ''}.<br><br>
+                        ${preferredContact ? `My preferred contact method is <em style="color: #FFFFFF;">${safePreferredContact}</em>.<br><br>` : ''}
+                        I'm interested in <em style="color: #FFFFFF;">${safeInterestsText}</em> and the subject of my message is <em style="color: #FFFFFF;">&quot;${safeSubject}&quot;</em>.<br><br>
+                        Here's what I'd like to share:
+                      </p>
 
-                <p>
-                  I look forward to hearing from you!<br>
-                  Best regards,
-                </p>
-                <p><strong>${safeName}</strong></p>
-              </div>
+                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 0 0 24px 0; border-top: 1px solid #2A2341; border-bottom: 1px solid #2A2341;">
+                        <tr>
+                          <td style="padding: 22px 0;">
+                            <p style="margin: 0; color: #D8D3EA; font-size: 15px; line-height: 1.7; white-space: pre-wrap;">${safeMessage}</p>
+                          </td>
+                        </tr>
+                      </table>
 
-              <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; text-align: center;">
-                <p style="color: #666; font-size: 14px; margin: 0;">
-                  Submitted on ${new Date().toLocaleString('en-US', {
-                    timeZone: 'America/Costa_Rica',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })}
-                </p>
-              </div>
-            </div>
-          </div>
+                      <p style="margin: 0; color: #DED9EE; font-size: 16px; line-height: 1.7;">I look forward to hearing from you!<br>Best regards,<br><strong style="color: #FFFFFF;">${safeName}</strong></p>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td style="padding: 22px 28px 30px 28px; border-top: 1px solid #2B2343; background: #04000F;">
+                      <p style="margin: 0; color: #BEB7D8; font-size: 13px; line-height: 1.6; text-align: center;">Submitted on ${new Date().toLocaleString('en-US', {
+                        timeZone: 'America/Costa_Rica',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
         </body>
       </html>
     `;
@@ -399,7 +408,7 @@ export const POST: APIRoute = async ({ request }) => {
     const companyEmailResult = await resend.emails.send({
       from: 'Contact Form <noreply@nous.cr>',
       to: [CONTACT_RECIPIENT_EMAIL || 'hello@nous.cr'],
-      subject: `New Contact: ${safeSubjectLine}`,
+      subject: 'New Contact Form Submission',
       html: companyEmailHtml,
       replyTo: email
     });
