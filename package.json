@@ -25,7 +25,7 @@
     "check": "astro check",
     "lint": "astro check",
     "typecheck": "astro check",
-    "test": "node --test tests/*.test.mjs",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "audit:prod": "pnpm audit --prod",
     "validate": "pnpm check && pnpm test && pnpm build && pnpm audit:prod"
   },
@@ -62,6 +62,7 @@
     "lowlight": "^3.3.0",
     "marked": "^17.0.1",
     "motion": "^12.23.11",
+    "openai": "^6.37.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-icons": "^5.5.0",

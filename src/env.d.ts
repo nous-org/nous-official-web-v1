@@ -18,6 +18,11 @@ interface Env {
   CLERK_ADMIN_ORG_ROLES?: string;
   CLERK_ADMIN_SESSION_CLAIM?: string;
   CLERK_ADMIN_SESSION_CLAIM_VALUES?: string;
+  OPENAI_API_KEY?: string;
+  OPENAI_MODEL?: string;
+  OPENAI_CHATBOT_ENABLED?: string;
+  OPENAI_CHATBOT_STORE_RESPONSES?: string;
+  OPENAI_VECTOR_STORE_ID?: string;
 }
 
 declare namespace App {

@@ -15,6 +15,7 @@ test('wrangler.toml does not commit live-looking secrets', async () => {
     /GITHUB_CLIENT_SECRET\s*=\s*["'][a-f0-9]{20,}/i,
     /CLERK_SECRET_KEY\s*=\s*["']sk_(live|test)_/,
     /CLERK_PUBLISHABLE_KEY\s*=\s*["']pk_live_/,
+    /OPENAI_API_KEY\s*=\s*["']sk-[A-Za-z0-9_-]{12,}/,
   ];
 
   for (const pattern of forbiddenPatterns) {
