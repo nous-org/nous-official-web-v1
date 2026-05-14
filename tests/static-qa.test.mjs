@@ -169,9 +169,13 @@ test('internal contact notification e-mail uses approved subject and styling', a
   assert.match(companyTemplate, /Building a more intelligent world\./);
   assert.match(companyTemplate, /Contact Details/);
   assert.match(companyTemplate, /white-space: pre-wrap/);
-  assert.match(companyTemplate, /I look forward to hearing from you!<br>Best regards,<br><strong style="color: #FFFFFF;">\$\{safeName\}<\/strong>/);
+  assert.match(companyTemplate, /Hello\.<br><br>/);
+  assert.match(companyTemplate, /I look forward to hearing from you!<br><br>Best regards,<br><strong style="color: #FFFFFF;">\$\{safeName\}<\/strong>/);
+  assert.match(contactApi, /from:\s*'NOUS <noreply@nous\.cr>'/);
   assert.match(companyTemplate, /Submitted on/);
+  assert.equal(companyTemplate.includes('<strong style="color: #FFFFFF;">Hello.</strong>'), false);
   assert.equal(companyTemplate.includes('New Contact Form Submission - NOUS'), false);
+  assert.equal(contactApi.includes("from: 'Contact Form <noreply@nous.cr>'"), false);
 });
 
 test('retired and legacy redirect pages do not exist as source routes', () => {
