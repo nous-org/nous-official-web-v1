@@ -1,0 +1,305 @@
+<script is:inline lang="ts">
+(() => {
+  const validationCopy = {
+    en: {
+      summary: "Please fix the highlighted fields before sending.",
+      required: "This field is required.",
+      nameRequired: "Please enter your name.",
+      emailRequired: "Please enter your e-mail address.",
+      emailInvalid: "Please enter a valid e-mail address.",
+      phoneRequired: "Please enter your phone number.",
+      preferredContactRequired: "Please choose e-mail or WhatsApp.",
+      interestsRequired: "Select at least one option.",
+      subjectRequired: "Please add a subject.",
+      messageRequired: "Please tell us a little about what you need.",
+      messageMin: "Message must be at least 10 characters.",
+      messageMax: "Message must be less than 2000 characters.",
+    },
+    es: {
+      summary: "Corrige los campos marcados antes de enviar.",
+      required: "Este campo es obligatorio.",
+      nameRequired: "Escribe tu nombre.",
+      emailRequired: "Escribe tu e-mail.",
+      emailInvalid: "Escribe un e-mail válido.",
+      phoneRequired: "Escribe tu número de teléfono.",
+      preferredContactRequired: "Elige e-mail o WhatsApp.",
+      interestsRequired: "Selecciona al menos una opción.",
+      subjectRequired: "Agrega un asunto.",
+      messageRequired: "Cuéntanos un poco sobre lo que necesitas.",
+      messageMin: "El mensaje debe tener al menos 10 caracteres.",
+      messageMax: "El mensaje debe tener menos de 2000 caracteres.",
+    },
+  };
+
+  const fields = ["name", "email", "phone", "preferredContact", "subject", "message"];
+  const inputErrorClasses = ["border-red-400", "focus:border-red-400", "focus:ring-red-400/25"];
+  const choiceErrorClasses = ["ring-1", "ring-red-400/80"];
+
+  const initializeContactForms = () => {
+    document.querySelectorAll("form[data-contact-form]").forEach((form) => {
+      if (!(form instanceof HTMLFormElement)) return;
+      if (form.dataset.initialized === "true") return;
+      form.dataset.initialized = "true";
+      form.setAttribute("novalidate", "");
+
+      const root = form.closest("[data-contact-form-root]") || form.parentElement || document;
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const okBox = root.querySelector("[data-contact-success]");
+      const okText = root.querySelector("[data-contact-success-text]");
+      const errBox = root.querySelector("[data-contact-error]");
+      const errText = root.querySelector("[data-contact-error-text]");
+      let busy = false;
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if (busy) return;
+        if (!validateForm(form, root, errBox, errText)) return;
+        busy = true;
+        send(form, root, submitBtn, okBox, okText, errBox, errText).finally(() => {
+          setBtnLoading(submitBtn, false);
+          busy = false;
+        });
+      });
+
+      form.addEventListener("input", (event) => clearFieldIfValid(form, root, event.target));
+      form.addEventListener("change", (event) => clearFieldIfValid(form, root, event.target));
+    });
+  };
+
+  function hideMsgs(okBox, errBox) {
+    okBox?.classList.add("hidden");
+    errBox?.classList.add("hidden");
+  }
+
+  function showOK(form, root, okBox, okText, errBox, msg) {
+    hideMsgs(okBox, errBox);
+    clearValidationErrors(form, root);
+    if (okText && msg) okText.textContent = msg;
+    okBox?.classList.remove("hidden");
+  }
+
+  function showErr(errBox, errText, msg) {
+    if (errText) errText.textContent = msg;
+    errBox?.classList.remove("hidden");
+  }
+
+  function setBtnLoading(submitBtn, value) {
+    if (!(submitBtn instanceof HTMLButtonElement)) return;
+    submitBtn.classList.toggle("is-loading", value);
+    submitBtn.disabled = value;
+    submitBtn.setAttribute("aria-busy", value ? "true" : "false");
+  }
+
+  async function send(form, root, submitBtn, okBox, okText, errBox, errText) {
+    try {
+      hideMsgs(okBox, errBox);
+      setBtnLoading(submitBtn, true);
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        body: new FormData(form),
+      });
+      const json = await res.json().catch(() => ({}));
+
+      if (!res.ok || !json.success) {
+        clearValidationErrors(form, root);
+        const serverMessage = applyServerErrors(form, root, json) || getContactFormError(json, res.status);
+        showErr(errBox, errText, serverMessage);
+        focusFirstInvalid(form);
+        return;
+      }
+
+      showOK(form, root, okBox, okText, errBox, typeof json.message === "string" ? json.message : "");
+      form.reset();
+    } catch (err) {
+      showErr(
+        errBox,
+        errText,
+        err instanceof Error ? err.message : form.dataset.unexpectedError || "Unexpected error"
+      );
+    }
+  }
+
+  function validateForm(form, root, errBox, errText) {
+    clearValidationErrors(form, root);
+    const messages = getMessages(form);
+
+    for (const fieldName of fields) {
+      validateField(form, root, fieldName);
+    }
+
+    if (!hasCheckedOption(form, "interests")) {
+      setFieldError(form, root, "interests", messages.interestsRequired);
+    }
+
+    if (form.querySelector('[aria-invalid="true"]')) {
+      showErr(errBox, errText, messages.summary);
+      focusFirstInvalid(form);
+      return false;
+    }
+
+    hideMsgs(null, errBox);
+    return true;
+  }
+
+  function validateField(form, root, fieldName) {
+    const messages = getMessages(form);
+    const controls = getControls(form, fieldName);
+    if (!controls.length) return true;
+
+    if (fieldName === "preferredContact") {
+      if (!hasCheckedOption(form, fieldName)) {
+        setFieldError(form, root, fieldName, messages.preferredContactRequired);
+        return false;
+      }
+      return true;
+    }
+
+    const control = controls[0];
+    if (control instanceof HTMLInputElement || control instanceof HTMLTextAreaElement || control instanceof HTMLSelectElement) {
+      if (!control.checkValidity()) {
+        setFieldError(form, root, fieldName, getFieldMessage(fieldName, control, messages));
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  function clearFieldIfValid(form, root, target) {
+    if (!(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement)) return;
+    const fieldName = target.name;
+    if (!fieldName) return;
+
+    if (fieldName === "interests") {
+      if (hasCheckedOption(form, fieldName)) clearFieldError(form, root, fieldName);
+      return;
+    }
+
+    if (fieldName === "preferredContact") {
+      if (hasCheckedOption(form, fieldName)) clearFieldError(form, root, fieldName);
+      return;
+    }
+
+    if (target.checkValidity()) clearFieldError(form, root, fieldName);
+  }
+
+  function getFieldMessage(fieldName, control, messages) {
+    if (control.validity.valueMissing) {
+      return messages[`${fieldName}Required`] || messages.required;
+    }
+    if (control.validity.typeMismatch && fieldName === "email") return messages.emailInvalid;
+    if (control.validity.tooShort && fieldName === "message") return messages.messageMin;
+    if (control.validity.tooLong && fieldName === "message") return messages.messageMax;
+    return control.validationMessage || messages.required;
+  }
+
+  function applyServerErrors(form, root, json) {
+    if (!Array.isArray(json?.errors)) return "";
+    const messages = getMessages(form);
+    let hasFieldErrors = false;
+
+    for (const issue of json.errors) {
+      const fieldName = Array.isArray(issue?.path) ? issue.path[0] : null;
+      if (typeof fieldName !== "string") continue;
+      if (![...fields, "interests"].includes(fieldName)) continue;
+      setFieldError(form, root, fieldName, getServerFieldMessage(fieldName, issue, messages));
+      hasFieldErrors = true;
+    }
+
+    return hasFieldErrors ? messages.summary : "";
+  }
+
+  function getServerFieldMessage(fieldName, issue, messages) {
+    if (fieldName === "email" && issue?.code === "invalid_format") return messages.emailInvalid;
+    if (fieldName === "message" && issue?.code === "too_small") return messages.messageMin;
+    if (fieldName === "message" && issue?.code === "too_big") return messages.messageMax;
+    if (fieldName === "preferredContact") return messages.preferredContactRequired;
+    if (fieldName === "interests") return messages.interestsRequired;
+    return messages[`${fieldName}Required`] || issue?.message || messages.required;
+  }
+
+  function getContactFormError(json, status) {
+    const issue = Array.isArray(json?.errors)
+      ? json.errors.find((error) => typeof error?.message === "string")
+      : null;
+    return json?.message || issue?.message || `HTTP ${status}`;
+  }
+
+  function setFieldError(form, root, fieldName, message) {
+    const errorElement = root.querySelector(`[data-error-for="${fieldName}"]`);
+    if (errorElement) {
+      errorElement.textContent = message;
+      errorElement.classList.remove("hidden");
+    }
+
+    getControls(form, fieldName).forEach((control) => {
+      if (!(control instanceof HTMLElement)) return;
+      control.setAttribute("aria-invalid", "true");
+      if (isTextControl(control)) control.classList.add(...inputErrorClasses);
+    });
+
+    const fieldset = form.querySelector(`[data-fieldset="${fieldName}"]`);
+    fieldset?.setAttribute("aria-invalid", "true");
+
+    form.querySelectorAll(`[data-validation-choice="${fieldName}"]`).forEach((choice) => {
+      choice.classList.add(...choiceErrorClasses);
+    });
+  }
+
+  function clearFieldError(form, root, fieldName) {
+    const errorElement = root.querySelector(`[data-error-for="${fieldName}"]`);
+    if (errorElement) {
+      errorElement.textContent = "";
+      errorElement.classList.add("hidden");
+    }
+
+    getControls(form, fieldName).forEach((control) => {
+      if (!(control instanceof HTMLElement)) return;
+      control.setAttribute("aria-invalid", "false");
+      if (isTextControl(control)) control.classList.remove(...inputErrorClasses);
+    });
+
+    const fieldset = form.querySelector(`[data-fieldset="${fieldName}"]`);
+    fieldset?.setAttribute("aria-invalid", "false");
+
+    form.querySelectorAll(`[data-validation-choice="${fieldName}"]`).forEach((choice) => {
+      choice.classList.remove(...choiceErrorClasses);
+    });
+  }
+
+  function clearValidationErrors(form, root) {
+    [...fields, "interests"].forEach((fieldName) => clearFieldError(form, root, fieldName));
+  }
+
+  function getControls(form, fieldName) {
+    return Array.from(form.querySelectorAll(`[name="${fieldName}"]`));
+  }
+
+  function hasCheckedOption(form, fieldName) {
+    return getControls(form, fieldName).some((control) => control instanceof HTMLInputElement && control.checked);
+  }
+
+  function focusFirstInvalid(form) {
+    const firstInvalid = form.querySelector('[name][aria-invalid="true"]') || form.querySelector('[aria-invalid="true"]');
+    if (firstInvalid instanceof HTMLElement) {
+      firstInvalid.focus({ preventScroll: false });
+    }
+  }
+
+  function isTextControl(control) {
+    return control.matches('input:not([type="radio"]):not([type="checkbox"]), textarea, select');
+  }
+
+  function getMessages(form) {
+    return validationCopy[form.dataset.locale === "es" ? "es" : "en"];
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeContactForms, { once: true });
+  } else {
+    initializeContactForms();
+  }
+  document.addEventListener("astro:page-load", initializeContactForms);
+})();
+</script>

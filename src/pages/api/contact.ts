@@ -4,18 +4,60 @@ import { Resend } from 'resend';
 import { checkRateLimit, escapeHtml, getClientIp, isHoneypotFilled } from '@/lib/security';
 import { getRuntimeEnv } from '@/lib/runtime-env';
 
-const contactSchema = z.object({
-  name: z.string().min(1, 'Name is required').max(100, 'Name must be less than 100 characters'),
-  email: z.email('Please enter a valid e-mail address'),
-  subject: z.string().min(1, 'Subject is required').max(200, 'Subject must be less than 200 characters'),
-  message: z.string().min(10, 'Message must be at least 10 characters').max(2000, 'Message must be less than 2000 characters'),
-  phone: z.string().optional(),
-  preferredContact: z.enum(['email', 'whatsapp'], {
-    error: 'Please select a valid preferred contact method'
-  }),
-  interests: z.array(z.string()).optional().default([]),
-  locale: z.enum(['en', 'es']).optional().default('en')
-});
+const validationCopy = {
+  en: {
+    nameRequired: 'Name is required',
+    nameMax: 'Name must be less than 100 characters',
+    emailRequired: 'E-mail is required',
+    emailInvalid: 'Please enter a valid e-mail address',
+    phoneRequired: 'Phone number is required',
+    phoneMax: 'Phone number must be less than 50 characters',
+    preferredContactRequired: 'Please select a valid preferred contact method',
+    interestsRequired: 'Please select at least one area of interest',
+    subjectRequired: 'Subject is required',
+    subjectMax: 'Subject must be less than 200 characters',
+    messageRequired: 'Message is required',
+    messageMin: 'Message must be at least 10 characters',
+    messageMax: 'Message must be less than 2000 characters',
+  },
+  es: {
+    nameRequired: 'El nombre es obligatorio',
+    nameMax: 'El nombre debe tener menos de 100 caracteres',
+    emailRequired: 'El e-mail es obligatorio',
+    emailInvalid: 'Escribe un e-mail válido',
+    phoneRequired: 'El número de teléfono es obligatorio',
+    phoneMax: 'El número de teléfono debe tener menos de 50 caracteres',
+    preferredContactRequired: 'Selecciona un método de contacto válido',
+    interestsRequired: 'Selecciona al menos un área de interés',
+    subjectRequired: 'El asunto es obligatorio',
+    subjectMax: 'El asunto debe tener menos de 200 caracteres',
+    messageRequired: 'El mensaje es obligatorio',
+    messageMin: 'El mensaje debe tener al menos 10 caracteres',
+    messageMax: 'El mensaje debe tener menos de 2000 caracteres',
+  },
+} as const;
+
+function createContactSchema(locale: 'en' | 'es') {
+  const copy = validationCopy[locale];
+
+  return z.object({
+    name: z.string().trim().min(1, copy.nameRequired).max(100, copy.nameMax),
+    email: z.string().trim().min(1, copy.emailRequired).pipe(z.email(copy.emailInvalid)),
+    subject: z.string().trim().min(1, copy.subjectRequired).max(200, copy.subjectMax),
+    message: z.string().trim().min(1, copy.messageRequired).min(10, copy.messageMin).max(2000, copy.messageMax),
+    phone: z.string().trim().min(1, copy.phoneRequired).max(50, copy.phoneMax),
+    preferredContact: z.enum(['email', 'whatsapp'], {
+      error: copy.preferredContactRequired
+    }),
+    interests: z.array(z.string()).min(1, copy.interestsRequired),
+    locale: z.enum(['en', 'es']).optional().default('en')
+  });
+}
+
+function getFormString(formData: FormData, key: string) {
+  const value = formData.get(key);
+  return typeof value === 'string' ? value : '';
+}
 
 function inferLocale(request: Request, formData?: FormData): 'en' | 'es' {
   if (formData?.get('locale') === 'es') return 'es';
@@ -34,6 +76,7 @@ const responseCopy = {
     emailLimited: 'Too many messages were submitted from this e-mail address. Please try again later.',
     sendError: 'There was an error sending your message. Please try again or contact us directly.',
     success: 'Thank you for your message. Hermes will establish first contact shortly.',
+    localSuccess: 'Local test received. No e-mail was sent because RESEND_API_KEY is not configured locally.',
     checkForm: 'Please check your form data',
     processingError: 'There was an error processing your request. Please try again later.',
   },
@@ -43,6 +86,7 @@ const responseCopy = {
     emailLimited: 'Se enviaron demasiados mensajes desde esta dirección de e-mail. Inténtalo de nuevo más tarde.',
     sendError: 'Hubo un error enviando tu mensaje. Inténtalo de nuevo o contáctanos directamente.',
     success: 'Gracias por tu mensaje. Hermes establecerá el primer contacto pronto.',
+    localSuccess: 'Prueba local recibida. No se envió ningún e-mail porque RESEND_API_KEY no está configurado localmente.',
     checkForm: 'Revisa la información del formulario',
     processingError: 'Hubo un error procesando tu solicitud. Inténtalo de nuevo más tarde.',
   },
@@ -95,19 +139,19 @@ export const POST: APIRoute = async ({ request }) => {
       }
 
       rawData = {
-        name: formData.get('name') as string,
-        email: formData.get('email') as string,
-        subject: formData.get('subject') as string,
-        message: formData.get('message') as string,
-        phone: formData.get('phone') as string,
-        preferredContact: formData.get('preferredContact') as string,
+        name: getFormString(formData, 'name'),
+        email: getFormString(formData, 'email'),
+        subject: getFormString(formData, 'subject'),
+        message: getFormString(formData, 'message'),
+        phone: getFormString(formData, 'phone'),
+        preferredContact: getFormString(formData, 'preferredContact'),
         interests: formData.getAll('interests') as string[],
-        locale: formData.get('locale') as string || locale
+        locale: getFormString(formData, 'locale') || locale
       };
     }
 
     // Validate with Zod before using any submitted values.
-    const validatedData = contactSchema.parse(rawData);
+    const validatedData = createContactSchema(locale).parse(rawData);
     const { name, email, subject, message, phone, preferredContact, interests } = validatedData;
     locale = validatedData.locale;
     const safeName = escapeHtml(name);
@@ -133,6 +177,17 @@ export const POST: APIRoute = async ({ request }) => {
 
     const { RESEND_API_KEY, CONTACT_RECIPIENT_EMAIL } = getRuntimeEnv();
     if (!RESEND_API_KEY) {
+      if (import.meta.env.DEV) {
+        return new Response(JSON.stringify({
+          success: true,
+          dryRun: true,
+          message: responseCopy[locale].localSuccess
+        }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+
       return new Response(JSON.stringify({
         success: false,
         message: responseCopy[locale].unavailable
@@ -332,8 +387,6 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
   } catch (error) {
-    console.error('Contact form submission error:', error instanceof Error ? error.message : 'Unknown error');
-
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify({
         success: false,
@@ -344,6 +397,8 @@ export const POST: APIRoute = async ({ request }) => {
         headers: { 'Content-Type': 'application/json' }
       });
     }
+
+    console.error('Contact form submission error:', error instanceof Error ? error.message : 'Unknown error');
 
     return new Response(JSON.stringify({
       success: false,

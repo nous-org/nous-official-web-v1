@@ -12,6 +12,8 @@ interface Props {
     options?: Array<{ value: string; label: string; }>;
     required?: boolean;
     autocomplete?: string;
+    minlength?: number;
+    maxlength?: number;
 }
 const defaultClassName = 'w-full rounded-lg border border-neutral-700 bg-white/[0.03] px-4 py-3 text-base sm:text-lg font-normal text-white placeholder:text-neutral-500 transition-colors duration-200 hover:border-outline/70 focus:border-outline focus:outline-none focus:ring-2 focus:ring-outline/15';
 const defaultTextareaClassName = 'w-full rounded-lg border border-neutral-700 bg-white/[0.03] px-4 py-3 text-base sm:text-lg font-normal text-white placeholder:text-neutral-500 transition-colors duration-200 hover:border-outline/70 focus:border-outline focus:outline-none focus:ring-2 focus:ring-outline/15 min-h-[20dvh]';
@@ -38,20 +40,22 @@ const inferAutocomplete = (inputName?: string, inputType?: string) => {
     return undefined;
 };
 
-const { type, placeholder, className = defaultClassName, textareaClassName = defaultTextareaClassName, selectClassName = defaultSelectClassName, name, id, options = [], required = true, autocomplete } = Astro.props;
+const { type, placeholder, className = defaultClassName, textareaClassName = defaultTextareaClassName, selectClassName = defaultSelectClassName, name, id, options = [], required = true, autocomplete, minlength, maxlength } = Astro.props;
 const computedAutocomplete = autocomplete ?? inferAutocomplete(name, type);
+const errorId = name ? `${name}-error` : undefined;
 ---
 
 {type === 'textarea' ? (
     <div class="space-y-2">
         <label for={name} class="block text-base sm:text-lg font-medium text-gray-200 mb-2">{id}:</label>
-        <textarea id={name} placeholder={placeholder} class={textareaClassName} name={name} required={required}></textarea>
+        <textarea id={name} placeholder={placeholder} class={textareaClassName} name={name} required={required} minlength={minlength} maxlength={maxlength} aria-describedby={errorId} aria-invalid="false"></textarea>
+        <p id={errorId} data-error-for={name} class="hidden text-sm leading-relaxed text-red-300" aria-live="polite"></p>
     </div>
 ) : type === 'select' ? (
     <div class="space-y-2">
         <label for={name} class="block text-lg font-medium text-gray-200 mb-2">{id}:</label>
         <div class="relative">
-            <select id={name} name={name} class={selectClassName} required={required}>
+            <select id={name} name={name} class={selectClassName} required={required} aria-describedby={errorId} aria-invalid="false">
                 <option value="" disabled selected>{placeholder}</option>
                 {options.map((option) => (
                     <option value={option.value}>{option.label}</option>
@@ -64,10 +68,11 @@ const computedAutocomplete = autocomplete ?? inferAutocomplete(name, type);
                 </svg>
             </div>
         </div>
+        <p id={errorId} data-error-for={name} class="hidden text-sm leading-relaxed text-red-300" aria-live="polite"></p>
     </div>
 ) : type === 'radio' ? (
     <div class="space-y-2">
-        <fieldset class="space-y-3">
+        <fieldset class="space-y-3" data-fieldset={name} aria-describedby={errorId} aria-invalid="false">
             <legend class="block text-base sm:text-lg font-medium text-gray-200 mb-3">{id}:</legend>
             <div class="flex flex-wrap gap-2">
                 {options.map((option) => (
@@ -82,18 +87,22 @@ const computedAutocomplete = autocomplete ?? inferAutocomplete(name, type);
                             value={option.value}
                             class="sr-only peer"
                             required={required}
+                            aria-describedby={errorId}
+                            aria-invalid="false"
                         />
-                        <span class="inline-flex min-h-11 items-center justify-center rounded-full border border-neutral-700 bg-white/[0.03] px-4 py-2 text-sm font-normal text-neutral-300 transition-colors duration-200 group-hover:border-outline/70 group-hover:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-outline/40 peer-checked:border-outline peer-checked:bg-outline peer-checked:text-primary-black">
+                        <span data-validation-choice={name} class="inline-flex min-h-11 items-center justify-center rounded-full border border-neutral-700 bg-white/[0.03] px-4 py-2 text-sm font-normal text-neutral-300 transition-colors duration-200 group-hover:border-outline/70 group-hover:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-outline/40 peer-checked:border-outline peer-checked:bg-outline peer-checked:text-primary-black">
                             {option.label}
                         </span>
                     </label>
                 ))}
             </div>
+            <p id={errorId} data-error-for={name} class="hidden text-sm leading-relaxed text-red-300" aria-live="polite"></p>
         </fieldset>
     </div>
 ) : (
     <div class="space-y-2">
         <label for={name} class="block text-base sm:text-lg font-medium text-gray-200 mb-2">{id}:</label>
-        <input id={name} type={type} placeholder={placeholder} class={className} name={name} required={required} autocomplete={computedAutocomplete} />
+        <input id={name} type={type} placeholder={placeholder} class={className} name={name} required={required} autocomplete={computedAutocomplete} minlength={minlength} maxlength={maxlength} aria-describedby={errorId} aria-invalid="false" />
+        <p id={errorId} data-error-for={name} class="hidden text-sm leading-relaxed text-red-300" aria-live="polite"></p>
     </div>
 )}
