@@ -124,17 +124,31 @@ test('contact forms keep required fields and visible validation paths', async ()
 
 test('contact confirmation e-mail uses approved customer-facing copy and branding', async () => {
   const contactApi = await readText('src/pages/api/contact.ts');
+  const clientTemplate = contactApi.slice(
+    contactApi.indexOf('const clientEmailHtml'),
+    contactApi.indexOf('// Send e-mails.')
+  );
 
   assert.match(contactApi, /subject:\s*'Thank you for contacting NOUS!'/);
-  assert.match(contactApi, /<title>Thank you for contacting us!<\/title>/);
-  assert.match(contactApi, />Thank you for contacting us!<\/h1>/);
-  assert.match(contactApi, /https:\/\/nous\.cr\/favicon-96x96\.png/);
-  assert.match(contactApi, /customer service and support agent/);
-  assert.match(contactApi, /It seems like your preferred contact method is/);
-  assert.match(contactApi, /turn AI from isolated experiments into a working layer/);
-  assert.match(contactApi, /Best regards,<br><strong style="color: #FFFFFF;">NOUS<\/strong>/);
-  assert.equal(contactApi.includes('Thank You for Contacting Us!'), false);
-  assert.equal(contactApi.includes('The NOUS Team'), false);
+  assert.match(clientTemplate, /<title>Thank you for contacting us!<\/title>/);
+  assert.match(clientTemplate, />Thank you for contacting us!<\/h1>/);
+  assert.match(clientTemplate, /https:\/\/nous\.cr\/images\/nous-email-logo\.png/);
+  assert.match(clientTemplate, /Building a more intelligent world\./);
+  assert.match(clientTemplate, /customer service and support agent/);
+  assert.match(clientTemplate, /about <em style="color: #FFFFFF;">&quot;\$\{safeSubject\}&quot;<\/em>/);
+  assert.match(clientTemplate, /preferred contact method is <em style="color: #FFFFFF;">&quot;\$\{safePreferredContact\}&quot;<\/em>/);
+  assert.match(clientTemplate, /&bull;/);
+  assert.match(clientTemplate, /turn AI from isolated experiments into a working layer/);
+  assert.match(clientTemplate, /text-align: justify/);
+  assert.match(clientTemplate, /NOUS contact:/);
+  assert.match(clientTemplate, /hello@nous\.cr/);
+  assert.match(clientTemplate, /\+506 6186-5634/);
+  assert.match(clientTemplate, /Best regards,<br><strong style="color: #FFFFFF;">NOUS<\/strong>/);
+  assert.equal(clientTemplate.includes('Thank You for Contacting Us!'), false);
+  assert.equal(clientTemplate.includes('The NOUS Team'), false);
+  assert.equal(clientTemplate.includes('AI transformation, guided from first contact.'), false);
+  assert.equal(clientTemplate.includes('#9EE7FF'), false);
+  assert.equal(clientTemplate.includes('linear-gradient'), false);
 });
 
 test('retired and legacy redirect pages do not exist as source routes', () => {

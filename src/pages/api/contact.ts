@@ -306,57 +306,67 @@ export const POST: APIRoute = async ({ request }) => {
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: #04000F; margin: 0; padding: 32px 16px;">
             <tr>
               <td align="center">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 680px; border-collapse: separate; border-spacing: 0; overflow: hidden; background: #070116; border: 1px solid #342C50; border-radius: 8px;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 640px; border-collapse: separate; border-spacing: 0; overflow: hidden; background: #070116; border: 1px solid #2A2341; border-radius: 8px;">
                   <tr>
-                    <td style="padding: 28px 28px 18px 28px; background: #060114; background: linear-gradient(135deg, #060114 0%, #100528 56%, #201048 100%); border-bottom: 1px solid #342C50;">
-                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
-                        <tr>
-                          <td style="vertical-align: middle;">
-                            <img src="https://nous.cr/favicon-96x96.png" width="42" height="42" alt="NOUS" style="display: block; width: 42px; height: 42px; border-radius: 8px; border: 1px solid #5B4E80;">
-                          </td>
-                          <td style="vertical-align: middle; padding-left: 14px;">
-                            <p style="margin: 0; color: #DCD4FF; font-size: 12px; font-weight: 700; letter-spacing: 0; text-transform: uppercase;">NOUS</p>
-                            <p style="margin: 3px 0 0 0; color: #BEB7D8; font-size: 13px;">AI transformation, guided from first contact.</p>
-                          </td>
-                        </tr>
-                      </table>
-
-                      <h1 style="margin: 34px 0 0 0; color: #FFFFFF; font-size: 32px; line-height: 1.12; font-weight: 600; letter-spacing: 0;">Thank you for contacting us!</h1>
+                    <td style="padding: 34px 28px 24px 28px; background: #060114; border-bottom: 1px solid #2A2341; text-align: center;">
+                      <img src="https://nous.cr/images/nous-email-logo.png" width="176" height="176" alt="NOUS" style="display: block; width: 176px; height: 176px; margin: 0 auto 16px auto; border: 0;">
+                      <p style="margin: 0; color: #FFFFFF; font-size: 13px; font-weight: 700; letter-spacing: 0; text-transform: uppercase;">NOUS</p>
+                      <p style="margin: 5px 0 0 0; color: #BEB7D8; font-size: 14px; line-height: 1.5;">Building a more intelligent world.</p>
+                      <h1 style="margin: 28px 0 0 0; color: #FFFFFF; font-size: 30px; line-height: 1.15; font-weight: 600; letter-spacing: 0;">Thank you for contacting us!</h1>
                     </td>
                   </tr>
 
                   <tr>
-                    <td style="padding: 34px 28px 30px 28px;">
+                    <td style="padding: 32px 28px 28px 28px;">
                       <p style="margin: 0 0 20px 0; color: #F7F3FF; font-size: 17px; line-height: 1.65;">Hi ${safeName},</p>
 
-                      <p style="margin: 0 0 18px 0; color: #DED9EE; font-size: 16px; line-height: 1.7;">Thank you for reaching out to <strong style="color: #FFFFFF;">NOUS</strong>.</p>
+                      <p style="margin: 0 0 18px 0; color: #DED9EE; font-size: 16px; line-height: 1.7; text-align: justify; text-justify: inter-word;">Thank you for reaching out to <strong style="color: #FFFFFF;">NOUS</strong>.</p>
 
-                      <p style="margin: 0 0 26px 0; color: #DED9EE; font-size: 16px; line-height: 1.7;">
-                        We've received your message about <strong style="color: #FFFFFF;">${safeSubject}</strong>. Hermes, our customer service and support agent, will help establish first contact and ask a few initial questions before we move forward. It seems like your preferred contact method is <strong style="color: #FFFFFF;">${safePreferredContact}</strong>.
+                      <p style="margin: 0 0 28px 0; color: #DED9EE; font-size: 16px; line-height: 1.7; text-align: justify; text-justify: inter-word;">
+                        We've received your message about <em style="color: #FFFFFF;">&quot;${safeSubject}&quot;</em>. Hermes, our customer service and support agent, will help establish first contact and ask a few initial questions before we move forward. It seems like your preferred contact method is <em style="color: #FFFFFF;">&quot;${safePreferredContact}&quot;</em>.
                       </p>
 
-                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 0 0 26px 0; background: #120A2A; border: 1px solid #332A50; border-radius: 8px;">
+                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 0 0 28px 0; border-top: 1px solid #2A2341; border-bottom: 1px solid #2A2341;">
                         <tr>
-                          <td style="padding: 22px;">
+                          <td style="padding: 22px 0;">
                             <h2 style="margin: 0 0 16px 0; color: #FFFFFF; font-size: 18px; line-height: 1.3; font-weight: 600; letter-spacing: 0;">What happens next?</h2>
-                            <p style="margin: 0 0 10px 0; color: #D8D3EA; font-size: 15px; line-height: 1.55;">- This confirmation lets you know the message arrived.</p>
-                            <p style="margin: 0 0 10px 0; color: #D8D3EA; font-size: 15px; line-height: 1.55;">- Hermes will help clarify the first details.</p>
-                            <p style="margin: 0; color: #D8D3EA; font-size: 15px; line-height: 1.55;">- We'll use that context to define the most useful next step.</p>
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                              <tr>
+                                <td width="18" valign="top" style="color: #DCD4FF; font-size: 17px; line-height: 1.55;">&bull;</td>
+                                <td style="color: #D8D3EA; font-size: 15px; line-height: 1.55;">This confirmation lets you know the message arrived.</td>
+                              </tr>
+                              <tr>
+                                <td width="18" valign="top" style="color: #DCD4FF; font-size: 17px; line-height: 1.55; padding-top: 8px;">&bull;</td>
+                                <td style="color: #D8D3EA; font-size: 15px; line-height: 1.55; padding-top: 8px;">Hermes will help clarify the first details.</td>
+                              </tr>
+                              <tr>
+                                <td width="18" valign="top" style="color: #DCD4FF; font-size: 17px; line-height: 1.55; padding-top: 8px;">&bull;</td>
+                                <td style="color: #D8D3EA; font-size: 15px; line-height: 1.55; padding-top: 8px;">We'll use that context to define the most useful next step.</td>
+                              </tr>
+                            </table>
                           </td>
                         </tr>
                       </table>
 
-                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 0 0 26px 0; border-left: 3px solid #9EE7FF; background: #0B051D; border-radius: 8px;">
+                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 0 0 28px 0;">
                         <tr>
-                          <td style="padding: 22px;">
+                          <td>
                             <h2 style="margin: 0 0 14px 0; color: #FFFFFF; font-size: 18px; line-height: 1.3; font-weight: 600; letter-spacing: 0;">Your Contact Information</h2>
-                            <p style="margin: 0 0 9px 0; color: #D8D3EA; font-size: 15px; line-height: 1.55;">- E-mail: <a href="mailto:${safeEmail}" style="color: #9EE7FF; text-decoration: none;">${safeEmail}</a></p>
-                            <p style="margin: 0; color: #D8D3EA; font-size: 15px; line-height: 1.55;">- Phone number: <strong style="color: #FFFFFF;">${safePhone}</strong></p>
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                              <tr>
+                                <td width="18" valign="top" style="color: #DCD4FF; font-size: 17px; line-height: 1.55;">&bull;</td>
+                                <td style="color: #D8D3EA; font-size: 15px; line-height: 1.55;">E-mail: <a href="mailto:${safeEmail}" style="color: #DCD4FF; text-decoration: none;">${safeEmail}</a></td>
+                              </tr>
+                              <tr>
+                                <td width="18" valign="top" style="color: #DCD4FF; font-size: 17px; line-height: 1.55; padding-top: 8px;">&bull;</td>
+                                <td style="color: #D8D3EA; font-size: 15px; line-height: 1.55; padding-top: 8px;">Phone number: ${safePhone}</td>
+                              </tr>
+                            </table>
                           </td>
                         </tr>
                       </table>
 
-                      <p style="margin: 0 0 24px 0; color: #DED9EE; font-size: 16px; line-height: 1.7;">
+                      <p style="margin: 0 0 24px 0; color: #DED9EE; font-size: 16px; line-height: 1.7; text-align: justify; text-justify: inter-word;">
                         In the meantime, feel free to explore our services and learn more about how we help organizations turn AI from isolated experiments into a working layer for better decisions, faster operations, smarter customer support, and systems that compound institutional knowledge.
                       </p>
 
@@ -374,7 +384,7 @@ export const POST: APIRoute = async ({ request }) => {
 
                   <tr>
                     <td style="padding: 20px 28px 26px 28px; border-top: 1px solid #2B2343; background: #04000F;">
-                      <p style="margin: 0 0 8px 0; color: #BEB7D8; font-size: 13px; line-height: 1.5;">AI transformation | Intelligence deployment | AI-ready systems</p>
+                      <p style="margin: 0 0 8px 0; color: #BEB7D8; font-size: 13px; line-height: 1.5;">NOUS contact: <a href="mailto:hello@nous.cr" style="color: #DCD4FF; text-decoration: none;">hello@nous.cr</a> | <a href="https://wa.me/50661865634" style="color: #DCD4FF; text-decoration: none;">+506 6186-5634</a> | San José, Costa Rica</p>
                       <p style="margin: 0; color: #8F87A8; font-size: 12px; line-height: 1.5;">This is an automated confirmation from noreply@nous.cr.</p>
                     </td>
                   </tr>
