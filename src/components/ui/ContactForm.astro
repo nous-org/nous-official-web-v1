@@ -2,6 +2,7 @@
 import GradientTittle from "@/components/ui/Tittles/GradientTittle.astro";
 import Inputs from "@/components/ui/Inputs.astro";
 import SubmitButton from "@/components/ui/Buttons/SubmitButton.astro";
+import ContactFormClientScript from "@/components/ui/ContactFormClientScript.astro";
 import { normalizeLocale, type Locale } from "@/lib/i18n";
 
 interface Props {
@@ -64,23 +65,29 @@ const copy = isEs
     };
 ---
 
-<div class="w-auto">
+<div class="w-auto" data-contact-form-root>
   <GradientTittle title={copy.title} subHead={copy.subHead} />
   <!-- Message containers -->
   <div
     id="success-message"
+    data-contact-success
+    role="status"
+    aria-live="polite"
     class="hidden mb-4 p-4 border border-primary-turquoise text-primary-turquoise rounded-lg"
   >
-    <p class="font-medium">
+    <p class="font-medium" data-contact-success-text>
       {copy.success}
     </p>
   </div>
 
   <div
     id="error-message"
+    data-contact-error
+    role="alert"
+    aria-live="polite"
     class="hidden mb-4 p-4 border border-red-400 text-red-700 rounded-lg"
   >
-    <p class="font-medium" id="error-text">
+    <p class="font-medium" id="error-text" data-contact-error-text>
       {copy.error}
     </p>
   </div>
@@ -91,12 +98,21 @@ const copy = isEs
     method="POST"
     action="/api/contact"
     data-unexpected-error={copy.unexpected}
+    data-contact-form
+    data-locale={currentLocale}
   >
     <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
     <input type="hidden" name="locale" value={currentLocale} />
     <div class="flex flex-col gap-3">
       <span id="home-interests-label" class="block text-lg font-medium text-white">{copy.exploring}</span>
-      <div class="grid grid-cols-1 gap-2 sm:grid-cols-2" role="group" aria-labelledby="home-interests-label">
+      <div
+        class="grid grid-cols-1 gap-2 sm:grid-cols-2"
+        role="group"
+        aria-labelledby="home-interests-label"
+        aria-describedby="home-interests-error"
+        aria-invalid="false"
+        data-fieldset="interests"
+      >
         {
           copy.chips.map((chip) => (
             <div class:list={["min-w-0", chip.value === "not-sure" && "sm:col-span-2 sm:mx-auto sm:w-[calc(50%-0.25rem)]"]}>
@@ -106,9 +122,12 @@ const copy = isEs
                 name="interests"
                 value={chip.value}
                 class="sr-only peer"
+                aria-describedby="home-interests-error"
+                aria-invalid="false"
               />
               <label
                 for={chip.id}
+                data-validation-choice="interests"
                 class="inline-flex w-full items-center justify-center px-4 py-2 rounded-full border-2 border-gray-400
                      cursor-pointer transition-all duration-400
                      hover:border-outline hover:bg-outline/10 hover:text-white
@@ -120,11 +139,12 @@ const copy = isEs
           ))
         }
       </div>
+      <p id="home-interests-error" data-error-for="interests" class="hidden text-sm leading-relaxed text-red-300" aria-live="polite"></p>
     </div>
 
     <Inputs id={copy.name} type="text" placeholder="Roberto Pereira Ugalde" name="name" />
     <Inputs id={copy.email} type="email" placeholder="roberto@nous.cr" name="email" />
-    <Inputs id={copy.phone} type="tel" placeholder="+50661865634" name="phone" required={false} />
+    <Inputs id={copy.phone} type="tel" placeholder="+50661865634" name="phone" />
     <Inputs
       id={copy.preferred}
       type="radio"
@@ -136,7 +156,14 @@ const copy = isEs
       ]}
     />
     <Inputs id={copy.subject} type="text" placeholder={copy.subjectPlaceholder} name="subject" />
-    <Inputs id={copy.message} type="textarea" placeholder={copy.messagePlaceholder} name="message" />
+    <Inputs
+      id={copy.message}
+      type="textarea"
+      placeholder={copy.messagePlaceholder}
+      name="message"
+      minlength={10}
+      maxlength={2000}
+    />
 
     <div class="flex justify-start">
       <SubmitButton
@@ -152,68 +179,4 @@ const copy = isEs
   </form>
 </div>
 
-<script is:inline lang="ts">
-
-  document.addEventListener("astro:page-load", () => {
-    const form = document.getElementById("contact-form");
-    if (!form) return;
-    if (form.dataset.initialized === "true") return;
-    form.dataset.initialized = "true";
-
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const okBox = document.getElementById("success-message");
-    const errBox = document.getElementById("error-message");
-    const errText = document.getElementById("error-text");
-
-    let busy = false;
-
-    function hideMsgs() {
-      okBox?.classList.add("hidden");
-      errBox?.classList.add("hidden");
-    }
-    function showOK() {
-      hideMsgs();
-      okBox?.classList.remove("hidden");
-    }
-    function showErr(msg) {
-      hideMsgs();
-      if (errText) errText.textContent = msg;
-      errBox?.classList.remove("hidden");
-    }
-    function setBtnLoading(v) {
-      if (!(submitBtn instanceof HTMLButtonElement)) return;
-      submitBtn.classList.toggle("is-loading", v);
-      submitBtn.disabled = v;
-      submitBtn.setAttribute("aria-busy", v ? "true" : "false");
-    }
-
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      if (busy) return;
-      busy = true;
-      send();
-    });
-
-    async function send() {
-      try {
-        hideMsgs();
-        setBtnLoading(true);
-        const res = await fetch("/api/contact", {
-          method: "POST",
-          body: new FormData(form),
-        });
-        const json = await res.json();
-        if (!res.ok || !json.success)
-          throw new Error(json.message || `HTTP ${res.status}`);
-        showOK();
-        form.reset();
-      } catch (err) {
-        showErr(err instanceof Error ? err.message : form.dataset.unexpectedError || "Unexpected error");
-      } finally {
-        setBtnLoading(false);
-        busy = false;
-      }
-    }
-  });
-</script>
+<ContactFormClientScript />

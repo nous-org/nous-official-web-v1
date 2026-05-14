@@ -94,6 +94,34 @@ test('repo copy avoids stale NOUS Technologies branding in source files', async 
   }
 });
 
+test('contact forms keep required fields and visible validation paths', async () => {
+  const inputComponent = await readText('src/components/ui/Inputs.astro');
+  const homeForm = await readText('src/components/ui/ContactForm.astro');
+  const pageForm = await readText('src/components/ui/ContactPageForm.astro');
+  const clientScript = await readText('src/components/ui/ContactFormClientScript.astro');
+  const contactApi = await readText('src/pages/api/contact.ts');
+
+  assert.match(inputComponent, /data-error-for=\{name\}/);
+  assert.match(inputComponent, /aria-invalid="false"/);
+
+  for (const form of [homeForm, pageForm]) {
+    assert.match(form, /data-contact-form/);
+    assert.match(form, /data-error-for="interests"/);
+    assert.match(form, /name="phone"/);
+    assert.equal(form.includes('name="phone" required={false}'), false);
+    assert.match(form, /minlength=\{10\}/);
+    assert.match(form, /maxlength=\{2000\}/);
+  }
+
+  assert.match(clientScript, /validateForm/);
+  assert.match(clientScript, /interestsRequired/);
+  assert.match(clientScript, /data-contact-success-text/);
+  assert.match(contactApi, /phone:\s*z\.string\(\)\.trim\(\)\.min\(1/);
+  assert.match(contactApi, /interests:\s*z\.array\(z\.string\(\)\)\.min\(1/);
+  assert.match(contactApi, /import\.meta\.env\.DEV/);
+  assert.match(contactApi, /dryRun:\s*true/);
+});
+
 test('retired and legacy redirect pages do not exist as source routes', () => {
   for (const route of [
     'src/pages/about-us.astro',
