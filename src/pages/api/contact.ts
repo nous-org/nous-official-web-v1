@@ -384,7 +384,7 @@ export const POST: APIRoute = async ({ request }) => {
 
                   <tr>
                     <td style="padding: 22px 28px 30px 28px; border-top: 1px solid #2B2343; background: #04000F;">
-                      <p style="margin: 0; color: #BEB7D8; font-size: 13px; line-height: 1.6;">NOUS contact: <a href="mailto:hello@nous.cr" style="color: #DCD4FF; text-decoration: none;">hello@nous.cr</a> | <a href="https://wa.me/50661865634" style="color: #DCD4FF; text-decoration: none;">+506 6186-5634</a> | San José, Costa Rica</p>
+                      <p style="margin: 0; color: #BEB7D8; font-size: 13px; line-height: 1.6; text-align: center;"><a href="mailto:hello@nous.cr" style="color: #DCD4FF; text-decoration: none;">hello@nous.cr</a> | <a href="https://wa.me/50661865634" style="color: #DCD4FF; text-decoration: none;">+506 6186-5634</a> | San José, Costa Rica</p>
                     </td>
                   </tr>
                 </table>
