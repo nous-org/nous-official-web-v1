@@ -298,12 +298,12 @@ export const POST: APIRoute = async ({ request }) => {
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>Thank you for contacting us!</title>
         </head>
-        <body style="margin: 0; padding: 0; background: #04000F; color: #F7F3FF; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;">
+        <body style="margin: 0; padding: 0; background: #F3F0FF; color: #F7F3FF; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;">
           <div style="display: none; max-height: 0; overflow: hidden; opacity: 0; color: transparent;">
             We received your message. Hermes will establish first contact shortly.
           </div>
 
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: #04000F; margin: 0; padding: 32px 16px;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: #F3F0FF; background: linear-gradient(135deg, #FFFFFF 0%, #F5F1FF 46%, #DCD4FF 100%); margin: 0; padding: 40px 16px 48px 16px;">
             <tr>
               <td align="center">
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 640px; border-collapse: separate; border-spacing: 0; overflow: hidden; background: #070116; border: 1px solid #2A2341; border-radius: 8px;">
@@ -383,9 +383,8 @@ export const POST: APIRoute = async ({ request }) => {
                   </tr>
 
                   <tr>
-                    <td style="padding: 20px 28px 26px 28px; border-top: 1px solid #2B2343; background: #04000F;">
-                      <p style="margin: 0 0 8px 0; color: #BEB7D8; font-size: 13px; line-height: 1.5;">NOUS contact: <a href="mailto:hello@nous.cr" style="color: #DCD4FF; text-decoration: none;">hello@nous.cr</a> | <a href="https://wa.me/50661865634" style="color: #DCD4FF; text-decoration: none;">+506 6186-5634</a> | San José, Costa Rica</p>
-                      <p style="margin: 0; color: #8F87A8; font-size: 12px; line-height: 1.5;">This is an automated confirmation from noreply@nous.cr.</p>
+                    <td style="padding: 22px 28px 30px 28px; border-top: 1px solid #2B2343; background: #04000F;">
+                      <p style="margin: 0; color: #BEB7D8; font-size: 13px; line-height: 1.6;">NOUS contact: <a href="mailto:hello@nous.cr" style="color: #DCD4FF; text-decoration: none;">hello@nous.cr</a> | <a href="https://wa.me/50661865634" style="color: #DCD4FF; text-decoration: none;">+506 6186-5634</a> | San José, Costa Rica</p>
                     </td>
                   </tr>
                 </table>
