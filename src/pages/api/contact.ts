@@ -37,7 +37,9 @@ const validationCopy = {
   },
 } as const;
 
-function createContactSchema(locale: 'en' | 'es') {
+type Locale = keyof typeof validationCopy;
+
+function createContactSchema(locale: Locale) {
   const copy = validationCopy[locale];
 
   return z.object({
@@ -59,7 +61,7 @@ function getFormString(formData: FormData, key: string) {
   return typeof value === 'string' ? value : '';
 }
 
-function inferLocale(request: Request, formData?: FormData): 'en' | 'es' {
+function inferLocale(request: Request, formData?: FormData): Locale {
   if (formData?.get('locale') === 'es') return 'es';
   const referer = request.headers.get('referer') || '';
   try {
@@ -89,6 +91,91 @@ const responseCopy = {
     localSuccess: 'Prueba local recibida. No se envió ningún e-mail porque RESEND_API_KEY no está configurado localmente.',
     checkForm: 'Revisa la información del formulario',
     processingError: 'Hubo un error procesando tu solicitud. Inténtalo de nuevo más tarde.',
+  },
+} as const;
+
+const emailCopy = {
+  en: {
+    htmlLang: 'en',
+    dateLocale: 'en-US',
+    tagline: 'Building a more intelligent world.',
+    companySubject: 'New Contact Form Submission',
+    companyTitle: 'New Contact Form Submission',
+    companyPreheader: 'New contact form submission from',
+    companyDetailsHeading: 'Contact Details',
+    companyHello: 'Hello.',
+    companyNameLead: 'My name is',
+    companyReachLead: 'and you can reach me at',
+    companyPhoneLead: 'or by phone at',
+    companyPreferredLead: 'My preferred contact method is',
+    companyInterestsLead: "I'm interested in",
+    companySubjectLead: 'and the subject of my message is',
+    companyMessageLead: "Here's what I'd like to share:",
+    companySignoff: 'I look forward to hearing from you!',
+    companyClosing: 'Best regards,',
+    submittedOn: 'Submitted on',
+    customerSubject: 'Thank you for contacting NOUS!',
+    customerTitle: 'Thank you for contacting us!',
+    customerPreheader: 'We received your message. Hermes will establish first contact shortly.',
+    customerGreeting: 'Hi',
+    customerThanks: 'Thank you for reaching out to',
+    customerReceivedPrefix: "We've received your message about",
+    customerReceivedSuffix: 'Hermes, our customer service and support agent, will help establish first contact and ask a few initial questions before we move forward. It seems like your preferred contact method is',
+    whatNextHeading: 'What happens next?',
+    whatNextItems: [
+      'This confirmation lets you know the message arrived.',
+      'Hermes will help clarify the first details.',
+      "We'll use that context to define the most useful next step.",
+    ],
+    contactInfoHeading: 'Your Contact Information',
+    emailLabel: 'E-mail',
+    phoneLabel: 'Phone number',
+    exploreText: 'In the meantime, feel free to explore our services and learn more about how we help organizations turn AI from isolated experiments into a working layer for better decisions, faster operations, smarter customer support, and systems that compound institutional knowledge.',
+    servicesCta: 'Explore NOUS services',
+    servicesUrl: 'https://nous.cr/services',
+    customerClosing: 'Best regards,',
+    notSpecified: 'Not specified',
+  },
+  es: {
+    htmlLang: 'es',
+    dateLocale: 'es-CR',
+    tagline: 'Construyendo un mundo más inteligente.',
+    companySubject: 'Nueva solicitud del formulario de contacto',
+    companyTitle: 'Nueva solicitud del formulario de contacto',
+    companyPreheader: 'Nueva solicitud de contacto de',
+    companyDetailsHeading: 'Detalles del contacto',
+    companyHello: 'Hola.',
+    companyNameLead: 'Mi nombre es',
+    companyReachLead: 'y pueden contactarme en',
+    companyPhoneLead: 'o por teléfono al',
+    companyPreferredLead: 'Mi método de contacto preferido es',
+    companyInterestsLead: 'Me interesa',
+    companySubjectLead: 'y el asunto de mi mensaje es',
+    companyMessageLead: 'Esto es lo que me gustaría compartir:',
+    companySignoff: '¡Quedo atento a su respuesta!',
+    companyClosing: 'Saludos,',
+    submittedOn: 'Enviado el',
+    customerSubject: '¡Gracias por contactar a NOUS!',
+    customerTitle: '¡Gracias por contactarnos!',
+    customerPreheader: 'Recibimos tu mensaje. Hermes establecerá el primer contacto pronto.',
+    customerGreeting: 'Hola',
+    customerThanks: 'Gracias por contactar a',
+    customerReceivedPrefix: 'Recibimos tu mensaje sobre',
+    customerReceivedSuffix: 'Hermes, nuestro agente de atención y soporte, te ayudará a establecer el primer contacto y hará algunas preguntas iniciales antes de avanzar. Parece que tu método de contacto preferido es',
+    whatNextHeading: '¿Qué sigue?',
+    whatNextItems: [
+      'Esta confirmación te avisa que el mensaje llegó.',
+      'Hermes ayudará a aclarar los primeros detalles.',
+      'Usaremos ese contexto para definir el siguiente paso más útil.',
+    ],
+    contactInfoHeading: 'Tu información de contacto',
+    emailLabel: 'E-mail',
+    phoneLabel: 'Número de teléfono',
+    exploreText: 'Mientras tanto, puedes explorar nuestros servicios y conocer cómo ayudamos a las organizaciones a convertir la IA en una capa de trabajo para tomar mejores decisiones, operar con más claridad, atender mejor a sus clientes y construir sistemas que acumulen conocimiento institucional.',
+    servicesCta: 'Explorar servicios de NOUS',
+    servicesUrl: 'https://nous.cr/es/services',
+    customerClosing: 'Saludos,',
+    notSpecified: 'No especificado',
   },
 } as const;
 
@@ -197,24 +284,38 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const resend = new Resend(RESEND_API_KEY);
+    const emailLocaleCopy = emailCopy[locale];
 
     const interestsText = interests && interests.length > 0
       ? interests.map(interest => {
-          switch(interest) {
-            case 'technology-advisory': return 'AI Strategy';
-            case 'ai-strategy': return 'AI strategy';
-            case 'web-development': return 'AI Agents';
-            case 'ai-automation': return 'Intelligence Deployment';
-            case 'automation': return 'Automation';
-            case 'systems': return 'Systems';
-            case 'automation-agents': return 'Automation & agents';
-            case 'systems-integrations': return 'Systems & integrations';
-            case 'training-adoption': return 'Training & adoption';
-            case 'not-sure': return 'Not sure yet';
-            default: return escapeHtml(interest);
-          }
+          const interestLabels = locale === 'es'
+            ? {
+                'technology-advisory': 'Estrategia de IA',
+                'ai-strategy': 'Estrategia de IA',
+                'web-development': 'Agentes de IA',
+                'ai-automation': 'Implementación de inteligencia',
+                'automation': 'Automatización',
+                'systems': 'Sistemas',
+                'automation-agents': 'Automatización y agentes',
+                'systems-integrations': 'Sistemas e integraciones',
+                'training-adoption': 'Capacitación y adopción',
+                'not-sure': 'No estoy seguro todavía',
+              }
+            : {
+                'technology-advisory': 'AI Strategy',
+                'ai-strategy': 'AI strategy',
+                'web-development': 'AI Agents',
+                'ai-automation': 'Intelligence Deployment',
+                'automation': 'Automation',
+                'systems': 'Systems',
+                'automation-agents': 'Automation & agents',
+                'systems-integrations': 'Systems & integrations',
+                'training-adoption': 'Training & adoption',
+                'not-sure': 'Not sure yet',
+              };
+          return interestLabels[interest as keyof typeof interestLabels] || interest;
         }).join(', ')
-      : 'Not specified';
+      : emailLocaleCopy.notSpecified;
     const safeInterestsText = escapeHtml(interestsText);
 
     // Format preferred contact method for display
@@ -228,18 +329,32 @@ export const POST: APIRoute = async ({ request }) => {
 
     const formattedPreferredContact = formatPreferredContact(preferredContact);
     const safePreferredContact = escapeHtml(formattedPreferredContact);
+    const submittedDate = new Date().toLocaleString(emailLocaleCopy.dateLocale, {
+      timeZone: 'America/Costa_Rica',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    const customerNextRows = emailLocaleCopy.whatNextItems.map((item, index) => `
+                              <tr>
+                                <td width="18" valign="top" style="color: #DCD4FF; font-size: 17px; line-height: 1.55${index === 0 ? '' : '; padding-top: 8px'};">&bull;</td>
+                                <td style="color: #D8D3EA; font-size: 15px; line-height: 1.55${index === 0 ? '' : '; padding-top: 8px'};">${item}</td>
+                              </tr>
+    `).join('');
 
     const companyEmailHtml = `
       <!DOCTYPE html>
-      <html lang="en">
+      <html lang="${emailLocaleCopy.htmlLang}">
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>New Contact Form Submission</title>
+          <title>${emailLocaleCopy.companyTitle}</title>
         </head>
         <body style="margin: 0; padding: 0; background: #F3F0FF; color: #F7F3FF; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;">
           <div style="display: none; max-height: 0; overflow: hidden; opacity: 0; color: transparent;">
-            New contact form submission from ${safeName}.
+            ${emailLocaleCopy.companyPreheader} ${safeName}.
           </div>
 
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: #F3F0FF; background: linear-gradient(135deg, #FFFFFF 0%, #F5F1FF 46%, #DCD4FF 100%); margin: 0; padding: 40px 16px 48px 16px;">
@@ -250,21 +365,21 @@ export const POST: APIRoute = async ({ request }) => {
                     <td style="padding: 34px 28px 24px 28px; background: #060114; border-bottom: 1px solid #2A2341; text-align: center;">
                       <img src="https://nous.cr/images/nous-email-logo.png" width="176" height="176" alt="NOUS" style="display: block; width: 176px; height: 176px; margin: 0 auto 16px auto; border: 0;">
                       <p style="margin: 0; color: #FFFFFF; font-size: 13px; font-weight: 700; letter-spacing: 0; text-transform: uppercase;">NOUS</p>
-                      <p style="margin: 5px 0 0 0; color: #BEB7D8; font-size: 14px; line-height: 1.5;">Building a more intelligent world.</p>
-                      <h1 style="margin: 28px 0 0 0; color: #FFFFFF; font-size: 30px; line-height: 1.15; font-weight: 600; letter-spacing: 0;">New Contact Form Submission</h1>
+                      <p style="margin: 5px 0 0 0; color: #BEB7D8; font-size: 14px; line-height: 1.5;">${emailLocaleCopy.tagline}</p>
+                      <h1 style="margin: 28px 0 0 0; color: #FFFFFF; font-size: 30px; line-height: 1.15; font-weight: 600; letter-spacing: 0;">${emailLocaleCopy.companyTitle}</h1>
                     </td>
                   </tr>
 
                   <tr>
                     <td style="padding: 32px 28px 28px 28px;">
-                      <h2 style="margin: 0 0 18px 0; color: #FFFFFF; font-size: 18px; line-height: 1.3; font-weight: 600; letter-spacing: 0;">Contact Details</h2>
+                      <h2 style="margin: 0 0 18px 0; color: #FFFFFF; font-size: 18px; line-height: 1.3; font-weight: 600; letter-spacing: 0;">${emailLocaleCopy.companyDetailsHeading}</h2>
 
                       <p style="margin: 0 0 24px 0; color: #DED9EE; font-size: 16px; line-height: 1.7; text-align: justify; text-justify: inter-word;">
-                        Hello.<br><br>
-                        My name is <strong style="color: #FFFFFF;">${safeName}</strong> and you can reach me at <a href="mailto:${safeEmail}" style="color: #DCD4FF; text-decoration: none;">${safeEmail}</a>${safePhone ? ` or by phone at <strong style="color: #FFFFFF;">${safePhone}</strong>` : ''}.<br><br>
-                        ${preferredContact ? `My preferred contact method is <em style="color: #FFFFFF;">${safePreferredContact}</em>.<br><br>` : ''}
-                        I'm interested in <em style="color: #FFFFFF;">${safeInterestsText}</em> and the subject of my message is <em style="color: #FFFFFF;">&quot;${safeSubject}&quot;</em>.<br><br>
-                        Here's what I'd like to share:
+                        ${emailLocaleCopy.companyHello}<br><br>
+                        ${emailLocaleCopy.companyNameLead} <strong style="color: #FFFFFF;">${safeName}</strong> ${emailLocaleCopy.companyReachLead} <a href="mailto:${safeEmail}" style="color: #DCD4FF; text-decoration: none;">${safeEmail}</a>${safePhone ? ` ${emailLocaleCopy.companyPhoneLead} <strong style="color: #FFFFFF;">${safePhone}</strong>` : ''}.<br><br>
+                        ${preferredContact ? `${emailLocaleCopy.companyPreferredLead} <em style="color: #FFFFFF;">${safePreferredContact}</em>.<br><br>` : ''}
+                        ${emailLocaleCopy.companyInterestsLead} <em style="color: #FFFFFF;">${safeInterestsText}</em> ${emailLocaleCopy.companySubjectLead} <em style="color: #FFFFFF;">&quot;${safeSubject}&quot;</em>.<br><br>
+                        ${emailLocaleCopy.companyMessageLead}
                       </p>
 
                       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 0 0 24px 0; border-top: 1px solid #2A2341; border-bottom: 1px solid #2A2341;">
@@ -275,20 +390,13 @@ export const POST: APIRoute = async ({ request }) => {
                         </tr>
                       </table>
 
-                      <p style="margin: 0; color: #DED9EE; font-size: 16px; line-height: 1.7;">I look forward to hearing from you!<br><br>Best regards,<br><strong style="color: #FFFFFF;">${safeName}</strong></p>
+                      <p style="margin: 0; color: #DED9EE; font-size: 16px; line-height: 1.7;">${emailLocaleCopy.companySignoff}<br><br>${emailLocaleCopy.companyClosing}<br><strong style="color: #FFFFFF;">${safeName}</strong></p>
                     </td>
                   </tr>
 
                   <tr>
                     <td style="padding: 22px 28px 30px 28px; border-top: 1px solid #2B2343; background: #04000F;">
-                      <p style="margin: 0; color: #BEB7D8; font-size: 13px; line-height: 1.6; text-align: center;">Submitted on ${new Date().toLocaleString('en-US', {
-                        timeZone: 'America/Costa_Rica',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}</p>
+                      <p style="margin: 0; color: #BEB7D8; font-size: 13px; line-height: 1.6; text-align: center;">${emailLocaleCopy.submittedOn} ${submittedDate}</p>
                     </td>
                   </tr>
                 </table>
@@ -301,15 +409,15 @@ export const POST: APIRoute = async ({ request }) => {
 
     const clientEmailHtml = `
       <!DOCTYPE html>
-      <html lang="en">
+      <html lang="${emailLocaleCopy.htmlLang}">
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Thank you for contacting us!</title>
+          <title>${emailLocaleCopy.customerTitle}</title>
         </head>
         <body style="margin: 0; padding: 0; background: #F3F0FF; color: #F7F3FF; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;">
           <div style="display: none; max-height: 0; overflow: hidden; opacity: 0; color: transparent;">
-            We received your message. Hermes will establish first contact shortly.
+            ${emailLocaleCopy.customerPreheader}
           </div>
 
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: #F3F0FF; background: linear-gradient(135deg, #FFFFFF 0%, #F5F1FF 46%, #DCD4FF 100%); margin: 0; padding: 40px 16px 48px 16px;">
@@ -320,38 +428,27 @@ export const POST: APIRoute = async ({ request }) => {
                     <td style="padding: 34px 28px 24px 28px; background: #060114; border-bottom: 1px solid #2A2341; text-align: center;">
                       <img src="https://nous.cr/images/nous-email-logo.png" width="176" height="176" alt="NOUS" style="display: block; width: 176px; height: 176px; margin: 0 auto 16px auto; border: 0;">
                       <p style="margin: 0; color: #FFFFFF; font-size: 13px; font-weight: 700; letter-spacing: 0; text-transform: uppercase;">NOUS</p>
-                      <p style="margin: 5px 0 0 0; color: #BEB7D8; font-size: 14px; line-height: 1.5;">Building a more intelligent world.</p>
-                      <h1 style="margin: 28px 0 0 0; color: #FFFFFF; font-size: 30px; line-height: 1.15; font-weight: 600; letter-spacing: 0;">Thank you for contacting us!</h1>
+                      <p style="margin: 5px 0 0 0; color: #BEB7D8; font-size: 14px; line-height: 1.5;">${emailLocaleCopy.tagline}</p>
+                      <h1 style="margin: 28px 0 0 0; color: #FFFFFF; font-size: 30px; line-height: 1.15; font-weight: 600; letter-spacing: 0;">${emailLocaleCopy.customerTitle}</h1>
                     </td>
                   </tr>
 
                   <tr>
                     <td style="padding: 32px 28px 28px 28px;">
-                      <p style="margin: 0 0 20px 0; color: #F7F3FF; font-size: 17px; line-height: 1.65;">Hi ${safeName},</p>
+                      <p style="margin: 0 0 20px 0; color: #F7F3FF; font-size: 17px; line-height: 1.65;">${emailLocaleCopy.customerGreeting} ${safeName},</p>
 
-                      <p style="margin: 0 0 18px 0; color: #DED9EE; font-size: 16px; line-height: 1.7; text-align: justify; text-justify: inter-word;">Thank you for reaching out to <strong style="color: #FFFFFF;">NOUS</strong>.</p>
+                      <p style="margin: 0 0 18px 0; color: #DED9EE; font-size: 16px; line-height: 1.7; text-align: justify; text-justify: inter-word;">${emailLocaleCopy.customerThanks} <strong style="color: #FFFFFF;">NOUS</strong>.</p>
 
                       <p style="margin: 0 0 28px 0; color: #DED9EE; font-size: 16px; line-height: 1.7; text-align: justify; text-justify: inter-word;">
-                        We've received your message about <em style="color: #FFFFFF;">&quot;${safeSubject}&quot;</em>. Hermes, our customer service and support agent, will help establish first contact and ask a few initial questions before we move forward. It seems like your preferred contact method is <em style="color: #FFFFFF;">&quot;${safePreferredContact}&quot;</em>.
+                        ${emailLocaleCopy.customerReceivedPrefix} <em style="color: #FFFFFF;">&quot;${safeSubject}&quot;</em>. ${emailLocaleCopy.customerReceivedSuffix} <em style="color: #FFFFFF;">&quot;${safePreferredContact}&quot;</em>.
                       </p>
 
                       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 0 0 28px 0; border-top: 1px solid #2A2341; border-bottom: 1px solid #2A2341;">
                         <tr>
                           <td style="padding: 22px 0;">
-                            <h2 style="margin: 0 0 16px 0; color: #FFFFFF; font-size: 18px; line-height: 1.3; font-weight: 600; letter-spacing: 0;">What happens next?</h2>
+                            <h2 style="margin: 0 0 16px 0; color: #FFFFFF; font-size: 18px; line-height: 1.3; font-weight: 600; letter-spacing: 0;">${emailLocaleCopy.whatNextHeading}</h2>
                             <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
-                              <tr>
-                                <td width="18" valign="top" style="color: #DCD4FF; font-size: 17px; line-height: 1.55;">&bull;</td>
-                                <td style="color: #D8D3EA; font-size: 15px; line-height: 1.55;">This confirmation lets you know the message arrived.</td>
-                              </tr>
-                              <tr>
-                                <td width="18" valign="top" style="color: #DCD4FF; font-size: 17px; line-height: 1.55; padding-top: 8px;">&bull;</td>
-                                <td style="color: #D8D3EA; font-size: 15px; line-height: 1.55; padding-top: 8px;">Hermes will help clarify the first details.</td>
-                              </tr>
-                              <tr>
-                                <td width="18" valign="top" style="color: #DCD4FF; font-size: 17px; line-height: 1.55; padding-top: 8px;">&bull;</td>
-                                <td style="color: #D8D3EA; font-size: 15px; line-height: 1.55; padding-top: 8px;">We'll use that context to define the most useful next step.</td>
-                              </tr>
+                              ${customerNextRows}
                             </table>
                           </td>
                         </tr>
@@ -360,15 +457,15 @@ export const POST: APIRoute = async ({ request }) => {
                       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 0 0 28px 0;">
                         <tr>
                           <td>
-                            <h2 style="margin: 0 0 14px 0; color: #FFFFFF; font-size: 18px; line-height: 1.3; font-weight: 600; letter-spacing: 0;">Your Contact Information</h2>
+                            <h2 style="margin: 0 0 14px 0; color: #FFFFFF; font-size: 18px; line-height: 1.3; font-weight: 600; letter-spacing: 0;">${emailLocaleCopy.contactInfoHeading}</h2>
                             <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                               <tr>
                                 <td width="18" valign="top" style="color: #DCD4FF; font-size: 17px; line-height: 1.55;">&bull;</td>
-                                <td style="color: #D8D3EA; font-size: 15px; line-height: 1.55;">E-mail: <a href="mailto:${safeEmail}" style="color: #DCD4FF; text-decoration: none;">${safeEmail}</a></td>
+                                <td style="color: #D8D3EA; font-size: 15px; line-height: 1.55;">${emailLocaleCopy.emailLabel}: <a href="mailto:${safeEmail}" style="color: #DCD4FF; text-decoration: none;">${safeEmail}</a></td>
                               </tr>
                               <tr>
                                 <td width="18" valign="top" style="color: #DCD4FF; font-size: 17px; line-height: 1.55; padding-top: 8px;">&bull;</td>
-                                <td style="color: #D8D3EA; font-size: 15px; line-height: 1.55; padding-top: 8px;">Phone number: ${safePhone}</td>
+                                <td style="color: #D8D3EA; font-size: 15px; line-height: 1.55; padding-top: 8px;">${emailLocaleCopy.phoneLabel}: ${safePhone}</td>
                               </tr>
                             </table>
                           </td>
@@ -376,18 +473,18 @@ export const POST: APIRoute = async ({ request }) => {
                       </table>
 
                       <p style="margin: 0 0 24px 0; color: #DED9EE; font-size: 16px; line-height: 1.7; text-align: justify; text-justify: inter-word;">
-                        In the meantime, feel free to explore our services and learn more about how we help organizations turn AI from isolated experiments into a working layer for better decisions, faster operations, smarter customer support, and systems that compound institutional knowledge.
+                        ${emailLocaleCopy.exploreText}
                       </p>
 
                       <table role="presentation" cellspacing="0" cellpadding="0" style="margin: 0 0 30px 0;">
                         <tr>
                           <td style="background: #DCD4FF; border-radius: 8px;">
-                            <a href="https://nous.cr/services" target="_blank" style="display: inline-block; padding: 13px 18px; color: #060114; font-size: 14px; font-weight: 700; line-height: 1; text-decoration: none;">Explore NOUS services</a>
+                            <a href="${emailLocaleCopy.servicesUrl}" target="_blank" style="display: inline-block; padding: 13px 18px; color: #060114; font-size: 14px; font-weight: 700; line-height: 1; text-decoration: none;">${emailLocaleCopy.servicesCta}</a>
                           </td>
                         </tr>
                       </table>
 
-                      <p style="margin: 0; color: #DED9EE; font-size: 16px; line-height: 1.7;">Best regards,<br><strong style="color: #FFFFFF;">NOUS</strong></p>
+                      <p style="margin: 0; color: #DED9EE; font-size: 16px; line-height: 1.7;">${emailLocaleCopy.customerClosing}<br><strong style="color: #FFFFFF;">NOUS</strong></p>
                     </td>
                   </tr>
 
@@ -408,7 +505,7 @@ export const POST: APIRoute = async ({ request }) => {
     const companyEmailResult = await resend.emails.send({
       from: 'NOUS <noreply@nous.cr>',
       to: [CONTACT_RECIPIENT_EMAIL || 'hello@nous.cr'],
-      subject: 'New Contact Form Submission',
+      subject: emailLocaleCopy.companySubject,
       html: companyEmailHtml,
       replyTo: email
     });
@@ -416,7 +513,7 @@ export const POST: APIRoute = async ({ request }) => {
     const clientEmailResult = await resend.emails.send({
       from: 'NOUS <noreply@nous.cr>',
       to: [email],
-      subject: 'Thank you for contacting NOUS!',
+      subject: emailLocaleCopy.customerSubject,
       html: clientEmailHtml
     });
 

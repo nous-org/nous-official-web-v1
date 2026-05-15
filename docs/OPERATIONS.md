@@ -116,6 +116,26 @@ curl -i -X POST https://nous.cr/api/subscribe \
 
 Expected result: `400` validation responses.
 
+For a targeted contact validation check without sending e-mail:
+
+```bash
+curl -i -X POST https://nous.cr/api/contact \
+  -H 'content-type: application/json' \
+  --data '{"name":"Codex Smoke","email":"codex-smoke@example.com","phone":"+506 8888-8888","preferredContact":"email","interests":["ai-strategy"],"subject":"Smoke test","message":"short","locale":"en"}'
+```
+
+Expected result: `400` with a message-length validation error.
+
+After contact e-mail template changes, verify the public logo asset used by inboxes:
+
+```bash
+curl -I https://nous.cr/images/nous-email-logo.png
+```
+
+Expected result: `200`.
+
+Do not run a valid contact delivery smoke test unless the goal is to send real e-mail. A valid production submission should send both the internal NOUS notification and the external confirmation e-mail through Resend.
+
 Check unauthenticated admin API behavior:
 
 ```bash
@@ -143,6 +163,10 @@ Likely cause: Clerk env vars or admin authorization policy are missing. Confirm 
 ### Contact form returns service unavailable
 
 Likely cause: `RESEND_API_KEY` or recipient config is missing, or Resend is unavailable. Confirm Cloudflare secrets and Resend account state.
+
+### Contact e-mail is not received
+
+Confirm `RESEND_API_KEY` is configured as a Cloudflare secret, `CONTACT_RECIPIENT_EMAIL` is configured as a Worker variable, the `noreply@nous.cr` sending domain is healthy in Resend, and the recipient inbox did not classify the message as spam. Then check Cloudflare Worker logs for Resend API errors or contact rate-limit responses.
 
 ### Sitemap contains unexpected pages
 

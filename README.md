@@ -30,7 +30,7 @@ The site is built as a fast, bilingual, SEO-conscious Astro application with sel
 - SEO metadata, canonical URLs, sitemap generation, `robots.txt`, and structured data.
 - Cloudflare Worker configuration and route handling.
 - Legacy URL redirects for retired pages and old slugs.
-- Contact and newsletter API endpoints.
+- Contact and newsletter API endpoints, including contact form validation and Resend e-mail templates.
 - Clerk-protected admin surface for content workflows.
 - Static QA checks that protect SEO, security, and repo hygiene decisions.
 
@@ -140,6 +140,17 @@ Required runtime integrations:
 
 Admin APIs fail closed when Clerk or admin authorization config is missing.
 
+## Contact And E-mail Flow
+
+The public contact forms post to `POST /api/contact`, which validates required fields, applies abuse controls, and sends two Resend e-mails:
+
+- an internal notification to the NOUS team
+- a confirmation e-mail to the person who submitted the form
+
+The repo owns the HTML e-mail templates, sender display names, subject lines, inline validation copy, and delivery behavior. Local development returns a dry-run success when `RESEND_API_KEY` is missing; production requires the Cloudflare secret and falls back to a service-unavailable message if delivery cannot be configured.
+
+See [docs/CONTACT_AND_EMAIL.md](docs/CONTACT_AND_EMAIL.md) for template standards, smoke tests, and runtime notes.
+
 ## Website AI Assistant
 
 The site includes a native NOUS chatbot widget powered by the OpenAI Responses API.
@@ -241,7 +252,7 @@ See [docs/SEO_AND_CONTENT.md](docs/SEO_AND_CONTENT.md) for route-level rules and
 ```text
 .github/
   workflows/              GitHub Actions deployment workflow
-docs/                     Architecture, operations, and SEO guidance
+docs/                     Architecture, operations, contact/e-mail, chatbot, and SEO guidance
 public/                   Static assets served directly
 src/
   assets/                 Build-processed images and brand assets
