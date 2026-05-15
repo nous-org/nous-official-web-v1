@@ -30,8 +30,8 @@
     "validate": "pnpm check && pnpm test && pnpm build && pnpm audit:prod"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.5.0",
-    "@astrojs/react": "^5.0.4",
+    "@astrojs/cloudflare": "^13.5.1",
+    "@astrojs/react": "^5.0.5",
     "@astrojs/sitemap": "^3.7.2",
     "@clerk/backend": "^3.4.7",
     "@clerk/clerk-react": "^5.61.6",
@@ -55,7 +55,7 @@
     "@tiptap/starter-kit": "^3.23.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
-    "astro": "^6.3.1",
+    "astro": "^6.3.3",
     "clsx": "^2.1.1",
     "cobe": "^0.6.4",
     "dompurify": "^3.4.2",
@@ -75,5 +75,10 @@
     "@astrojs/check": "^0.9.9",
     "typescript": "^5.9.3",
     "wrangler": "^4.90.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "devalue": "5.8.1"
+    }
   }
 }

@@ -45,6 +45,7 @@ pnpm exec wrangler deploy -c dist/server/wrangler.json --dry-run --keep-vars
 - No generated folders or local reports are committed.
 - No secrets, API tokens, private keys, or live credentials are committed.
 - Form, admin, or API changes include validation/security notes.
+- Contact form or e-mail template changes update `docs/CONTACT_AND_EMAIL.md` and static QA expectations where relevant.
 
 ## Coding Standards
 
@@ -72,3 +73,4 @@ The deploy workflow runs automatically on merges to `main`. After merge, verify:
 - `https://nous.cr/sitemap-index.xml`
 - key redirects such as `/pricing`, `/products`, `/about-us`, and `/contact-us`
 - contact/newsletter validation behavior when affected
+- contact e-mail delivery and template rendering when affected

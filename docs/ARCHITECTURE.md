@@ -31,6 +31,7 @@ The site is intentionally hybrid:
 | Localization | `src/lib/i18n.ts` | Locale normalization, localized paths, shared copy |
 | Admin auth | `src/lib/auth.ts` | Clerk verification plus explicit admin policy |
 | Database access | `src/lib/db.ts` | Turso/libSQL clients and content data access |
+| Contact workflow | `src/pages/api/contact.ts` | Server validation, abuse controls, and Resend e-mail delivery |
 | Runtime config | `src/lib/runtime-env.ts` | Environment handling without leaking secrets |
 | Deployment | `wrangler.toml`, `.github/workflows/deploy.yml` | Cloudflare Worker config and CI deploy |
 
@@ -117,7 +118,20 @@ When new pages are added, decide whether they should be:
 | Cloudflare KV | Session binding for Astro/Cloudflare runtime |
 | Clerk | Admin authentication |
 | Turso/libSQL | Blog/admin content and newsletter storage |
-| Resend | Contact e-mail delivery |
+| Resend | Internal contact notifications and customer confirmation e-mails |
+
+## Contact Form And E-mail Flow
+
+The contact form is split between Astro-rendered markup, a small client validation script, and a server-side API endpoint:
+
+- `src/components/ui/ContactForm.astro` and `src/components/ui/ContactPageForm.astro` render the public forms.
+- `src/components/ui/ContactFormClientScript.astro` owns inline validation states and submit behavior.
+- `src/pages/api/contact.ts` owns authoritative Zod validation, honeypot handling, rate limiting, safe HTML escaping, and Resend delivery.
+- `public/images/nous-email-logo.png` is the logo used by the contact e-mail templates.
+
+The endpoint sends an internal notification to `CONTACT_RECIPIENT_EMAIL` and a confirmation e-mail to the submitter. User-submitted values must be escaped before being rendered into HTML e-mail templates.
+
+See [CONTACT_AND_EMAIL.md](CONTACT_AND_EMAIL.md) for template standards and smoke-test details.
 
 ## Design System Notes
 

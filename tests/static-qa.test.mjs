@@ -49,6 +49,7 @@ test('repository metadata and operating docs are present', async () => {
     'SECURITY.md',
     'docs/ARCHITECTURE.md',
     'docs/OPERATIONS.md',
+    'docs/CONTACT_AND_EMAIL.md',
     'docs/SEO_AND_CONTENT.md',
     '.github/pull_request_template.md',
     '.github/CODEOWNERS',
@@ -67,7 +68,18 @@ test('repository metadata and operating docs are present', async () => {
   assert.match(readme, /NOUS Official Website/);
   assert.match(readme, /docs\/ARCHITECTURE\.md/);
   assert.match(readme, /docs\/OPERATIONS\.md/);
+  assert.match(readme, /docs\/CONTACT_AND_EMAIL\.md/);
   assert.match(readme, /docs\/SEO_AND_CONTENT\.md/);
+
+  const contactEmailDocs = await readText('docs/CONTACT_AND_EMAIL.md');
+  assert.match(contactEmailDocs, /Thank you for contacting NOUS!/);
+  assert.match(contactEmailDocs, /¡Gracias por contactar a NOUS!/);
+  assert.match(contactEmailDocs, /New Contact Form Submission/);
+  assert.match(contactEmailDocs, /Nueva solicitud del formulario de contacto/);
+  assert.match(contactEmailDocs, /NOUS <noreply@nous\.cr>/);
+  assert.match(contactEmailDocs, /CONTACT_RECIPIENT_EMAIL/);
+  assert.match(contactEmailDocs, /RESEND_API_KEY/);
+  assert.match(contactEmailDocs, /images\/nous-email-logo\.png/);
 });
 
 test('robots references generated sitemap index and blocks sensitive routes', async () => {
@@ -129,22 +141,30 @@ test('contact confirmation e-mail uses approved customer-facing copy and brandin
     contactApi.indexOf('// Send e-mails.')
   );
 
-  assert.match(contactApi, /subject:\s*'Thank you for contacting NOUS!'/);
-  assert.match(clientTemplate, /<title>Thank you for contacting us!<\/title>/);
-  assert.match(clientTemplate, />Thank you for contacting us!<\/h1>/);
+  assert.match(contactApi, /customerSubject:\s*'Thank you for contacting NOUS!'/);
+  assert.match(contactApi, /customerSubject:\s*'¡Gracias por contactar a NOUS!'/);
+  assert.match(contactApi, /subject:\s*emailLocaleCopy\.customerSubject/);
+  assert.match(clientTemplate, /<html lang="\$\{emailLocaleCopy\.htmlLang\}">/);
+  assert.match(clientTemplate, /<title>\$\{emailLocaleCopy\.customerTitle\}<\/title>/);
+  assert.match(clientTemplate, />\$\{emailLocaleCopy\.customerTitle\}<\/h1>/);
   assert.match(clientTemplate, /https:\/\/nous\.cr\/images\/nous-email-logo\.png/);
-  assert.match(clientTemplate, /Building a more intelligent world\./);
-  assert.match(clientTemplate, /customer service and support agent/);
-  assert.match(clientTemplate, /about <em style="color: #FFFFFF;">&quot;\$\{safeSubject\}&quot;<\/em>/);
-  assert.match(clientTemplate, /preferred contact method is <em style="color: #FFFFFF;">&quot;\$\{safePreferredContact\}&quot;<\/em>/);
+  assert.match(contactApi, /Building a more intelligent world\./);
+  assert.match(contactApi, /Construyendo un mundo más inteligente\./);
+  assert.match(contactApi, /customer service and support agent/);
+  assert.match(contactApi, /agente de atención y soporte/);
+  assert.match(clientTemplate, /\$\{emailLocaleCopy\.customerReceivedPrefix\} <em style="color: #FFFFFF;">&quot;\$\{safeSubject\}&quot;<\/em>/);
+  assert.match(clientTemplate, /\$\{emailLocaleCopy\.customerReceivedSuffix\} <em style="color: #FFFFFF;">&quot;\$\{safePreferredContact\}&quot;<\/em>/);
   assert.match(clientTemplate, /&bull;/);
-  assert.match(clientTemplate, /turn AI from isolated experiments into a working layer/);
+  assert.match(contactApi, /turn AI from isolated experiments into a working layer/);
+  assert.match(contactApi, /convertir la IA en una capa de trabajo/);
+  assert.match(contactApi, /servicesUrl:\s*'https:\/\/nous\.cr\/es\/services'/);
+  assert.match(contactApi, /servicesCta:\s*'Explorar servicios de NOUS'/);
   assert.match(clientTemplate, /text-align: justify/);
   assert.match(clientTemplate, /hello@nous\.cr/);
   assert.match(clientTemplate, /\+506 6186-5634/);
   assert.match(clientTemplate, /font-size: 13px; line-height: 1\.6; text-align: center;/);
   assert.match(clientTemplate, /background: linear-gradient\(135deg, #FFFFFF 0%, #F5F1FF 46%, #DCD4FF 100%\)/);
-  assert.match(clientTemplate, /Best regards,<br><strong style="color: #FFFFFF;">NOUS<\/strong>/);
+  assert.match(clientTemplate, /\$\{emailLocaleCopy\.customerClosing\}<br><strong style="color: #FFFFFF;">NOUS<\/strong>/);
   assert.equal(clientTemplate.includes('Thank You for Contacting Us!'), false);
   assert.equal(clientTemplate.includes('The NOUS Team'), false);
   assert.equal(clientTemplate.includes('NOUS contact:'), false);
@@ -160,19 +180,28 @@ test('internal contact notification e-mail uses approved subject and styling', a
     contactApi.indexOf('const clientEmailHtml')
   );
 
-  assert.match(contactApi, /subject:\s*'New Contact Form Submission'/);
+  assert.match(contactApi, /companySubject:\s*'New Contact Form Submission'/);
+  assert.match(contactApi, /companySubject:\s*'Nueva solicitud del formulario de contacto'/);
+  assert.match(contactApi, /subject:\s*emailLocaleCopy\.companySubject/);
   assert.equal(contactApi.includes('subject: `New Contact:'), false);
   assert.equal(contactApi.includes('safeSubjectLine'), false);
-  assert.match(companyTemplate, /<title>New Contact Form Submission<\/title>/);
-  assert.match(companyTemplate, />New Contact Form Submission<\/h1>/);
+  assert.match(companyTemplate, /<html lang="\$\{emailLocaleCopy\.htmlLang\}">/);
+  assert.match(companyTemplate, /<title>\$\{emailLocaleCopy\.companyTitle\}<\/title>/);
+  assert.match(companyTemplate, />\$\{emailLocaleCopy\.companyTitle\}<\/h1>/);
   assert.match(companyTemplate, /https:\/\/nous\.cr\/images\/nous-email-logo\.png/);
-  assert.match(companyTemplate, /Building a more intelligent world\./);
-  assert.match(companyTemplate, /Contact Details/);
+  assert.match(contactApi, /Building a more intelligent world\./);
+  assert.match(contactApi, /Construyendo un mundo más inteligente\./);
+  assert.match(contactApi, /companyDetailsHeading:\s*'Contact Details'/);
+  assert.match(contactApi, /companyDetailsHeading:\s*'Detalles del contacto'/);
   assert.match(companyTemplate, /white-space: pre-wrap/);
-  assert.match(companyTemplate, /Hello\.<br><br>/);
-  assert.match(companyTemplate, /I look forward to hearing from you!<br><br>Best regards,<br><strong style="color: #FFFFFF;">\$\{safeName\}<\/strong>/);
+  assert.match(contactApi, /companyHello:\s*'Hello\.'/);
+  assert.match(contactApi, /companyHello:\s*'Hola\.'/);
+  assert.match(contactApi, /companySignoff:\s*'I look forward to hearing from you!'/);
+  assert.match(contactApi, /companySignoff:\s*'¡Quedo atento a su respuesta!'/);
+  assert.match(companyTemplate, /\$\{emailLocaleCopy\.companySignoff\}<br><br>\$\{emailLocaleCopy\.companyClosing\}<br><strong style="color: #FFFFFF;">\$\{safeName\}<\/strong>/);
   assert.match(contactApi, /from:\s*'NOUS <noreply@nous\.cr>'/);
-  assert.match(companyTemplate, /Submitted on/);
+  assert.match(contactApi, /submittedOn:\s*'Submitted on'/);
+  assert.match(contactApi, /submittedOn:\s*'Enviado el'/);
   assert.equal(companyTemplate.includes('<strong style="color: #FFFFFF;">Hello.</strong>'), false);
   assert.equal(companyTemplate.includes('New Contact Form Submission - NOUS'), false);
   assert.equal(contactApi.includes("from: 'Contact Form <noreply@nous.cr>'"), false);

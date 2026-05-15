@@ -51,6 +51,7 @@ The contact and newsletter endpoints must keep:
 - honeypot or abuse controls where applicable
 - escaped or sanitized e-mail rendering
 - no secret leakage in responses
+- authenticated NOUS sender domains for transactional e-mail, with user e-mail addresses limited to reply-to behavior when needed
 
 ## Release Gate
 
