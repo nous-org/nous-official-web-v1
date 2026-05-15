@@ -5,7 +5,7 @@
 [![Astro](https://img.shields.io/badge/Astro-6.x-FF5D01)](https://astro.build)
 [![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-F38020)](https://workers.cloudflare.com)
 
-This repository powers [nous.cr](https://nous.cr), the official website for NOUS: an AI transformation agency helping organizations in Costa Rica and LatAm design, deploy, and adopt useful intelligence in real work.
+This repository powers [nous.cr](https://nous.cr), the official website for NOUS: an AI transformation partner helping organizations in Costa Rica and LatAm design, deploy, and adopt useful intelligence in real work.
 
 The site is built as a fast, bilingual, SEO-conscious Astro application with selective React islands, Cloudflare Workers deployment, admin-protected publishing tools, and production-grade guardrails for redirects, metadata, structured data, and form handling.
 

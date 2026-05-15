@@ -4,7 +4,7 @@ This document defines the SEO and content rules that should remain consistent ac
 
 ## Positioning
 
-NOUS should be presented as an AI transformation agency for organizations in Costa Rica and LatAm.
+NOUS should be presented as an AI transformation partner for organizations in Costa Rica and LatAm.
 
 Preferred language:
 
@@ -16,7 +16,7 @@ Preferred language:
 - operational leverage
 - Costa Rica and LatAm
 
-Avoid drifting back into generic "web development agency" positioning unless a page is specifically about web systems as part of AI-ready infrastructure.
+Avoid drifting back into generic "web development shop" positioning unless a page is specifically about web systems as part of AI-ready infrastructure.
 
 ## URL Strategy
 

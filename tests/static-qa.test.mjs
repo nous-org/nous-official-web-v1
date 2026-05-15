@@ -246,7 +246,7 @@ test('unused legacy assets are not kept in source control', () => {
 
 test('web app manifest uses current NOUS positioning', async () => {
   const manifest = JSON.parse(await readText('public/site.webmanifest'));
-  assert.equal(manifest.name, 'NOUS - AI Transformation Agency');
+  assert.equal(manifest.name, 'NOUS - AI Transformation Partner');
   assert.equal(manifest.short_name, 'NOUS');
   assert.match(manifest.description, /AI transformation/);
   assert.equal(manifest.lang, 'en');

@@ -58,7 +58,7 @@ pnpm exec wrangler deploy -c dist/server/wrangler.json --dry-run --keep-vars
 
 ## Content Standards
 
-- Position NOUS as an AI transformation agency, not a generic web-development shop.
+- Position NOUS as an AI transformation partner, not a generic web-development shop.
 - Write for executive and operational buyers in Costa Rica and LatAm.
 - Prefer concrete service language: AI strategy, automation, intelligent systems, deployment, adoption, and operational leverage.
 - Avoid vague claims that are not supported by content, examples, or proof.
