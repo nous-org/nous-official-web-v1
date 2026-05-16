@@ -4,7 +4,7 @@ import FounderRoberto from '@/assets/founders/rpu.webp';
 import FounderAlessandro from '@/assets/founders/adg.webp';
 import FounderAndrey from '@/assets/founders/amz.webp';
 import FounderAna from '@/assets/founders/ana.webp';
-import FounderJeffrey from '@/assets/founders/jeffrey.webp';
+import FounderJefry from '@/assets/founders/jefry.webp';
 import FounderPablo from '@/assets/founders/pablo-studio.webp';
 import GitHubIcon from '@/components/icons/SocialLinks/GitHubIcon.svg';
 export interface FounderCard {
@@ -115,10 +115,10 @@ export const DEFAULT_FOUNDERS: FounderCard[] = [
         background: ""
     },
     {
-        name: "Jeffrey Quirós Acuña",
+        name: "Jefry Quirós Acuña",
         position: "Chief Marketing Officer (CMO)",
-        image: FounderJeffrey.src,
-        description: `<span class="font-semibold text-outline">Turns the NOUS vision into market strategy.</span> Jeffrey leads the market narrative, brand direction, and growth engine that make the AI transformation story easier to understand, trust, and act on: positioning, audience insight, content, campaigns, and demand that connect the right organizations with the right conversation.`,
+        image: FounderJefry.src,
+        description: `<span class="font-semibold text-outline">Turns the NOUS vision into market strategy.</span> Jefry leads the market narrative, brand direction, and growth engine that make the AI transformation story easier to understand, trust, and act on: positioning, audience insight, content, campaigns, and demand that connect the right organizations with the right conversation.`,
         socialLinks: [
             {
                 icon: LinkedInIcon.src,
