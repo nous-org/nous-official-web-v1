@@ -255,11 +255,14 @@ test('web app manifest uses current NOUS positioning', async () => {
 test('team cards do not expose Instagram and keep approved social order', async () => {
   const founderCards = await readText('src/types/founderCards.ts');
   const founderCardComponent = await readText('src/components/ui/FoundersCard.astro');
+  const foundersSection = await readText('src/components/ui/FoundersSection.astro');
 
   assert.equal(founderCards.includes('InstagramIcon'), false);
   assert.equal(founderCards.includes('Instagram'), false);
   assert.equal(founderCards.includes('instagram.com'), false);
   assert.match(founderCardComponent, /activeSocialLinks\(founder\)\.length > 0/);
+  assert.match(founderCards, /name:\s*"Jeffrey Quirós Acuña"[\s\S]*position:\s*"Chief Marketing Officer \(CMO\)"/);
+  assert.match(foundersSection, /"Jeffrey Quirós Acuña"[\s\S]*position:\s*"Chief Marketing Officer \(CMO\)"/);
 
   const socialBlocks = [...founderCards.matchAll(/socialLinks:\s*\[([\s\S]*?)\]/g)];
   assert.ok(socialBlocks.length > 0, 'Expected founder social link blocks');

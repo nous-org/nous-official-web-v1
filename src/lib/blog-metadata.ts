@@ -30,7 +30,7 @@ export function getBlogAuthorRole(name: string, fallback = ''): string {
   if (lowerName.includes('roberto')) return 'Chief Executive Officer (CEO) & Founder';
   if (lowerName.includes('alessandro')) return 'Chief Technology Officer (CTO) & Co-Founder';
   if (lowerName.includes('andrey')) return 'Chief Product Officer (CPO) & Co-Founder';
-  if (lowerName.includes('jeffrey')) return 'Head of Marketing';
+  if (lowerName.includes('jeffrey')) return 'Chief Marketing Officer (CMO)';
 
   return fallback;
 }

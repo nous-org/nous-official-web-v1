@@ -116,9 +116,9 @@ export const DEFAULT_FOUNDERS: FounderCard[] = [
     },
     {
         name: "Jeffrey Quirós Acuña",
-        position: "Head of Marketing",
+        position: "Chief Marketing Officer (CMO)",
         image: FounderJeffrey.src,
-        description: `<span class="font-semibold text-outline">Turns the NOUS vision into market clarity.</span> Jeffrey shapes the marketing engine that makes the AI transformation story easier to understand, trust, and act on: positioning, content, campaigns, audience insight, and demand that connects the right organizations with the right conversation.`,
+        description: `<span class="font-semibold text-outline">Turns the NOUS vision into market strategy.</span> Jeffrey leads the market narrative, brand direction, and growth engine that make the AI transformation story easier to understand, trust, and act on: positioning, audience insight, content, campaigns, and demand that connect the right organizations with the right conversation.`,
         socialLinks: [
             {
                 icon: LinkedInIcon.src,
