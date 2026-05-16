@@ -116,7 +116,7 @@ export const DEFAULT_FOUNDERS: FounderCard[] = [
     },
     {
         name: "Jefry Quirós Acuña",
-        position: "Chief Marketing Officer (CMO)",
+        position: "Chief Marketing Officer (CMO) & Co-Founder",
         image: FounderJefry.src,
         description: `<span class="font-semibold text-outline">Turns the NOUS vision into market strategy.</span> Jefry leads the market narrative, brand direction, and growth engine that make the AI transformation story easier to understand, trust, and act on: positioning, audience insight, content, campaigns, and demand that connect the right organizations with the right conversation.`,
         socialLinks: [
