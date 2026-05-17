@@ -250,9 +250,9 @@ const faqs = [
       </p>
     </div>
 
-    <div class="mt-8 grid items-start gap-4 md:grid-cols-2">
+    <div class="mt-8 grid items-stretch gap-4 md:grid-cols-2">
       {services.map((service) => (
-        <article class="group relative overflow-hidden rounded-[1.5rem] border border-outline/15 bg-white/[0.025] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.18)] backdrop-blur transition-colors duration-200 hover:border-outline/35 hover:bg-outline/[0.055] sm:p-8">
+        <article class="group relative flex h-full flex-col overflow-hidden rounded-[1.5rem] border border-outline/15 bg-white/[0.025] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.18)] backdrop-blur transition-colors duration-200 hover:border-outline/35 hover:bg-outline/[0.055] sm:p-8">
           <div class="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-outline/50 to-transparent" aria-hidden="true" />
           <div class="flex items-start justify-between gap-6">
             <h3 class="text-2xl font-medium leading-tight text-white sm:text-3xl">{service.title}</h3>
@@ -351,10 +351,10 @@ const faqs = [
         Antes de construir, buscamos claridad.
       </h2>
     </header>
-    <div class="mt-8 grid items-start gap-4 md:grid-cols-2">
+    <div class="mt-8 grid items-stretch gap-4 md:grid-cols-2">
       {faqs.map((faq) => (
-        <details class="group rounded-[1.25rem] border border-outline/15 bg-white/[0.025] p-5 backdrop-blur transition-colors duration-200 open:border-outline/35 open:bg-outline/[0.05]">
-          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-lg font-medium text-white">
+        <details class="group h-full rounded-[1.25rem] border border-outline/15 bg-white/[0.025] p-5 backdrop-blur transition-colors duration-200 open:border-outline/35 open:bg-outline/[0.05] [&:not([open])>summary]:h-full">
+          <summary class="flex min-h-8 cursor-pointer list-none items-center justify-between gap-4 text-lg font-medium text-white">
             {faq.question}
             <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-outline/25 text-outline transition-transform group-open:rotate-45" aria-hidden="true">
               +
