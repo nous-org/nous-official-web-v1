@@ -350,9 +350,9 @@ const faqs = [
         Before we build, we get clear.
       </h2>
     </header>
-    <div class="mt-8 grid items-stretch gap-4 md:grid-cols-2">
+    <div class="mt-8 grid items-start gap-4 md:grid-cols-2">
       {faqs.map((faq) => (
-        <details class="group h-full rounded-[1.25rem] border border-outline/15 bg-white/[0.025] p-5 backdrop-blur transition-colors duration-200 open:border-outline/35 open:bg-outline/[0.05] [&:not([open])>summary]:h-full">
+        <details class="group rounded-[1.25rem] border border-outline/15 bg-white/[0.025] p-5 backdrop-blur transition-colors duration-200 open:border-outline/35 open:bg-outline/[0.05] [&:not([open])>summary]:min-h-[3.625rem]">
           <summary class="flex min-h-8 cursor-pointer list-none items-center justify-between gap-4 text-lg font-medium text-white">
             {faq.question}
             <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-outline/25 text-outline transition-transform group-open:rotate-45" aria-hidden="true">
