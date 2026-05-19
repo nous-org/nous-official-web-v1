@@ -24,23 +24,16 @@ Do not commit secrets. This includes:
 - auth tokens
 - JWT secrets
 - database URLs with credentials
-- Clerk secret keys
+- Clerk or author-profile lookup secret keys
 - Resend keys
 - Cloudflare tokens
 - local `.env` files
 
 Production secrets belong in Cloudflare, GitHub Actions secrets, or the relevant provider dashboard. If a secret is accidentally committed, rotate it immediately and treat it as compromised.
 
-## Admin Authorization
+## Admin Surface
 
-Admin routes must remain deny-by-default. A valid Clerk identity is not enough by itself; admin APIs require an explicit admin policy such as:
-
-- `CLERK_ADMIN_USER_IDS`
-- `CLERK_ADMIN_ORG_IDS`
-- `CLERK_ADMIN_ORG_ROLES`
-- a signed and validated session claim policy
-
-If that policy is missing or invalid, admin APIs should fail closed.
+This repository should not expose in-repo publishing routes or admin APIs. Blog publishing is handled by the separate `admin.nous.cr` CMS. If an admin route is needed, it should live in that app, not in this website repository.
 
 ## Public Form Endpoints
 

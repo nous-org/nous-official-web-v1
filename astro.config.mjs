@@ -17,22 +17,6 @@ export default defineConfig({
       allowedHosts: ['localhost', '127.0.0.1', '0.0.0.0'],
     },
     plugins: [tailwindcss()],
-    build: {
-      rollupOptions: {
-        output: {
-          manualChunks(id) {
-            if (id.includes('/node_modules/@clerk/')) return 'admin-clerk';
-            if (
-              id.includes('/node_modules/@tiptap/')
-              || id.includes('/node_modules/prosemirror-')
-            ) {
-              return 'admin-editor';
-            }
-            if (id.includes('/node_modules/dompurify/')) return 'admin-sanitize';
-          },
-        },
-      },
-    },
     resolve: {
       alias: import.meta.env.PROD ? {
         "react-dom/server": "react-dom/server.edge"

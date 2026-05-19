@@ -3,6 +3,13 @@ import { z } from 'zod';
 import { Resend } from 'resend';
 import { checkRateLimit, escapeHtml, getClientIp, isHoneypotFilled } from '@/lib/security';
 import { getRuntimeEnv } from '@/lib/runtime-env';
+import {
+  buildContactSubmissionMetadata,
+  getContactSourcePath,
+  saveContactSubmission,
+  updateContactSubmissionEmailStatus,
+  type ContactEmailDeliveryUpdate,
+} from '@/lib/contact-submissions';
 
 const validationCopy = {
   en: {
@@ -261,31 +268,7 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    const { RESEND_API_KEY, CONTACT_RECIPIENT_EMAIL } = getRuntimeEnv();
-    if (!RESEND_API_KEY) {
-      if (import.meta.env.DEV) {
-        return new Response(JSON.stringify({
-          success: true,
-          dryRun: true,
-          message: responseCopy[locale].localSuccess
-        }), {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' }
-        });
-      }
-
-      return new Response(JSON.stringify({
-        success: false,
-        message: responseCopy[locale].unavailable
-      }), {
-        status: 503,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    const resend = new Resend(RESEND_API_KEY);
     const emailLocaleCopy = emailCopy[locale];
-
     const interestsText = interests && interests.length > 0
       ? interests.map(interest => {
           const interestLabels = locale === 'es'
@@ -316,6 +299,69 @@ export const POST: APIRoute = async ({ request }) => {
           return interestLabels[interest as keyof typeof interestLabels] || interest;
         }).join(', ')
       : emailLocaleCopy.notSpecified;
+
+    const runtimeEnv = getRuntimeEnv();
+    const userAgent = request.headers.get('user-agent') || 'unknown';
+    const submissionMetadata = buildContactSubmissionMetadata(request);
+    const contactSubmissionId = await saveContactSubmission(runtimeEnv, {
+      ...submissionMetadata,
+      locale,
+      name,
+      email,
+      phone,
+      preferredContact,
+      interests,
+      interestsText,
+      subject,
+      message,
+      ipAddress: clientIp,
+      userAgent,
+      sourcePath: getContactSourcePath(request),
+    }).catch((error) => {
+      console.error('Contact database save error:', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        timestamp: new Date().toISOString(),
+      });
+      return null;
+    });
+
+    const updateSavedSubmissionStatus = async (update: ContactEmailDeliveryUpdate) => {
+      await updateContactSubmissionEmailStatus(runtimeEnv, contactSubmissionId, update).catch((error) => {
+        console.error('Contact database status update error:', {
+          error: error instanceof Error ? error.message : 'Unknown error',
+          timestamp: new Date().toISOString(),
+        });
+      });
+    };
+
+    const { RESEND_API_KEY, CONTACT_RECIPIENT_EMAIL } = runtimeEnv;
+    if (!RESEND_API_KEY) {
+      await updateSavedSubmissionStatus({
+        status: import.meta.env.DEV ? 'skipped' : 'failed',
+        errorMessage: 'RESEND_API_KEY is not configured',
+      });
+
+      if (import.meta.env.DEV) {
+        return new Response(JSON.stringify({
+          success: true,
+          dryRun: true,
+          message: responseCopy[locale].localSuccess
+        }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+
+      return new Response(JSON.stringify({
+        success: false,
+        message: responseCopy[locale].unavailable
+      }), {
+        status: 503,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    const resend = new Resend(RESEND_API_KEY);
     const safeInterestsText = escapeHtml(interestsText);
 
     // Format preferred contact method for display
@@ -523,6 +569,16 @@ export const POST: APIRoute = async ({ request }) => {
         clientError: clientEmailResult.error ? 'delivery_failed' : null
       });
 
+      await updateSavedSubmissionStatus({
+        status: 'failed',
+        internalEmailId: companyEmailResult.data?.id,
+        confirmationEmailId: clientEmailResult.data?.id,
+        errorMessage: [
+          companyEmailResult.error ? 'internal_email_failed' : null,
+          clientEmailResult.error ? 'confirmation_email_failed' : null,
+        ].filter(Boolean).join('; '),
+      });
+
       return new Response(JSON.stringify({
         success: false,
         message: responseCopy[locale].sendError
@@ -531,6 +587,12 @@ export const POST: APIRoute = async ({ request }) => {
         headers: { 'Content-Type': 'application/json' }
       });
     }
+
+    await updateSavedSubmissionStatus({
+      status: 'sent',
+      internalEmailId: companyEmailResult.data?.id,
+      confirmationEmailId: clientEmailResult.data?.id,
+    });
 
     return new Response(JSON.stringify({
       success: true,

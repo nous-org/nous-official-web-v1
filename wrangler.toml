@@ -13,19 +13,20 @@ routes = [
 SITE_URL="https://nous.cr"
 CONTACT_RECIPIENT_EMAIL="hello@nous.cr"
 SUPPORT_EMAIL="support@nous.cr"
-# Non-secret runtime vars such as CLERK_PUBLISHABLE_KEY, OPENAI_MODEL,
-# OPENAI_CHATBOT_ENABLED, and OPENAI_CHATBOT_STORE_RESPONSES are configured
-# in Cloudflare and preserved by deploys with keep_vars/--keep-vars.
+# Non-secret runtime vars such as OPENAI_MODEL, OPENAI_CHATBOT_ENABLED,
+# and OPENAI_CHATBOT_STORE_RESPONSES are configured in Cloudflare and
+# preserved by deploys with keep_vars/--keep-vars.
 
 # Runtime secrets must be configured in Cloudflare, not committed here.
 # Required secrets:
 # - RESEND_API_KEY
 # - TURSO_DATABASE_URL
 # - TURSO_AUTH_TOKEN
+# - TURSO_CONTACT_URL
+# - TURSO_CONTACT_TOKEN
 # - TURSO_NEWSLETTER_URL
 # - TURSO_NEWSLETTER_TOKEN
-# - CLERK_SECRET_KEY
-# - CLERK_ADMIN_USER_IDS or CLERK_ADMIN_ORG_IDS/CLERK_ADMIN_ORG_ROLES or CLERK_ADMIN_SESSION_CLAIM
+# - CLERK_SECRET_KEY (optional, for blog author profile lookup)
 # - OPENAI_API_KEY
 
 [[kv_namespaces]]

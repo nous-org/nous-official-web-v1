@@ -9,7 +9,8 @@
 /privacy-policy/ /privacy-policy 301
 /terms-and-conditions/ /terms-and-conditions 301
 /portfolio/ /portfolio 301
-/admin/ /admin 301
+/admin https://admin.nous.cr 301
+/admin/ https://admin.nous.cr 301
 
 /es/ /es 301
 /es/services/ /es/services 301
@@ -20,7 +21,8 @@
 /es/privacy-policy/ /es/privacy-policy 301
 /es/terms-and-conditions/ /es/terms-and-conditions 301
 /es/portfolio/ /es/portfolio 301
-/es/admin/ /es/admin 301
+/es/admin https://admin.nous.cr 301
+/es/admin/ https://admin.nous.cr 301
 
 /about-us /about 301
 /about-us/ /about 301

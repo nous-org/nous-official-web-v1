@@ -73,9 +73,7 @@ const copy = commonCopy[currentLocale];
 const englishPath = alternateLocalePath(Astro.url.pathname, 'en');
 const spanishPath = alternateLocalePath(Astro.url.pathname, 'es');
 const runtimeEnv = getChatbotRuntimeEnv();
-const chatbotEnabled = runtimeEnv.OPENAI_CHATBOT_ENABLED === 'true'
-  && !Astro.url.pathname.startsWith('/admin')
-  && !Astro.url.pathname.startsWith('/es/admin');
+const chatbotEnabled = runtimeEnv.OPENAI_CHATBOT_ENABLED === 'true';
 const chatbotStoresResponses = runtimeEnv.OPENAI_CHATBOT_STORE_RESPONSES === 'true';
 
 const getBgClass = () => {

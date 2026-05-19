@@ -7,7 +7,7 @@
 
 This repository powers [nous.cr](https://nous.cr), the official website for NOUS: an AI transformation partner helping organizations in Costa Rica and LatAm design, deploy, and adopt useful intelligence in real work.
 
-The site is built as a fast, bilingual, SEO-conscious Astro application with selective React islands, Cloudflare Workers deployment, admin-protected publishing tools, and production-grade guardrails for redirects, metadata, structured data, and form handling.
+The site is built as a fast, bilingual, SEO-conscious Astro application with selective React islands, Cloudflare Workers deployment, Turso-backed blog reads, and production-grade guardrails for redirects, metadata, structured data, and form handling.
 
 ## Repository Status
 
@@ -31,7 +31,7 @@ The site is built as a fast, bilingual, SEO-conscious Astro application with sel
 - Cloudflare Worker configuration and route handling.
 - Legacy URL redirects for retired pages and old slugs.
 - Contact and newsletter API endpoints, including contact form validation and Resend e-mail templates.
-- Clerk-protected admin surface for content workflows.
+- Public blog rendering for published articles stored in Turso by the separate `admin.nous.cr` CMS.
 - Static QA checks that protect SEO, security, and repo hygiene decisions.
 
 ## Product Surface
@@ -44,9 +44,8 @@ The site is built as a fast, bilingual, SEO-conscious Astro application with sel
 | Contact | `/contact`, `/es/contact` |
 | Blog | `/blog`, `/es/blog` |
 | Legal | `/privacy-policy`, `/terms-and-conditions` plus Spanish equivalents |
-| Admin | `/admin`, `/es/admin` |
 
-Retired URLs such as `/pricing`, `/products`, `/about-us`, and `/contact-us` are intentionally handled as permanent redirects. Do not reintroduce source pages for those paths unless the URL strategy changes.
+Retired URLs such as `/pricing`, `/products`, `/about-us`, and `/contact-us` are intentionally handled as permanent redirects. The old in-repo admin route redirects to the external CMS at `https://admin.nous.cr`. Do not reintroduce source pages for those paths unless the URL strategy changes.
 
 ## Architecture
 
@@ -61,7 +60,7 @@ Browser / crawler
        - baseline security headers
   -> Astro server-rendered routes
   -> React islands where interaction is needed
-  -> Turso, Clerk, Resend, and KV bindings where required
+  -> Turso, Resend, OpenAI, and KV bindings where required
 ```
 
 Core implementation notes:
@@ -84,10 +83,11 @@ For deeper implementation context, read [docs/ARCHITECTURE.md](docs/ARCHITECTURE
 | Styling | Tailwind CSS 4 |
 | Hosting/runtime | Cloudflare Workers |
 | Sessions | Cloudflare KV |
-| Auth | Clerk |
 | Database | Turso/libSQL |
 | E-mail | Resend |
-| Content rendering | Astro content collections, Markdown, TipTap editor tooling |
+| Blog publishing | External CMS at `admin.nous.cr` |
+| Author lookup | Optional Clerk backend profile lookup for blog author IDs |
+| Content rendering | Astro content collections, Markdown, Turso-backed published posts |
 | Validation | Astro check, Node test runner, `pnpm audit`, Cloudflare dry runs |
 
 ## Local Development
@@ -125,31 +125,31 @@ Required runtime integrations:
 | `CONTACT_RECIPIENT_EMAIL` | Contact form recipient | No |
 | `SUPPORT_EMAIL` | Support identity in templates | No |
 | `RESEND_API_KEY` | E-mail delivery | Yes |
-| `TURSO_DATABASE_URL` | Blog/admin database | Yes |
-| `TURSO_AUTH_TOKEN` | Blog/admin database token | Yes |
+| `TURSO_DATABASE_URL` | Published blog database | Yes |
+| `TURSO_AUTH_TOKEN` | Published blog database token | Yes |
+| `TURSO_CONTACT_URL` | Contact form submissions database | Yes |
+| `TURSO_CONTACT_TOKEN` | Contact form submissions database token | Yes |
 | `TURSO_NEWSLETTER_URL` | Newsletter database | Yes |
 | `TURSO_NEWSLETTER_TOKEN` | Newsletter database token | Yes |
-| `CLERK_PUBLISHABLE_KEY` | Clerk frontend configuration | Environment-specific |
-| `CLERK_SECRET_KEY` | Clerk backend verification | Yes |
-| `CLERK_ADMIN_USER_IDS` or equivalent policy | Admin authorization allowlist | Yes |
+| `CLERK_SECRET_KEY` | Optional blog author profile lookup when Turso rows store Clerk author IDs | Yes |
 | `OPENAI_API_KEY` | Server-side OpenAI Responses API access for the website assistant | Yes |
 | `OPENAI_MODEL` | Model used by the website assistant | No |
 | `OPENAI_CHATBOT_ENABLED` | Enables the public chatbot widget and API route when set to `true` | No |
 | `OPENAI_CHATBOT_STORE_RESPONSES` | Uses stored Responses state and `previous_response_id` when set to `true` | No |
 | `OPENAI_VECTOR_STORE_ID` | Optional OpenAI vector store for file-search-backed retrieval | No |
 
-Admin APIs fail closed when Clerk or admin authorization config is missing.
+The website does not expose publishing or admin APIs. Blog authoring is handled by the separate `admin.nous.cr` CMS, which writes published posts to Turso.
 
 ## Contact And E-mail Flow
 
-The public contact forms post to `POST /api/contact`, which validates required fields, applies abuse controls, and sends two Resend e-mails:
+The public contact forms post to `POST /api/contact`, which validates required fields, applies abuse controls, stores the validated submission in Turso when `TURSO_CONTACT_URL` and `TURSO_CONTACT_TOKEN` are configured, and sends two Resend e-mails:
 
 - an internal notification to the NOUS team
 - a confirmation e-mail to the person who submitted the form
 
 The repo owns the HTML e-mail templates, sender display names, subject lines, inline validation copy, and delivery behavior. Local development returns a dry-run success when `RESEND_API_KEY` is missing; production requires the Cloudflare secret and falls back to a service-unavailable message if delivery cannot be configured.
 
-See [docs/CONTACT_AND_EMAIL.md](docs/CONTACT_AND_EMAIL.md) for template standards, smoke tests, and runtime notes.
+See [docs/CONTACT_AND_EMAIL.md](docs/CONTACT_AND_EMAIL.md) for template standards, smoke tests, and runtime notes. See [docs/CONTACT_FORM_DATABASE.md](docs/CONTACT_FORM_DATABASE.md) for Turso setup and lead-table operations.
 
 ## Website AI Assistant
 
@@ -241,7 +241,7 @@ See [docs/OPERATIONS.md](docs/OPERATIONS.md) for smoke tests, rollback notes, an
 - Spanish routes live under `/es`.
 - Canonicals must be absolute `https://nous.cr` URLs.
 - Sitemap output is generated by Astro; do not add a manual `public/sitemap.xml`.
-- Low-value or private routes such as `/admin`, `/portfolio`, and `404` are excluded or noindexed as appropriate.
+- Low-value routes such as `/portfolio` and `404` are excluded or noindexed as appropriate. `/admin` redirects to the external CMS.
 - Retired pages are handled through permanent redirects, not duplicate content.
 - Page metadata should be written for AI transformation, automation, intelligent systems, Costa Rica, and LatAm search intent.
 
@@ -259,7 +259,7 @@ src/
   components/             Astro, React, UI, icon, and SEO components
   content/                Legal and content collections
   layouts/                Shared page shell
-  lib/                    Auth, database, i18n, metadata, runtime helpers
+  lib/                    Database, i18n, metadata, runtime helpers
   pages/                  Astro routes and API endpoints
   styles/                 Global CSS
   types/                  Shared content and UI types
@@ -275,7 +275,7 @@ astro.config.mjs          Astro, sitemap, adapter, and build config
 - Do not commit generated folders such as `dist/`, `.astro/`, `.wrangler/`, reports, screenshots, or local audit files.
 - Do not commit secrets, live credentials, or provider tokens.
 - Run `pnpm validate` before requesting review.
-- Include route-level smoke notes for changes that touch navigation, redirects, forms, admin, metadata, or deployment.
+- Include route-level smoke notes for changes that touch navigation, redirects, forms, metadata, or deployment.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 
@@ -285,7 +285,7 @@ Security posture is documented in [SECURITY.md](SECURITY.md). The short version:
 
 - Treat this as a production system.
 - Keep secrets in Cloudflare/GitHub/provider secret stores.
-- Admin access must remain deny-by-default.
+- Publishing/admin access lives outside this repository at `admin.nous.cr`; do not reintroduce in-repo admin routes or APIs.
 - Public form endpoints need validation and abuse protection.
 - Dependency and static QA checks are part of the release gate.
 

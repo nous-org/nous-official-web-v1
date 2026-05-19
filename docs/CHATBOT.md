@@ -5,14 +5,14 @@
 - `src/pages/api/chatbot.ts` exposes a server-only `POST /api/chatbot` endpoint.
 - `src/lib/chatbot/` owns request validation, site context, prompt rules, and Responses API request construction.
 - `src/components/react/chatbot/` owns the floating React widget, streaming client, reducer, and page-context capture.
-- `src/layouts/Layout.astro` mounts the widget globally when `OPENAI_CHATBOT_ENABLED=true`, excluding admin routes.
+- `src/layouts/Layout.astro` mounts the widget globally when `OPENAI_CHATBOT_ENABLED=true`. The legacy in-repo admin routes now redirect to the external CMS at `https://admin.nous.cr`.
 
 ## Design decisions
 
 - The widget uses the existing NOUS visual language: dark translucent surfaces, outline lavender borders, compact rounded controls, calm motion, and Geist typography.
 - Assistant output is rendered as plain text with preserved whitespace. No raw HTML or unsafe markdown is injected.
 - The client sends only bounded public page context: path, title, meta description, visible headings, selected visible text, and a short visible text snippet.
-- The server adds a compact static public site profile. It excludes admin routes, source internals, unpublished drafts, and secrets.
+- The server adds a compact static public site profile. It excludes source internals, unpublished drafts, credentials, and private implementation details.
 - The OpenAI SDK is instantiated only inside the server route.
 
 ## Conversation state

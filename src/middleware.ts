@@ -53,12 +53,20 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
       '/es/products/': '/es/services',
       '/blog/chatgpt-5-is-here-learn-about-its-improvements-use-cases-in-education-business-and-programming-and-the-future-of-ai': '/blog/building-a-more-intelligent-world',
       '/blog/chatgpt-5-is-here-learn-about-its-improvements-use-cases-in-education-business-and-programming-and-the-future-of-ai/': '/blog/building-a-more-intelligent-world',
+      '/admin': 'https://admin.nous.cr',
+      '/admin/': 'https://admin.nous.cr',
+      '/es/admin': 'https://admin.nous.cr',
+      '/es/admin/': 'https://admin.nous.cr',
     };
 
     const mappedPath = redirectMap[pathname];
     if (mappedPath) {
-      const redirectUrl = new URL(context.url);
-      redirectUrl.pathname = mappedPath;
+      const redirectUrl = mappedPath.startsWith('https://')
+        ? new URL(mappedPath)
+        : new URL(context.url);
+      if (!mappedPath.startsWith('https://')) {
+        redirectUrl.pathname = mappedPath;
+      }
       return permanentRedirect(redirectUrl);
     }
 

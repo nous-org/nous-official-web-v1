@@ -2,7 +2,6 @@
 
 @plugin "@midudev/tailwind-animations";
 
-@import '@clerk/themes/shadcn.css';
 html{
   scroll-behavior: smooth;
 }

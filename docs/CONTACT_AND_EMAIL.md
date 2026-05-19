@@ -26,6 +26,8 @@ The submitted `locale` controls API response copy and e-mail copy. English submi
 | Client validation and error states | `src/components/ui/ContactFormClientScript.astro` |
 | Shared input error markup | `src/components/ui/Inputs.astro` |
 | Server validation and e-mail delivery | `src/pages/api/contact.ts` |
+| Contact submission storage helper | `src/lib/contact-submissions.ts` |
+| Contact submission Turso schema | `database/contact-submissions.sql` |
 | Email logo asset | `public/images/nous-email-logo.png` |
 | Static regression tests | `tests/static-qa.test.mjs` |
 
@@ -46,6 +48,14 @@ Required fields:
 The message must be at least 10 characters. Invalid fields should be shown inline in the form and the form should not submit until the visible errors are resolved.
 
 The API should return structured `400` validation errors for invalid payloads and safe, user-readable messages for delivery failures.
+
+## Contact Submission Database
+
+When `TURSO_CONTACT_URL` and `TURSO_CONTACT_TOKEN` are configured, validated contact submissions are saved to the `contact_submissions` table before Resend delivery is attempted. The table stores the submitted contact fields, selected interests as JSON and readable text, UTC and Costa Rica submission timestamps, the source path, limited IP/user-agent metadata, Cloudflare country/ray metadata when available, and the final e-mail delivery status.
+
+The database write is intentionally server-side only. The browser never receives Turso credentials, and missing Turso contact configuration does not break local development or the existing e-mail flow.
+
+Use `database/contact-submissions.sql` to create or update the Turso table. See [CONTACT_FORM_DATABASE.md](CONTACT_FORM_DATABASE.md) for first-time Turso setup, Cloudflare secret configuration, and query examples.
 
 ## Abuse And Security Controls
 
@@ -68,6 +78,8 @@ Resend delivery is controlled by runtime configuration:
 | `RESEND_API_KEY` | Authenticates Resend delivery | Yes |
 | `CONTACT_RECIPIENT_EMAIL` | Internal recipient for contact submissions | No |
 | `SUPPORT_EMAIL` | Support identity used in public templates | No |
+| `TURSO_CONTACT_URL` | Contact submissions database URL | Yes |
+| `TURSO_CONTACT_TOKEN` | Contact submissions database token | Yes |
 
 In local development, missing `RESEND_API_KEY` returns a dry-run success and sends no e-mail. In production, missing `RESEND_API_KEY` returns the contact-service-unavailable message so visitors are directed to e-mail NOUS directly.
 

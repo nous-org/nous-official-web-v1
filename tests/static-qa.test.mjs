@@ -11,10 +11,10 @@ test('wrangler.toml does not commit live-looking secrets', async () => {
   const forbiddenPatterns = [
     /RESEND_API_KEY\s*=\s*["']re_/,
     /TURSO_AUTH_TOKEN\s*=\s*["']eyJ/,
+    /TURSO_CONTACT_TOKEN\s*=\s*["']eyJ/,
     /TURSO_NEWSLETTER_TOKEN\s*=\s*["']eyJ/,
     /GITHUB_CLIENT_SECRET\s*=\s*["'][a-f0-9]{20,}/i,
     /CLERK_SECRET_KEY\s*=\s*["']sk_(live|test)_/,
-    /CLERK_PUBLISHABLE_KEY\s*=\s*["']pk_live_/,
     /OPENAI_API_KEY\s*=\s*["']sk-[A-Za-z0-9_-]{12,}/,
   ];
 
@@ -49,7 +49,9 @@ test('repository metadata and operating docs are present', async () => {
     'SECURITY.md',
     'docs/ARCHITECTURE.md',
     'docs/OPERATIONS.md',
+    'docs/CHATBOT.md',
     'docs/CONTACT_AND_EMAIL.md',
+    'docs/CONTACT_FORM_DATABASE.md',
     'docs/SEO_AND_CONTENT.md',
     '.github/pull_request_template.md',
     '.github/CODEOWNERS',
@@ -68,7 +70,9 @@ test('repository metadata and operating docs are present', async () => {
   assert.match(readme, /NOUS Official Website/);
   assert.match(readme, /docs\/ARCHITECTURE\.md/);
   assert.match(readme, /docs\/OPERATIONS\.md/);
+  assert.match(readme, /chatbot/);
   assert.match(readme, /docs\/CONTACT_AND_EMAIL\.md/);
+  assert.match(readme, /docs\/CONTACT_FORM_DATABASE\.md/);
   assert.match(readme, /docs\/SEO_AND_CONTENT\.md/);
 
   const contactEmailDocs = await readText('docs/CONTACT_AND_EMAIL.md');
@@ -79,7 +83,14 @@ test('repository metadata and operating docs are present', async () => {
   assert.match(contactEmailDocs, /NOUS <noreply@nous\.cr>/);
   assert.match(contactEmailDocs, /CONTACT_RECIPIENT_EMAIL/);
   assert.match(contactEmailDocs, /RESEND_API_KEY/);
+  assert.match(contactEmailDocs, /TURSO_CONTACT_URL/);
+  assert.match(contactEmailDocs, /TURSO_CONTACT_TOKEN/);
   assert.match(contactEmailDocs, /images\/nous-email-logo\.png/);
+
+  const contactDatabaseDocs = await readText('docs/CONTACT_FORM_DATABASE.md');
+  assert.match(contactDatabaseDocs, /database\/contact-submissions\.sql/);
+  assert.match(contactDatabaseDocs, /turso db create nous-contact-submissions/);
+  assert.match(contactDatabaseDocs, /wrangler secret put TURSO_CONTACT_URL/);
 });
 
 test('robots references generated sitemap index and blocks sensitive routes', async () => {
@@ -130,6 +141,8 @@ test('contact forms keep required fields and visible validation paths', async ()
   assert.match(clientScript, /data-contact-success-text/);
   assert.match(contactApi, /phone:\s*z\.string\(\)\.trim\(\)\.min\(1/);
   assert.match(contactApi, /interests:\s*z\.array\(z\.string\(\)\)\.min\(1/);
+  assert.match(contactApi, /saveContactSubmission/);
+  assert.match(contactApi, /updateContactSubmissionEmailStatus/);
   assert.match(contactApi, /import\.meta\.env\.DEV/);
   assert.match(contactApi, /dryRun:\s*true/);
 });
@@ -209,10 +222,12 @@ test('internal contact notification e-mail uses approved subject and styling', a
 
 test('retired and legacy redirect pages do not exist as source routes', () => {
   for (const route of [
+    'src/pages/admin.astro',
     'src/pages/about-us.astro',
     'src/pages/contact-us.astro',
     'src/pages/pricing.astro',
     'src/pages/products.astro',
+    'src/pages/es/admin.astro',
     'src/pages/es/about-us.astro',
     'src/pages/es/contact-us.astro',
     'src/pages/es/pricing.astro',
@@ -220,6 +235,39 @@ test('retired and legacy redirect pages do not exist as source routes', () => {
   ]) {
     assert.equal(existsSync(repoFile(route)), false, `${route} should be handled by edge redirects, not source pages`);
   }
+
+  assert.equal(existsSync(repoFile('src/pages/api/admin')), false, 'legacy in-repo admin APIs should not exist');
+  assert.equal(existsSync(repoFile('src/components/react/AdminEntrypoint.tsx')), false, 'legacy admin editor should not exist');
+  assert.equal(existsSync(repoFile('src/lib/auth.ts')), false, 'legacy in-repo admin auth helper should not exist');
+});
+
+test('legacy in-repo CMS dependencies are not installed', async () => {
+  const packageJson = JSON.parse(await readText('package.json'));
+  const dependencies = packageJson.dependencies || {};
+  const headers = await readText('public/_headers');
+  for (const dependency of [
+    '@clerk/clerk-react',
+    '@clerk/themes',
+    '@tiptap/react',
+    '@tiptap/starter-kit',
+    '@tiptap/extension-bubble-menu',
+    '@tiptap/extension-code-block-lowlight',
+    '@tiptap/extension-floating-menu',
+    '@tiptap/extension-highlight',
+    '@tiptap/extension-horizontal-rule',
+    '@tiptap/extension-link',
+    '@tiptap/extension-placeholder',
+    '@tiptap/extension-task-item',
+    '@tiptap/extension-task-list',
+    '@tiptap/extension-text-align',
+    '@tiptap/extension-underline',
+    'dompurify',
+    'lowlight',
+  ]) {
+    assert.equal(dependencies[dependency], undefined, `${dependency} should not be kept after removing the in-repo CMS`);
+  }
+  assert.equal(headers.includes('clerk.nous.cr'), false, 'CSP should not keep old Clerk browser allowances');
+  assert.equal(headers.includes('clerk.accounts.dev'), false, 'CSP should not keep old Clerk browser allowances');
 });
 
 test('unused legacy assets are not kept in source control', () => {
@@ -293,6 +341,10 @@ test('edge redirects cover retired and canonical URL variants', async () => {
     '/products/ /services 301',
     '/es/pricing /es/services 301',
     '/es/products /es/services 301',
+    '/admin https://admin.nous.cr 301',
+    '/admin/ https://admin.nous.cr 301',
+    '/es/admin https://admin.nous.cr 301',
+    '/es/admin/ https://admin.nous.cr 301',
     '/blog/chatgpt-5-is-here-learn-about-its-improvements-use-cases-in-education-business-and-programming-and-the-future-of-ai /blog/building-a-more-intelligent-world 301',
   ];
 
@@ -306,13 +358,16 @@ test('edge redirects cover retired and canonical URL variants', async () => {
     .filter((line) => line && !line.startsWith('#'));
 
   for (const rule of activeRules) {
-    assert.equal(/^https?:\/\//.test(rule), false, `Only relative _redirects rules are supported here: ${rule}`);
+    const [, target] = rule.split(/\s+/);
+    if (/^https?:\/\//.test(target)) {
+      assert.equal(target, 'https://admin.nous.cr', `Only the external admin redirect may use an absolute target: ${rule}`);
+    }
   }
 });
 
 test('sitemap configuration excludes retired and non-indexable routes', async () => {
   const config = await readText('astro.config.mjs');
-  for (const path of ['/404', '/about-us', '/admin', '/contact-us', '/portfolio', '/pricing', '/products']) {
+  for (const path of ['/404', '/about-us', '/contact-us', '/portfolio', '/pricing', '/products']) {
     assert.match(config, new RegExp(`['"]${path}['"]`));
   }
   assert.match(config, /trailingSlash:\s*['"]never['"]/);

@@ -61,11 +61,11 @@ Cloudflare/GitHub/provider secrets must include:
 - `RESEND_API_KEY`
 - `TURSO_DATABASE_URL`
 - `TURSO_AUTH_TOKEN`
+- `TURSO_CONTACT_URL`
+- `TURSO_CONTACT_TOKEN`
 - `TURSO_NEWSLETTER_URL`
 - `TURSO_NEWSLETTER_TOKEN`
-- `CLERK_PUBLISHABLE_KEY`
-- `CLERK_SECRET_KEY`
-- at least one explicit Clerk admin authorization policy
+- `CLERK_SECRET_KEY` if blog author profiles should resolve from Clerk user IDs
 
 Do not store those values in committed files.
 
@@ -87,6 +87,7 @@ Check redirects:
 curl -I https://www.nous.cr/
 curl -I http://nous.cr/
 curl -I https://nous.cr/services/
+curl -I https://nous.cr/admin
 curl -I https://nous.cr/about-us
 curl -I https://nous.cr/contact-us
 curl -I https://nous.cr/pricing
@@ -100,6 +101,7 @@ Expected behavior:
 - HTTP redirects to HTTPS
 - trailing slashes redirect to slashless URLs
 - retired routes redirect to current canonical routes
+- `/admin` redirects to `https://admin.nous.cr`
 - missing pages return `404`
 
 Check form validation without sending real leads:
@@ -136,14 +138,6 @@ Expected result: `200`.
 
 Do not run a valid contact delivery smoke test unless the goal is to send real e-mail. A valid production submission should send both the internal NOUS notification and the external confirmation e-mail through Resend.
 
-Check unauthenticated admin API behavior:
-
-```bash
-curl -i https://nous.cr/api/admin/posts
-```
-
-Expected result: `401` or `403`, depending on auth configuration.
-
 ## Rollback
 
 If a deployment causes production issues:
@@ -156,9 +150,9 @@ If a deployment causes production issues:
 
 ## Common Issues
 
-### Admin returns unavailable
+### Blog author profile is not enriched
 
-Likely cause: Clerk env vars or admin authorization policy are missing. Confirm `CLERK_SECRET_KEY` and at least one admin policy variable are configured.
+Likely cause: `CLERK_SECRET_KEY` is missing or the Turso row does not use a Clerk-backed author ID. The public blog should still render with the default NOUS author fallback.
 
 ### Contact form returns service unavailable
 
