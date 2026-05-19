@@ -55,7 +55,7 @@ function createContactSchema(locale: Locale) {
     subject: z.string().trim().min(1, copy.subjectRequired).max(200, copy.subjectMax),
     message: z.string().trim().min(1, copy.messageRequired).min(10, copy.messageMin).max(2000, copy.messageMax),
     phone: z.string().trim().min(1, copy.phoneRequired).max(50, copy.phoneMax),
-    preferredContact: z.enum(['email', 'whatsapp'], {
+    preferredContact: z.enum(['email', 'phone', 'whatsapp'], {
       error: copy.preferredContactRequired
     }),
     interests: z.array(z.string()).min(1, copy.interestsRequired),
@@ -368,6 +368,7 @@ export const POST: APIRoute = async ({ request }) => {
     const formatPreferredContact = (method: string) => {
       switch(method) {
         case 'email': return 'E-mail';
+        case 'phone': return locale === 'es' ? 'Llamada Telefónica' : 'Phone Call';
         case 'whatsapp': return 'WhatsApp';
         default: return method;
       }

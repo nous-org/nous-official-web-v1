@@ -6,7 +6,7 @@ This guide sets up Turso storage for validated `POST /api/contact` submissions.
 
 The `contact_submissions` table stores:
 
-- submitted name, e-mail, phone, preferred contact method, subject, and message
+- submitted name, e-mail, phone, preferred contact method (`email`, `phone`, or `whatsapp`), subject, and message
 - selected interests as JSON and readable text
 - UTC submission timestamp plus Costa Rica local timestamp, date, and hour
 - locale, source path, limited IP address, Cloudflare country code when available, Cloudflare ray ID, and user agent metadata
@@ -40,6 +40,12 @@ For an existing contact database created before the request-metadata fields were
 
 ```bash
 turso db shell nous-contact-submissions < database/migrations/2026-05-18-contact-submission-request-metadata.sql
+```
+
+For an existing contact database created before phone calls were accepted as a preferred contact method, apply:
+
+```bash
+turso db shell nous-contact-submissions < database/migrations/2026-05-18-contact-preferred-phone.sql
 ```
 
 Get the database URL:

@@ -131,6 +131,8 @@ test('contact forms keep required fields and visible validation paths', async ()
     assert.match(form, /data-contact-form/);
     assert.match(form, /data-error-for="interests"/);
     assert.match(form, /name="phone"/);
+    assert.match(form, /value:\s*"phone"/);
+    assert.match(form, /Phone Call|Llamada Telefónica/);
     assert.equal(form.includes('name="phone" required={false}'), false);
     assert.match(form, /minlength=\{10\}/);
     assert.match(form, /maxlength=\{2000\}/);
@@ -140,6 +142,8 @@ test('contact forms keep required fields and visible validation paths', async ()
   assert.match(clientScript, /interestsRequired/);
   assert.match(clientScript, /data-contact-success-text/);
   assert.match(contactApi, /phone:\s*z\.string\(\)\.trim\(\)\.min\(1/);
+  assert.match(contactApi, /preferredContact:\s*z\.enum\(\['email', 'phone', 'whatsapp'\]/);
+  assert.match(contactApi, /case 'phone': return locale === 'es' \? 'Llamada Telefónica' : 'Phone Call'/);
   assert.match(contactApi, /interests:\s*z\.array\(z\.string\(\)\)\.min\(1/);
   assert.match(contactApi, /saveContactSubmission/);
   assert.match(contactApi, /updateContactSubmissionEmailStatus/);

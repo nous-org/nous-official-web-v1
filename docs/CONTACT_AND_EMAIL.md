@@ -40,7 +40,7 @@ Required fields:
 - name
 - e-mail
 - phone number
-- preferred contact method
+- preferred contact method: e-mail, phone call, or WhatsApp
 - at least one interest
 - subject
 - message

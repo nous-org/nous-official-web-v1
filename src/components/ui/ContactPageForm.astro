@@ -30,6 +30,11 @@ const copy = isEs
       send: "Enviar mensaje",
       sending: "Enviando…",
       unexpected: "Error inesperado",
+      preferredOptions: [
+        { value: "email", label: "E-mail" },
+        { value: "phone", label: "Llamada Telefónica" },
+        { value: "whatsapp", label: "WhatsApp" },
+      ],
       chips: [
         { id: "ai-strategy", label: "Estrategia de IA", value: "ai-strategy" },
         { id: "automation-agents", label: "Automatización y agentes", value: "automation-agents" },
@@ -56,6 +61,11 @@ const copy = isEs
       send: "Send message",
       sending: "Sending…",
       unexpected: "Unexpected error",
+      preferredOptions: [
+        { value: "email", label: "E-mail" },
+        { value: "phone", label: "Phone Call" },
+        { value: "whatsapp", label: "WhatsApp" },
+      ],
       chips: [
         { id: "ai-strategy", label: "AI strategy", value: "ai-strategy" },
         { id: "automation-agents", label: "Automation & agents", value: "automation-agents" },
@@ -160,10 +170,7 @@ const copy = isEs
         type="radio"
         name="preferredContact"
         placeholder="Preferred Contact Method"
-        options={[
-          { value: "email", label: "E-mail" },
-          { value: "whatsapp", label: "WhatsApp" },
-        ]}
+        options={copy.preferredOptions}
       />
     </div>
     <Inputs id={copy.subject} type="text" placeholder={copy.subjectPlaceholder} name="subject" />

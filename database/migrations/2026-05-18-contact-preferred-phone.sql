@@ -1,7 +1,8 @@
--- Contact form submissions table for the NOUS website.
--- Apply this to the Turso database used by TURSO_CONTACT_URL.
+-- Allows "Phone Call" as a preferred contact method while preserving existing leads.
 
-CREATE TABLE IF NOT EXISTS contact_submissions (
+PRAGMA foreign_keys = OFF;
+
+CREATE TABLE IF NOT EXISTS contact_submissions_new (
   id TEXT PRIMARY KEY,
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
@@ -30,6 +31,64 @@ CREATE TABLE IF NOT EXISTS contact_submissions (
   email_delivery_error TEXT
 );
 
+INSERT INTO contact_submissions_new (
+  id,
+  created_at,
+  updated_at,
+  submitted_at_utc,
+  submitted_at_cr,
+  submitted_date_cr,
+  submitted_hour_cr,
+  locale,
+  name,
+  email,
+  phone,
+  preferred_contact,
+  interests_json,
+  interests_text,
+  subject,
+  message,
+  source_path,
+  ip_address,
+  ip_country,
+  user_agent,
+  cf_ray,
+  email_delivery_status,
+  internal_email_id,
+  confirmation_email_id,
+  email_delivery_error
+)
+SELECT
+  id,
+  created_at,
+  updated_at,
+  submitted_at_utc,
+  submitted_at_cr,
+  submitted_date_cr,
+  submitted_hour_cr,
+  locale,
+  name,
+  email,
+  phone,
+  preferred_contact,
+  interests_json,
+  interests_text,
+  subject,
+  message,
+  source_path,
+  ip_address,
+  ip_country,
+  user_agent,
+  cf_ray,
+  email_delivery_status,
+  internal_email_id,
+  confirmation_email_id,
+  email_delivery_error
+FROM contact_submissions;
+
+DROP TABLE contact_submissions;
+ALTER TABLE contact_submissions_new RENAME TO contact_submissions;
+
 CREATE INDEX IF NOT EXISTS idx_contact_submissions_created_at
   ON contact_submissions(created_at);
 
@@ -44,3 +103,5 @@ CREATE INDEX IF NOT EXISTS idx_contact_submissions_ip_country
 
 CREATE INDEX IF NOT EXISTS idx_contact_submissions_delivery_status
   ON contact_submissions(email_delivery_status);
+
+PRAGMA foreign_keys = ON;

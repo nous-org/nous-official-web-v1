@@ -100,3 +100,11 @@ test('contact submission insert keeps column and placeholder counts aligned', as
 
   assert.equal(placeholderCount + literalValueCount, columns.length);
 });
+
+test('contact submission schema accepts phone as a preferred contact method', async () => {
+  const schema = await readFile(repoFile('database/contact-submissions.sql'), 'utf8');
+  const migration = await readFile(repoFile('database/migrations/2026-05-18-contact-preferred-phone.sql'), 'utf8');
+
+  assert.match(schema, /preferred_contact TEXT NOT NULL CHECK \(preferred_contact IN \('email', 'phone', 'whatsapp'\)\)/);
+  assert.match(migration, /preferred_contact TEXT NOT NULL CHECK \(preferred_contact IN \('email', 'phone', 'whatsapp'\)\)/);
+});

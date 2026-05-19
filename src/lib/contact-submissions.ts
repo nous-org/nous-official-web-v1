@@ -17,7 +17,7 @@ export type ContactSubmissionInput = {
   name: string;
   email: string;
   phone: string;
-  preferredContact: 'email' | 'whatsapp';
+  preferredContact: 'email' | 'phone' | 'whatsapp';
   interests: string[];
   interestsText: string;
   subject: string;
