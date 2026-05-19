@@ -1,11 +1,14 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { readFile } from 'node:fs/promises';
 import {
   buildContactSubmissionMetadata,
   getContactSourcePath,
   isContactDatabaseConfigured,
   serializeContactInterests,
 } from '../src/lib/contact-submissions.ts';
+
+const repoFile = (path) => new URL(`../${path}`, import.meta.url);
 
 test('contact database config requires both Turso values', () => {
   assert.equal(isContactDatabaseConfigured({}), false);
@@ -78,4 +81,22 @@ test('contact submission metadata ignores invalid country values', () => {
   });
 
   assert.equal(buildContactSubmissionMetadata(request).ipCountry, null);
+});
+
+test('contact submission insert keeps column and placeholder counts aligned', async () => {
+  const source = await readFile(repoFile('src/lib/contact-submissions.ts'), 'utf8');
+  const columns = source
+    .match(/INSERT INTO contact_submissions \(([\s\S]*?)\)\s*VALUES/)?.[1]
+    .split(',')
+    .map((column) => column.trim())
+    .filter(Boolean);
+  const values = source.match(/VALUES \(([\s\S]*?)\)/)?.[1];
+
+  assert.ok(columns, 'Expected contact submission insert columns');
+  assert.ok(values, 'Expected contact submission insert values');
+
+  const placeholderCount = [...values.matchAll(/\?/g)].length;
+  const literalValueCount = values.includes("'pending'") ? 1 : 0;
+
+  assert.equal(placeholderCount + literalValueCount, columns.length);
 });
