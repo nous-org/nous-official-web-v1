@@ -31,6 +31,7 @@ Recopilamos información personal de las siguientes formas.
 
 - **Datos de contacto:** Nombre, dirección de e-mail, número de teléfono, organización, cargo y método de contacto preferido.
 - **Detalles de consulta:** Asunto, mensaje, áreas de interés, objetivos del proyecto, contexto del negocio, necesidades técnicas y archivos o materiales que decidas compartir.
+- **Interacciones de primer contacto:** Respuestas, detalles de llamadas, grabaciones, transcripciones, resúmenes y notas de siguientes pasos de Hermes u otros flujos de soporte de NOUS cuando eliges seguimiento por e-mail, WhatsApp o teléfono.
 - **Información de newsletter:** Dirección de e-mail y preferencias de suscripción.
 - **Información de clientes y proyectos:** Información compartida durante descubrimiento, propuestas, contratos, talleres, soporte, capacitación, implementación y trabajo continuo.
 - **Información administrativa y de facturación:** Registros fiscales, facturación, pagos, compras y contratos cuando sean necesarios para una relación comercial.
@@ -60,6 +61,7 @@ Los clientes deben evitar enviar información personal sensible, datos de salud 
 Usamos información personal para:
 
 - Responder consultas y establecer el primer contacto;
+- Contactarte por el método seleccionado, incluyendo e-mail, WhatsApp, teléfono y flujos automatizados de soporte cuando se informen;
 - Evaluar oportunidades, definir alcance, preparar propuestas y prestar servicios;
 - Construir, desplegar, mantener, apoyar y mejorar sistemas tecnológicos;
 - Ejecutar trabajo de descubrimiento, capacitación, automatización, integración e implementación con IA;

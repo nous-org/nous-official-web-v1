@@ -27,7 +27,26 @@ CREATE TABLE IF NOT EXISTS contact_submissions (
     CHECK (email_delivery_status IN ('pending', 'sent', 'failed', 'skipped')),
   internal_email_id TEXT,
   confirmation_email_id TEXT,
-  email_delivery_error TEXT
+  email_delivery_error TEXT,
+  hermes_workflow_status TEXT NOT NULL DEFAULT 'not_configured'
+    CHECK (hermes_workflow_status IN (
+      'not_configured',
+      'queued',
+      'webhook_failed',
+      'in_progress',
+      'awaiting_reply',
+      'completed',
+      'failed',
+      'manual_review'
+    )),
+  hermes_channel TEXT CHECK (hermes_channel IN ('email', 'phone', 'whatsapp')),
+  hermes_webhook_delivery_id TEXT,
+  hermes_workflow_run_id TEXT,
+  hermes_summary TEXT,
+  hermes_next_step TEXT,
+  hermes_transcript TEXT,
+  hermes_error TEXT,
+  hermes_last_event_at TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_contact_submissions_created_at
@@ -44,3 +63,9 @@ CREATE INDEX IF NOT EXISTS idx_contact_submissions_ip_country
 
 CREATE INDEX IF NOT EXISTS idx_contact_submissions_delivery_status
   ON contact_submissions(email_delivery_status);
+
+CREATE INDEX IF NOT EXISTS idx_contact_submissions_hermes_status
+  ON contact_submissions(hermes_workflow_status);
+
+CREATE INDEX IF NOT EXISTS idx_contact_submissions_hermes_channel
+  ON contact_submissions(hermes_channel);

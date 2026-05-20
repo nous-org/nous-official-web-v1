@@ -65,6 +65,9 @@ Cloudflare/GitHub/provider secrets must include:
 - `TURSO_CONTACT_TOKEN`
 - `TURSO_NEWSLETTER_URL`
 - `TURSO_NEWSLETTER_TOKEN`
+- `HERMES_LEAD_WEBHOOK_URL`
+- `HERMES_LEAD_WEBHOOK_SECRET`
+- `HERMES_WORKFLOW_API_TOKEN`
 - `CLERK_SECRET_KEY` if blog author profiles should resolve from Clerk user IDs
 
 Do not store those values in committed files.

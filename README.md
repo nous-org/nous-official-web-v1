@@ -131,6 +131,9 @@ Required runtime integrations:
 | `TURSO_CONTACT_TOKEN` | Contact form submissions database token | Yes |
 | `TURSO_NEWSLETTER_URL` | Newsletter database | Yes |
 | `TURSO_NEWSLETTER_TOKEN` | Newsletter database token | Yes |
+| `HERMES_LEAD_WEBHOOK_URL` | n8n webhook URL for contact-form Hermes lead handoff | Yes |
+| `HERMES_LEAD_WEBHOOK_SECRET` | HMAC secret used to sign website-to-n8n lead payloads | Yes |
+| `HERMES_WORKFLOW_API_TOKEN` | Bearer token n8n uses to update Hermes workflow status | Yes |
 | `CLERK_SECRET_KEY` | Optional blog author profile lookup when Turso rows store Clerk author IDs | Yes |
 | `OPENAI_API_KEY` | Server-side OpenAI Responses API access for the website assistant | Yes |
 | `OPENAI_MODEL` | Model used by the website assistant | No |
@@ -142,12 +145,14 @@ The website does not expose publishing or admin APIs. Blog authoring is handled 
 
 ## Contact And E-mail Flow
 
-The public contact forms post to `POST /api/contact`, which validates required fields, applies abuse controls, stores the validated submission in Turso when `TURSO_CONTACT_URL` and `TURSO_CONTACT_TOKEN` are configured, and sends two Resend e-mails:
+The public contact forms post to `POST /api/contact`, which validates required fields, applies abuse controls, stores the validated submission in Turso when `TURSO_CONTACT_URL` and `TURSO_CONTACT_TOKEN` are configured, sends a signed Hermes lead-handoff event to n8n when configured, and sends two Resend e-mails:
 
 - an internal notification to the NOUS team
 - a confirmation e-mail to the person who submitted the form
 
 The repo owns the HTML e-mail templates, sender display names, subject lines, inline validation copy, and delivery behavior. Local development returns a dry-run success when `RESEND_API_KEY` is missing; production requires the Cloudflare secret and falls back to a service-unavailable message if delivery cannot be configured.
+
+The n8n workflow can report Hermes progress back to `POST /api/hermes/contact-workflow-status` with `Authorization: Bearer $HERMES_WORKFLOW_API_TOKEN`.
 
 See [docs/CONTACT_AND_EMAIL.md](docs/CONTACT_AND_EMAIL.md) for template standards, smoke tests, and runtime notes. See [docs/CONTACT_FORM_DATABASE.md](docs/CONTACT_FORM_DATABASE.md) for Turso setup and lead-table operations.
 

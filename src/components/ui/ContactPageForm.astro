@@ -27,6 +27,7 @@ const copy = isEs
       message: "Mensaje",
       subjectPlaceholder: "IA para atención al cliente",
       messagePlaceholder: "Cuéntanos qué está intentando mejorar, automatizar, entender o construir tu organización.",
+      consent: "Al enviar, aceptas que NOUS te contacte por el método seleccionado, incluso a través de Hermes, nuestro agente automatizado de servicio al cliente.",
       send: "Enviar mensaje",
       sending: "Enviando…",
       unexpected: "Error inesperado",
@@ -58,6 +59,7 @@ const copy = isEs
       message: "Message",
       subjectPlaceholder: "AI for customer support",
       messagePlaceholder: "Tell us what your organization is trying to improve, automate, understand, or build.",
+      consent: "By submitting, you agree that NOUS may contact you through your selected method, including through Hermes, our automated customer service agent.",
       send: "Send message",
       sending: "Sending…",
       unexpected: "Unexpected error",
@@ -182,6 +184,10 @@ const copy = isEs
       minlength={10}
       maxlength={2000}
     />
+
+    <p class="text-xs leading-relaxed text-neutral-400">
+      {copy.consent}
+    </p>
 
     <div class="flex justify-start">
       <SubmitButton

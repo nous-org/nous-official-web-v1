@@ -11,6 +11,9 @@ export interface RuntimeEnv {
   TURSO_CONTACT_TOKEN?: string;
   TURSO_NEWSLETTER_URL?: string;
   TURSO_NEWSLETTER_TOKEN?: string;
+  HERMES_LEAD_WEBHOOK_URL?: string;
+  HERMES_LEAD_WEBHOOK_SECRET?: string;
+  HERMES_WORKFLOW_API_TOKEN?: string;
   OAUTH_BASE_URL?: string;
   CLERK_SECRET_KEY?: string;
   OPENAI_API_KEY?: string;

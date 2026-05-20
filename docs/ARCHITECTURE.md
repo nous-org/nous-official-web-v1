@@ -131,7 +131,7 @@ The contact form is split between Astro-rendered markup, a small client validati
 - `src/lib/contact-submissions.ts` owns optional Turso persistence for validated contact submissions.
 - `public/images/nous-email-logo.png` is the logo used by the contact e-mail templates.
 
-The endpoint saves validated contact submissions to Turso when `TURSO_CONTACT_URL` and `TURSO_CONTACT_TOKEN` are configured, sends an internal notification to `CONTACT_RECIPIENT_EMAIL`, and sends a confirmation e-mail to the submitter. User-submitted values must be escaped before being rendered into HTML e-mail templates.
+The endpoint saves validated contact submissions to Turso when `TURSO_CONTACT_URL` and `TURSO_CONTACT_TOKEN` are configured, sends a signed Hermes lead handoff to n8n when `HERMES_LEAD_WEBHOOK_URL` and `HERMES_LEAD_WEBHOOK_SECRET` are configured, sends an internal notification to `CONTACT_RECIPIENT_EMAIL`, and sends a confirmation e-mail to the submitter. n8n can report Hermes workflow progress back through `POST /api/hermes/contact-workflow-status` with `HERMES_WORKFLOW_API_TOKEN`. User-submitted values must be escaped before being rendered into HTML e-mail templates.
 
 See [CONTACT_AND_EMAIL.md](CONTACT_AND_EMAIL.md) for template standards and smoke-test details.
 

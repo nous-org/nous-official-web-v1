@@ -11,6 +11,7 @@ The `contact_submissions` table stores:
 - UTC submission timestamp plus Costa Rica local timestamp, date, and hour
 - locale, source path, limited IP address, Cloudflare country code when available, Cloudflare ray ID, and user agent metadata
 - Resend delivery status and e-mail IDs when available
+- Hermes/n8n workflow status, channel, webhook delivery ID, workflow run ID, summary, next step, transcript, error, and last event timestamp
 
 Do not expose Turso credentials in the browser, forms, checked-in files, screenshots, or chat messages. Configure them only as local environment values or Cloudflare secrets.
 
@@ -46,6 +47,12 @@ For an existing contact database created before phone calls were accepted as a p
 
 ```bash
 turso db shell nous-contact-submissions < database/migrations/2026-05-18-contact-preferred-phone.sql
+```
+
+For an existing contact database created before the Hermes/n8n handoff was added, apply:
+
+```bash
+turso db shell nous-contact-submissions < database/migrations/2026-05-19-hermes-contact-workflow.sql
 ```
 
 Get the database URL:
@@ -93,6 +100,17 @@ Delivery status values:
 - `failed`: e-mail delivery or production e-mail configuration failed
 - `skipped`: local dry-run path without `RESEND_API_KEY`
 
+Hermes workflow status values:
+
+- `not_configured`: Hermes handoff was not configured when the contact was submitted
+- `queued`: the website delivered the lead handoff to n8n
+- `webhook_failed`: the website could not deliver the lead handoff to n8n
+- `in_progress`: n8n or Hermes started first-contact handling
+- `awaiting_reply`: Hermes is waiting on the lead
+- `completed`: Hermes gathered enough context for NOUS handoff
+- `failed`: the workflow failed after n8n accepted it
+- `manual_review`: the lead needs manual review
+
 ## Runtime Behavior
 
-The database write happens only after server-side validation and rate limiting pass. If Turso is not configured, the existing contact e-mail behavior continues. If Turso is configured but temporarily fails, the endpoint logs the database error and still attempts Resend delivery so the lead can still reach the NOUS inbox.
+The database write happens only after server-side validation and rate limiting pass. If Turso is not configured, the existing contact e-mail behavior continues. If Turso is configured but temporarily fails, the endpoint logs the database error and still attempts the Hermes handoff and Resend delivery so the lead can still reach the NOUS inbox. The Hermes status callback requires Turso because it updates the stored lead row.

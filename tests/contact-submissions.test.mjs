@@ -108,3 +108,19 @@ test('contact submission schema accepts phone as a preferred contact method', as
   assert.match(schema, /preferred_contact TEXT NOT NULL CHECK \(preferred_contact IN \('email', 'phone', 'whatsapp'\)\)/);
   assert.match(migration, /preferred_contact TEXT NOT NULL CHECK \(preferred_contact IN \('email', 'phone', 'whatsapp'\)\)/);
 });
+
+test('contact submission schema tracks Hermes workflow status', async () => {
+  const schema = await readFile(repoFile('database/contact-submissions.sql'), 'utf8');
+  const migration = await readFile(repoFile('database/migrations/2026-05-19-hermes-contact-workflow.sql'), 'utf8');
+  const source = await readFile(repoFile('src/lib/contact-submissions.ts'), 'utf8');
+
+  for (const content of [schema, migration]) {
+    assert.match(content, /hermes_workflow_status TEXT NOT NULL DEFAULT 'not_configured'/);
+    assert.match(content, /CHECK \(hermes_channel IN \('email', 'phone', 'whatsapp'\)\)/);
+    assert.match(content, /idx_contact_submissions_hermes_status/);
+  }
+
+  assert.match(source, /updateContactSubmissionHermesWorkflowStatus/);
+  assert.match(source, /hermes_workflow_run_id/);
+  assert.match(source, /hermes_summary/);
+});

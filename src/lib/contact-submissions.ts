@@ -6,6 +6,15 @@ export type ContactDatabaseEnv = {
 };
 
 export type ContactEmailDeliveryStatus = 'pending' | 'sent' | 'failed' | 'skipped';
+export type ContactHermesWorkflowStatus =
+  | 'not_configured'
+  | 'queued'
+  | 'webhook_failed'
+  | 'in_progress'
+  | 'awaiting_reply'
+  | 'completed'
+  | 'failed'
+  | 'manual_review';
 
 export type ContactSubmissionInput = {
   id?: string;
@@ -34,6 +43,18 @@ export type ContactEmailDeliveryUpdate = {
   internalEmailId?: string | null;
   confirmationEmailId?: string | null;
   errorMessage?: string | null;
+};
+
+export type ContactHermesWorkflowUpdate = {
+  status: ContactHermesWorkflowStatus;
+  channel?: ContactSubmissionInput['preferredContact'] | null;
+  webhookDeliveryId?: string | null;
+  workflowRunId?: string | null;
+  summary?: string | null;
+  nextStep?: string | null;
+  transcript?: string | null;
+  errorMessage?: string | null;
+  lastEventAt?: string | null;
 };
 
 function truncate(value: string | null | undefined, maxLength: number) {
@@ -200,6 +221,45 @@ export async function updateContactSubmissionEmailStatus(
       truncate(update.internalEmailId, 255),
       truncate(update.confirmationEmailId, 255),
       truncate(update.errorMessage, 500),
+      id,
+    ],
+  });
+}
+
+export async function updateContactSubmissionHermesWorkflowStatus(
+  env: ContactDatabaseEnv,
+  id: string | null,
+  update: ContactHermesWorkflowUpdate,
+) {
+  if (!id || !isContactDatabaseConfigured(env)) return;
+
+  const client = createContactClient(env);
+  await client.execute({
+    sql: `
+      UPDATE contact_submissions
+      SET
+        hermes_workflow_status = ?,
+        hermes_channel = COALESCE(?, hermes_channel),
+        hermes_webhook_delivery_id = COALESCE(?, hermes_webhook_delivery_id),
+        hermes_workflow_run_id = COALESCE(?, hermes_workflow_run_id),
+        hermes_summary = COALESCE(?, hermes_summary),
+        hermes_next_step = COALESCE(?, hermes_next_step),
+        hermes_transcript = COALESCE(?, hermes_transcript),
+        hermes_error = ?,
+        hermes_last_event_at = COALESCE(?, strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+        updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+      WHERE id = ?
+    `,
+    args: [
+      update.status,
+      update.channel ?? null,
+      truncate(update.webhookDeliveryId, 255),
+      truncate(update.workflowRunId, 255),
+      truncate(update.summary, 4000),
+      truncate(update.nextStep, 1000),
+      truncate(update.transcript, 20000),
+      truncate(update.errorMessage, 1000),
+      truncate(update.lastEventAt, 64),
       id,
     ],
   });

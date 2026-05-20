@@ -8,8 +8,14 @@ import {
   getContactSourcePath,
   saveContactSubmission,
   updateContactSubmissionEmailStatus,
+  updateContactSubmissionHermesWorkflowStatus,
   type ContactEmailDeliveryUpdate,
+  type ContactHermesWorkflowUpdate,
 } from '@/lib/contact-submissions';
+import {
+  buildHermesLeadWebhookPayload,
+  dispatchHermesLeadWebhook,
+} from '@/lib/hermes-lead-workflow';
 
 const validationCopy = {
   en: {
@@ -303,7 +309,10 @@ export const POST: APIRoute = async ({ request }) => {
     const runtimeEnv = getRuntimeEnv();
     const userAgent = request.headers.get('user-agent') || 'unknown';
     const submissionMetadata = buildContactSubmissionMetadata(request);
-    const contactSubmissionId = await saveContactSubmission(runtimeEnv, {
+    const sourcePath = getContactSourcePath(request);
+    const contactSubmissionId = crypto.randomUUID();
+    const savedContactSubmissionId = await saveContactSubmission(runtimeEnv, {
+      id: contactSubmissionId,
       ...submissionMetadata,
       locale,
       name,
@@ -316,7 +325,7 @@ export const POST: APIRoute = async ({ request }) => {
       message,
       ipAddress: clientIp,
       userAgent,
-      sourcePath: getContactSourcePath(request),
+      sourcePath,
     }).catch((error) => {
       console.error('Contact database save error:', {
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -326,13 +335,45 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
     const updateSavedSubmissionStatus = async (update: ContactEmailDeliveryUpdate) => {
-      await updateContactSubmissionEmailStatus(runtimeEnv, contactSubmissionId, update).catch((error) => {
+      await updateContactSubmissionEmailStatus(runtimeEnv, savedContactSubmissionId, update).catch((error) => {
         console.error('Contact database status update error:', {
           error: error instanceof Error ? error.message : 'Unknown error',
           timestamp: new Date().toISOString(),
         });
       });
     };
+
+    const updateSavedHermesWorkflowStatus = async (update: ContactHermesWorkflowUpdate) => {
+      await updateContactSubmissionHermesWorkflowStatus(runtimeEnv, savedContactSubmissionId, update).catch((error) => {
+        console.error('Hermes workflow status update error:', {
+          error: error instanceof Error ? error.message : 'Unknown error',
+          timestamp: new Date().toISOString(),
+        });
+      });
+    };
+
+    const hermesPayload = buildHermesLeadWebhookPayload({
+      submissionId: contactSubmissionId,
+      ...submissionMetadata,
+      locale,
+      name,
+      email,
+      phone,
+      preferredContact,
+      interests,
+      interestsText,
+      subject,
+      message,
+      sourcePath,
+      userAgent,
+    });
+    const hermesWebhookResult = await dispatchHermesLeadWebhook(runtimeEnv, hermesPayload);
+    await updateSavedHermesWorkflowStatus({
+      status: hermesWebhookResult.status,
+      channel: preferredContact,
+      webhookDeliveryId: hermesWebhookResult.deliveryId,
+      errorMessage: hermesWebhookResult.errorMessage,
+    });
 
     const { RESEND_API_KEY, CONTACT_RECIPIENT_EMAIL } = runtimeEnv;
     if (!RESEND_API_KEY) {

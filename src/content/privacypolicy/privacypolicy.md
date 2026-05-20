@@ -33,6 +33,7 @@ We collect personal information in the following ways.
 
 - **Contact details:** Name, e-mail address, phone number, organization, role, and preferred contact method.
 - **Inquiry details:** Subject, message, areas of interest, project goals, business context, technical needs, and any files or materials you choose to share.
+- **Initial-contact interactions:** Replies, call details, recordings, transcripts, summaries, and next-step notes from Hermes or other NOUS support workflows when you choose e-mail, WhatsApp, or phone follow-up.
 - **Newsletter information:** E-mail address and subscription preferences.
 - **Client and project information:** Information shared during discovery, proposals, contracts, workshops, support, training, implementation, and ongoing service work.
 - **Billing and administrative information:** Tax, invoicing, payment, procurement, and contract records when needed for a business relationship.
@@ -62,6 +63,7 @@ Clients should avoid sending sensitive personal information, regulated health da
 We use personal information to:
 
 - Respond to inquiries and establish first contact;
+- Contact you through your selected method, including e-mail, WhatsApp, phone, and automated support workflows where disclosed;
 - Evaluate opportunities, scope work, prepare proposals, and provide services;
 - Build, deploy, maintain, support, and improve technology systems;
 - Run AI discovery, training, automation, integration, and implementation work;

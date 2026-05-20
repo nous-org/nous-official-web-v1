@@ -13,6 +13,8 @@ test('wrangler.toml does not commit live-looking secrets', async () => {
     /TURSO_AUTH_TOKEN\s*=\s*["']eyJ/,
     /TURSO_CONTACT_TOKEN\s*=\s*["']eyJ/,
     /TURSO_NEWSLETTER_TOKEN\s*=\s*["']eyJ/,
+    /HERMES_LEAD_WEBHOOK_SECRET\s*=\s*["'][A-Za-z0-9_-]{16,}/,
+    /HERMES_WORKFLOW_API_TOKEN\s*=\s*["'][A-Za-z0-9_-]{16,}/,
     /GITHUB_CLIENT_SECRET\s*=\s*["'][a-f0-9]{20,}/i,
     /CLERK_SECRET_KEY\s*=\s*["']sk_(live|test)_/,
     /OPENAI_API_KEY\s*=\s*["']sk-[A-Za-z0-9_-]{12,}/,
@@ -85,12 +87,16 @@ test('repository metadata and operating docs are present', async () => {
   assert.match(contactEmailDocs, /RESEND_API_KEY/);
   assert.match(contactEmailDocs, /TURSO_CONTACT_URL/);
   assert.match(contactEmailDocs, /TURSO_CONTACT_TOKEN/);
+  assert.match(contactEmailDocs, /HERMES_LEAD_WEBHOOK_URL/);
+  assert.match(contactEmailDocs, /X-NOUS-Signature/);
+  assert.match(contactEmailDocs, /POST \/api\/hermes\/contact-workflow-status/);
   assert.match(contactEmailDocs, /images\/nous-email-logo\.png/);
 
   const contactDatabaseDocs = await readText('docs/CONTACT_FORM_DATABASE.md');
   assert.match(contactDatabaseDocs, /database\/contact-submissions\.sql/);
   assert.match(contactDatabaseDocs, /turso db create nous-contact-submissions/);
   assert.match(contactDatabaseDocs, /wrangler secret put TURSO_CONTACT_URL/);
+  assert.match(contactDatabaseDocs, /2026-05-19-hermes-contact-workflow\.sql/);
 });
 
 test('robots references generated sitemap index and blocks sensitive routes', async () => {
@@ -133,6 +139,7 @@ test('contact forms keep required fields and visible validation paths', async ()
     assert.match(form, /name="phone"/);
     assert.match(form, /value:\s*"phone"/);
     assert.match(form, /Phone Call|Llamada Telefónica/);
+    assert.match(form, /Hermes, our automated customer service agent|Hermes, nuestro agente automatizado/);
     assert.equal(form.includes('name="phone" required={false}'), false);
     assert.match(form, /minlength=\{10\}/);
     assert.match(form, /maxlength=\{2000\}/);
@@ -147,6 +154,9 @@ test('contact forms keep required fields and visible validation paths', async ()
   assert.match(contactApi, /interests:\s*z\.array\(z\.string\(\)\)\.min\(1/);
   assert.match(contactApi, /saveContactSubmission/);
   assert.match(contactApi, /updateContactSubmissionEmailStatus/);
+  assert.match(contactApi, /buildHermesLeadWebhookPayload/);
+  assert.match(contactApi, /dispatchHermesLeadWebhook/);
+  assert.match(contactApi, /updateContactSubmissionHermesWorkflowStatus/);
   assert.match(contactApi, /import\.meta\.env\.DEV/);
   assert.match(contactApi, /dryRun:\s*true/);
 });
