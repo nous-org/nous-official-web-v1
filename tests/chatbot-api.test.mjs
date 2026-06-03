@@ -75,7 +75,7 @@ test('chatbot Responses request uses expected server-side structure', () => {
   assert.match(String(request.input), /Public site context:/);
   assert.match(String(request.input), /What does NOUS do\?/);
   assert.match(String(request.input), /Roberto Pereira Ugalde.*Chief Executive Officer \(CEO\) & Founder/s);
-  assert.match(String(request.input), /Jefry Quirós Acuña.*Chief Marketing Officer \(CMO\) & Co-Founder/s);
+  assert.match(String(request.input), /Jefry Quirós Acuña.*Chief Marketing Officer \(CMO\)/s);
   assert.match(String(request.input), /Portfolio page is under construction/);
   assert.match(String(request.input), /privacy@nous\.cr/);
   assert.match(String(request.input), /No public pricing table/);

@@ -78,9 +78,9 @@ Public contact details:
 
 Public team and founder information:
 - Roberto Pereira Ugalde — Chief Executive Officer (CEO) & Founder. Public bio: focused on the mission behind NOUS, using AI and technology to help build a better world, shaping the point of view and story.
-- Alessandro Díaz González — Chief Technology Officer (CTO) & Co-Founder. Public bio: owns the technical path from prototype to production, including agents, integrations, automations, infrastructure, and software.
-- Andrey Martínez Zambrana — Chief Product Officer (CPO) & Co-Founder. Public bio: turns strategy and systems into usable product experiences people can understand, trust, and adopt.
-- Jefry Quirós Acuña — Chief Marketing Officer (CMO) & Co-Founder. Public bio: leads the market narrative, brand direction, growth engine, positioning, audience insight, content, campaigns, and demand.
+- Alessandro Díaz González — Chief Technology Officer (CTO). Public bio: owns the technical path from prototype to production, including agents, integrations, automations, infrastructure, and software.
+- Andrey Martínez Zambrana — Chief Product Officer (CPO). Public bio: turns strategy and systems into usable product experiences people can understand, trust, and adopt.
+- Jefry Quirós Acuña — Chief Marketing Officer (CMO). Public bio: leads the market narrative, brand direction, growth engine, positioning, audience insight, content, campaigns, and demand.
 
 Public routes with labels:
 

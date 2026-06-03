@@ -323,8 +323,8 @@ test('team cards do not expose Instagram and keep approved social order', async 
   assert.equal(founderCards.includes('Instagram'), false);
   assert.equal(founderCards.includes('instagram.com'), false);
   assert.match(founderCardComponent, /activeSocialLinks\(founder\)\.length > 0/);
-  assert.match(founderCards, /name:\s*"Jefry Quirós Acuña"[\s\S]*position:\s*"Chief Marketing Officer \(CMO\) & Co-Founder"/);
-  assert.match(foundersSection, /"Jefry Quirós Acuña"[\s\S]*position:\s*"Chief Marketing Officer \(CMO\) & Co-Founder"/);
+  assert.match(founderCards, /name:\s*"Jefry Quirós Acuña"[\s\S]*position:\s*"Chief Marketing Officer \(CMO\)"/);
+  assert.match(foundersSection, /"Jefry Quirós Acuña"[\s\S]*position:\s*"Chief Marketing Officer \(CMO\)"/);
 
   const socialBlocks = [...founderCards.matchAll(/socialLinks:\s*\[([\s\S]*?)\]/g)];
   assert.ok(socialBlocks.length > 0, 'Expected founder social link blocks');
