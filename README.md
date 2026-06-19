@@ -17,7 +17,7 @@ The site is built as a fast, bilingual, SEO-conscious Astro application with sel
 | Default branch | `main` |
 | Runtime | Cloudflare Workers via `@astrojs/cloudflare` |
 | Package manager | `pnpm` |
-| Node target | `>=22.12.0` |
+| Node target | `>=24.0.0` |
 | Validation gate | `pnpm validate` |
 | Deployment | GitHub Actions deploys `main` with Wrangler |
 | Primary markets | Costa Rica, LatAm |
