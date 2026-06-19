@@ -7,7 +7,7 @@
 
 This repository powers [nous.cr](https://nous.cr), the official website for NOUS: an AI transformation partner helping organizations in Costa Rica and LatAm design, deploy, and adopt useful intelligence in real work.
 
-The site is built as a fast, bilingual, SEO-conscious Astro application with selective React islands, Cloudflare Workers deployment, Turso-backed blog reads, and production-grade guardrails for redirects, metadata, structured data, and form handling.
+The site is built as a fast, bilingual, SEO-conscious Astro application with selective React islands, Cloudflare Workers deployment, Turso-backed blog reads and lead storage, Hermes/n8n lead handoff, a server-side OpenAI website assistant, and production-grade guardrails for redirects, metadata, structured data, and form handling.
 
 ## Repository Status
 
@@ -30,8 +30,9 @@ The site is built as a fast, bilingual, SEO-conscious Astro application with sel
 - SEO metadata, canonical URLs, sitemap generation, `robots.txt`, and structured data.
 - Cloudflare Worker configuration and route handling.
 - Legacy URL redirects for retired pages and old slugs.
-- Contact and newsletter API endpoints, including contact form validation and Resend e-mail templates.
+- Contact and newsletter API endpoints, including contact form validation, Turso lead persistence, Hermes/n8n handoff, and Resend e-mail templates.
 - Public blog rendering for published articles stored in Turso by the separate `admin.nous.cr` CMS.
+- Public website AI assistant API and React widget backed by the server-side OpenAI Responses API.
 - Static QA checks that protect SEO, security, and repo hygiene decisions.
 
 ## Product Surface
@@ -70,7 +71,8 @@ Core implementation notes:
 - `src/middleware.ts` owns canonical host, redirect, slash, and response-header behavior.
 - `astro.config.mjs` owns sitemap filtering, Cloudflare adapter configuration, and chunk boundaries.
 - `wrangler.toml` owns Worker routes, non-secret vars, and Cloudflare bindings.
-- `tests/static-qa.test.mjs` protects security, SEO, redirect, sitemap, and repo-hygiene rules.
+- `src/lib/hermes-lead-workflow.ts` owns signed website-to-n8n contact lead dispatch.
+- `tests/*.test.mjs` protects chatbot, contact storage, Hermes workflow, security, SEO, redirect, sitemap, and repo-hygiene rules.
 
 For deeper implementation context, read [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
